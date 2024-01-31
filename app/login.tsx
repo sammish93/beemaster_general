@@ -17,14 +17,6 @@ const LoginScreen = () => {
     <View
       style={{ ...styles.container, backgroundColor: theme.colors.secondary }}
     >
-      {/* Shows the drawer navigation bar if the draw layout is used*/}
-      {canOpenDrawer && (
-        <TopBar
-          onPress={() => {
-            navigation.openDrawer();
-          }}
-        />
-      )}
       <View style={styles.main}>
         <Text style={theme.fonts.displayLarge}>Login Display</Text>
         <Text style={theme.fonts.titleLarge}>Login Title</Text>

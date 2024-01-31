@@ -15,6 +15,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      {/* Shows the drawer navigation bar if the draw layout is used*/}
       {canOpenDrawer && (
         <TopBar
           onPress={() => {
@@ -36,7 +37,7 @@ const HomeScreen = () => {
           Press me to change the above text
         </Button>
         <Button
-          mode="contained-tonal"
+          mode="elevated"
           onPress={() => {
             const hiveId = "hive-1234-1234-abc";
             navigation.navigate("/hive/index", { hiveId: hiveId });

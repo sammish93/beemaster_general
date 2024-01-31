@@ -7,21 +7,55 @@ import {
   UpdatesStack,
   SettingsStack,
 } from "@/components/layouts/stacks";
+import { Text } from "react-native";
+import { MD3Theme } from "react-native-paper";
 
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
 
-export const MaterialBottomTabsScreen = () => (
-  <MaterialBottomTabs.Navigator>
+type BottomTabsLabelProps = {
+  label: string;
+  theme: MD3Theme;
+};
+
+const CustomBottomTabsLabel = (props: BottomTabsLabelProps) => (
+  <Text
+    style={{
+      ...props.theme.fonts.bodyLarge,
+      color: props.theme.colors.onBackground,
+    }}
+  >
+    {props.label}
+  </Text>
+);
+
+export type BottomTabsScreenProps = {
+  theme: MD3Theme;
+};
+
+export const MaterialBottomTabsScreen = (props: BottomTabsScreenProps) => (
+  <MaterialBottomTabs.Navigator
+    activeColor={props.theme.colors.onBackground}
+    inactiveColor={props.theme.colors.onBackground}
+    barStyle={{
+      backgroundColor: props.theme.colors.elevation.level2,
+    }}
+  >
     <MaterialBottomTabs.Screen
       name="index"
       component={IndexStack}
       options={{
         tabBarLabel: "Home",
-        tabBarIcon: ({ focused, color }) => (
+        tabBarIcon: (propsIcon) => (
           <MaterialCommunityIcons
-            color={color}
+            color={
+              propsIcon.focused
+                ? props.theme.colors.onSecondaryContainer
+                : props.theme.colors.onSurfaceVariant
+            }
             size={24}
-            name={focused ? "alpha-a-circle" : "alpha-a-circle-outline"}
+            name={
+              propsIcon.focused ? "alpha-a-circle" : "alpha-a-circle-outline"
+            }
           />
         ),
       }}
@@ -31,11 +65,17 @@ export const MaterialBottomTabsScreen = () => (
       component={ToolboxStack}
       options={{
         tabBarLabel: "Toolbox",
-        tabBarIcon: ({ focused, color }) => (
+        tabBarIcon: (propsIcon) => (
           <MaterialCommunityIcons
-            color={color}
+            color={
+              propsIcon.focused
+                ? props.theme.colors.onSecondaryContainer
+                : props.theme.colors.onSurfaceVariant
+            }
             size={24}
-            name={focused ? "alpha-b-circle" : "alpha-c-circle-outline"}
+            name={
+              propsIcon.focused ? "alpha-a-circle" : "alpha-a-circle-outline"
+            }
           />
         ),
       }}
@@ -45,11 +85,17 @@ export const MaterialBottomTabsScreen = () => (
       component={UpdatesStack}
       options={{
         tabBarLabel: "Updates",
-        tabBarIcon: ({ focused, color }) => (
+        tabBarIcon: (propsIcon) => (
           <MaterialCommunityIcons
-            color={color}
+            color={
+              propsIcon.focused
+                ? props.theme.colors.onSecondaryContainer
+                : props.theme.colors.onSurfaceVariant
+            }
             size={24}
-            name={focused ? "alpha-c-circle" : "alpha-c-circle-outline"}
+            name={
+              propsIcon.focused ? "alpha-a-circle" : "alpha-a-circle-outline"
+            }
           />
         ),
       }}
@@ -59,11 +105,17 @@ export const MaterialBottomTabsScreen = () => (
       component={SettingsStack}
       options={{
         tabBarLabel: "Settings",
-        tabBarIcon: ({ focused, color }) => (
+        tabBarIcon: (propsIcon) => (
           <MaterialCommunityIcons
-            color={color}
+            color={
+              propsIcon.focused
+                ? props.theme.colors.onSecondaryContainer
+                : props.theme.colors.onSurfaceVariant
+            }
             size={24}
-            name={focused ? "alpha-d-circle" : "alpha-d-circle-outline"}
+            name={
+              propsIcon.focused ? "alpha-a-circle" : "alpha-a-circle-outline"
+            }
           />
         ),
       }}

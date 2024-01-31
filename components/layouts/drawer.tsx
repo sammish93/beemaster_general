@@ -8,15 +8,41 @@ import {
   UpdatesStack,
   SettingsStack,
 } from "@/components/layouts/stacks";
+import { Text } from "react-native";
+import { MD3Theme } from "react-native-paper";
 
 const Drawer = createDrawerNavigator();
 
-export const DrawerScreen = withLayoutContext(() => (
+type DrawerLabelProps = {
+  label: string;
+  theme: MD3Theme;
+};
+
+const CustomDrawerLabel = (props: DrawerLabelProps) => (
+  <Text
+    style={{
+      ...props.theme.fonts.bodyLarge,
+      color: props.theme.colors.onBackground,
+    }}
+  >
+    {props.label}
+  </Text>
+);
+
+export type DrawerScreenProps = {
+  theme: MD3Theme;
+};
+
+export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => (
   <Drawer.Navigator
     screenOptions={{
       // API Reference: https://reactnavigation.org/docs/drawer-navigator#options
       drawerType: "front",
       headerShown: false,
+      drawerActiveBackgroundColor: props.theme.colors.secondaryContainer,
+      drawerStyle: {
+        backgroundColor: props.theme.colors.elevation.level2,
+      },
     }}
   >
     <Drawer.Screen
@@ -24,13 +50,21 @@ export const DrawerScreen = withLayoutContext(() => (
       component={() => <IndexStack />}
       options={{
         headerTitle: "Home",
-        drawerLabel: "Home",
-        drawerIcon(props) {
+        drawerLabel: () => (
+          <CustomDrawerLabel label="Home" theme={props.theme} />
+        ),
+        drawerIcon(propsIcon) {
           return (
             <MaterialCommunityIcons
-              color={props.color}
+              color={
+                propsIcon.focused
+                  ? props.theme.colors.onSecondaryContainer
+                  : props.theme.colors.onSurfaceVariant
+              }
               size={24}
-              name={props.focused ? "alpha-a-circle" : "alpha-a-circle-outline"}
+              name={
+                propsIcon.focused ? "alpha-a-circle" : "alpha-a-circle-outline"
+              }
             />
           );
         },
@@ -41,13 +75,21 @@ export const DrawerScreen = withLayoutContext(() => (
       component={() => <ToolboxStack />}
       options={{
         headerTitle: "Toolbox",
-        drawerLabel: "Toolbox",
-        drawerIcon(props) {
+        drawerLabel: () => (
+          <CustomDrawerLabel label="Toolbox" theme={props.theme} />
+        ),
+        drawerIcon(propsIcon) {
           return (
             <MaterialCommunityIcons
-              color={props.color}
+              color={
+                propsIcon.focused
+                  ? props.theme.colors.onSecondaryContainer
+                  : props.theme.colors.onSurfaceVariant
+              }
               size={24}
-              name={props.focused ? "alpha-b-circle" : "alpha-b-circle-outline"}
+              name={
+                propsIcon.focused ? "alpha-b-circle" : "alpha-b-circle-outline"
+              }
             />
           );
         },
@@ -58,13 +100,21 @@ export const DrawerScreen = withLayoutContext(() => (
       component={() => <UpdatesStack />}
       options={{
         headerTitle: "Updates",
-        drawerLabel: "Updates",
-        drawerIcon(props) {
+        drawerLabel: () => (
+          <CustomDrawerLabel label="Updates" theme={props.theme} />
+        ),
+        drawerIcon(propsIcon) {
           return (
             <MaterialCommunityIcons
-              color={props.color}
+              color={
+                propsIcon.focused
+                  ? props.theme.colors.onSecondaryContainer
+                  : props.theme.colors.onSurfaceVariant
+              }
               size={24}
-              name={props.focused ? "alpha-c-circle" : "alpha-c-circle-outline"}
+              name={
+                propsIcon.focused ? "alpha-c-circle" : "alpha-c-circle-outline"
+              }
             />
           );
         },
@@ -75,13 +125,21 @@ export const DrawerScreen = withLayoutContext(() => (
       component={() => <SettingsStack />}
       options={{
         headerTitle: "Settings",
-        drawerLabel: "Settings",
-        drawerIcon(props) {
+        drawerLabel: () => (
+          <CustomDrawerLabel label="Settings" theme={props.theme} />
+        ),
+        drawerIcon(propsIcon) {
           return (
             <MaterialCommunityIcons
-              color={props.color}
+              color={
+                propsIcon.focused
+                  ? props.theme.colors.onSecondaryContainer
+                  : props.theme.colors.onSurfaceVariant
+              }
               size={24}
-              name={props.focused ? "alpha-d-circle" : "alpha-d-circle-outline"}
+              name={
+                propsIcon.focused ? "alpha-d-circle" : "alpha-d-circle-outline"
+              }
             />
           );
         },
