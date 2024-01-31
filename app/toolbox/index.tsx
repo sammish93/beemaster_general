@@ -2,9 +2,11 @@ import { useNavigation } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
-import { Button } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
+import styles from "@/assets/styles";
 
 const ToolboxScreen = () => {
+  const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
@@ -12,8 +14,8 @@ const ToolboxScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.main}>
-        <Text style={styles.title}>Toolbox</Text>
-        <Text style={styles.subtitle}>
+        <Text style={theme.fonts.titleLarge}>Toolbox</Text>
+        <Text style={theme.fonts.bodyLarge}>
           String from View Model with a state: {exampleViewModel.testString}
         </Text>
         <Button
@@ -54,25 +56,3 @@ const ToolboxScreen = () => {
 };
 
 export default observer(ToolboxScreen);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    padding: 24,
-  },
-  main: {
-    flex: 1,
-    justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 36,
-    color: "#38434D",
-  },
-});
