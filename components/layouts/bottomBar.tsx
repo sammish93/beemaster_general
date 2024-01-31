@@ -27,7 +27,7 @@ export const MaterialBottomTabsScreen = () => (
       }}
     />
     <MaterialBottomTabs.Screen
-      name="toolbox"
+      name="toolbox/index"
       component={ToolboxStack}
       options={{
         tabBarLabel: "Toolbox",
@@ -41,7 +41,7 @@ export const MaterialBottomTabsScreen = () => (
       }}
     />
     <MaterialBottomTabs.Screen
-      name="updates"
+      name="updates/index"
       component={UpdatesStack}
       options={{
         tabBarLabel: "Updates",
@@ -55,7 +55,7 @@ export const MaterialBottomTabsScreen = () => (
       }}
     />
     <MaterialBottomTabs.Screen
-      name="settings"
+      name="settings/index"
       component={SettingsStack}
       options={{
         tabBarLabel: "Settings",

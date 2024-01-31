@@ -37,7 +37,7 @@ export const DrawerScreen = withLayoutContext(() => (
       }}
     />
     <Drawer.Screen
-      name="toolbox"
+      name="toolbox/index"
       component={() => <ToolboxStack />}
       options={{
         headerTitle: "Toolbox",
@@ -54,7 +54,7 @@ export const DrawerScreen = withLayoutContext(() => (
       }}
     />
     <Drawer.Screen
-      name="updates"
+      name="updates/index"
       component={() => <UpdatesStack />}
       options={{
         headerTitle: "Updates",
@@ -71,7 +71,7 @@ export const DrawerScreen = withLayoutContext(() => (
       }}
     />
     <Drawer.Screen
-      name="settings"
+      name="settings/index"
       component={() => <SettingsStack />}
       options={{
         headerTitle: "Settings",

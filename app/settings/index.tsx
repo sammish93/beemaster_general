@@ -2,6 +2,7 @@ import { useNavigation } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
+import { Button } from "react-native-paper";
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
@@ -18,6 +19,22 @@ const SettingsScreen = () => {
         <Text style={styles.subtitle}>
           Your language is set to: {userViewModel.i18n.locale}
         </Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            navigation.navigate("/settings/info/index");
+          }}
+        >
+          See More Info
+        </Button>
+        <Button
+          mode="contained"
+          onPress={() => {
+            userViewModel.clear();
+          }}
+        >
+          Logout
+        </Button>
       </View>
     </View>
   );

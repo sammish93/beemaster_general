@@ -2,17 +2,21 @@ import { Link, router, useNavigation } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
-import { Button } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 import TopBar from "@/components/TopBar";
 
-const HomeScreen = () => {
+const LoginScreen = () => {
+  const theme = useTheme();
   const navigation = useNavigation();
   const canOpenDrawer = !!navigation.openDrawer;
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{ ...styles.container, backgroundColor: theme.colors.myOwnColor }}
+    >
+      {/* Shows the drawer navigation bar if the draw layout is used*/}
       {canOpenDrawer && (
         <TopBar
           onPress={() => {
@@ -21,32 +25,21 @@ const HomeScreen = () => {
         />
       )}
       <View style={styles.main}>
-        <Text style={styles.title}>Home</Text>
-        <Text style={styles.subtitle}>Example of data from view model:</Text>
-        <Text style={styles.subtitle}>{exampleViewModel.testString}</Text>
+        <Text style={theme.fonts.titleLarge}>Login</Text>
         <Button
-          icon="camera"
           mode="contained"
-          onPress={() => exampleViewModel.handleButtonPress()}
-        >
-          Press me to change the above text
-        </Button>
-        <Button
-          mode="contained-tonal"
           onPress={() => {
-            const hiveId = "hive-1234-1234-abc";
-            navigation.navigate("/hive/index", { hiveId: hiveId });
+            userViewModel.setUserId("exampleId");
           }}
         >
-          Go to Hive Screen
+          Navigate to Home Screen
         </Button>
-        <Text style={styles.subtitle}>{userViewModel.userId}</Text>
       </View>
     </View>
   );
 };
 
-export default observer(HomeScreen);
+export default observer(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {

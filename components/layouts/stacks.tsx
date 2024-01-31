@@ -1,10 +1,18 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import HivePage from "@/app/hive";
 import IndexPage from "@/app/index";
+import HivePage from "@/app/hive";
+import HiveSettingsPage from "@/app/hive/settings";
+import HiveForecastPage from "@/app/hive/forecast";
 import ToolboxPage from "@/app/toolbox";
+import CommunityPage from "@/app/toolbox/community";
+import ChecklistPage from "@/app/toolbox/checklist";
+import CalendarPage from "@/app/toolbox/calendar";
+import HiveScanPage from "@/app/toolbox/hiveScan";
 import UpdatesPage from "@/app/updates";
 import SettingsPage from "@/app/settings";
+import SettingsInfoPage from "@/app/settings/info";
+import LoginPage from "@/app/login";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,10 +31,26 @@ export const IndexStack = (props: StackProps) => (
       }}
     />
     <Stack.Screen
-      name="hive"
+      name="/hive/index"
       component={HivePage}
       options={{
         title: "Hive",
+        headerShown: props.headerShown,
+      }}
+    />
+    <Stack.Screen
+      name="/hive/settings"
+      component={HiveSettingsPage}
+      options={{
+        title: "Hive Settings",
+        headerShown: props.headerShown,
+      }}
+    />
+    <Stack.Screen
+      name="/hive/forecast"
+      component={HiveForecastPage}
+      options={{
+        title: "Hive Forecast",
         headerShown: props.headerShown,
       }}
     />
@@ -37,10 +61,42 @@ export const IndexStack = (props: StackProps) => (
 export const ToolboxStack = (props: StackProps) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="toolbox"
+      name="/toolbox/index"
       component={ToolboxPage}
       options={{
         title: "Toolbox",
+        headerShown: props.headerShown,
+      }}
+    />
+    <Stack.Screen
+      name="/toolbox/community"
+      component={CommunityPage}
+      options={{
+        title: "Community",
+        headerShown: props.headerShown,
+      }}
+    />
+    <Stack.Screen
+      name="/toolbox/checklist"
+      component={ChecklistPage}
+      options={{
+        title: "Checklist",
+        headerShown: props.headerShown,
+      }}
+    />
+    <Stack.Screen
+      name="/toolbox/calendar"
+      component={CalendarPage}
+      options={{
+        title: "Calendar",
+        headerShown: props.headerShown,
+      }}
+    />
+    <Stack.Screen
+      name="/toolbox/hiveScan"
+      component={HiveScanPage}
+      options={{
+        title: "Hive Scan",
         headerShown: props.headerShown,
       }}
     />
@@ -51,7 +107,7 @@ export const ToolboxStack = (props: StackProps) => (
 export const UpdatesStack = (props: StackProps) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="updates"
+      name="/updates/index"
       component={UpdatesPage}
       options={{
         title: "Updates",
@@ -65,13 +121,35 @@ export const UpdatesStack = (props: StackProps) => (
 export const SettingsStack = (props: StackProps) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="settings"
+      name="/settings/index"
       component={SettingsPage}
       options={{
         title: "Settings",
         headerShown: props.headerShown,
       }}
     />
+    <Stack.Screen
+      name="/settings/info/index"
+      component={SettingsInfoPage}
+      options={{
+        title: "Settings Info",
+        headerShown: props.headerShown,
+      }}
+    />
     {/* Add other screens specific to the "settings" tab here */}
+  </Stack.Navigator>
+);
+
+export const LoginStack = (props: StackProps) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="/login"
+      component={LoginPage}
+      options={{
+        title: "Login",
+        headerShown: false,
+      }}
+    />
+    {/* Add other screens specific to the "updates" tab here */}
   </Stack.Navigator>
 );

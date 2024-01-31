@@ -1,52 +1,59 @@
-import { Link, router, useNavigation } from "expo-router";
+import { useNavigation } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { Button } from "react-native-paper";
-import TopBar from "@/components/TopBar";
 
-const HomeScreen = () => {
+const ToolboxScreen = () => {
   const navigation = useNavigation();
-  const canOpenDrawer = !!navigation.openDrawer;
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
 
   return (
     <View style={styles.container}>
-      {canOpenDrawer && (
-        <TopBar
-          onPress={() => {
-            navigation.openDrawer();
-          }}
-        />
-      )}
       <View style={styles.main}>
-        <Text style={styles.title}>Home</Text>
-        <Text style={styles.subtitle}>Example of data from view model:</Text>
-        <Text style={styles.subtitle}>{exampleViewModel.testString}</Text>
+        <Text style={styles.title}>Toolbox</Text>
+        <Text style={styles.subtitle}>
+          String from View Model with a state: {exampleViewModel.testString}
+        </Text>
         <Button
-          icon="camera"
           mode="contained"
-          onPress={() => exampleViewModel.handleButtonPress()}
-        >
-          Press me to change the above text
-        </Button>
-        <Button
-          mode="contained-tonal"
           onPress={() => {
-            const hiveId = "hive-1234-1234-abc";
-            navigation.navigate("/hive/index", { hiveId: hiveId });
+            navigation.navigate("/toolbox/community");
           }}
         >
-          Go to Hive Screen
+          Community
         </Button>
-        <Text style={styles.subtitle}>{userViewModel.userId}</Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            navigation.navigate("/toolbox/checklist");
+          }}
+        >
+          Checklist
+        </Button>
+        <Button
+          mode="contained"
+          onPress={() => {
+            navigation.navigate("/toolbox/calendar");
+          }}
+        >
+          Calendar
+        </Button>
+        <Button
+          mode="contained"
+          onPress={() => {
+            navigation.navigate("/toolbox/hiveScan");
+          }}
+        >
+          Hive Scan
+        </Button>
       </View>
     </View>
   );
 };
 
-export default observer(HomeScreen);
+export default observer(ToolboxScreen);
 
 const styles = StyleSheet.create({
   container: {
