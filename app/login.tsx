@@ -25,7 +25,10 @@ const LoginScreen = () => {
         />
       )}
       <View style={styles.main}>
-        <Text style={theme.fonts.titleLarge}>Login</Text>
+        <Text style={theme.fonts.displayLarge}>Login Display</Text>
+        <Text style={theme.fonts.titleLarge}>Login Title</Text>
+        <Text style={theme.fonts.bodyLarge}>Login Body</Text>
+        <Text style={theme.fonts.labelLarge}>Login Label</Text>
         <Button
           mode="contained"
           onPress={() => {

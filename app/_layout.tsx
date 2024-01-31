@@ -2,7 +2,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useContext, useEffect } from "react";
-import { PaperProvider } from "react-native-paper";
+import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper";
 import { MobXProviderContext, Provider, observer } from "mobx-react";
 import exampleViewModel from "@/viewModels/ExampleViewModel";
 import userViewModel from "@/viewModels/UserViewModel";
@@ -10,7 +10,9 @@ import { DrawerScreen } from "@/components/layouts/drawer";
 import { Platform } from "react-native";
 import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
 import { LoginScreen } from "@/components/layouts/login";
-import customTheme from "@/assets/theme";
+import { customDarkTheme, customLightTheme } from "@/assets/theme";
+import { useColorScheme } from "react-native";
+import { useMaterial3Theme } from "@pchmn/expo-material3-theme";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -26,7 +28,11 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
-  const { viewModel } = useContext(MobXProviderContext);
+  const colorScheme = useColorScheme();
+  // Android 12 fix:
+  //const { theme } = useMaterial3Theme();
+  const paperTheme =
+    colorScheme === "dark" ? customDarkTheme : customLightTheme;
 
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
@@ -54,7 +60,7 @@ const RootLayout = () => {
         exampleViewModel={exampleViewModel}
         userViewModel={userViewModel}
       >
-        <PaperProvider theme={customTheme}>
+        <PaperProvider theme={paperTheme}>
           <LoginLayout />
         </PaperProvider>
       </Provider>
@@ -65,7 +71,7 @@ const RootLayout = () => {
         exampleViewModel={exampleViewModel}
         userViewModel={userViewModel}
       >
-        <PaperProvider theme={customTheme}>
+        <PaperProvider theme={paperTheme}>
           <BottomBarLayout />
         </PaperProvider>
       </Provider>
@@ -74,7 +80,7 @@ const RootLayout = () => {
 
   return (
     <Provider exampleViewModel={exampleViewModel} userViewModel={userViewModel}>
-      <PaperProvider theme={customTheme}>
+      <PaperProvider theme={paperTheme}>
         <DrawerLayout />
       </PaperProvider>
     </Provider>
