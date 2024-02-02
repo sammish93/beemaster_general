@@ -43,10 +43,7 @@ const RootLayout = () => {
     colorScheme === "dark" ? customDarkTheme : customLightTheme;
 
   // Bug fix for react native bottom bar and paper/material 3 compatibility in dark mode.
-  // The values must match the secondaryContainer values in assets/themes.
-  colorScheme === "dark"
-    ? (paperTheme.colors.secondaryContainer = "rgb(93, 63, 60)")
-    : (paperTheme.colors.secondaryContainer = "rgb(255, 218, 214)");
+  paperTheme.colors.secondaryContainer = paperTheme.colors.surfaceDisabled;
 
   // Loading in fonts to use in the application.
   const [loaded, error] = useFonts({
@@ -81,14 +78,18 @@ const RootLayout = () => {
         </PaperProvider>
       </Provider>
     );
-  } else if (Platform.OS === "web" || Platform.OS === "android") {
+  } else if (
+    Platform.OS === "web" ||
+    Platform.OS === "ios" ||
+    Platform.OS === "android"
+  ) {
     return (
       <Provider
         exampleViewModel={exampleViewModel}
         userViewModel={userViewModel}
       >
         <PaperProvider theme={paperTheme}>
-          <BottomBarLayout theme={paperTheme} />
+          <BottomBarLayout theme={paperTheme} mode={colorScheme} />
         </PaperProvider>
       </Provider>
     );
@@ -97,7 +98,7 @@ const RootLayout = () => {
   return (
     <Provider exampleViewModel={exampleViewModel} userViewModel={userViewModel}>
       <PaperProvider theme={paperTheme}>
-        <DrawerLayout theme={paperTheme} />
+        <DrawerLayout theme={paperTheme} mode={colorScheme} />
       </PaperProvider>
     </Provider>
   );
@@ -105,16 +106,17 @@ const RootLayout = () => {
 
 export default observer(RootLayout);
 
-export type DrawerLayoutProps = {
+export type LayoutProps = {
   theme: MD3Theme;
+  mode: string;
 };
 
-function DrawerLayout(props: DrawerLayoutProps) {
-  return <DrawerScreen theme={props.theme} />;
+function DrawerLayout(props: LayoutProps) {
+  return <DrawerScreen theme={props.theme} mode={props.mode} />;
 }
 
-function BottomBarLayout(props: DrawerLayoutProps) {
-  return <MaterialBottomTabsScreen theme={props.theme} />;
+function BottomBarLayout(props: LayoutProps) {
+  return <MaterialBottomTabsScreen theme={props.theme} mode={props.mode} />;
 }
 
 function LoginLayout() {

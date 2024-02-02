@@ -31,6 +31,7 @@ const CustomDrawerLabel = (props: DrawerLabelProps) => (
 
 export type DrawerScreenProps = {
   theme: MD3Theme;
+  mode: string;
 };
 
 export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => (
@@ -39,9 +40,9 @@ export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => (
       // API Reference: https://reactnavigation.org/docs/drawer-navigator#options
       drawerType: "front",
       headerShown: false,
-      drawerActiveBackgroundColor: props.theme.colors.secondaryContainer,
+      drawerActiveBackgroundColor: props.theme.colors.surfaceDisabled,
       drawerStyle: {
-        backgroundColor: props.theme.colors.elevation.level2,
+        backgroundColor: props.theme.colors.primaryContainer,
       },
     }}
   >

@@ -1,5 +1,5 @@
 import React from "react";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
   IndexStack,
@@ -30,6 +30,7 @@ const CustomBottomTabsLabel = (props: BottomTabsLabelProps) => (
 
 export type BottomTabsScreenProps = {
   theme: MD3Theme;
+  mode: string;
 };
 
 export const MaterialBottomTabsScreen = (props: BottomTabsScreenProps) => (
@@ -37,7 +38,7 @@ export const MaterialBottomTabsScreen = (props: BottomTabsScreenProps) => (
     activeColor={props.theme.colors.onBackground}
     inactiveColor={props.theme.colors.onBackground}
     barStyle={{
-      backgroundColor: props.theme.colors.elevation.level2,
+      backgroundColor: props.theme.colors.primaryContainer,
     }}
   >
     <MaterialBottomTabs.Screen
@@ -74,7 +75,7 @@ export const MaterialBottomTabsScreen = (props: BottomTabsScreenProps) => (
             }
             size={24}
             name={
-              propsIcon.focused ? "alpha-a-circle" : "alpha-a-circle-outline"
+              propsIcon.focused ? "alpha-b-circle" : "alpha-b-circle-outline"
             }
           />
         ),
@@ -94,7 +95,7 @@ export const MaterialBottomTabsScreen = (props: BottomTabsScreenProps) => (
             }
             size={24}
             name={
-              propsIcon.focused ? "alpha-a-circle" : "alpha-a-circle-outline"
+              propsIcon.focused ? "alpha-c-circle" : "alpha-c-circle-outline"
             }
           />
         ),
@@ -114,7 +115,7 @@ export const MaterialBottomTabsScreen = (props: BottomTabsScreenProps) => (
             }
             size={24}
             name={
-              propsIcon.focused ? "alpha-a-circle" : "alpha-a-circle-outline"
+              propsIcon.focused ? "alpha-d-circle" : "alpha-d-circle-outline"
             }
           />
         ),
