@@ -1,9 +1,10 @@
 import { useNavigation } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
-import { Button, useTheme } from "react-native-paper";
+import { Button, useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
+import TopBar from "@/components/TopBar";
 
 const ToolboxScreen = () => {
   const theme = useTheme();
@@ -12,8 +13,13 @@ const ToolboxScreen = () => {
   const { exampleViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.main}>
+    <View style={styles(theme).container}>
+      <TopBar
+        navigation={navigation}
+        canOpenDrawer={!!navigation.openDrawer}
+        title="Toolbox"
+      />
+      <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Toolbox</Text>
         <Text style={theme.fonts.bodyLarge}>
           String from View Model with a state: {exampleViewModel.testString}

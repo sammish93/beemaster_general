@@ -1,9 +1,10 @@
 import { useNavigation } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
-import { useTheme } from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
+import TopBar from "@/components/TopBar";
 
 const ChecklistScreen = () => {
   const theme = useTheme();
@@ -12,8 +13,13 @@ const ChecklistScreen = () => {
   const { exampleViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.main}>
+    <View style={styles(theme).container}>
+      <TopBar
+        navigation={navigation}
+        canOpenDrawer={!!navigation.openDrawer}
+        title="Checklist"
+      />
+      <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Checklist</Text>
         <Text style={theme.fonts.bodyLarge}>Disabled</Text>
       </View>

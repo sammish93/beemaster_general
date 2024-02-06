@@ -1,9 +1,11 @@
 import { useNavigation } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
-import { Button, useTheme } from "react-native-paper";
+import { Button, useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
+import TopBar from "@/components/TopBar";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -11,8 +13,25 @@ const SettingsScreen = () => {
   const { userViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.main}>
+    <View style={styles(theme).container}>
+      <TopBar
+        navigation={navigation}
+        canOpenDrawer={!!navigation.openDrawer}
+        title="Settings"
+        trailingIcons={[
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("/settings/info/index");
+            }}
+          >
+            <MaterialCommunityIcons
+              style={styles(theme).trailingIcon}
+              name="information-outline"
+            />
+          </TouchableOpacity>,
+        ]}
+      />
+      <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Settings</Text>
         <Text style={theme.fonts.bodyLarge}>
           String displayed in either English or Norwegian:{" "}
@@ -21,14 +40,6 @@ const SettingsScreen = () => {
         <Text style={theme.fonts.bodyLarge}>
           Your language is set to: {userViewModel.i18n.locale}
         </Text>
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate("/settings/info/index");
-          }}
-        >
-          See More Info
-        </Button>
         <Button
           mode="contained"
           onPress={() => {

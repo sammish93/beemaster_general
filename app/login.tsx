@@ -1,8 +1,8 @@
 import { Link, router, useNavigation } from "expo-router";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
-import { Button, useTheme } from "react-native-paper";
+import { Button, useTheme, Text } from "react-native-paper";
 import TopBar from "@/components/TopBar";
 import styles from "@/assets/styles";
 
@@ -14,10 +14,8 @@ const LoginScreen = () => {
   const { exampleViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View
-      style={{ ...styles.container, backgroundColor: theme.colors.secondary }}
-    >
-      <View style={styles.main}>
+    <View style={styles(theme).container}>
+      <View style={styles(theme).main}>
         <Text style={theme.fonts.displayLarge}>Login Display</Text>
         <Text style={theme.fonts.titleLarge}>Login Title</Text>
         <Text style={theme.fonts.bodyLarge}>Login Body</Text>

@@ -1,12 +1,13 @@
 import { useNavigation } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
-import { useLocalSearchParams } from "expo-router";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, useTheme } from "react-native-paper";
+import { Button, useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
+import TopBar from "@/components/TopBar";
+import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 
 type RootStackParamList = {
   hive: {
@@ -22,23 +23,33 @@ type HiveScreenProps = {
 const HiveScreen = (params: HiveScreenProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
+  const canOpenDrawer = !!navigation.openDrawer;
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.main}>
+    <View style={styles(theme).container}>
+      <TopBar
+        navigation={navigation}
+        canOpenDrawer={!!navigation.openDrawer}
+        title={`Hive ${hiveId}`}
+        trailingIcons={[
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("/hive/settings", { hiveId: hiveId });
+            }}
+          >
+            <MaterialCommunityIcons
+              style={styles(theme).trailingIcon}
+              name="information-outline"
+            />
+          </TouchableOpacity>,
+        ]}
+      />
+      <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Hive Screen</Text>
         <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate("/hive/settings", { hiveId: hiveId });
-          }}
-        >
-          Hive Settings
-        </Button>
         <Button
           mode="contained"
           onPress={() => {

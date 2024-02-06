@@ -27,7 +27,7 @@ export const IndexStack = (props: StackProps) => (
       component={IndexPage}
       options={{
         title: "Home",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     <Stack.Screen
@@ -35,7 +35,7 @@ export const IndexStack = (props: StackProps) => (
       component={HivePage}
       options={{
         title: "Hive",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     <Stack.Screen
@@ -43,7 +43,7 @@ export const IndexStack = (props: StackProps) => (
       component={HiveSettingsPage}
       options={{
         title: "Hive Settings",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     <Stack.Screen
@@ -51,7 +51,7 @@ export const IndexStack = (props: StackProps) => (
       component={HiveForecastPage}
       options={{
         title: "Hive Forecast",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     {/* Add other screens specific to the "index" tab here */}
@@ -65,7 +65,7 @@ export const ToolboxStack = (props: StackProps) => (
       component={ToolboxPage}
       options={{
         title: "Toolbox",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     <Stack.Screen
@@ -73,7 +73,7 @@ export const ToolboxStack = (props: StackProps) => (
       component={CommunityPage}
       options={{
         title: "Community",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     <Stack.Screen
@@ -81,7 +81,7 @@ export const ToolboxStack = (props: StackProps) => (
       component={ChecklistPage}
       options={{
         title: "Checklist",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     <Stack.Screen
@@ -89,7 +89,7 @@ export const ToolboxStack = (props: StackProps) => (
       component={CalendarPage}
       options={{
         title: "Calendar",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     <Stack.Screen
@@ -97,7 +97,7 @@ export const ToolboxStack = (props: StackProps) => (
       component={HiveScanPage}
       options={{
         title: "Hive Scan",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     {/* Add other screens specific to the "toolbox" tab here */}
@@ -111,7 +111,7 @@ export const UpdatesStack = (props: StackProps) => (
       component={UpdatesPage}
       options={{
         title: "Updates",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     {/* Add other screens specific to the "updates" tab here */}
@@ -125,7 +125,7 @@ export const SettingsStack = (props: StackProps) => (
       component={SettingsPage}
       options={{
         title: "Settings",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     <Stack.Screen
@@ -133,7 +133,7 @@ export const SettingsStack = (props: StackProps) => (
       component={SettingsInfoPage}
       options={{
         title: "Settings Info",
-        headerShown: props.headerShown,
+        headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
     {/* Add other screens specific to the "settings" tab here */}
