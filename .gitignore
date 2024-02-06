@@ -39,3 +39,11 @@ yarn-error.*
 
 expo-env.d.ts
 # @end expo-cli
+
+*.log
+
+ios/Pods/
+
+ios/build/
+
+android/app/build/
