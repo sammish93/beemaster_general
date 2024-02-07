@@ -1,17 +1,17 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MD3Theme, PaperProvider } from "react-native-paper";
 import { Provider, observer } from "mobx-react";
 import exampleViewModel from "@/viewModels/ExampleViewModel";
 import userViewModel from "@/viewModels/UserViewModel";
 import { DrawerScreen } from "@/components/layouts/drawer";
-import { Platform, useColorScheme } from "react-native";
+import { Dimensions, Platform, useColorScheme, Text } from "react-native";
 import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
 import { LoginScreen } from "@/components/layouts/login";
 import { customDarkTheme, customLightTheme } from "@/assets/themes";
-import { StatusBar } from "expo-status-bar";
+import { ScreenHeight, ScreenWidth } from "@/constants/Dimensions";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -26,7 +26,17 @@ export const unstable_settings = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+// Retrieves initial screen dimensions.
+const windowDimensions = Dimensions.get("window");
+const screenDimensions = Dimensions.get("screen");
+
 const RootLayout = () => {
+  // State to hold both the screen and window dimensions. Window can be used for web.
+  const [dimensions, setDimensions] = useState({
+    window: windowDimensions,
+    screen: screenDimensions,
+  });
+
   const colorScheme = useColorScheme();
   // Android 12 fix:
   //const { theme } = useMaterial3Theme();
@@ -43,6 +53,17 @@ const RootLayout = () => {
     ChelaOne: require("../assets/fonts/ChelaOne-Regular.ttf"),
     PatrickHand: require("../assets/fonts/PatrickHand-Regular.ttf"),
     ...FontAwesome.font,
+  });
+
+  // Dynamically updates both the screen and window dimensions when they change.
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      "change",
+      ({ window, screen }) => {
+        setDimensions({ window, screen });
+      }
+    );
+    return () => subscription?.remove();
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -72,9 +93,8 @@ const RootLayout = () => {
       </Provider>
     );
   } else if (
-    Platform.OS === "web" ||
-    Platform.OS === "ios" ||
-    Platform.OS === "android"
+    (Platform.OS === "ios" || Platform.OS === "android") &&
+    dimensions.screen.width < ScreenWidth.Compact
   ) {
     return (
       <Provider
