@@ -1,5 +1,5 @@
 
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { MD3Theme } from "react-native-paper";
 import { customFontConfig, customLightTheme } from "./themes";
 
@@ -7,10 +7,15 @@ const defaultTheme = customLightTheme;
 
 const styles = (theme?: MD3Theme) => { 
   const dynamicTheme = theme ? theme : customLightTheme
+  const screenWidth = Dimensions.get('window').width;
   
   return StyleSheet.create({
     container: {
       backgroundColor: dynamicTheme.colors.surfaceVariant,
+      flex: 1,
+      width: screenWidth,
+      justifyContent: "center",
+      marginHorizontal: "auto",
     },
     main: {
       flex: 1,
