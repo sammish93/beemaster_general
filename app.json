@@ -17,14 +17,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.beemaster.ios"
+      "bundleIdentifier": "no.hiof.beemastergeneral.ios"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.beemaster_general"
+      "package": "no.hiof.beemastergeneral"
     },
     "web": {
       "bundler": "metro",
