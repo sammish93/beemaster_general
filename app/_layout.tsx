@@ -81,37 +81,21 @@ const RootLayout = () => {
     return null;
   }
 
-  if (userViewModel.userId === "") {
-    return (
-      <Provider
-        exampleViewModel={exampleViewModel}
-        userViewModel={userViewModel}
-      >
-        <PaperProvider theme={paperTheme}>
-          <LoginLayout />
-        </PaperProvider>
-      </Provider>
-    );
-  } else if (
-    (Platform.OS === "ios" || Platform.OS === "android") &&
-    dimensions.screen.width < ScreenWidth.Compact
-  ) {
-    return (
-      <Provider
-        exampleViewModel={exampleViewModel}
-        userViewModel={userViewModel}
-      >
-        <PaperProvider theme={paperTheme}>
-          <BottomBarLayout theme={paperTheme} mode={colorScheme} />
-        </PaperProvider>
-      </Provider>
-    );
-  }
-
   return (
     <Provider exampleViewModel={exampleViewModel} userViewModel={userViewModel}>
       <PaperProvider theme={paperTheme}>
-        <DrawerLayout theme={paperTheme} mode={colorScheme} />
+        {(() => {
+          if (userViewModel.userId === "") {
+            return <LoginLayout />;
+          } else if (
+            (Platform.OS === "ios" || Platform.OS === "android") &&
+            dimensions.screen.width < ScreenWidth.Compact
+          ) {
+            return <BottomBarLayout theme={paperTheme} mode={colorScheme} />;
+          } else {
+            return <DrawerLayout theme={paperTheme} mode={colorScheme} />;
+          }
+        })()}
       </PaperProvider>
     </Provider>
   );
