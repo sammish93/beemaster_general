@@ -7,6 +7,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type RootStackParamList = {
   hive: {
@@ -27,7 +28,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
 
   return (
-    <View style={styles(theme).container}>
+    <SafeAreaView style={styles(theme).container}>
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
@@ -37,7 +38,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
         <Text style={theme.fonts.titleLarge}>Hive Settings</Text>
         <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { Button, useTheme, Text } from "react-native-paper";
 import TopBar from "@/components/TopBar";
 import styles from "@/assets/styles";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const LoginScreen = () => {
   const theme = useTheme();
@@ -14,7 +15,7 @@ const LoginScreen = () => {
   const { exampleViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View style={styles(theme).container}>
+    <SafeAreaView style={styles(theme).container}>
       <View style={styles(theme).main}>
         <Text style={theme.fonts.displayLarge}>Login Display</Text>
         <Text style={theme.fonts.titleLarge}>Login Title</Text>
@@ -29,7 +30,7 @@ const LoginScreen = () => {
           Navigate to Home Screen
         </Button>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -6,6 +6,7 @@ import { Button, useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -13,7 +14,7 @@ const SettingsScreen = () => {
   const { userViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View style={styles(theme).container}>
+    <SafeAreaView style={styles(theme).container}>
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
@@ -49,7 +50,7 @@ const SettingsScreen = () => {
           Logout
         </Button>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

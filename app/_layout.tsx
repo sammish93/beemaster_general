@@ -1,15 +1,9 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useContext, useEffect } from "react";
-import {
-  MD3DarkTheme,
-  MD3LightTheme,
-  MD3Theme,
-  PaperProvider,
-  useTheme,
-} from "react-native-paper";
-import { MobXProviderContext, Provider, observer } from "mobx-react";
+import { useEffect } from "react";
+import { MD3Theme, PaperProvider } from "react-native-paper";
+import { Provider, observer } from "mobx-react";
 import exampleViewModel from "@/viewModels/ExampleViewModel";
 import userViewModel from "@/viewModels/UserViewModel";
 import { DrawerScreen } from "@/components/layouts/drawer";
@@ -18,7 +12,6 @@ import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
 import { LoginScreen } from "@/components/layouts/login";
 import { customDarkTheme, customLightTheme } from "@/assets/themes";
 import { useColorScheme } from "react-native";
-import { useMaterial3Theme } from "@pchmn/expo-material3-theme";
 
 export {
   // Catch any errors thrown by the Layout component.

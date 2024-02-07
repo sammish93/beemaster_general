@@ -6,6 +6,7 @@ import React from "react";
 import { useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SettingsInfoScreen = () => {
   const theme = useTheme();
@@ -13,7 +14,7 @@ const SettingsInfoScreen = () => {
   const { userViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View style={styles(theme).container}>
+    <SafeAreaView style={styles(theme).container}>
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
@@ -22,7 +23,7 @@ const SettingsInfoScreen = () => {
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Settings Info</Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -8,6 +8,7 @@ import { Button, useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type RootStackParamList = {
   hive: {
@@ -29,7 +30,7 @@ const HiveScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
 
   return (
-    <View style={styles(theme).container}>
+    <SafeAreaView style={styles(theme).container}>
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
@@ -59,7 +60,7 @@ const HiveScreen = (params: HiveScreenProps) => {
           Forecast
         </Button>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

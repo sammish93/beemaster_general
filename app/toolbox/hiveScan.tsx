@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HiveScanScreen = () => {
   const theme = useTheme();
@@ -13,7 +14,7 @@ const HiveScanScreen = () => {
   const { exampleViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View style={styles(theme).container}>
+    <SafeAreaView style={styles(theme).container}>
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
@@ -23,7 +24,7 @@ const HiveScanScreen = () => {
         <Text style={theme.fonts.titleLarge}>Hive Scan</Text>
         <Text style={theme.fonts.bodyLarge}>Disabled</Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

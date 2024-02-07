@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { Button, useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ToolboxScreen = () => {
   const theme = useTheme();
@@ -13,7 +14,7 @@ const ToolboxScreen = () => {
   const { exampleViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View style={styles(theme).container}>
+    <SafeAreaView style={styles(theme).container}>
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
@@ -57,7 +58,7 @@ const ToolboxScreen = () => {
           Hive Scan
         </Button>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

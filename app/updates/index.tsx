@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const UpdatesScreen = () => {
   const theme = useTheme();
@@ -12,7 +13,7 @@ const UpdatesScreen = () => {
   const { userViewModel } = useContext(MobXProviderContext);
 
   return (
-    <View style={styles(theme).container}>
+    <SafeAreaView style={styles(theme).container}>
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
@@ -21,7 +22,7 @@ const UpdatesScreen = () => {
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Updates</Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
