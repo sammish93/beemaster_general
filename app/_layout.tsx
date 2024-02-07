@@ -108,14 +108,14 @@ export type LayoutProps = {
   mode: string;
 };
 
-function DrawerLayout(props: LayoutProps) {
+const DrawerLayout = (props: LayoutProps) => {
   return <DrawerScreen theme={props.theme} mode={props.mode} />;
-}
+};
 
-function BottomBarLayout(props: LayoutProps) {
+const BottomBarLayout = (props: LayoutProps) => {
   return <MaterialBottomTabsScreen theme={props.theme} mode={props.mode} />;
-}
+};
 
-function LoginLayout() {
+const LoginLayout = () => {
   return <LoginScreen />;
-}
+};
