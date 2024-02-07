@@ -9,6 +9,7 @@ import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import StatusBarCustom from "@/components/StatusBarCustom";
 
 type RootStackParamList = {
   hive: {
@@ -24,13 +25,13 @@ type HiveScreenProps = {
 const HiveScreen = (params: HiveScreenProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
-  const canOpenDrawer = !!navigation.openDrawer;
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
 
   return (
     <SafeAreaView style={styles(theme).container}>
+      <StatusBarCustom />
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}

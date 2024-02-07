@@ -7,11 +7,11 @@ import { Provider, observer } from "mobx-react";
 import exampleViewModel from "@/viewModels/ExampleViewModel";
 import userViewModel from "@/viewModels/UserViewModel";
 import { DrawerScreen } from "@/components/layouts/drawer";
-import { Platform } from "react-native";
+import { Platform, useColorScheme } from "react-native";
 import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
 import { LoginScreen } from "@/components/layouts/login";
 import { customDarkTheme, customLightTheme } from "@/assets/themes";
-import { useColorScheme } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 export {
   // Catch any errors thrown by the Layout component.

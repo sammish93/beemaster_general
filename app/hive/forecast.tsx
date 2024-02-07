@@ -9,6 +9,7 @@ import styles from "@/assets/styles";
 import { useTheme, Text } from "react-native-paper";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
+import StatusBarCustom from "@/components/StatusBarCustom";
 
 type RootStackParamList = {
   hive: {
@@ -30,6 +31,7 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
 
   return (
     <SafeAreaView style={styles(theme).container}>
+      <StatusBarCustom />
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}

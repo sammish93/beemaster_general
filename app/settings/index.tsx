@@ -7,6 +7,7 @@ import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import StatusBarCustom from "@/components/StatusBarCustom";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -15,6 +16,7 @@ const SettingsScreen = () => {
 
   return (
     <SafeAreaView style={styles(theme).container}>
+      <StatusBarCustom />
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}

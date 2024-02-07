@@ -6,6 +6,7 @@ import { useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
+import StatusBarCustom from "@/components/StatusBarCustom";
 
 const CommunityScreen = () => {
   const theme = useTheme();
@@ -15,6 +16,7 @@ const CommunityScreen = () => {
 
   return (
     <SafeAreaView style={styles(theme).container}>
+      <StatusBarCustom />
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
