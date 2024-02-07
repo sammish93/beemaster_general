@@ -63,9 +63,7 @@ export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => (
                   : props.theme.colors.onSurfaceVariant
               }
               size={24}
-              name={
-                propsIcon.focused ? "alpha-a-circle" : "alpha-a-circle-outline"
-              }
+              name={propsIcon.focused ? "home" : "home-outline"}
             />
           );
         },
@@ -88,9 +86,7 @@ export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => (
                   : props.theme.colors.onSurfaceVariant
               }
               size={24}
-              name={
-                propsIcon.focused ? "alpha-b-circle" : "alpha-b-circle-outline"
-              }
+              name={propsIcon.focused ? "toolbox" : "toolbox-outline"}
             />
           );
         },
@@ -113,9 +109,7 @@ export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => (
                   : props.theme.colors.onSurfaceVariant
               }
               size={24}
-              name={
-                propsIcon.focused ? "alpha-c-circle" : "alpha-c-circle-outline"
-              }
+              name={propsIcon.focused ? "bell" : "bell-outline"}
             />
           );
         },
@@ -138,9 +132,7 @@ export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => (
                   : props.theme.colors.onSurfaceVariant
               }
               size={24}
-              name={
-                propsIcon.focused ? "alpha-d-circle" : "alpha-d-circle-outline"
-              }
+              name={propsIcon.focused ? "cog" : "cog-outline"}
             />
           );
         },
