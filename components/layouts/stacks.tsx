@@ -23,7 +23,7 @@ type StackProps = {
 export const IndexStack = (props: StackProps) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="index"
+      name="../index"
       component={IndexPage}
       options={{
         title: "Home",
