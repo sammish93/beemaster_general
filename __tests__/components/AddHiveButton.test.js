@@ -9,5 +9,5 @@ describe('AddHiveButton', () => {
 
         fireEvent.press(getByText('Add New Hive'));
         expect(onAddHivePressMock).toHaveBeenCalled();
-    })
-})
+    });
+});
