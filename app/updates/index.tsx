@@ -13,32 +13,12 @@ import {
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import { ScrollView } from "react-native-gesture-handler";
+import ExampleModal from "@/components/modals/ExampleModal";
 
 const UpdatesScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-
-  // Variables required for the modal bottom sheet
-  let bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  // The percentage of screen height that the bottom sheet snaps to (starts at whatever the index is set to).
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
-
-  // Opens up the bottom sheet.
-  const handleModalSheetPressOpen = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
-  // Closes the bottom sheet.
-  const handleModalSheetPressClose = useCallback(() => {
-    bottomSheetModalRef.current?.dismiss();
-  }, []);
-
-  // Allows behaviour on bottom sheet appearing/being dismissed.
-  const handleSheetChanges = useCallback((index: number) => {
-    if (index === -1) console.log("Sheet Closed");
-    else if (index === 1) console.log("Sheet Opened");
-  }, []);
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -49,74 +29,8 @@ const UpdatesScreen = () => {
         title="Updates"
       />
       <View style={styles(theme).main}>
-        <BottomSheetModalProvider>
-          <Text style={theme.fonts.titleLarge}>Updates</Text>
-          {(() => {
-            if (Platform.OS === "android" || Platform.OS === "ios") {
-              return (
-                <View>
-                  <Button mode="contained" onPress={handleModalSheetPressOpen}>
-                    Open Bottom Sheet (MOBILE ONLY)
-                  </Button>
-                  <BottomSheetModal
-                    ref={bottomSheetModalRef}
-                    enableDynamicSizing={true}
-                    index={1}
-                    snapPoints={snapPoints}
-                    onChange={handleSheetChanges}
-                    backgroundStyle={styles(theme).bottomSheet}
-                  >
-                    <BottomSheetScrollView
-                      contentContainerStyle={
-                        styles(theme).bottomSheetScrollContainer
-                      }
-                    >
-                      <Button
-                        mode="contained"
-                        onPress={handleModalSheetPressClose}
-                      >
-                        Close Bottom Sheet
-                      </Button>
-                      <Text style={theme.fonts.bodyLarge}>I'm scrollable!</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.bodyLarge}>Scrolling...</Text>
-                      <Text style={theme.fonts.titleLarge}>
-                        You have reached the bottom!
-                      </Text>
-                    </BottomSheetScrollView>
-                  </BottomSheetModal>
-                </View>
-              );
-            } else {
-              {
-                /* //TODO Web solution here*/
-              }
-              return (
-                <Text style={theme.fonts.bodyLarge}>
-                  Bottom Sheet only visible on mobile devices
-                </Text>
-              );
-            }
-          })()}
-        </BottomSheetModalProvider>
+        <Text style={theme.fonts.titleLarge}>Updates</Text>
+        <ExampleModal />
       </View>
     </SafeAreaView>
   );
