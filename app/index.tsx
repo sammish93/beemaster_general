@@ -7,6 +7,7 @@ import TopBar from "@/components/TopBar";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
+import React from "react";
 
 const HomeScreen = () => {
   const theme = useTheme();

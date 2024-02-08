@@ -7,7 +7,12 @@ interface AddHiveButtonProps {
 
 const AddHiveButton = ({ onAddHivePress }: AddHiveButtonProps) => {
     return (
-        <Button icon='plus' mode='contained' onPress={onAddHivePress}>
+        <Button 
+            icon='plus' 
+            mode='contained' 
+            onPress={onAddHivePress} 
+            style={{ marginVertical: 10}}
+        >
             Add New Hive
         </Button>
     );

@@ -10,6 +10,8 @@ import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
+import React from "react";
+import AddHiveButton from "@/components/AddHiveButton";
 
 type RootStackParamList = {
   hive: {
@@ -60,6 +62,8 @@ const HiveScreen = (params: HiveScreenProps) => {
         >
           Forecast
         </Button>
+        {/* Temporarly implementation. */}
+        <AddHiveButton onAddHivePress={() => {console.log('AddHiveButton pressed!')}}/>
       </View>
     </SafeAreaView>
   );
