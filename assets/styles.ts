@@ -60,6 +60,17 @@ const styles = (theme?: MD3Theme) => {
     headline: {
       color: dynamicTheme.colors.onSurfaceVariant
     },
+    bottomSheet: {
+      backgroundColor: dynamicTheme.colors.primaryContainer
+    },
+    bottomSheetContainer: {
+      flex: 1,
+      alignItems: "center",
+    },
+    bottomSheetScrollContainer: {
+      flex: 0,
+      alignItems: "center",
+    },
   });
 };
 
