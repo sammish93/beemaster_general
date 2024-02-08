@@ -12,18 +12,18 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.beemaster.ios"
+      "bundleIdentifier": "com.anonymous.beemaster.ios",
+      "googleServicesFile": "./ios/GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./android/app/google-services.json",
       "package": "com.anonymous.beemaster_general"
     },
     "web": {
@@ -31,10 +31,7 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": [
-      "expo-router",
-      "expo-localization"
-    ],
+    "plugins": ["expo-router", "expo-localization"],
     "experiments": {
       "typedRoutes": true
     }
