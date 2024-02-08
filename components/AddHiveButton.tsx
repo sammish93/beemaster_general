@@ -10,7 +10,7 @@ const AddHiveButton = ({ onAddHivePress }: AddHiveButtonProps) => {
         <Button icon='plus' mode='contained' onPress={onAddHivePress}>
             Add New Hive
         </Button>
-    )
-}
+    );
+};
 
 export default AddHiveButton;

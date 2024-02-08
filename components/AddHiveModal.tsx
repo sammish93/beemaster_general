@@ -4,13 +4,16 @@ import { Modal, Portal, Button, TextInput } from 'react-native-paper';
 interface AddHiveModalProps {
     isVisible: boolean
     onClose: () => void
+    onAddHive: (hiveName: string) => void
 }
 
-const AddHiveModal = ({ isVisible, onClose }: AddHiveModalProps) => {
+const AddHiveModal = ({ isVisible, onClose, onAddHive }: AddHiveModalProps) => {
     const [newHiveName, setNewHiveName] = useState('');
 
+    const containerStyle = {backgroundColor: 'white', padding: 20};
+
     const handleAddNewHive = () => {
-        console.log(`Added new hive with name: ${newHiveName}`);
+        onAddHive(newHiveName);
         onClose();
         resetHiveName();
     }
@@ -18,18 +21,24 @@ const AddHiveModal = ({ isVisible, onClose }: AddHiveModalProps) => {
     const resetHiveName = () => setNewHiveName('');
 
     return (
-        <Portal>
-            <Modal visible={isVisible} onDismiss={onClose} contentContainerStyle={{padding: 20, backgroundColor: 'white'}}>
+        <Portal.Host>
+            <Modal 
+                testID='test-modal'
+                visible={isVisible} 
+                onDismiss={onClose} 
+                contentContainerStyle={containerStyle}
+            >
                 <TextInput
-                    label='Hive Name:'
+                    label='Hive Name'
                     value={newHiveName}
                     onChangeText={setNewHiveName}
-                    autoFocus
                 />
-                <Button onPress={handleAddNewHive}>
+                <Button mode='contained' onPress={handleAddNewHive}>
                     Add Hive
                 </Button>
             </Modal>
-        </Portal>
-    )
-}
+        </Portal.Host>
+    );
+};
+
+export default AddHiveModal;
