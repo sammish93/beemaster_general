@@ -12,6 +12,7 @@ import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
 import { LoginScreen } from "@/components/layouts/login";
 import { customDarkTheme, customLightTheme } from "@/assets/themes";
 import { ScreenHeight, ScreenWidth } from "@/constants/Dimensions";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -84,18 +85,20 @@ const RootLayout = () => {
   return (
     <Provider exampleViewModel={exampleViewModel} userViewModel={userViewModel}>
       <PaperProvider theme={paperTheme}>
-        {(() => {
-          if (userViewModel.userId === "") {
-            return <LoginLayout />;
-          } else if (
-            (Platform.OS === "ios" || Platform.OS === "android") &&
-            dimensions.screen.width < ScreenWidth.Compact
-          ) {
-            return <BottomBarLayout theme={paperTheme} mode={colorScheme} />;
-          } else {
-            return <DrawerLayout theme={paperTheme} mode={colorScheme} />;
-          }
-        })()}
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          {(() => {
+            if (userViewModel.userId === "") {
+              return <LoginLayout />;
+            } else if (
+              (Platform.OS === "ios" || Platform.OS === "android") &&
+              dimensions.screen.width < ScreenWidth.Compact
+            ) {
+              return <BottomBarLayout theme={paperTheme} mode={colorScheme} />;
+            } else {
+              return <DrawerLayout theme={paperTheme} mode={colorScheme} />;
+            }
+          })()}
+        </GestureHandlerRootView>
       </PaperProvider>
     </Provider>
   );
