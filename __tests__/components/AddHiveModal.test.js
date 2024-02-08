@@ -7,4 +7,17 @@ describe('AddHiveModal', () => {
         const { getByLabelText } = render(<AddHiveModal isVisible={true} onClose={() => {}} />);
         expect(getByLabelText).toBeTruthy();
     });
+
+    it('should call onAddHive with Hive Name when Add button is pressed', () => {
+        const onAddHiveMock = jest.fn();
+        const hiveName = 'Hive-x3';
+        const { getByText, getByLabelText } = render(
+            <AddHiveModal isVisible={true} onClose={() => {}} onAddHive={onAddHiveMock}/>
+        );
+
+        fireEvent.changeText(getByLabelText('Hive Name'), hiveName);
+        fireEvent.press(getByText('Add Hive'));
+
+        expect(onAddHiveMock).toHaveBeenCalledWith(hiveName);
+    })
 });
