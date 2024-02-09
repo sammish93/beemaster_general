@@ -11,8 +11,10 @@ import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIc
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import React from "react";
-import AddHiveButton from "@/components/AddHiveButton";
 
+// Components related to Add Hive functionality.
+import AddHiveButton from "@/components/AddHiveButton";
+import AddHiveModal from "@/components/AddHiveModal";
 import HiveList from "@/components/HiveList";
 
 export type RootStackParamList = {

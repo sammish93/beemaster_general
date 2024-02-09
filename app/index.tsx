@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigation } from "expo-router";
 import { View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
@@ -7,13 +8,15 @@ import TopBar from "@/components/TopBar";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import React from "react";
+import { hiveListData } from "@/data/hiveData"; 
+
 
 const HomeScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
+  const hiveData = hiveListData;
 
   return (
     <SafeAreaView style={styles(theme).container}>
