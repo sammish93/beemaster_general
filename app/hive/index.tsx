@@ -17,6 +17,7 @@ import StatusBarCustom from "@/components/StatusBarCustom";
 import AddHiveButton from "@/components/AddHiveButton";
 import AddHiveModal from "@/components/AddHiveModal";
 import HiveList from "@/components/HiveList";
+import { set } from "mobx";
 
 export type RootStackParamList = {
   hive: {
@@ -68,7 +69,12 @@ const HiveScreen = (params: HiveScreenProps) => {
         <Text style={theme.fonts.titleLarge}>Hive Screen</Text>
         <HiveList navigation={navigation} />
         {/* Temporarly implementation. */}
-        <AddHiveButton onAddHivePress={() => {console.log('AddHiveButton pressed!')}}/>
+        <AddHiveButton onAddHivePress={() => setModalVisible(true)}/>
+        <AddHiveModal 
+          isVisible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          onAddHive={handleAddHive}
+        />
       </View>
     </SafeAreaView>
   );
