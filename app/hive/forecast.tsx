@@ -10,6 +10,7 @@ import { useTheme, Text } from "react-native-paper";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
+import React from "react";
 
 type RootStackParamList = {
   hive: {
