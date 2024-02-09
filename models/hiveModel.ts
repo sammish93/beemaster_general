@@ -1,6 +1,4 @@
 export interface HiveModel {
-    hive: {
-        id: string
-        name: string
-    }
+    id: string
+    name: string
 }
