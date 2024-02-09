@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useNavigation } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
@@ -10,7 +11,7 @@ import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import React from "react";
+
 
 // Components related to Add Hive functionality.
 import AddHiveButton from "@/components/AddHiveButton";
@@ -29,11 +30,19 @@ type HiveScreenProps = {
 };
 
 const HiveScreen = (params: HiveScreenProps) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
+  const { hiveViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
+
+  const handleAddHive = (hiveName: string) => {
+    const newHiveId = `hive-${Date.now()}`; // Temporarly solution.
+    hiveViewModel.addHive({ id: newHiveId, name: hiveName });
+    setModalVisible(false);
+  }
 
   return (
     <SafeAreaView style={styles(theme).container}>
