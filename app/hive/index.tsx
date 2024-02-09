@@ -13,7 +13,9 @@ import StatusBarCustom from "@/components/StatusBarCustom";
 import React from "react";
 import AddHiveButton from "@/components/AddHiveButton";
 
-type RootStackParamList = {
+import HiveList from "@/components/HiveList";
+
+export type RootStackParamList = {
   hive: {
     hiveId: string;
   };
@@ -53,15 +55,7 @@ const HiveScreen = (params: HiveScreenProps) => {
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Hive Screen</Text>
-        <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate("/hive/forecast", { hiveId: hiveId });
-          }}
-        >
-          Forecast
-        </Button>
+        <HiveList navigation={navigation} />
         {/* Temporarly implementation. */}
         <AddHiveButton onAddHivePress={() => {console.log('AddHiveButton pressed!')}}/>
       </View>

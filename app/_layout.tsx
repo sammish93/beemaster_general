@@ -12,6 +12,7 @@ import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
 import { LoginScreen } from "@/components/layouts/login";
 import { customDarkTheme, customLightTheme } from "@/assets/themes";
 import { StatusBar } from "expo-status-bar";
+import React from "react";
 
 export {
   // Catch any errors thrown by the Layout component.

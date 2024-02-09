@@ -1,5 +1,5 @@
 
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, Platform } from "react-native";
 import { MD3Theme } from "react-native-paper";
 import { customFontConfig, customLightTheme } from "./themes";
 
@@ -23,6 +23,7 @@ const styles = (theme?: MD3Theme) => {
       maxWidth: 960,
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
+      padding: 25
     },
     topBarContainer: {
       flexDirection: "row",

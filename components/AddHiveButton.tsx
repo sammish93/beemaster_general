@@ -11,7 +11,7 @@ const AddHiveButton = ({ onAddHivePress }: AddHiveButtonProps) => {
             icon='plus' 
             mode='contained' 
             onPress={onAddHivePress} 
-            style={{ marginVertical: 10}}
+            style={{ marginVertical: 10 }}
         >
             Add New Hive
         </Button>
