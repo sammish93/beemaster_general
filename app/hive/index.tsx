@@ -4,7 +4,7 @@ import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, useTheme, Text } from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";

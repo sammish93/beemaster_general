@@ -8,7 +8,6 @@ import TopBar from "@/components/TopBar";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import { hiveListData } from "@/data/hiveData"; 
 
 
 const HomeScreen = () => {
@@ -16,7 +15,6 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
-  const hiveData = hiveListData;
 
   return (
     <SafeAreaView style={styles(theme).container}>
