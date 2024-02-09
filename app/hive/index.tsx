@@ -17,7 +17,6 @@ import StatusBarCustom from "@/components/StatusBarCustom";
 import AddHiveButton from "@/components/AddHiveButton";
 import AddHiveModal from "@/components/AddHiveModal";
 import HiveList from "@/components/HiveList";
-import { set } from "mobx";
 
 export type RootStackParamList = {
   hive: {

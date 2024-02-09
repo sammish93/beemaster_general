@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavigationProp } from "@react-navigation/native";
 import { Button, useTheme, Text } from "react-native-paper";
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { observer, MobXProviderContext } from "mobx-react";
 import { View } from 'react-native';
 
 interface Hive {
@@ -15,9 +16,7 @@ interface HiveListProps {
 
 const HiveList = ({ navigation }: HiveListProps) => {
     const theme = useTheme();
-
-    // Just a temporary solution.
-    const hives: Hive[] = [{id: "hive-1234-1234-abc", name: "Hooney Beast"}, {id: "hive-1235-1235-abc", name: "Hooney Warrior"}];
+    const { hiveViewModel } = useContext(MobXProviderContext);
 
     const renderItem = ({ item }: { item: Hive }) => (
         <View style={{ marginVertical: 8}}>
@@ -37,7 +36,7 @@ const HiveList = ({ navigation }: HiveListProps) => {
     return (
         <GestureHandlerRootView>
             <FlatList 
-                data={hives}
+                data={hiveViewModel.hives}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
             />

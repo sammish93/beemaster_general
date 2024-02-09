@@ -6,6 +6,7 @@ import { MD3Theme, PaperProvider } from "react-native-paper";
 import { Provider, observer } from "mobx-react";
 import exampleViewModel from "@/viewModels/ExampleViewModel";
 import userViewModel from "@/viewModels/UserViewModel";
+import { hiveViewModel } from "@/viewModels/HiveViewModel";
 import { DrawerScreen } from "@/components/layouts/drawer";
 import { Platform, useColorScheme } from "react-native";
 import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
@@ -66,6 +67,7 @@ const RootLayout = () => {
       <Provider
         exampleViewModel={exampleViewModel}
         userViewModel={userViewModel}
+        hiveViewModel={hiveViewModel}
       >
         <PaperProvider theme={paperTheme}>
           <LoginLayout />
@@ -81,6 +83,7 @@ const RootLayout = () => {
       <Provider
         exampleViewModel={exampleViewModel}
         userViewModel={userViewModel}
+        hiveViewModel={hiveViewModel}
       >
         <PaperProvider theme={paperTheme}>
           <BottomBarLayout theme={paperTheme} mode={colorScheme} />
@@ -90,7 +93,7 @@ const RootLayout = () => {
   }
 
   return (
-    <Provider exampleViewModel={exampleViewModel} userViewModel={userViewModel}>
+    <Provider exampleViewModel={exampleViewModel} userViewModel={userViewModel} hiveViewModel={hiveViewModel}>
       <PaperProvider theme={paperTheme}>
         <DrawerLayout theme={paperTheme} mode={colorScheme} />
       </PaperProvider>
