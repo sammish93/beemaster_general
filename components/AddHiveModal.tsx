@@ -20,6 +20,7 @@ const AddHiveModal = ({ isVisible, onClose, onAddHive }: AddHiveModalProps) => {
 
     const resetHiveName = () => setNewHiveName('');
 
+    // TODO: Need to add some styling.
     return (
         <Portal.Host>
             <Modal 
