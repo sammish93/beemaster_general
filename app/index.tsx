@@ -8,11 +8,20 @@ import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 
+import PermissionManager from "@/components/PermissionManager";
+import React, { useState } from 'react';
+
 const HomeScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
+
+  const [permissionResult, setPermissionResult] = useState<string | null>(null);
+
+  const handlePermissionResult = (result: string | null) => {
+    setPermissionResult(result);
+  };
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -45,6 +54,9 @@ const HomeScreen = () => {
           Go to Hive Screen
         </Button>
         <Text style={theme.fonts.bodyLarge}>{userViewModel.userId}</Text>
+
+        <PermissionManager onPermissionResult={handlePermissionResult} />
+
       </View>
     </SafeAreaView>
   );
