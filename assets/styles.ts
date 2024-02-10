@@ -5,12 +5,10 @@ import { MD3Theme } from "react-native-paper";
 import { customFontConfig, customLightTheme } from "./themes";
 
 
-const defaultTheme = customLightTheme;
 
 const styles = (theme?: MD3Theme) => {
   const dynamicTheme = theme ? theme : customLightTheme
   const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('window').height;
 
   return StyleSheet.create({
     container: {
@@ -84,12 +82,17 @@ const styles = (theme?: MD3Theme) => {
     },
     dialogStyle: {
       width: '75%', // Du kan justere dette etter behov
-      maxWidth: screenWidth,
+      alignSelf: 'center',
 
 
     },
     titleDialogGDPR: {
       textAlign: 'center',
+    },
+    listItem: {
+      marginTop: 8,
+      color: dynamicTheme.colors.onSecondaryContainer,
+      ...dynamicTheme.fonts.bodyMedium
     },
   });
 };
