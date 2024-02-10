@@ -1,17 +1,18 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MD3Theme, PaperProvider } from "react-native-paper";
 import { Provider, observer } from "mobx-react";
 import exampleViewModel from "@/viewModels/ExampleViewModel";
 import userViewModel from "@/viewModels/UserViewModel";
 import { DrawerScreen } from "@/components/layouts/drawer";
-import { Platform, useColorScheme } from "react-native";
+import { Dimensions, Platform, useColorScheme, Text } from "react-native";
 import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
 import { LoginScreen } from "@/components/layouts/login";
 import { customDarkTheme, customLightTheme } from "@/assets/themes";
-import { StatusBar } from "expo-status-bar";
+import { ScreenHeight, ScreenWidth } from "@/constants/Dimensions";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -26,7 +27,17 @@ export const unstable_settings = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+// Retrieves initial screen dimensions.
+const windowDimensions = Dimensions.get("window");
+const screenDimensions = Dimensions.get("screen");
+
 const RootLayout = () => {
+  // State to hold both the screen and window dimensions. Window can be used for web.
+  const [dimensions, setDimensions] = useState({
+    window: windowDimensions,
+    screen: screenDimensions,
+  });
+
   const colorScheme = useColorScheme();
   // Android 12 fix:
   //const { theme } = useMaterial3Theme();
@@ -45,6 +56,17 @@ const RootLayout = () => {
     ...FontAwesome.font,
   });
 
+  // Dynamically updates both the screen and window dimensions when they change.
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      "change",
+      ({ window, screen }) => {
+        setDimensions({ window, screen });
+      }
+    );
+    return () => subscription?.remove();
+  });
+
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -60,38 +82,23 @@ const RootLayout = () => {
     return null;
   }
 
-  if (userViewModel.userId === "") {
-    return (
-      <Provider
-        exampleViewModel={exampleViewModel}
-        userViewModel={userViewModel}
-      >
-        <PaperProvider theme={paperTheme}>
-          <LoginLayout />
-        </PaperProvider>
-      </Provider>
-    );
-  } else if (
-    Platform.OS === "web" ||
-    Platform.OS === "ios" ||
-    Platform.OS === "android"
-  ) {
-    return (
-      <Provider
-        exampleViewModel={exampleViewModel}
-        userViewModel={userViewModel}
-      >
-        <PaperProvider theme={paperTheme}>
-          <BottomBarLayout theme={paperTheme} mode={colorScheme} />
-        </PaperProvider>
-      </Provider>
-    );
-  }
-
   return (
     <Provider exampleViewModel={exampleViewModel} userViewModel={userViewModel}>
       <PaperProvider theme={paperTheme}>
-        <DrawerLayout theme={paperTheme} mode={colorScheme} />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          {(() => {
+            if (userViewModel.userId === "") {
+              return <LoginLayout />;
+            } else if (
+              (Platform.OS === "ios" || Platform.OS === "android") &&
+              dimensions.screen.width < ScreenWidth.Compact
+            ) {
+              return <BottomBarLayout theme={paperTheme} mode={colorScheme} />;
+            } else {
+              return <DrawerLayout theme={paperTheme} mode={colorScheme} />;
+            }
+          })()}
+        </GestureHandlerRootView>
       </PaperProvider>
     </Provider>
   );
@@ -104,14 +111,14 @@ export type LayoutProps = {
   mode: string;
 };
 
-function DrawerLayout(props: LayoutProps) {
+const DrawerLayout = (props: LayoutProps) => {
   return <DrawerScreen theme={props.theme} mode={props.mode} />;
-}
+};
 
-function BottomBarLayout(props: LayoutProps) {
+const BottomBarLayout = (props: LayoutProps) => {
   return <MaterialBottomTabsScreen theme={props.theme} mode={props.mode} />;
-}
+};
 
-function LoginLayout() {
+const LoginLayout = () => {
   return <LoginScreen />;
-}
+};

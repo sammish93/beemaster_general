@@ -14,6 +14,7 @@ const StatusBarCustom = () => {
     );
   }
 
+  // iOS doesn't support backgroundColor. This bit of the component is only returned on iOS devices.
   return <StatusBar style={useColorScheme()?.toString()} />;
 };
 

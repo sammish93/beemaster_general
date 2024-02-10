@@ -4,7 +4,10 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useTheme } from "react-native-paper";
 import styles from "@/assets/styles";
 import { NavigationProp } from "@react-navigation/native";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
+
+// The default expo top bar wasn't ideal so this is a custom implementation. Trailing icons can be passed
+// as props. Drawer icon is displayed if drawer navigation is used. Back icon is shown if .canGoBack() is
+// true.
 
 interface TopBarProps {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
@@ -21,7 +24,7 @@ const TopBar = (props: TopBarProps) => {
   return (
     <View style={styles(theme).topBarContainer}>
       <View style={styles(theme).leadingIconsContainer}>
-        {/* Shows the drawer navigation bar if the draw layout is used*/}
+        {/* Shows the drawer navigation bar if the draw layout is used. */}
         {props.canOpenDrawer && (
           <TouchableOpacity
             onPress={() => {
@@ -34,6 +37,7 @@ const TopBar = (props: TopBarProps) => {
             />
           </TouchableOpacity>
         )}
+        {/* Shows the back icon if there is another destination on the stack. */}
         {canGoBack && (
           <TouchableOpacity
             onPress={() => {
@@ -60,6 +64,7 @@ const TopBar = (props: TopBarProps) => {
       </View>
 
       <View style={styles(theme).trailingIconsContainer}>
+        {/* Trailing icons can be passed here. */}
         {props.trailingIcons &&
           props.trailingIcons.map((icon, index) => (
             <View key={index}>{icon}</View>

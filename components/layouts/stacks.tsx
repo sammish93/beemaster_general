@@ -150,6 +150,6 @@ export const LoginStack = (props: StackProps) => (
         headerShown: false,
       }}
     />
-    {/* Add other screens specific to the "updates" tab here */}
+    {/* Add other screens specific to the "login" tab here */}
   </Stack.Navigator>
 );
