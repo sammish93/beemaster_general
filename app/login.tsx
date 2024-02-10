@@ -22,6 +22,9 @@ const LoginScreen = () => {
     setShowDialog(true);  //Viser gdpr-dialogen
 
   }
+  const hideDialog = () => {
+    setShowDialog(false); // Hides the GDPR dialog
+  };
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -41,9 +44,9 @@ const LoginScreen = () => {
           Navigate to Home Screen
         </Button>
         <Button mode="contained" onPress={handleLoginPress} >
-          Click to see gdpr
+          Click to see GDPR
         </Button>
-        {showDialog && <DialogGDPR hideDialog={() => setShowDialog(false)} />}
+        {showDialog && <DialogGDPR hideDialog={hideDialog} />}
       </View>
     </SafeAreaView>
   );
