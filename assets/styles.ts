@@ -3,12 +3,15 @@ import { ScreenHeight } from './../constants/Dimensions';
 import { Dimensions, StyleSheet } from "react-native";
 import { MD3Theme } from "react-native-paper";
 import { customFontConfig, customLightTheme } from "./themes";
+import { addHiddenFinalProp } from 'mobx/dist/internal';
 
 
 
 const styles = (theme?: MD3Theme) => {
   const dynamicTheme = theme ? theme : customLightTheme
   const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
+  const isMobile = screenWidth < 768;
 
   return StyleSheet.create({
     container: {
@@ -81,18 +84,36 @@ const styles = (theme?: MD3Theme) => {
 
     },
     dialogStyle: {
-      width: '75%', // Du kan justere dette etter behov
+      width: '75%',
       alignSelf: 'center',
-
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    dialogStyleMobile: {
+      width: screenWidth * 0.9,
+      alignSelf: 'center',
+      maxHeight: screenHeight * 0.7,
+      justifyContent: 'flex-start',
 
     },
+
+    scrollViewContent: {
+      paddingHorizontal: 4,
+      paddingTop: 6,
+
+    },
+
     titleDialogGDPR: {
       textAlign: 'center',
     },
     listItem: {
       marginTop: 8,
+      width: '100%',
+      flexShrink: 1,
+
       color: dynamicTheme.colors.onSecondaryContainer,
-      ...dynamicTheme.fonts.bodyMedium
+      ...dynamicTheme.fonts.bodyMedium,
+
     },
   });
 };
