@@ -8,7 +8,6 @@ import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 
-//import PermissionManager from "@/components/PermissionManager";
 
 import React, { useState } from 'react';
 
@@ -18,11 +17,7 @@ const HomeScreen = () => {
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
 
-  /*const [permissionResult, setPermissionResult] = useState<string | null>(null);
 
-  const handlePermissionResult = (result: string | null) => {
-    setPermissionResult(result);
-  };*/
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -65,4 +60,3 @@ const HomeScreen = () => {
 
 export default observer(HomeScreen);
 
-/*<PermissionManager onPermissionResult={handlePermissionResult} />*/
