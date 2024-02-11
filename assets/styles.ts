@@ -89,11 +89,13 @@ const styles = (theme?: MD3Theme) => {
       justifyContent: 'center',
       alignItems: 'center',
     },
+
     dialogStyleMobile: {
       width: screenWidth * 0.9,
       alignSelf: 'center',
       maxHeight: screenHeight * 0.7,
-      justifyContent: 'flex-start',
+      //justifyContent: 'flex-start',
+
 
     },
 
@@ -113,6 +115,7 @@ const styles = (theme?: MD3Theme) => {
 
       color: dynamicTheme.colors.onSecondaryContainer,
       ...dynamicTheme.fonts.bodyMedium,
+
 
     },
   });
