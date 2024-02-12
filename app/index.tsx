@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { Button, useTheme, Text } from "react-native-paper";
@@ -7,6 +7,7 @@ import TopBar from "@/components/TopBar";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
+import getWeatherTypeIconFromString from "@/domain/weatherIconMapper";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -45,6 +46,7 @@ const HomeScreen = () => {
           Go to Hive Screen
         </Button>
         <Text style={theme.fonts.bodyLarge}>{userViewModel.userId}</Text>
+        <Image source={getWeatherTypeIconFromString("clearsky_day")} />
       </View>
     </SafeAreaView>
   );
