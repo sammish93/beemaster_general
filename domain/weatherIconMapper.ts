@@ -1,13 +1,11 @@
 import { WeatherType } from "@/constants/WeatherType";
 
-// TODO Add validation.
-const getWeatherTypeIconFromString = (name: string): any => {
+const getWeatherTypeIconFromString = (name: string): WeatherType => {
     if (name in WeatherType) {
         return WeatherType[name as keyof typeof WeatherType];
     }
 
-    // TODO Add default behaviour.
-    return WeatherType.clearsky_night;
+    throw new Error(`'${name}' is not a valid weather type.`);
 }
 
 export default getWeatherTypeIconFromString
