@@ -11,6 +11,7 @@ import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import { fetchWeatherForecast } from "@/data/api/weatherApi";
+import { deserialiseWeatherForecast } from "@/domain/weatherForecastDeserialiser";
 
 type RootStackParamList = {
   hive: {
@@ -35,9 +36,11 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchWeatherForecast({ lat: 60.1, lon: 9.58 });
+        const data = await fetchWeatherForecast({ lat: 59.9139, lon: 10.7522 });
 
-        setData(JSON.stringify(data));
+        const thing = deserialiseWeatherForecast(data);
+        console.log(thing);
+        setData(`Current temperature: ${thing.currentForecast.temperature} °C`);
       } catch (error) {
         // TODO
         setData("Error retrieving data");

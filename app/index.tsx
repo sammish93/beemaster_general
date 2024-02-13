@@ -46,7 +46,6 @@ const HomeScreen = () => {
           Go to Hive Screen
         </Button>
         <Text style={theme.fonts.bodyLarge}>{userViewModel.userId}</Text>
-        <Image source={getWeatherTypeIconFromString("clearsky_day")} />
       </View>
     </SafeAreaView>
   );
