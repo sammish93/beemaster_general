@@ -1,4 +1,5 @@
-// TODO Complete rest of icons.
+// Icons for each weather type in .png format. the local file path wrapped with require() can 
+// be used in an <Image> component as a value for the 'source' parameter.
 
 export enum WeatherType {
     clearsky_day = require("@/assets/images/weather/clearsky_day.png"),
