@@ -3,6 +3,7 @@ import Forecast from "@/models/forecast";
 //TODO Implement detailed weather forecast for specific day
 //TODO Implement domain-level functions to make things easier for rest of group
 //TODO Implement function that can calculate wind speed direction
+//TODO Implement class that can convert values to imperial
 
 //TODO Test
 /**
