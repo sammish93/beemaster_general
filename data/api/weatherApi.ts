@@ -2,7 +2,7 @@ import isValidCoordinates from "@/domain/validation/coordinateValidation";
 
 interface WeatherApiProps {
   lat: number,
-  lon: number
+  lng: number
 }
 
 //TODO Test
