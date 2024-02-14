@@ -14,20 +14,20 @@ interface WeatherApiProps {
  * Documentation can be found here - https://api.met.no/weatherapi/locationforecast/2.0/documentation
  * 
  * @param lat - The latitude as a decimal value.
- * @param lon - The longitude as a decimal value.
+ * @param lng - The longitude as a decimal value.
  * @returns A weather forecast for the next 9-10 days in JSON format. Includes precipitation, 
  * temperature, wind speed, wind direction, humidity, and a weather symbol summarising each forecast.
  */
 export const fetchWeatherForecast = async (props: WeatherApiProps) => {
 
-  if (!isValidCoordinates(props.lat, props.lon)) {
-    console.error(`The coordinates '${props.lat}, ${props.lon}' are not valid.`)
-    throw new Error(`The coordinates '${props.lat}, ${props.lon}' are not valid.`)
+  if (!isValidCoordinates(props.lat, props.lng)) {
+    console.error(`The coordinates '${props.lat}, ${props.lng}' are not valid.`)
+    throw new Error(`The coordinates '${props.lat}, ${props.lng}' are not valid.`)
   }
 
   try {
     const response = await fetch(
-      `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${props.lat}&lon=${props.lon}`
+      `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${props.lat}&lon=${props.lng}`
     );
 
     const json = await response.json();

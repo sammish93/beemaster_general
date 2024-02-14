@@ -47,7 +47,7 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchWeatherForecast({ lat: 59.9139, lon: 10.7522 });
+        const data = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
 
         const thing = deserialiseDailyForecast(
           data,
