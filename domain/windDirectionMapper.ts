@@ -35,6 +35,7 @@ const getWindDirectionIconFromAngle = (windDirectionAngle: number): string => {
         return "arrow-bottom-right-thick";
       } else {
         // 0 > Angle > 360.
+        console.error(`'${windDirectionAngle}' is not a valid angle.`)
         throw new Error(`'${windDirectionAngle}' is not a valid angle.`);
       }   
 }

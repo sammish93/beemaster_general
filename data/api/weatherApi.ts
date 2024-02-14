@@ -21,6 +21,7 @@ interface WeatherApiProps {
 export const fetchWeatherForecast = async (props: WeatherApiProps) => {
 
   if (!isValidCoordinates(props.lat, props.lon)) {
+    console.error(`The coordinates '${props.lat}, ${props.lon}' are not valid.`)
     throw new Error(`The coordinates '${props.lat}, ${props.lon}' are not valid.`)
   }
 

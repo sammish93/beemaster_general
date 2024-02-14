@@ -1,8 +1,5 @@
 import { CurrentForecast, DailyForecast, WeeklyDetailedForecast, WeeklySimpleForecast } from "@/models/forecast";
 
-//TODO Implement domain-level functions to make things easier for rest of group
-//TODO Implement class that can convert values to imperial
-
 //TODO Test
 /**
  * Used to retrieve the current forecast.
