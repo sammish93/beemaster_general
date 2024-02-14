@@ -19,21 +19,23 @@ import { fetchWeatherForecast } from '@/data/api/weatherApi';
 import isValidCoordinates from '@/domain/validation/coordinateValidation';
 import * as jsonResponse from '@/assets/testResources/weatherApiResponse.json';
 
-test('fetches weather forecast with valid coordinates', async () => {
-    (isValidCoordinates as jest.Mock).mockReturnValue(true);
-    const mockForecast = jsonResponse;
+describe('Weather API Tests', () => {
+    it('fetches weather forecast with valid coordinates', async () => {
+        (isValidCoordinates as jest.Mock).mockReturnValue(true);
+        const mockForecast = jsonResponse;
 
-    const forecast = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
+        const forecast = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
 
-    expect(forecast).toEqual(mockForecast);
-    expect(fetch).toHaveBeenCalledTimes(1);
-    expect(isValidCoordinates).toHaveBeenCalledWith(59.9139, 10.7522);
-});
+        expect(forecast).toEqual(mockForecast);
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(isValidCoordinates).toHaveBeenCalledWith(59.9139, 10.7522);
+    });
 
-test('throws error with invalid coordinates', async () => {
-    (isValidCoordinates as jest.Mock).mockReturnValue(false);
+    it('throws error with invalid coordinates', async () => {
+        (isValidCoordinates as jest.Mock).mockReturnValue(false);
 
-    await expect(fetchWeatherForecast({ lat: 123456, lng: 123456 }))
-    .rejects.toThrow(`The coordinates '123456, 123456' are not valid.`);
-    expect(fetch).not.toHaveBeenCalled();
+        await expect(fetchWeatherForecast({ lat: 123456, lng: 123456 }))
+        .rejects.toThrow(`The coordinates '123456, 123456' are not valid.`);
+        expect(fetch).not.toHaveBeenCalled();
+    });
 });
