@@ -2,8 +2,7 @@
 jest.mock('@/domain/validation/coordinateValidation', () => ({
     __esModule: true,
     default: jest.fn(),
-  }));
-  
+}));
 
 global.fetch = jest.fn(() =>
     Promise.resolve(new Response(JSON.stringify(jsonResponse)))

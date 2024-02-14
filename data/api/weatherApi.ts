@@ -5,7 +5,6 @@ interface WeatherApiProps {
   lng: number
 }
 
-//TODO Test
 /**
  * Returns a full weather forecast for a specific geographical location.
  *
