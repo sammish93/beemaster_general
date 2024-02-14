@@ -22,7 +22,7 @@ import {
   PrecipitationMeasurement,
   TemperatureMeasurement,
   WindSpeedMeasurement,
-} from "@/constants/WeatherMeasurements";
+} from "@/constants/Measurements";
 
 type RootStackParamList = {
   hive: {
@@ -52,9 +52,9 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
         const thing = deserialiseDailyForecast(
           data,
           getForecastDateFormat(2),
-          TemperatureMeasurement.Celsius,
-          PrecipitationMeasurement.Millimeters,
-          WindSpeedMeasurement.MetersPerSecond
+          userViewModel.temperaturePreference,
+          userViewModel.precipitationPreference,
+          userViewModel.windSpeedPreference
         );
         console.log(thing);
 

@@ -18,3 +18,11 @@ export enum WindSpeedMeasurement {
     MilesPerHour,
     KilometersPerHour
 }
+
+export enum WeightMeasurement {
+    Grams,
+    Kilograms,
+    Ounces,
+    Pounds,
+    Stones
+}

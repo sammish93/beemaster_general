@@ -1,6 +1,6 @@
-import { PrecipitationMeasurement, TemperatureMeasurement, WindSpeedMeasurement } from "@/constants/WeatherMeasurements";
+import { PrecipitationMeasurement, TemperatureMeasurement, WindSpeedMeasurement } from "@/constants/Measurements";
 import { CurrentForecast, DailyForecast, WeeklyDetailedForecast, WeeklySimpleForecast } from "@/models/forecast";
-import { celsiusToFahrenheit, metersPerSecondToKilometersPerHour, metersPerSecondToKnots, metersPerSecondToMilesPerHour, millimetersToCentimeters, millimetersToInches } from './weatherConverter';
+import { celsiusToFahrenheit, metersPerSecondToKilometersPerHour, metersPerSecondToKnots, metersPerSecondToMilesPerHour, millimetersToCentimeters, millimetersToInches } from './measurementConverter';
 
 //TODO Test
 /**
