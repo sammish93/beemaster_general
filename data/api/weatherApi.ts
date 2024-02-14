@@ -1,11 +1,11 @@
 import isValidCoordinates from "@/domain/validation/coordinateValidation";
-import { Double } from "react-native/Libraries/Types/CodegenTypes";
 
 interface WeatherApiProps {
-  lat: Double,
-  lon: Double
+  lat: number,
+  lon: number
 }
 
+//TODO Test
 /**
  * Returns a full weather forecast for a specific geographical location.
  *
@@ -19,16 +19,21 @@ interface WeatherApiProps {
  * temperature, wind speed, wind direction, humidity, and a weather symbol summarising each forecast.
  */
 export const fetchWeatherForecast = async (props: WeatherApiProps) => {
-    try {
-      const response = await fetch(
-        `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${props.lat}&lon=${props.lon}`
-      );
 
-      const json = await response.json();
+  if (!isValidCoordinates(props.lat, props.lon)) {
+    throw new Error(`The coordinates '${props.lat}, ${props.lon}' are not valid.`)
+  }
 
-      return json;
-    } catch (error) {
-      // TODO
-      console.error(error)
-    }
-  };
+  try {
+    const response = await fetch(
+      `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${props.lat}&lon=${props.lon}`
+    );
+
+    const json = await response.json();
+
+    return json;
+  } catch (error) {
+    // TODO
+    console.error(error)
+  }
+};

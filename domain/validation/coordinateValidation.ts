@@ -1,11 +1,8 @@
-import { Double } from "react-native/Libraries/Types/CodegenTypes";
-// TODO Test these
-
-export const isValidLatitude = (lat: Double): boolean => {
+export const isValidLatitude = (lat: number): boolean => {
     return lat >= -90.0 && lat <= 90.0;
 }
 
-export const isValidLongitude = (lon: Double): boolean => {
+export const isValidLongitude = (lon: number): boolean => {
     return lon >= -180.0 && lon <= 180.0;
 }
 
@@ -20,7 +17,7 @@ export const isValidLongitude = (lon: Double): boolean => {
  * @returns A boolean value representing whether both the coordinates are within a valid range. A value 
  * of true represents valid coordinates.
  */
-const isValidCoordinates = (lat: Double, lon: Double): boolean => {
+const isValidCoordinates = (lat: number, lon: number): boolean => {
     return isValidLatitude(lat) && isValidLongitude(lon);
 }
 

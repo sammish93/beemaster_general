@@ -1,7 +1,6 @@
 import { CurrentForecast, DailyForecast, WeeklyDetailedForecast, WeeklySimpleForecast } from "@/models/forecast";
 
 //TODO Implement domain-level functions to make things easier for rest of group
-//TODO Implement function that can calculate wind speed direction
 //TODO Implement class that can convert values to imperial
 
 //TODO Test
