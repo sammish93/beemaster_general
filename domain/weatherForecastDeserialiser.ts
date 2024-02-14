@@ -7,8 +7,8 @@ import { CurrentForecast, DailyForecast, WeeklyDetailedForecast, WeeklySimpleFor
 //TODO Test
 /**
  * Used to retrieve the current forecast.
- * @param json Requires Yr's LocationForecast API 
- * @returns Returns the weather forecast based on the format of the {@link DailyForecast} interface.
+ * @param json The JSON obtained from Yr's LocationForecast API response.
+ * @returns Returns the weather forecast based on the format of the {@link CurrentForecast} interface.
  */
 export const deserialiseCurrentForecast = (json: any): CurrentForecast => {
 
@@ -20,6 +20,7 @@ export const deserialiseCurrentForecast = (json: any): CurrentForecast => {
         json.geometry.coordinates[0]
     ];
   
+    // The current forecast.
     const firstTimeseries = json.properties.timeseries[0];
    
     const currentForecast =  extractForecastData(firstTimeseries)
@@ -31,6 +32,16 @@ export const deserialiseCurrentForecast = (json: any): CurrentForecast => {
 }
 
 //TODO Test
+/**
+ * Used to retrieve the daily forecast. If the date is within the next 48 hours then the forecast is 
+ * broken down into hourly increments, otherwise it is broken down into increments of 6 hours.
+ * @param json The JSON obtained from Yr's LocationForecast API response.
+ * @param dateIso An optional parameter to specify which date to retrieve the forecast from.
+ * @returns Returns the weather forecast based on the format of the {@link DailyForecast} interface.
+ * @example
+ * // Returns the forecast for tomorrow (today's date + 1 day).
+ * const forecast = deserialiseDailyForecast(jsonResponse, getForecastDateFormat(1))
+ */
 export const deserialiseDailyForecast = (json: any, dateIso?: string): DailyForecast => {
     
     // Yr's LocationForecast API delivers coordinates in the format [longitude, latitude].
@@ -67,7 +78,7 @@ export const deserialiseDailyForecast = (json: any, dateIso?: string): DailyFore
 //TODO Test
 /**
  * Used to retrieve the current forecast, along with the following 6 days forecasts (7 days total).
- * @param json Requires Yr's LocationForecast API 
+ * @param json The JSON obtained from Yr's LocationForecast API response.
  * @returns Returns the weather forecast based on the format of the {@link WeeklySimpleForecast} interface.
  */
 export const deserialiseWeeklySimpleForecast = (json: any): WeeklySimpleForecast => {
@@ -123,6 +134,12 @@ export const deserialiseWeeklySimpleForecast = (json: any): WeeklySimpleForecast
 }
 
 //TODO Test
+/**
+ * Used to retrieve the current forecast, along with the following 6 days forecasts (7 days total). 
+ * The forecast is broken down into hourly (or 6 hourly) increments.
+ * @param json The JSON obtained from Yr's LocationForecast API response.
+ * @returns Returns the weather forecast based on the format of the {@link WeeklyDetailedForecast} interface.
+ */
 export const deserialiseWeeklyDetailedForecast = (json: any): WeeklyDetailedForecast => {
 
     // Yr's LocationForecast API delivers coordinates in the format [longitude, latitude].
@@ -155,11 +172,11 @@ export const deserialiseWeeklyDetailedForecast = (json: any): WeeklyDetailedFore
 
 //TODO Test
 /**
- * 
+ * Used to retrieve a string in ISO 8601 format representing both a date and time.
  * @param daysToAdd An integer for the amount of days in advance (from today's date).
  * @returns Returns a string representing the date and time in ISO 8601 format. 
  * @example 
- * const dateString = getForecastDateFormat(1);
+ * const dateString = getForecastDateTimeFormat(1);
  * // Prints '2024-02-19T12:00:00Z'.
  * console.log(dateString);
  */
@@ -170,6 +187,15 @@ export const getForecastDateTimeFormat = (daysToAdd: number): string => {
 }
 
 //TODO Test
+/**
+ * Used to retrieve a the first part of a date time string in ISO 8601 format representing the date.
+ * @param daysToAdd An integer for the amount of days in advance (from today's date).
+ * @returns Returns a string representing only the date in ISO 8601 format. 
+ * @example 
+ * const dateString = getForecastDateFormat(1);
+ * // Prints '2024-02-19'.
+ * console.log(dateString);
+ */
 export const getForecastDateFormat = (daysToAdd: number): string => {
     const date = new Date();
     date.setDate(date.getDate() + daysToAdd);
@@ -177,6 +203,18 @@ export const getForecastDateFormat = (daysToAdd: number): string => {
 }
 
 //TODO Test
+/**
+ * Used to retrieve a string in ISO 8601 format representing both a date and time.
+ * @param hours A string representing the hours of a 24-hour clock. "04" corresponds to 4 A.M. while 
+ * "21" corresponds to 9 P.M.
+ * @param dateIso Optional parameter representing only the date string in ISO 8601 format. Recommended 
+ * to use the {@link getForecastDateFormat} function.
+ * @returns Returns a string representing the date and time in ISO 8601 format. 
+ * @example 
+ * const dateString = getHourlyForecastDateFormat("15", getForecastDateFormat(1));
+ * // Prints '2024-02-19T15:00:00Z'.
+ * console.log(dateString);
+ */
 export const getHourlyForecastDateFormat = (hours: string, dateIso?: string): string => {
     if (dateIso) {
         return `${dateIso}T${hours}:00:00Z`
@@ -190,8 +228,8 @@ export const getHourlyForecastDateFormat = (hours: string, dateIso?: string): st
 
 //TODO Test
 /**
- * 
- * @param timeseriesEntry The time series in Yr's LocationForecast API.
+ * A function which simplifies deserialisation from Yr's LocationForecast API.
+ * @param timeseriesEntry The time series the format found in Yr's LocationForecast API.
  * @returns Returns an object containing all relevant information required about a specific weather 
  * forecast at a specific time.
  */
