@@ -1,4 +1,3 @@
-//TODO Test
 /**
  * A function designed to help visualise which direction the wind is coming from via an icon.
  * @param windDirectionAngle A number (can be decimal) greater than or equal to 0 and less than or equal 
