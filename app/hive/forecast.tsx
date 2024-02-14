@@ -18,6 +18,11 @@ import {
   getForecastDateFormat,
 } from "@/domain/weatherForecastDeserialiser";
 import getWindDirectionIconFromAngle from "@/domain/windDirectionMapper";
+import {
+  PrecipitationMeasurement,
+  TemperatureMeasurement,
+  WindSpeedMeasurement,
+} from "@/constants/WeatherMeasurements";
 
 type RootStackParamList = {
   hive: {
@@ -44,7 +49,14 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
       try {
         const data = await fetchWeatherForecast({ lat: 59.9139, lon: 10.7522 });
 
-        const thing = deserialiseDailyForecast(data, getForecastDateFormat(2));
+        const thing = deserialiseDailyForecast(
+          data,
+          getForecastDateFormat(2),
+          TemperatureMeasurement.Celsius,
+          PrecipitationMeasurement.Millimeters,
+          WindSpeedMeasurement.MetersPerSecond
+        );
+        console.log(thing);
 
         setData(
           `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C`

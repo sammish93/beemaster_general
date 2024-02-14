@@ -1,5 +1,5 @@
 //TODO Test
-export const celsiusToFarenheit = (celsiusValue: number): number => {
+export const celsiusToFahrenheit = (celsiusValue: number): number => {
     return (celsiusValue * 9/5) + 32;
 }
 

@@ -1,4 +1,4 @@
-import { WeatherType } from "@/constants/WeatherType";
+import { WeatherType } from "@/constants/WeatherTypes";
 
 /**
  * A function to retrieve the path of a locally-stored .png representing a specific weather type.

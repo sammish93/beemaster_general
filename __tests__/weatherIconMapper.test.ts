@@ -1,4 +1,4 @@
-import { WeatherType } from "@/constants/WeatherType";
+import { WeatherType } from "@/constants/WeatherTypes";
 import getWeatherTypeIconFromString from "@/domain/weatherIconMapper";
 
 describe('Weather Icon Mapper Tests', () => {
