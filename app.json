@@ -12,10 +12,18 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "no.hiof.beemastergeneral.ios",
+      "infoPlist": {
+        "NSBluetoothAlwaysUsageDescription": "Allow app to run Bluetooth?",
+        "NSCameraUsageDescription": "Allow app to have premission to camera?",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow location?",
+        "NSPhotoLibraryUsageDescription": "Allow app to have premission to PhotoLibrary?"
+      },
       "googleServicesFile": "./ios/GoogleService-Info.plist"
     },
     "android": {
@@ -24,7 +32,13 @@
         "backgroundColor": "#ffffff"
       },
       "googleServicesFile": "./android/app/google-services.json",
-      "package": "no.hiof.beemastergeneral"
+      "package": "no.hiof.beemastergeneral",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.BLUETOOTH",
+        "android.permission.READ_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -38,6 +52,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "09bb6fb4-caca-4358-b2af-9602c9d36a05"
+      }
     }
   }
 }

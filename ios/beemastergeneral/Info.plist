@@ -43,14 +43,6 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Allow app to run Bluetooth?</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Allow app to have premission to camera?</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Allow location?</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow app to have premission to PhotoLibrary? </string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
