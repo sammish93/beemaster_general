@@ -24,10 +24,10 @@ class UserViewModel {
     @observable i18n;    
     @observable userId = "";
     // Allows the user to customise the display of measurements based on their preference.
-    @observable temperaturePreference = TemperatureMeasurement.Celsius;
-    @observable precipitationPreference = PrecipitationMeasurement.Millimeters;
-    @observable windSpeedPreference = WindSpeedMeasurement.MetersPerSecond;
-    @observable weightPreference = WeightMeasurement.Grams;
+    @observable temperaturePreference: TemperatureMeasurement = TemperatureMeasurement.Celsius;
+    @observable precipitationPreference: PrecipitationMeasurement = PrecipitationMeasurement.Millimeters;
+    @observable windSpeedPreference: WindSpeedMeasurement = WindSpeedMeasurement.MetersPerSecond;
+    @observable weightPreference: WeightMeasurement = WeightMeasurement.Grams;
 
     @action public setUserId = (val: string) : void => {
         this.userId = val;

@@ -23,6 +23,7 @@ import {
   TemperatureMeasurement,
   WindSpeedMeasurement,
 } from "@/constants/Measurements";
+import { calculateDailyRainfall } from "@/domain/rainfallCalculator";
 
 type RootStackParamList = {
   hive: {
@@ -56,10 +57,11 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
           userViewModel.precipitationPreference,
           userViewModel.windSpeedPreference
         );
-        console.log(thing);
+
+        const rainfall = calculateDailyRainfall(data, getForecastDateFormat(2));
 
         setData(
-          `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C`
+          `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
         );
       } catch (error) {
         // TODO Snackbar or toast etc as well.
