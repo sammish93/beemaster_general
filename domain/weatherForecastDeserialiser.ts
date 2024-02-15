@@ -2,8 +2,6 @@ import { PrecipitationMeasurement, TemperatureMeasurement, WindSpeedMeasurement 
 import { CurrentForecast, DailyForecast, WeeklyDetailedForecast, WeeklySimpleForecast } from "@/models/forecast";
 import { celsiusToFahrenheit, metersPerSecondToKilometersPerHour, metersPerSecondToKnots, metersPerSecondToMilesPerHour, millimetersToCentimeters, millimetersToInches } from './measurementConverter';
 
-// TODO Create function that calculates total rainfall per day.
-
 /**
  * Used to retrieve the current forecast.
  * @param json The JSON obtained from Yr's LocationForecast API response.

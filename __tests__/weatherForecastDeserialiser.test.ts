@@ -104,7 +104,6 @@ describe('getForecastDateFormat() Function Tests', () => {
   
     // System time must be mocked to ensure tests work as intended later on as well.
     beforeAll(() => {
-        
         jest.useFakeTimers();
         jest.setSystemTime(mockedDate);
     });
