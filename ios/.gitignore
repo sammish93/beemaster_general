@@ -30,5 +30,3 @@ project.xcworkspace
 /Pods/
 
 Podfile.lock
-
-AppIcon.appiconset

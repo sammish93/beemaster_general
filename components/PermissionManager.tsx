@@ -1,58 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import { View, Platform } from 'react-native';
-import { PERMISSIONS, request } from 'react-native-permissions';
-import { Button, Dialog, Paragraph, Portal, Provider } from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Platform } from 'react-native';
+import { request, PERMISSIONS } from 'react-native-permissions';
 
-interface PermissionManagerProps {
-    onPermissionResult: (result: string | null) => void;
-}
+type PermissionStatus = 'granted' | 'denied' | 'undetermined' | 'unavailable' | 'blocked' | 'limited';
 
-const PermissionManager = ({ onPermissionResult }: PermissionManagerProps) => {
-    const [visible, setVisible] = useState<boolean>(false);
-    const [permissionResult, setPermissionResult] = useState<string | null>(null);
+
+const PermissionManager = () => {
+    const [cameraPermission, setCameraPermission] = useState<PermissionStatus>('undetermined');
 
     useEffect(() => {
-        const requestCameraPermission = async () => {
-            try {
-                let permissionType;
-                if (Platform.OS === 'ios') {
-                    permissionType = PERMISSIONS.IOS.CAMERA;
-                } else if (Platform.OS === 'android') {
-                    permissionType = PERMISSIONS.ANDROID.CAMERA;
-                }
-                if (permissionType) {
-                    const result = await request(permissionType);
-                    setPermissionResult(result);
+        if (Platform.OS === 'web') {
+            requestCameraPermissionWeb();
+        } else {
+            requestCameraPermissionMobile();
+        }
+    }, []);
 
+    const requestCameraPermissionMobile = async () => {
+        const status = await request(
+            Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA
+        );
+        handlePermissionStatus(status);
+    };
 
-                    onPermissionResult(result);
-                    setVisible(true);
-                }
-            } catch (error) {
-                console.error('Error requesting permission:', error);
-            }
-        };
+    const requestCameraPermissionWeb = async () => {
+        try {
+            await navigator.mediaDevices.getUserMedia({ video: true });
+            handlePermissionStatus('granted');
+        } catch (error) {
+            handlePermissionStatus('denied');
+        }
+    };
 
-        requestCameraPermission();
-    }, [onPermissionResult]);
+    const handlePermissionStatus = (status: PermissionStatus) => {
+        setCameraPermission(status);
+        if (status === 'granted') {
+            console.log('Camera permission granted');
+        }
+        if (status === 'denied') {
+            console.log('Camera permission denied');
+        }
+        else {
+            console.log('Camera permission undetermined');
+        }
+    };
 
     return (
-        <Provider>
-            <View>
-                <Portal>
-                    <Dialog visible={visible} onDismiss={() => setVisible(false)}>
-                        <Dialog.Title>Tillatelse Resultat</Dialog.Title>
-                        <Dialog.Content>
-                            <Paragraph> Permission Result: {permissionResult}</Paragraph>
-                        </Dialog.Content>
-                        <Dialog.Actions>
-                            <Button onPress={() => setVisible(false)}>OK</Button>
-                        </Dialog.Actions>
-                    </Dialog>
-                </Portal>
-            </View>
-        </Provider>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>Request Camera Permission: </Text>
+
+            {cameraPermission === 'granted' && (
+                <Text>Camera Permission Granted</Text>
+            )}
+            {cameraPermission === 'denied' && (
+                <Text>Camera Permission Denied</Text>
+            )}
+            {cameraPermission === 'undetermined' && (
+                <Text>Camera Permission Undetermined</Text>
+            )}
+        </View>
     );
 };
 
 export default PermissionManager;
+
+
+

@@ -8,19 +8,15 @@ import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-//import PermissionManager from "@/components/PermissionManager";
-//import React, { useState } from 'react';
+import React, { useState } from 'react';
+import Permissions_Modal from "@/components/modals/Permissions_Modal";
+
 
 const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
 
-  {/*const [permissionResult, setPermissionResult] = useState<string | null>(null);
-  const handlePermissionResult = (result: string | null) => {
-    setPermissionResult(result);
-  };
-  */}
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -59,18 +55,7 @@ const SettingsScreen = () => {
         >
           Logout
         </Button>
-        {/* 
-        <Button
-          mode="contained"
-          onPress={() => {
-            <PermissionManager onPermissionResult={handlePermissionResult} />;
-          }}
-        >
-          Request Permission
-        </Button>
-        {permissionResult && ( <Text > Permission Result: {permissionResult} </Text>)}
-        */}
-
+        <Permissions_Modal />
       </View>
     </SafeAreaView>
   );

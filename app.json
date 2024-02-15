@@ -50,7 +50,20 @@
     "plugins": [
       "expo-router",
       "expo-localization",
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      [
+        "react-native-permissions",
+        {
+          "iosPermissions": [
+            "Bluetooth",
+            "PhotoLibrary",
+            "Notifications",
+            "Camera",
+            "LocationWhenInUse",
+            "LocationAlways"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
