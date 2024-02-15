@@ -1,4 +1,4 @@
-import { extractForecastData, getForecastDateFormat, getForecastDateTimeFormat, getHourlyForecastDateFormat } from '@/domain/weatherForecastDeserialiser'; // Adjust the import path accordingly
+import { deserialiseCurrentForecast, deserialiseDailyForecast, deserialiseWeeklyDetailedForecast, deserialiseWeeklySimpleForecast, extractForecastData, getForecastDateFormat, getForecastDateTimeFormat, getHourlyForecastDateFormat } from '@/domain/weatherForecastDeserialiser'; // Adjust the import path accordingly
 import { TemperatureMeasurement, PrecipitationMeasurement, WindSpeedMeasurement } from '@/constants/Measurements'; // Adjust the import path
 import * as jsonResponse from '@/assets/testResources/weatherApiResponse.json';
 
@@ -149,14 +149,16 @@ describe('getForecastDateFormat() Function Tests', () => {
 });
 
 describe('getForecastDateTimeFormat() Function Tests', () => {
-    // Mocked initial date for the test suite
+
     const mockedDate = new Date('2024-02-15T12:00:00Z');
 
+    // System time must be mocked to ensure tests work as intended later on as well.
     beforeAll(() => {
         jest.useFakeTimers();
         jest.setSystemTime(mockedDate);
     });
 
+    // Clears mocked system time as to not intefere with other tests.
     afterAll(() => {
         jest.useRealTimers();
     });
@@ -176,6 +178,7 @@ describe('getForecastDateTimeFormat() Function Tests', () => {
         expect(getForecastDateTimeFormat(-10)).toEqual('2024-02-05T12:00:00Z');
     });
 
+    // 2024 is a leap year.
     it('handles leap year edge cases correctly', () => {
         jest.setSystemTime(new Date('2024-02-28T12:00:00Z'));
         expect(getForecastDateTimeFormat(1)).toEqual('2024-02-29T12:00:00Z');
@@ -190,5 +193,214 @@ describe('getForecastDateTimeFormat() Function Tests', () => {
     it('handles end of month correctly', () => {
         jest.setSystemTime(new Date('2024-01-31T12:00:00Z'));
         expect(getForecastDateTimeFormat(1)).toEqual('2024-02-01T12:00:00Z');
+    });
+});
+
+describe('deserialiseCurrentForecast() Function Tests', () => {
+
+    it('correctly deserialises and formats forecast data', () => {
+        const result = deserialiseCurrentForecast(
+            jsonResponse,
+            TemperatureMeasurement.Celsius,
+            PrecipitationMeasurement.Millimeters,
+            WindSpeedMeasurement.MetersPerSecond
+        );
+
+        expect(result.latLng).toEqual([59.9139, 10.7522]);
+        expect(result.currentForecast).toEqual({
+            dateTime: "2024-02-14T10:00:00Z",
+            temperature: -0.9,
+            humidity: 85.5,
+            windSpeed: 0.3,
+            windFromDirection: 87.5,
+            precipitation: 0.0,
+            weatherType: "cloudy"
+        });
+    });
+
+        it('formats temperature in Fahrenheit', () => {
+        const result = deserialiseCurrentForecast(
+            jsonResponse,
+            TemperatureMeasurement.Fahrenheit,
+            PrecipitationMeasurement.Millimeters,
+            WindSpeedMeasurement.MetersPerSecond
+        );
+
+        expect(result.currentForecast.temperature).toBeCloseTo(30.38);
+    });
+
+    it('formats precipitation in centimeters', () => {
+        const result = deserialiseCurrentForecast(
+            jsonResponse,
+            TemperatureMeasurement.Celsius,
+            PrecipitationMeasurement.Centimeters,
+            WindSpeedMeasurement.MetersPerSecond
+        );
+
+        expect(result.currentForecast.precipitation).toBeCloseTo(0.0);
+    });
+
+    it('formats precipitation in inches', () => {
+        const result = deserialiseCurrentForecast(
+            jsonResponse,
+            TemperatureMeasurement.Celsius,
+            PrecipitationMeasurement.Inches,
+            WindSpeedMeasurement.MetersPerSecond
+        );
+
+        expect(result.currentForecast.precipitation).toBeCloseTo(0.0);
+    });
+
+    it('formats wind speed in miles per hour', () => {
+        const result = deserialiseCurrentForecast(
+            jsonResponse,
+            TemperatureMeasurement.Celsius,
+            PrecipitationMeasurement.Millimeters,
+            WindSpeedMeasurement.MilesPerHour
+        );
+
+        expect(result.currentForecast.windSpeed).toBeCloseTo(0.67);
+    });
+
+    it('formats wind speed in kilometers per hour', () => {
+        const result = deserialiseCurrentForecast(
+            jsonResponse,
+            TemperatureMeasurement.Celsius,
+            PrecipitationMeasurement.Millimeters,
+            WindSpeedMeasurement.KilometersPerHour
+        );
+
+        expect(result.currentForecast.windSpeed).toBeCloseTo(1.08);
+    });
+
+    it('formats wind speed in knots', () => {
+        const result = deserialiseCurrentForecast(
+            jsonResponse,
+            TemperatureMeasurement.Celsius,
+            PrecipitationMeasurement.Millimeters,
+            WindSpeedMeasurement.Knots
+        );
+
+        expect(result.currentForecast.windSpeed).toBeCloseTo(0.58);
+    });
+});
+
+describe('deserialiseDailyForecast() Function Tests', () => {
+
+    it('correctly deserialises and formats daily forecast data', () => {
+        const dateIso = "2024-02-15";
+        const result = deserialiseDailyForecast(
+            jsonResponse,
+            dateIso,
+            TemperatureMeasurement.Celsius,
+            PrecipitationMeasurement.Millimeters,
+            WindSpeedMeasurement.MetersPerSecond
+        );
+
+        expect(result.latLng).toEqual([59.9139, 10.7522]);
+        expect(Object.keys(result.hourlyForecasts)).toHaveLength(24);
+        expect(result.hourlyForecasts['00HundredHours']).toEqual({
+            dateTime: "2024-02-15T00:00:00Z",
+            temperature: 1.8,
+            humidity: 97.2,
+            windSpeed: 0.7,
+            windFromDirection: 137.7,
+            precipitation: 0.0,
+            weatherType: "cloudy"
+        });
+    });
+});
+
+describe('deserialiseWeeklySimpleForecast() Function Tests', () => {
+   
+    const mockedDate = new Date('2024-02-14T00:00:00Z');
+
+    // System time must be mocked to ensure tests work as intended later on as well.
+    beforeAll(() => {
+        jest.useFakeTimers();
+        jest.setSystemTime(mockedDate);
+    });
+
+    // Clears mocked system time as to not intefere with other tests.
+    afterAll(() => {
+        jest.useRealTimers();
+    });
+
+    it('correctly deserialises and formats weekly simple forecast data', () => {
+        const result = deserialiseWeeklySimpleForecast(
+            jsonResponse,
+            TemperatureMeasurement.Celsius,
+            PrecipitationMeasurement.Millimeters,
+            WindSpeedMeasurement.MetersPerSecond
+        );
+
+        expect(result.latLng).toEqual([59.9139, 10.7522]);
+        expect(result.currentForecast.dateTime).toEqual("2024-02-14T10:00:00Z");
+        expect(result.dayTwoForecast.dateTime).toEqual("2024-02-15T12:00:00Z");
+        expect(result.dayThreeForecast.dateTime).toEqual("2024-02-16T12:00:00Z");
+        expect(result.dayFourForecast).toEqual({
+            dateTime: "2024-02-17T12:00:00Z",
+            temperature: 4.1,
+            humidity: 61.2,
+            windSpeed: 2.2,
+            windFromDirection: 334.4,
+            precipitation: 0.0,
+            weatherType: "clearsky_day"
+        });
+        expect(result.dayFiveForecast.dateTime).toEqual("2024-02-18T12:00:00Z");
+        expect(result.daySixForecast.dateTime).toEqual("2024-02-19T12:00:00Z");
+        expect(result.daySevenForecast.dateTime).toEqual("2024-02-20T12:00:00Z");
+    });
+});
+
+describe('deserialiseWeeklyDetailedForecast() Function Tests', () => {
+
+    const mockedDate = new Date('2024-02-14T00:00:00Z');
+
+    // System time must be mocked to ensure tests work as intended later on as well.
+    beforeAll(() => {
+        jest.useFakeTimers();
+        jest.setSystemTime(mockedDate);
+    });
+
+    // Clears mocked system time as to not intefere with other tests.
+    afterAll(() => {
+        jest.useRealTimers();
+    });
+
+    it('correctly deserialises and formats weekly detailed forecast data', () => {
+        const result = deserialiseWeeklyDetailedForecast(
+            jsonResponse,
+            TemperatureMeasurement.Celsius,
+            PrecipitationMeasurement.Millimeters,
+            WindSpeedMeasurement.MetersPerSecond
+        );
+
+        // Verify latLng is correctly reversed
+        expect(result.latLng).toEqual([59.9139, 10.7522]);
+
+        expect(result.dayOneForecast.hourlyForecasts['18HundredHours'].dateTime).toEqual("2024-02-14T18:00:00Z");
+        expect(result.dayTwoForecast.hourlyForecasts['00HundredHours']).toEqual({
+            dateTime: "2024-02-15T00:00:00Z",
+            temperature: 1.8,
+            humidity: 97.2,
+            windSpeed: 0.7,
+            windFromDirection: 137.7,
+            precipitation: 0.0,
+            weatherType: "cloudy"
+        });
+        expect(result.dayThreeForecast.hourlyForecasts['18HundredHours'].dateTime).toEqual("2024-02-16T18:00:00Z");
+        expect(result.dayFourForecast.hourlyForecasts['12HundredHours']).toEqual({
+            dateTime: "2024-02-17T12:00:00Z",
+            temperature: 4.1,
+            humidity: 61.2,
+            windSpeed: 2.2,
+            windFromDirection: 334.4,
+            precipitation: 0.0,
+            weatherType: "clearsky_day"
+        });
+        expect(result.dayFiveForecast.hourlyForecasts['18HundredHours'].dateTime).toEqual("2024-02-18T18:00:00Z");
+        expect(result.daySixForecast.hourlyForecasts['18HundredHours'].dateTime).toEqual("2024-02-19T18:00:00Z");
+        expect(result.daySevenForecast.hourlyForecasts['18HundredHours'].dateTime).toEqual("2024-02-20T18:00:00Z");
     });
 });

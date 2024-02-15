@@ -4,7 +4,6 @@ import { celsiusToFahrenheit, metersPerSecondToKilometersPerHour, metersPerSecon
 
 // TODO Create function that calculates total rainfall per day.
 
-//TODO Test
 /**
  * Used to retrieve the current forecast.
  * @param json The JSON obtained from Yr's LocationForecast API response.
@@ -40,7 +39,6 @@ export const deserialiseCurrentForecast = (
     };
 }
 
-//TODO Test
 /**
  * Used to retrieve the daily forecast. If the date is within the next 48 hours then the forecast is 
  * broken down into hourly increments, otherwise it is broken down into increments of 6 hours.
@@ -66,8 +64,8 @@ export const deserialiseDailyForecast = (
     // I decided to reverse the order of this because Google's geo-based API's all use the lat then lng 
     // order instead.
     const latLng: [number, number] = [
-      json.geometry.coordinates[1],
-      json.geometry.coordinates[0]
+        json.geometry.coordinates[1],
+        json.geometry.coordinates[0]
     ];
   
     // Initialisation of an object to store the forecast of each hour
@@ -75,27 +73,26 @@ export const deserialiseDailyForecast = (
     // Function used in the for-loop to return a forecast object for a specific time period.
     // Note that it returns null if the forecast data could not be found.
     const processHourlyData = (hour: string) => {
-      const hourlyForecastTime = getHourlyForecastDateFormat(hour, dateIso);
-      const timeseriesEntry = json.properties.timeseries.find(
-        (entry: any) => entry.time === hourlyForecastTime);
-      const thing = timeseriesEntry ? extractForecastData(
-        timeseriesEntry, temperatureFormat, precipitationFormat, windSpeedFormat) : null;
-      return thing
+        const hourlyForecastTime = getHourlyForecastDateFormat(hour, dateIso);
+        const timeseriesEntry = json.properties.timeseries.find(
+            (entry: any) => entry.time === hourlyForecastTime);
+        const thing = timeseriesEntry ? extractForecastData(
+            timeseriesEntry, temperatureFormat, precipitationFormat, windSpeedFormat) : null;
+        return thing
     };
   
     // Iterates 24 times - one for each hour of the day.
     for (let hour = 0; hour <= 23; hour++) {
-      const hourKey = `${hour.toString().padStart(2, '0')}HundredHours`;
-      hourlyForecasts[hourKey] = processHourlyData(hour.toString().padStart(2, '0'));
+        const hourKey = `${hour.toString().padStart(2, '0')}HundredHours`;
+        hourlyForecasts[hourKey] = processHourlyData(hour.toString().padStart(2, '0'));
     }
   
     return {
-      latLng,
-      hourlyForecasts
+        latLng,
+        hourlyForecasts
     };
-  }
+}
 
-//TODO Test
 /**
  * Used to retrieve the current forecast, along with the following 6 days forecasts (7 days total).
  * @param json The JSON obtained from Yr's LocationForecast API response.
@@ -168,7 +165,6 @@ export const deserialiseWeeklySimpleForecast = (
     };
 }
 
-//TODO Test
 /**
  * Used to retrieve the current forecast, along with the following 6 days forecasts (7 days total). 
  * The forecast is broken down into hourly (or 6 hourly) increments.
