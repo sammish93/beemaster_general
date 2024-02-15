@@ -1,15 +1,29 @@
 import { useNavigation } from "expo-router";
 import { View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "@/assets/styles";
-import { useTheme, Text } from "react-native-paper";
+import { useTheme, Text, Button } from "react-native-paper";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
+import { fetchWeatherForecast } from "@/data/api/weatherApi";
+import {
+  deserialiseDailyForecast,
+  deserialiseWeeklyDetailedForecast,
+  deserialiseWeeklySimpleForecast,
+  getForecastDateFormat,
+} from "@/domain/weatherForecastDeserialiser";
+import getWindDirectionIconFromAngle from "@/domain/windDirectionMapper";
+import {
+  PrecipitationMeasurement,
+  TemperatureMeasurement,
+  WindSpeedMeasurement,
+} from "@/constants/Measurements";
+import { calculateDailyRainfall } from "@/domain/rainfallCalculator";
 
 type RootStackParamList = {
   hive: {
@@ -29,6 +43,35 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
   const { exampleViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
 
+  const [data, setData] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
+
+        const thing = deserialiseDailyForecast(
+          data,
+          getForecastDateFormat(2),
+          userViewModel.temperaturePreference,
+          userViewModel.precipitationPreference,
+          userViewModel.windSpeedPreference
+        );
+
+        const rainfall = calculateDailyRainfall(data, getForecastDateFormat(2));
+
+        setData(
+          `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
+        );
+      } catch (error) {
+        // TODO Snackbar or toast etc as well.
+        setData("Error retrieving data");
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />
@@ -40,6 +83,10 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
         <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
+        <Text style={theme.fonts.bodySmall}>{data}</Text>
+        <Button icon={getWindDirectionIconFromAngle(45.8)}>
+          Wind Direction Example
+        </Button>
       </View>
     </SafeAreaView>
   );
