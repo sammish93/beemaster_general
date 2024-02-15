@@ -20,9 +20,10 @@
       "bundleIdentifier": "no.hiof.beemastergeneral.ios",
       "infoPlist": {
         "NSBluetoothAlwaysUsageDescription": "Allow app to run Bluetooth?",
-        "NSCameraUsageDescription": "Allow app to have premission to camera?",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow location?",
-        "NSPhotoLibraryUsageDescription": "Allow app to have premission to PhotoLibrary?"
+        "NSCameraUsageDescription": "Allow this app to have premission to your camera to be able to take pictures?",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow this app to acsess your location?",
+        "NSPhotoLibraryUsageDescription": "Allow app to have premission to PhotoLibrary to be able to upload images?",
+        "NSFileProviderDomainUsageDescription": "Allow this app needs access to the file system to store and manage files?"
       },
       "googleServicesFile": "./ios/GoogleService-Info.plist"
     },
@@ -37,7 +38,8 @@
         "android.permission.CAMERA",
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.BLUETOOTH",
-        "android.permission.READ_EXTERNAL_STORAGE"
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
       ]
     },
     "web": {

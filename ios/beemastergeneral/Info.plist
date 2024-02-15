@@ -28,7 +28,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>myapp</string>
-				<string>com.anonymous.beemaster.ios</string>
+				<string>no.hiof.beemastergeneral.ios</string>
 			</array>
 		</dict>
 	</array>
