@@ -2,6 +2,8 @@ import { PrecipitationMeasurement, TemperatureMeasurement, WindSpeedMeasurement 
 import { CurrentForecast, DailyForecast, WeeklyDetailedForecast, WeeklySimpleForecast } from "@/models/forecast";
 import { celsiusToFahrenheit, metersPerSecondToKilometersPerHour, metersPerSecondToKnots, metersPerSecondToMilesPerHour, millimetersToCentimeters, millimetersToInches } from './measurementConverter';
 
+// TODO Create function that calculates total rainfall per day.
+
 //TODO Test
 /**
  * Used to retrieve the current forecast.
@@ -218,7 +220,6 @@ export const deserialiseWeeklyDetailedForecast = (
     };
 }
 
-//TODO Test
 /**
  * Used to retrieve a string in ISO 8601 format representing both a date and time.
  * @param daysToAdd An integer for the amount of days in advance (from today's date).
@@ -234,7 +235,6 @@ export const getForecastDateTimeFormat = (daysToAdd: number): string => {
     return `${date.toISOString().split('T')[0]}T12:00:00Z`;
 }
 
-//TODO Test
 /**
  * Used to retrieve a the first part of a date time string in ISO 8601 format representing the date.
  * @param daysToAdd An integer for the amount of days in advance (from today's date).
@@ -250,7 +250,6 @@ export const getForecastDateFormat = (daysToAdd: number): string => {
     return date.toISOString().split('T')[0];
 }
 
-//TODO Test
 /**
  * Used to retrieve a string in ISO 8601 format representing both a date and time.
  * @param hours A string representing the hours of a 24-hour clock. "04" corresponds to 4 A.M. while 
@@ -264,6 +263,8 @@ export const getForecastDateFormat = (daysToAdd: number): string => {
  * console.log(dateString);
  */
 export const getHourlyForecastDateFormat = (hours: string, dateIso?: string): string => {
+    // TODO Add validation for hours and dateIso. Not too important though.
+
     if (dateIso) {
         return `${dateIso}T${hours}:00:00Z`
     }
@@ -274,7 +275,6 @@ export const getHourlyForecastDateFormat = (hours: string, dateIso?: string): st
     return `${date.toISOString().split('T')[0]}T${hours}:00:00Z`;
 }
 
-//TODO Test
 /**
  * A function which simplifies deserialisation from Yr's LocationForecast API.
  * @param timeseriesEntry The time series the format found in Yr's LocationForecast API.
