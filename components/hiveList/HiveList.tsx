@@ -6,11 +6,8 @@ import { MobXProviderContext } from 'mobx-react';
 import { View, Dimensions } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
 import styles from './styles';
-
-interface Hive {
-    id: string
-    name: string
-}
+import { HiveModel } from '@/models/hiveModel';
+import HiveInfo from '../HiveInfo';
 
 export interface HiveListProps {
     isListView: boolean
@@ -22,14 +19,22 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
     const theme = useTheme();
     const screenHeight = Dimensions.get("window").height / 2; 
 
-    const renderItem = ({ item }: { item: Hive }) => (
+    const renderItem = ({ item }: { item: HiveModel }) => (
         <TouchableRipple 
             style={styles(isListView, theme).hiveContainer}
             onPress={() => navigation.navigate('/hive/index', {hiveId: item.id})}
         >
             <View>
-                <Text style={theme.fonts.bodyLarge}>Name: {item.name}</Text>
-                <Text style={theme.fonts.bodyLarge}>Hive ID: {item.id}</Text>
+                <HiveInfo 
+                    id={''}
+                    name={item.name} 
+                    weather={'Sunny'} 
+                    wind={'4'} 
+                    temprature={21} 
+                    weight={57.6} 
+                    humidity={54} 
+                    precipitation={0.0} 
+                />
                 <Button
                     mode="contained"
                     onPress={() => {
