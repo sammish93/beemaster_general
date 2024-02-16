@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { NavigationProp } from "@react-navigation/native";
+import { NavigationProp } from '@react-navigation/native';
 import { Button, useTheme, Text } from "react-native-paper";
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { MobXProviderContext } from "mobx-react";
-import { View } from 'react-native';
-import { Dimensions } from 'react-native';
-import styles from "./styles";
+import { MobXProviderContext } from 'mobx-react';
+import { View, Dimensions } from 'react-native';
+import { TouchableRipple } from 'react-native-paper';
+import styles from './styles';
 
 interface Hive {
     id: string
@@ -23,18 +23,23 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
     const screenHeight = Dimensions.get("window").height / 2; 
 
     const renderItem = ({ item }: { item: Hive }) => (
-        <View style={styles(isListView, theme).hiveContainer}>
-            <Text style={theme.fonts.bodyLarge}>Name: {item.name}</Text>
-            <Text style={theme.fonts.bodyLarge}>Hive ID: {item.id}</Text>
-            <Button
-                mode="contained"
-                onPress={() => {
-                    navigation.navigate("/hive/forecast", { hiveId: item.id });
-                }}
-            >
-                Forecast
-            </Button>
-        </View>
+        <TouchableRipple 
+            style={styles(isListView, theme).hiveContainer}
+            onPress={() => navigation.navigate('/hive/index', {hiveId: item.id})}
+        >
+            <View>
+                <Text style={theme.fonts.bodyLarge}>Name: {item.name}</Text>
+                <Text style={theme.fonts.bodyLarge}>Hive ID: {item.id}</Text>
+                <Button
+                    mode="contained"
+                    onPress={() => {
+                        navigation.navigate("/hive/forecast", { hiveId: item.id });
+                    }}
+                >
+                    Forecast
+                </Button>
+            </View>
+        </TouchableRipple>
     );
 
     return (
