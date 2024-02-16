@@ -11,7 +11,7 @@ interface Hive {
     name: string
 }
 
-interface HiveListProps {
+export interface HiveListProps {
     navigation: NavigationProp<ReactNavigation.RootParamList>;
 }
 

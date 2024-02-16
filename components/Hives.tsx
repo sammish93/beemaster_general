@@ -6,8 +6,9 @@ import { useTheme } from "react-native-paper";
 import AddHiveButton from "./AddHiveButton";
 import AddHiveModal from "./AddHiveModal";
 import HiveList from "./HiveList";
+import { HiveListProps } from "./HiveList";
 
-const Hives = () => {
+const Hives = ({ navigation }: HiveListProps) => {
     const [modalVisible, setModalVisible] = useState(false);
     const { hiveViewModel } = useContext(MobXProviderContext);
     const theme = useTheme();
@@ -31,5 +32,7 @@ const Hives = () => {
                 />
             </View>
       </ScrollView>
-    )
+    );
 };
+
+export default Hives;

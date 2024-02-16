@@ -28,18 +28,7 @@ const HomeScreen = () => {
         title="Home"
       />
       <View style={styles(theme).main}>
-        <Text style={theme.fonts.titleLarge}>Home</Text>
-        <Text style={theme.fonts.bodyLarge}>
-          Example of data from view model:
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>{exampleViewModel.testString}</Text>
-        <Button
-          icon="camera"
-          mode="contained"
-          onPress={() => exampleViewModel.handleButtonPress()}
-        >
-          Press me to change the above text
-        </Button>
+        
         <Button
           mode="elevated"
           onPress={() => {
@@ -49,7 +38,6 @@ const HomeScreen = () => {
         >
           Go to Hive Screen
         </Button>
-        <Text style={theme.fonts.bodyLarge}>{userViewModel.userId}</Text>
       </View>
     </SafeAreaView>
   );
