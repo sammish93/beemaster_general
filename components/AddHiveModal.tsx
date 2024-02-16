@@ -42,13 +42,14 @@ const AddHiveModal = ({ isVisible, title, onClose, onAddHive }: AddHiveModalProp
                     onPress={onClose}
                 />
                  <Text 
-                    variant='headlineLarge' 
+                    variant='headlineSmall' 
                     style={styles(theme).modalTitle}
                 >
                     {title}
                 </Text>
                 <View style={styles(theme).modalContent}>
                     <TextInput
+                        style={{ marginHorizontal: 0 }}
                         label='Hive Name'
                         value={newHiveName}
                         onChangeText={setNewHiveName}

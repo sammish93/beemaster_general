@@ -24,14 +24,14 @@ const styles = (theme?: MD3Theme) => {
       maxWidth: 960,
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
-      padding: 25
+      padding: 20
     },
     modal: {
       alignItems: "center",
     },
     modalContent: {
-      padding: 20,
-      marginHorizontal: 30,
+      margin: 10,
+      padding: 10,
       gap: 10,
     },
     modalTitle: {
@@ -41,11 +41,15 @@ const styles = (theme?: MD3Theme) => {
     },
     hiveContainer: {
       backgroundColor: dynamicTheme.colors.secondaryContainer,
-      margin: 10,
+      flex: 1,
+      maxWidth: Platform.select({
+        ios: 160,
+        default: 960
+      }),
+      margin: 6,
       gap: 12,
-      padding: 15,
+      padding: 10,
       borderRadius: 10,
-
     },
     topBarContainer: {
       flexDirection: "row",

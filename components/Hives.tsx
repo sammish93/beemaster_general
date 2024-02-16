@@ -1,7 +1,7 @@
 import styles from "@/assets/styles";
 import { MobXProviderContext } from "mobx-react";
 import React, { useContext, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 import { useTheme } from "react-native-paper";
 import AddHiveButton from "./AddHiveButton";
 import AddHiveModal from "./AddHiveModal";
@@ -20,18 +20,16 @@ const Hives = ({ navigation }: HiveListProps) => {
       }
     
     return (
-        <ScrollView>
-            <View style={styles(theme).main}>
-                <HiveList navigation={navigation} />
-                <AddHiveButton onAddHivePress={() => setModalVisible(true)}/>
-                <AddHiveModal 
-                    isVisible={modalVisible}
-                    title="Enter New Hive Information"
-                    onClose={() => setModalVisible(false)}
-                    onAddHive={handleAddHive}
-                />
-            </View>
-      </ScrollView>
+        <View>
+            <HiveList navigation={navigation} />
+            <AddHiveButton onAddHivePress={() => setModalVisible(true)}/>
+            <AddHiveModal 
+                isVisible={modalVisible}
+                title="Enter New Hive Information"
+                onClose={() => setModalVisible(false)}
+                onAddHive={handleAddHive}
+            />
+        </View>
     );
 };
 

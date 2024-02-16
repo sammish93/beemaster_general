@@ -8,9 +8,7 @@ import TopBar from "@/components/TopBar";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import HiveList from "@/components/HiveList";
-import AddHiveButton from "@/components/AddHiveButton";
-import AddHiveModal from "@/components/AddHiveModal";
+import Hives from "@/components/Hives";
 
 
 const HomeScreen = () => {
@@ -28,7 +26,15 @@ const HomeScreen = () => {
         title="Home"
       />
       <View style={styles(theme).main}>
-        
+        <Hives navigation={navigation}/>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default observer(HomeScreen);
+
+/*
         <Button
           mode="elevated"
           onPress={() => {
@@ -38,9 +44,4 @@ const HomeScreen = () => {
         >
           Go to Hive Screen
         </Button>
-      </View>
-    </SafeAreaView>
-  );
-};
-
-export default observer(HomeScreen);
+*/
