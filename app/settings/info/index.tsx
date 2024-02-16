@@ -9,6 +9,7 @@ import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import LocationPermissionComponent from "@/components/LocationPermissionsSwitch";
+import CameraPermissionsSwitch from "@/components/CameraSwitchPermission";
 
 const SettingsInfoScreen = () => {
   const theme = useTheme();
@@ -26,6 +27,7 @@ const SettingsInfoScreen = () => {
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Settings Info</Text>
         <LocationPermissionComponent />
+        <CameraPermissionsSwitch />
       </View>
     </SafeAreaView>
   );

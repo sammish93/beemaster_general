@@ -55,7 +55,7 @@ const SettingsScreen = () => {
         >
           Logout
         </Button>
-        <Permissions_Modal />
+
       </View>
     </SafeAreaView>
   );
