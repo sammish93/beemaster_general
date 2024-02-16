@@ -26,7 +26,7 @@ const HomeScreen = () => {
         title="Home"
       />
       <View style={styles(theme).main}>
-        <Hives navigation={navigation}/>
+        <Hives isGridView={true} navigation={navigation}/>
       </View>
     </SafeAreaView>
   );

@@ -39,18 +39,6 @@ const styles = (theme?: MD3Theme) => {
       marginBottom: 8, 
       marginHorizontal: 15
     },
-    hiveContainer: {
-      backgroundColor: dynamicTheme.colors.secondaryContainer,
-      flex: 1,
-      maxWidth: Platform.select({
-        ios: 160,
-        default: 960
-      }),
-      margin: 6,
-      gap: 12,
-      padding: 10,
-      borderRadius: 10,
-    },
     topBarContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
@@ -89,9 +77,9 @@ const styles = (theme?: MD3Theme) => {
     },
     toggleContainer: {
       flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 15,
-        gap: 5
+      alignItems: 'center',
+      paddingVertical: 15,
+      gap: 5
     },
     closeButton: {
       position: 'absolute',

@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { NavigationProp } from "@react-navigation/native";
-import { Button, useTheme, Text, Switch } from "react-native-paper";
+import { Button, useTheme, Text, Switch, MD3Theme } from "react-native-paper";
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MobXProviderContext } from "mobx-react";
 import { View, StyleSheet } from 'react-native';
-import styles from '@/assets/styles';
+import { Dimensions } from 'react-native';
+import { customLightTheme } from "../assets/themes"
 
 interface Hive {
     id: string
@@ -12,16 +13,17 @@ interface Hive {
 }
 
 export interface HiveListProps {
+    isListView: boolean
     navigation: NavigationProp<ReactNavigation.RootParamList>;
 }
 
-const HiveList = ({ navigation }: HiveListProps) => {
+const HiveList = ({ isListView, navigation }: HiveListProps) => {
     const { hiveViewModel } = useContext(MobXProviderContext);
-    const [isGridView, setIsGridView] = useState(false);
     const theme = useTheme();
+    const screenHeight = Dimensions.get("window").height / 2; 
 
     const renderItem = ({ item }: { item: Hive }) => (
-        <View style={styles(theme).hiveContainer}>
+        <View style={styles(isListView, theme).hiveContainer}>
             <Text style={theme.fonts.bodyLarge}>Name: {item.name}</Text>
             <Text style={theme.fonts.bodyLarge}>Hive ID: {item.id}</Text>
             <Button
@@ -36,24 +38,35 @@ const HiveList = ({ navigation }: HiveListProps) => {
     );
 
     return (
-        <>
-        <View style={styles(theme).toggleContainer}>
-            <Switch value={isGridView} onValueChange={() => setIsGridView(!isGridView)} />
-            <Text>{ isGridView ? "Detailed View" : "Simplified View"}</Text>
-        </View>
         <GestureHandlerRootView>
             <FlatList 
-                contentContainerStyle={{  }}
+                style={{maxHeight: screenHeight}}
                 data={hiveViewModel.hives}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
-                key={isGridView ? 'grid' : 'list'}
-                numColumns={isGridView ? 2 : 1}
+                key={isListView ? 'list' : 'grid'}
+                numColumns={isListView ? 1 : 2}
             />
         </GestureHandlerRootView>
-        </>
     );
 };
 
+
+const styles = (isListView: boolean, theme?: MD3Theme) => {
+    const dynamicTheme = theme ? theme : customLightTheme
+
+    return StyleSheet.create({
+        hiveContainer: {
+            backgroundColor: dynamicTheme.colors.secondaryContainer,
+            maxWidth: isListView ? "100%" : "50%",
+            margin: 6,
+            gap: 12,
+            flex: 1,
+            padding: 10,
+            borderRadius: 10,
+          }
+    })
+
+} 
 
 export default HiveList;
