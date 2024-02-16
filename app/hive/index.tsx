@@ -64,16 +64,16 @@ const HiveScreen = (params: HiveScreenProps) => {
           </TouchableOpacity>,
         ]}
       />
+      <AddHiveModal 
+          isVisible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          onAddHive={handleAddHive}
+        />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Hive Screen</Text>
         <HiveList navigation={navigation} />
         {/* Temporarly implementation. */}
         <AddHiveButton onAddHivePress={() => setModalVisible(true)}/>
-        <AddHiveModal 
-          isVisible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          onAddHive={handleAddHive}
-        />
       </View>
     </SafeAreaView>
   );

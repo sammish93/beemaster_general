@@ -25,6 +25,11 @@ const styles = (theme?: MD3Theme) => {
       backgroundColor: dynamicTheme.colors.surfaceVariant,
       padding: 25
     },
+    modal: {
+      zIndex: 1000,
+      justifyContent: "center",
+      alignItems: "center"
+    },
     topBarContainer: {
       flexDirection: "row",
       justifyContent: "space-between",

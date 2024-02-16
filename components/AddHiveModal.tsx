@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useTheme } from "react-native-paper";
 import { Modal, Portal, Button, TextInput } from 'react-native-paper';
+import styles from "@/assets/styles";
 
 interface AddHiveModalProps {
     isVisible: boolean
@@ -9,6 +11,7 @@ interface AddHiveModalProps {
 
 const AddHiveModal = ({ isVisible, onClose, onAddHive }: AddHiveModalProps) => {
     const [newHiveName, setNewHiveName] = useState('');
+    const theme = useTheme();
 
     const containerStyle = {backgroundColor: 'white', padding: 20};
 
@@ -22,10 +25,10 @@ const AddHiveModal = ({ isVisible, onClose, onAddHive }: AddHiveModalProps) => {
 
     // TODO: Need to add some styling.
     return (
-        <Portal.Host>
             <Modal 
+            style={styles(theme).modal}
                 testID='test-modal'
-                visible={isVisible} 
+                visible={isVisible}
                 onDismiss={onClose} 
                 contentContainerStyle={containerStyle}
             >
@@ -38,7 +41,6 @@ const AddHiveModal = ({ isVisible, onClose, onAddHive }: AddHiveModalProps) => {
                     Add Hive
                 </Button>
             </Modal>
-        </Portal.Host>
     );
 };
 

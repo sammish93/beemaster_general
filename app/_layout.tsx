@@ -13,6 +13,7 @@ import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
 import { LoginScreen } from "@/components/layouts/login";
 import { customDarkTheme, customLightTheme } from "@/assets/themes";
 import { StatusBar } from "expo-status-bar";
+import { Portal } from 'react-native-paper';
 import React from "react";
 
 export {
@@ -95,7 +96,9 @@ const RootLayout = () => {
   return (
     <Provider exampleViewModel={exampleViewModel} userViewModel={userViewModel} hiveViewModel={hiveViewModel}>
       <PaperProvider theme={paperTheme}>
-        <DrawerLayout theme={paperTheme} mode={colorScheme} />
+        <Portal.Host>
+          <DrawerLayout theme={paperTheme} mode={colorScheme} />
+        </Portal.Host>
       </PaperProvider>
     </Provider>
   );
