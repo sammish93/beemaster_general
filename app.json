@@ -52,6 +52,12 @@
       "expo-localization",
       "@react-native-google-signin/google-signin",
       [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ],
+      [
         "react-native-permissions",
         {
           "iosPermissions": [

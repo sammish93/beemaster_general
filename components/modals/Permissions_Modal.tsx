@@ -39,7 +39,7 @@ const MobileModal = () => {
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Button onPress={handleRequestCameraPermission}> Request Camera Permission</Button>
+            <Button mode="contained" onPress={handleRequestCameraPermission}> Request Camera Permission</Button>
             <Portal>
                 <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)}>
                     <Dialog.Title>Permission Request</Dialog.Title>
@@ -95,7 +95,7 @@ const WebModal = () => {
 
     return (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <Button onPress={handleRequestCameraPermission}> Request Camera Permission</Button>
+            <Button mode="contained" onPress={handleRequestCameraPermission}> Request Camera Permission</Button>
             <Portal>
                 <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)}>
                     <Dialog.Title>Permission Request</Dialog.Title>

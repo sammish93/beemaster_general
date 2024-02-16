@@ -8,6 +8,8 @@
 		<string>Allow app to have premission to camera?</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>Allow location?</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Allow location?</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Allow app to have premission to PhotoLibrary? </string>
 		<key>NSFileProviderCapabilities</key>
