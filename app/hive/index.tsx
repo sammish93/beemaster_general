@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigation } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
@@ -12,12 +12,6 @@ import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIc
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 
-
-// Components related to Add Hive functionality.
-import AddHiveButton from "@/components/AddHiveButton";
-import AddHiveModal from "@/components/AddHiveModal";
-import HiveList from "@/components/HiveList";
-
 export type RootStackParamList = {
   hive: {
     hiveId: string;
@@ -30,19 +24,11 @@ type HiveScreenProps = {
 };
 
 const HiveScreen = (params: HiveScreenProps) => {
-  const [modalVisible, setModalVisible] = useState(false);
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
-  const { hiveViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
-
-  const handleAddHive = (hiveName: string) => {
-    const newHiveId = `hive-${Date.now()}`; // Temporarly solution.
-    hiveViewModel.addHive({ id: newHiveId, name: hiveName });
-    setModalVisible(false);
-  }
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -66,15 +52,7 @@ const HiveScreen = (params: HiveScreenProps) => {
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Hive Screen</Text>
-        <HiveList navigation={navigation} />
-        {/* Temporarly implementation. */}
-        <AddHiveButton onAddHivePress={() => setModalVisible(true)}/>
-        <AddHiveModal 
-          isVisible={modalVisible}
-          title="Enter New Hive Information"
-          onClose={() => setModalVisible(false)}
-          onAddHive={handleAddHive}
-        />
+        <Text>Hive ID: {hiveId}</Text>
       </View>
     </SafeAreaView>
   );

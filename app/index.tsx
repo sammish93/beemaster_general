@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "expo-router";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { Button, useTheme, Text } from "react-native-paper";
@@ -8,6 +8,9 @@ import TopBar from "@/components/TopBar";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
+import HiveList from "@/components/HiveList";
+import AddHiveButton from "@/components/AddHiveButton";
+import AddHiveModal from "@/components/AddHiveModal";
 
 
 const HomeScreen = () => {

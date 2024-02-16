@@ -36,12 +36,14 @@ const HiveList = ({ navigation }: HiveListProps) => {
     );
 
     return (
+        <>
+        <View style={styles(theme).toggleContainer}>
+            <Switch value={isGridView} onValueChange={() => setIsGridView(!isGridView)} />
+            <Text>{ isGridView ? "Detailed View" : "Simplified View"}</Text>
+        </View>
         <GestureHandlerRootView>
-            <View style={styles(theme).toggleContainer}>
-                <Switch value={isGridView} onValueChange={() => setIsGridView(!isGridView)} />
-                <Text>{ isGridView ? "Detailed View" : "Simplified View"}</Text>
-            </View>
             <FlatList 
+                contentContainerStyle={{  }}
                 data={hiveViewModel.hives}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
@@ -49,6 +51,7 @@ const HiveList = ({ navigation }: HiveListProps) => {
                 numColumns={isGridView ? 2 : 1}
             />
         </GestureHandlerRootView>
+        </>
     );
 };
 
