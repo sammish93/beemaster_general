@@ -10,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import LocationPermissionComponent from "@/components/LocationPermissionsSwitch";
 import CameraPermissionsSwitch from "@/components/CameraSwitchPermission";
+import MediaFilePermissionSwitch from "@/components/MediaFileSwitchPermission";
 
 const SettingsInfoScreen = () => {
   const theme = useTheme();
@@ -28,6 +29,7 @@ const SettingsInfoScreen = () => {
         <Text style={theme.fonts.titleLarge}>Settings Info</Text>
         <LocationPermissionComponent />
         <CameraPermissionsSwitch />
+        <MediaFilePermissionSwitch />
       </View>
     </SafeAreaView>
   );

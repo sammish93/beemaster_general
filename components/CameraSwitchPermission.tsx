@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, Switch } from 'react-native-paper';
 import { View, Platform } from 'react-native';
-import { PERMISSIONS, request, check, checkMultiple, requestMultiple } from 'react-native-permissions';
+import { PERMISSIONS, request, check } from 'react-native-permissions';
 
 type PermissionStatus = 'granted' | 'denied' | 'undetermined' | 'limited' | 'blocked' | 'unavailable';
 

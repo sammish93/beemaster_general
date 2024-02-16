@@ -8,8 +8,7 @@ import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import React, { useState } from 'react';
-import Permissions_Modal from "@/components/modals/Permissions_Modal";
+import React from 'react';
 
 
 const SettingsScreen = () => {
