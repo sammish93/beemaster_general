@@ -39,6 +39,14 @@ const styles = (theme?: MD3Theme) => {
       marginBottom: 8, 
       marginHorizontal: 15
     },
+    hiveContainer: {
+      backgroundColor: dynamicTheme.colors.secondaryContainer,
+      margin: 10,
+      gap: 12,
+      padding: 15,
+      borderRadius: 10,
+
+    },
     topBarContainer: {
       flexDirection: "row",
       justifyContent: "space-between",

@@ -21,7 +21,7 @@ const HiveList = ({ navigation }: HiveListProps) => {
     const theme = useTheme();
 
     const renderItem = ({ item }: { item: Hive }) => (
-        <View style={{ marginVertical: 8}}>
+        <View style={styles(theme).hiveContainer}>
             <Text style={theme.fonts.bodyLarge}>Name: {item.name}</Text>
             <Text style={theme.fonts.bodyLarge}>Hive ID: {item.id}</Text>
             <Button
