@@ -35,7 +35,7 @@ const styles = (theme?: MD3Theme) => {
       gap: 10,
     },
     modalTitle: {
-      marginTop: 20, 
+      marginTop: 25, 
       marginBottom: 8, 
       marginHorizontal: 15
     },
@@ -74,6 +74,12 @@ const styles = (theme?: MD3Theme) => {
     },
     headline: {
       color: dynamicTheme.colors.onSurfaceVariant
+    },
+    toggleContainer: {
+      flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 15,
+        gap: 5
     },
     closeButton: {
       position: 'absolute',

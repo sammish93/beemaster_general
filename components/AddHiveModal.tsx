@@ -33,6 +33,7 @@ const AddHiveModal = ({ isVisible, title, onClose, onAddHive }: AddHiveModalProp
                 visible={isVisible}
                 onDismiss={onClose} 
                 contentContainerStyle={containerStyle}
+      
             >
                 <IconButton 
                     style={styles(theme).closeButton}
