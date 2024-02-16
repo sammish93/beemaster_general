@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useTheme } from "react-native-paper";
-import { Modal, Portal, Button, TextInput } from 'react-native-paper';
+import { Modal, Portal, Button, TextInput, IconButton, Text } from 'react-native-paper';
 import styles from "@/assets/styles";
+import { View } from 'react-native';
 
 interface AddHiveModalProps {
     isVisible: boolean
+    title: string
     onClose: () => void
     onAddHive: (hiveName: string) => void
 }
 
-const AddHiveModal = ({ isVisible, onClose, onAddHive }: AddHiveModalProps) => {
+const AddHiveModal = ({ isVisible, title, onClose, onAddHive }: AddHiveModalProps) => {
     const [newHiveName, setNewHiveName] = useState('');
     const theme = useTheme();
 
@@ -23,24 +25,39 @@ const AddHiveModal = ({ isVisible, onClose, onAddHive }: AddHiveModalProps) => {
 
     const resetHiveName = () => setNewHiveName('');
 
-    // TODO: Need to add some styling.
     return (
+        <Portal>
             <Modal 
-            style={styles(theme).modal}
+                style={styles(theme).modal}
                 testID='test-modal'
                 visible={isVisible}
                 onDismiss={onClose} 
                 contentContainerStyle={containerStyle}
             >
-                <TextInput
-                    label='Hive Name'
-                    value={newHiveName}
-                    onChangeText={setNewHiveName}
+                <IconButton 
+                    style={styles(theme).closeButton}
+                    icon='close'
+                    iconColor='black'
+                    onPress={onClose}
                 />
-                <Button mode='contained' onPress={handleAddNewHive}>
-                    Add Hive
-                </Button>
+                 <Text 
+                    variant='headlineLarge' 
+                    style={styles(theme).modalTitle}
+                >
+                    {title}
+                </Text>
+                <View style={styles(theme).modalContent}>
+                    <TextInput
+                        label='Hive Name'
+                        value={newHiveName}
+                        onChangeText={setNewHiveName}
+                    />
+                    <Button mode='contained' onPress={handleAddNewHive}>
+                        Add Hive
+                    </Button>
+                </View>
             </Modal>
+        </Portal>
     );
 };
 

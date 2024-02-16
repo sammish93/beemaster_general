@@ -1,6 +1,7 @@
 
 import { Dimensions, StyleSheet, Platform } from "react-native";
 import { MD3Theme } from "react-native-paper";
+import { red100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 import { customFontConfig, customLightTheme } from "./themes";
 
 const defaultTheme = customLightTheme;
@@ -26,9 +27,17 @@ const styles = (theme?: MD3Theme) => {
       padding: 25
     },
     modal: {
-      zIndex: 1000,
-      justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
+    },
+    modalContent: {
+      padding: 20,
+      marginHorizontal: 30,
+      gap: 10,
+    },
+    modalTitle: {
+      marginTop: 20, 
+      marginBottom: 8, 
+      marginHorizontal: 15
     },
     topBarContainer: {
       flexDirection: "row",
@@ -66,6 +75,11 @@ const styles = (theme?: MD3Theme) => {
     headline: {
       color: dynamicTheme.colors.onSurfaceVariant
     },
+    closeButton: {
+      position: 'absolute',
+      top: 0, 
+      right: 0
+    }
   });
 };
 
