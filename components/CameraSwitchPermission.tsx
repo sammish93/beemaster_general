@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, Switch } from 'react-native-paper';
 import { View, Platform } from 'react-native';
 import { PERMISSIONS, request, check } from 'react-native-permissions';
+//import { Camera } from 'expo-camera';
 
 type PermissionStatus = 'granted' | 'denied' | 'undetermined' | 'limited' | 'blocked' | 'unavailable';
 
@@ -45,8 +46,43 @@ const Mobile = () => {
             />
         </View>
     );
-};
+};/* using expo, but web crashes:
+const Mobile = () => {
+    const [cameraPermission, setCameraPermission] = useState<PermissionStatus | null>(null);
+    const [isEnabled, setIsEnabled] = useState(false);
 
+    useEffect(() => {
+        checkAndRequestCameraPermission();
+    }, []);
+
+    const checkAndRequestCameraPermission = async () => {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        setCameraPermission(status);
+        setIsEnabled(status === 'granted');
+    };
+
+    const handleSwitchChange = async (newValue: boolean) => {
+        if (newValue) {
+            const { status } = await Camera.requestCameraPermissionsAsync();
+            setCameraPermission(status);
+            setIsEnabled(status === 'granted');
+        } else {
+            setCameraPermission('denied');
+            setIsEnabled(false);
+        }
+    };
+
+    return (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text>Camera Permission: {cameraPermission}</Text>
+            <Switch
+                onValueChange={handleSwitchChange}
+                value={isEnabled}
+            />
+        </View>
+    );
+};
+*/
 const Web = () => {
     const [cameraPermission, setCameraPermission] = useState<PermissionStatus>('undetermined');
     const [isEnabled, setIsEnabled] = useState(false);
