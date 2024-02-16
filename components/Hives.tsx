@@ -1,12 +1,12 @@
 import styles from "@/assets/styles";
 import { MobXProviderContext } from "mobx-react";
 import React, { useContext, useState } from "react";
-import { ScrollView, Switch, View, Text } from "react-native";
+import { Switch, View, Text } from "react-native";
 import { useTheme } from "react-native-paper";
 import AddHiveButton from "./AddHiveButton";
 import AddHiveModal from "./AddHiveModal";
-import HiveList from "./HiveList";
-import { HiveListProps } from "./HiveList";
+import HiveList from "./hiveList/HiveList";
+import { HiveListProps } from "./hiveList/HiveList";
 
 const Hives = ({ navigation }: HiveListProps) => {
     const [modalVisible, setModalVisible] = useState(false);
