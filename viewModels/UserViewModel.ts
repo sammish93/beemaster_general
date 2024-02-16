@@ -4,6 +4,8 @@ import { I18n } from "i18n-js";
 import en from '@/constants/localisation/en.json';
 import no from '@/constants/localisation/no.json';
 import { PrecipitationMeasurement, TemperatureMeasurement, WeightMeasurement, WindSpeedMeasurement } from "@/constants/Measurements";
+import {auth} from "@/firebaseConfig";
+import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously } from "firebase/auth";
 
 class UserViewModel {
     constructor() {
@@ -48,6 +50,60 @@ class UserViewModel {
 
     @action public setWeightPreference = (prefence: WeightMeasurement) : void => {
         this.weightPreference = prefence;
+    }
+
+        @action signInWithGoogle = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            
+            this.setUserId(result.user.uid);
+        } catch (error) {
+            console.error("Error signing in with Google: ", error);
+          }
+      }
+
+      //TODO Fix all the logic in here. Can't signin if they already have an account. 
+      @action signInWithEmail = async (email: string, password: string) => {
+        try {
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            this.setUserId(result.user.uid);
+        } catch (error) {
+            if (error === 'auth/invalid-login-credentials') {
+                
+                console.log("User not found, creating a new account...");
+                try {
+                    const signUpResult = await createUserWithEmailAndPassword(auth, email, password);
+                    this.setUserId(signUpResult.user.uid);
+                    console.log("User signed up and signed in successfully");
+                } catch (signUpError) {
+                    console.error("Error signing up: ", signUpError);
+                    
+                }
+            } else {
+                
+                console.error("Error signing in with email: ", error);
+            }
+        }
+    };
+
+    @action signUpWithEmail = async (email: string, password: string) => {
+        try {
+            const result = await createUserWithEmailAndPassword(auth, email, password);
+            this.setUserId(result.user.uid);
+        } catch (error) {
+            console.error("Error signing up with email: ", error);
+        }
+    }
+
+
+    @action signInAnonymously = async () => {
+      try {
+          const result = await signInAnonymously(auth);
+          this.setUserId(result.user.uid);
+      } catch (error) {
+          console.error("Error signing in anonymously: ", error);
+      }
     }
 
     // Clears all the data in this view model.
