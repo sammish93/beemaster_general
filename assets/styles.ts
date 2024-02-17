@@ -22,6 +22,9 @@ const styles = (theme?: MD3Theme) => {
       flex: 1,
       justifyContent: "center",
       maxWidth: 960,
+      width: Platform.select({
+        'web': screenWidth
+      }),
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
       padding: 20
