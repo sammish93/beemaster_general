@@ -11,6 +11,7 @@ interface HiveInfoProps {
 const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
     const theme = useTheme();
 
+    // Temporary solution.
     const data = [
         { label: 'Weather', value: "Sunny" },
         { label: 'Wind', value: `4 km/h` },
@@ -22,9 +23,13 @@ const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
         { label: 'Counter', value: '421 p/h' },
     ];
 
+    const filteredData = isDetailedView ? data : data.filter(({ label }) => 
+        label === 'Temperature' || label === 'Wind' || label === 'Rain'
+    );
+
     const mid = data.length / 2;
-    const firstHalf = data.slice(0, mid);
-    const secondHalf = data.slice(mid);
+    const firstHalf = filteredData.slice(0, mid);
+    const secondHalf = filteredData.slice(mid);
 
     return (
         <>
@@ -32,8 +37,8 @@ const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
             <View style={{ 
                 flexDirection: "row", 
                 justifyContent: "space-between",
-                flexWrap: "wrap",
-                padding: 10
+                gap: isDetailedView ? 30 : 0,
+                padding: isDetailedView ? 8 : 4
             }}>
                 <View style={{flex: 1}}>
                     {firstHalf.map(({label, value}) => (
@@ -43,14 +48,16 @@ const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
                         </View>
                     ))}
                 </View>
-                <View style={{flex: 1}}>
-                    {secondHalf.map(({label, value}) => (
-                        <View key={label} style={{flexDirection: 'row', margin: 5}}>
-                            {isDetailedView && <Text style={theme.fonts.bodyLarge}>{label}: </Text>}
-                            <Text style={theme.fonts.bodyLarge}>{value}</Text>
-                        </View>
-                    ))}
-                </View>
+                {secondHalf.length !== 0 && (
+                    <View style={{flex: 1}}>
+                        {secondHalf.map(({label, value}) => (
+                            <View key={label} style={{flexDirection: 'row', margin: 5}}>
+                                {isDetailedView && <Text style={theme.fonts.bodyLarge}>{label}: </Text>}
+                                <Text style={theme.fonts.bodyLarge}>{value}</Text>
+                            </View>
+                        ))}
+                    </View>
+                )}
             </View>
         </>
     )
