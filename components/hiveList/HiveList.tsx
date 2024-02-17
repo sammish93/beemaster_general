@@ -25,16 +25,7 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
             onPress={() => navigation.navigate('/hive/index', {hiveId: item.id})}
         >
             <View>
-                <HiveInfo 
-                    id={''}
-                    name={item.name} 
-                    weather={'Sunny'} 
-                    wind={'4'} 
-                    temprature={21} 
-                    weight={57.6} 
-                    humidity={54} 
-                    precipitation={0.0} 
-                />
+                <HiveInfo item={item} isDetailedView={isListView} />
                 <Button
                     mode="contained"
                     onPress={() => {

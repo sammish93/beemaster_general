@@ -3,17 +3,22 @@ import React from "react";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 
-const HiveInfo = (item: HiveModel) => {
+interface HiveInfoProps {
+    item: HiveModel
+    isDetailedView: boolean
+}
+
+const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
     const theme = useTheme();
 
     const data = [
-        { label: 'Weather', value: item.weather },
-        { label: 'Wind', value: `${item.wind} km/h` },
-        { label: 'Temperature', value: `${item.temprature} °C` },
-        { label: 'Rain', value: `${item.precipitation}mm` },
-        { label: 'Weight', value: `${item.weight} kg` },
-        { label: 'Hive Temperature', value: `34.2 °C` }, 
-        { label: 'Humidity', value: `${item.humidity}%` },
+        { label: 'Weather', value: "Sunny" },
+        { label: 'Wind', value: `4 km/h` },
+        { label: 'Temperature', value: `21 °C` },
+        { label: 'Rain', value: `0.0mm 0%` },
+        { label: 'Weight', value: `57.6 kg` },
+        { label: 'Hive Temp', value: `34.2 °C` }, 
+        { label: 'Humidity', value: `54%` },
         { label: 'Counter', value: '421 p/h' },
     ];
 
@@ -23,20 +28,15 @@ const HiveInfo = (item: HiveModel) => {
             <View style={{ 
                 flexDirection: "row", 
                 justifyContent: "space-between",
+                flexWrap: "wrap",
                 padding: 10
             }}>
-                <View>
-                    <Text style={theme.fonts.bodyLarge}>Weather: {item.weather}</Text>
-                    <Text style={theme.fonts.bodyLarge}>Wind: {`${item.wind} km/h`}</Text>
-                    <Text style={theme.fonts.bodyLarge}>Temperature: {`${item.temprature} °C`}</Text>
-                    <Text style={theme.fonts.bodyLarge}>Rain: {`${item.precipitation}mm`}</Text>
-                </View>
-                <View>
-                    <Text style={theme.fonts.bodyLarge}>Weight: {`${item.weight} kg`}</Text>
-                    <Text style={theme.fonts.bodyLarge}>Temperature: {`34.2 °C`}</Text>
-                    <Text style={theme.fonts.bodyLarge}>Humidity: {`${item.humidity}%`}</Text>
-                    <Text style={theme.fonts.bodyLarge}>Counter: 421 p/h</Text>
-                </View>
+                {data.map(({ label, value }) => (
+                    <View key={label} style={{ flexDirection: 'row', margin: 5 }}>
+                        {isDetailedView && <Text style={theme.fonts.bodyLarge}>{label}: </Text>}
+                        <Text style={theme.fonts.bodyLarge}>{value}</Text>
+                    </View>
+                ))}
             </View>
         </>
     )
