@@ -22,6 +22,10 @@ const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
         { label: 'Counter', value: '421 p/h' },
     ];
 
+    const mid = data.length / 2;
+    const firstHalf = data.slice(0, mid);
+    const secondHalf = data.slice(mid);
+
     return (
         <>
             <Text style={theme.fonts.titleMedium}>{item.name}</Text>
@@ -31,12 +35,22 @@ const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
                 flexWrap: "wrap",
                 padding: 10
             }}>
-                {data.map(({ label, value }) => (
-                    <View key={label} style={{ flexDirection: 'row', margin: 5 }}>
-                        {isDetailedView && <Text style={theme.fonts.bodyLarge}>{label}: </Text>}
-                        <Text style={theme.fonts.bodyLarge}>{value}</Text>
-                    </View>
-                ))}
+                <View style={{flex: 1}}>
+                    {firstHalf.map(({label, value}) => (
+                        <View key={label} style={{flexDirection: 'row', margin: 5}}>
+                            {isDetailedView && <Text style={theme.fonts.bodyLarge}>{label}: </Text>}
+                            <Text style={theme.fonts.bodyLarge}>{value}</Text>
+                        </View>
+                    ))}
+                </View>
+                <View style={{flex: 1}}>
+                    {secondHalf.map(({label, value}) => (
+                        <View key={label} style={{flexDirection: 'row', margin: 5}}>
+                            {isDetailedView && <Text style={theme.fonts.bodyLarge}>{label}: </Text>}
+                            <Text style={theme.fonts.bodyLarge}>{value}</Text>
+                        </View>
+                    ))}
+                </View>
             </View>
         </>
     )
