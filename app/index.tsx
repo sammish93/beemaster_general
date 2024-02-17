@@ -34,14 +34,3 @@ const HomeScreen = () => {
 
 export default observer(HomeScreen);
 
-/*
-        <Button
-          mode="elevated"
-          onPress={() => {
-            const hiveId = "hive-1234-1234-abc";
-            navigation.navigate("/hive/index", { hiveId: hiveId });
-          }}
-        >
-          Go to Hive Screen
-        </Button>
-*/
