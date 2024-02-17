@@ -23,7 +23,7 @@ const styles = (theme?: MD3Theme) => {
       justifyContent: "center",
       maxWidth: 960,
       width: Platform.select({
-        'web': screenWidth
+        'web': "50%"
       }),
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
