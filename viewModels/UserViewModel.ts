@@ -11,7 +11,7 @@ class UserViewModel {
         this.i18n = new I18n({
             en,
             no,
-          });
+        });
         this.i18n.locale = Localization.locale;
         this.i18n.enableFallback = true;
 
@@ -20,17 +20,23 @@ class UserViewModel {
     }
 
     // Localisation
-    @observable i18n;    
+    @observable i18n;
     @observable userId = "";
+    @observable theme = "light";
 
-    @action public setUserId = (val: string) : void => {
+    @action public setUserId = (val: string): void => {
         this.userId = val;
+    }
+
+    @action public setTheme = (theme: string): void => {
+        this.theme = theme;
     }
 
     // Clears all the data in this view model.
     // Useful for when a user logs out.
-    @action public clear = () : void => {
+    @action public clear = (): void => {
         this.userId = "";
+        //this.theme = "light"; // reset theme on logout
     }
 }
 
