@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, Platform } from 'react-native';
 import { request, PERMISSIONS } from 'react-native-permissions';
 
+//Used in hive page to ask user for camera permission
+
+
 type PermissionStatus = 'granted' | 'denied' | 'undetermined' | 'unavailable' | 'blocked' | 'limited';
 
 
-const PermissionManager = () => {
+const PermissionManagerCamera = () => {
     const [cameraPermission, setCameraPermission] = useState<PermissionStatus>('undetermined');
 
     useEffect(() => {
@@ -62,7 +65,7 @@ const PermissionManager = () => {
     );
 };
 
-export default PermissionManager;
+export default PermissionManagerCamera;
 
 
 

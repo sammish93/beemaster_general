@@ -3,25 +3,19 @@ import { View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import React from "react";
-import { useTheme, Text, Switch } from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import LocationPermissionComponent from "@/components/LocationPermissionsSwitch";
-import CameraPermissionsSwitch from "@/components/CameraSwitchPermission";
-import MediaFilePermissionSwitch from "@/components/MediaFileSwitchPermission";
+import PermissionSwitch from "@/components/PermissionSwitch";
+import SwitchTheme from "@/components/SwitchTheme";
 
 const SettingsInfoScreen = () => {
   const paperTheme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
 
-
-  const toggleTheme = () => {
-    const newTheme = paperTheme.dark ? "light" : "dark";
-    userViewModel.setTheme(newTheme);
-  };
 
   return (
     <SafeAreaView style={styles(paperTheme).container}>
@@ -33,15 +27,12 @@ const SettingsInfoScreen = () => {
       />
       <View style={styles(paperTheme).main}>
         <Text style={paperTheme.fonts.titleLarge}>Settings Info</Text>
-        <LocationPermissionComponent />
-        <CameraPermissionsSwitch />
-        <MediaFilePermissionSwitch />
-        <Text>Switch light/dark mode: </Text>
-        <Switch
-          value={paperTheme.dark}
-          onValueChange={toggleTheme}
-        />
-
+        <Text style={paperTheme.fonts.bodyLarge}>Permissions </Text>
+        <PermissionSwitch type="location" />
+        <PermissionSwitch type="camera" />
+        <PermissionSwitch type="media" />
+        <Text style={paperTheme.fonts.bodyLarge}>Switch light/dark mode </Text>
+        <SwitchTheme />
       </View>
     </SafeAreaView>
   );

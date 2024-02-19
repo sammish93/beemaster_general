@@ -7,7 +7,7 @@ import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import PermissionManager from "@/components/PermissionManager";
+import PermissionManagerCamera from "@/components/PermissionManagerCamera";
 
 const HiveScanScreen = () => {
   const theme = useTheme();
@@ -27,7 +27,7 @@ const HiveScanScreen = () => {
         <Text style={theme.fonts.titleLarge}>Hive Scan</Text>
         <Text style={theme.fonts.bodyLarge}>Disabled</Text>
       </View>
-      <PermissionManager />
+      <PermissionManagerCamera />
     </SafeAreaView>
   );
 };
