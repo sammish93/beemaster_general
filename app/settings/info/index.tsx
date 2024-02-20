@@ -8,8 +8,7 @@ import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import PermissionSwitch from "@/components/PermissionSwitch";
-import SwitchTheme from "@/components/SwitchTheme";
+
 
 const SettingsInfoScreen = () => {
   const paperTheme = useTheme();
@@ -27,12 +26,7 @@ const SettingsInfoScreen = () => {
       />
       <View style={styles(paperTheme).main}>
         <Text style={paperTheme.fonts.titleLarge}>Settings Info</Text>
-        <Text style={paperTheme.fonts.bodyLarge}>Permissions </Text>
-        <PermissionSwitch type="location" />
-        <PermissionSwitch type="camera" />
-        <PermissionSwitch type="media" />
-        <Text style={paperTheme.fonts.bodyLarge}>Switch light/dark mode </Text>
-        <SwitchTheme />
+
       </View>
     </SafeAreaView>
   );

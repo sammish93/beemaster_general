@@ -9,7 +9,8 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import React from 'react';
-
+import PermissionSwitch from "@/components/PermissionSwitch";
+import SwitchTheme from "@/components/SwitchTheme";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -46,6 +47,12 @@ const SettingsScreen = () => {
         <Text style={theme.fonts.bodyLarge}>
           Your language is set to: {userViewModel.i18n.locale}
         </Text>
+        <Text style={theme.fonts.bodyLarge}>Permissions </Text>
+        <PermissionSwitch type="location" />
+        <PermissionSwitch type="camera" />
+        <PermissionSwitch type="media" />
+        <Text style={theme.fonts.bodyLarge}>Switch light/dark mode </Text>
+        <SwitchTheme />
         <Button
           mode="contained"
           onPress={() => {
