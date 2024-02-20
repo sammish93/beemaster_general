@@ -135,7 +135,6 @@ const LoginLayout = () => {
   return (
     <>
       <LoginScreen />
-      <Toast config={toastConfig(props.theme)} />
     </>
   );
 };

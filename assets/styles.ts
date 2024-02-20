@@ -2,6 +2,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { MD3Theme } from "react-native-paper";
 import { customFontConfig, customLightTheme } from "./themes";
+import { ScreenWidth } from "@/constants/Dimensions"
 
 const defaultTheme = customLightTheme;
 
@@ -20,7 +21,7 @@ const styles = (theme?: MD3Theme) => {
     main: {
       flex: 1,
       justifyContent: "center",
-      maxWidth: 960,
+      maxWidth: screenWidth > ScreenWidth.Widescreen ? ScreenWidth.Widescreen : screenWidth,
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
     },
