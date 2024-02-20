@@ -13,6 +13,8 @@ import { LoginScreen } from "@/components/layouts/login";
 import { customDarkTheme, customLightTheme } from "@/assets/themes";
 import { ScreenHeight, ScreenWidth } from "@/constants/Dimensions";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "@/components/toast";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -112,13 +114,28 @@ export type LayoutProps = {
 };
 
 const DrawerLayout = (props: LayoutProps) => {
-  return <DrawerScreen theme={props.theme} mode={props.mode} />;
+  return (
+    <>
+      <DrawerScreen theme={props.theme} mode={props.mode} />
+      <Toast config={toastConfig(props.theme)} />
+    </>
+  );
 };
 
 const BottomBarLayout = (props: LayoutProps) => {
-  return <MaterialBottomTabsScreen theme={props.theme} mode={props.mode} />;
+  return (
+    <>
+      <MaterialBottomTabsScreen theme={props.theme} mode={props.mode} />
+      <Toast config={toastConfig(props.theme)} />
+    </>
+  );
 };
 
 const LoginLayout = () => {
-  return <LoginScreen />;
+  return (
+    <>
+      <LoginScreen />
+      <Toast config={toastConfig(props.theme)} />
+    </>
+  );
 };

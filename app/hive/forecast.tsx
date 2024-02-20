@@ -24,6 +24,8 @@ import {
   WindSpeedMeasurement,
 } from "@/constants/Measurements";
 import { calculateDailyRainfall } from "@/domain/rainfallCalculator";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "@/components/toast";
 
 type RootStackParamList = {
   hive: {
@@ -45,6 +47,12 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
 
   const [data, setData] = useState("");
 
+  const showToast = () => {
+    Toast.show(
+      toastCrossPlatform({ title: "attention", text: "important message" })
+    );
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -63,6 +71,8 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
         setData(
           `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
         );
+
+        showToast();
       } catch (error) {
         // TODO Snackbar or toast etc as well.
         setData("Error retrieving data");
