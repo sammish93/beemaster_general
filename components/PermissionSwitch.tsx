@@ -13,11 +13,26 @@ interface PermissionSwitchProps {
     type: PermissionType;
 }
 
+/**
+ * A component that manages and displays permission status for location, camera, or media access.
+ * Depending on the permission type (`location`, `camera`, or `media`), it checks the current
+ * permission status on mount and provides a toggle switch to request permission if not already granted.
+ * For location permissions, it also retrieves and displays the current position coordinates if permission is granted.
+ * 
+ * Note: Media permission checking and requesting is not supported on the web platform.
+ * 
+ * Props:
+ *  - type: `PermissionType` - Specifies the type of permission to manage (`location`, `camera`, or `media`).
+ *
+ */
+
 const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
 
     const [status, setStatus] = useState<PermissionStatus | 'denied' | 'granted' | 'limited' | 'unavailable' | 'blocked' | 'undetermined' | undefined>(undefined);
     const [isEnabled, setIsEnabled] = useState(false);
     const [location, setLocation] = useState<LocationState>(null);
+    const paperTheme = useTheme();
+
 
     useEffect(() => {
         checkPermissionStatus();
@@ -126,17 +141,21 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
         return null;
     }
 
-    const theme = useTheme();
+    console.log(paperTheme)
 
 
-    //TODO: Find out why theme does not change to dark for the Text-component in this return.
+
+
 
     return (
+
+
         <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={[theme.fonts.bodyMedium, { marginRight: 10 }]}>
+                <Text style={[paperTheme.fonts.bodyMedium, { marginRight: 10, color: paperTheme.colors.onSurface }]}>
                     {type === 'location' ? 'Location' : type === 'camera' ? 'Camera' : 'Media File'} permission: {status}
                 </Text>
+
                 <Switch
                     value={isEnabled}
                     onValueChange={toggleSwitch}
@@ -144,11 +163,11 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
             </View>
             {type === 'location' && location && (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[theme.fonts.bodyMedium, { marginRight: 10 }]}>Posisjon: Lat: {location.latitude}, Long: {location.longitude}</Text>
+                    <Text style={[paperTheme.fonts.bodyMedium, { marginRight: 10, color: paperTheme.colors.onSurface }]}>Posisjon: Lat: {location.latitude}, Long: {location.longitude}</Text>
                 </View>
             )}
         </View>
     );
-};
+}
 
 export default PermissionSwitch;
