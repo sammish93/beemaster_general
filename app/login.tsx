@@ -37,7 +37,7 @@ const LoginScreen = () => {
     
     iosClientId: IOS_CLIENT_ID,
     androidClientId: ANDROID_CLIENT_ID,
-    //webClientId: WEB_CLIENT_ID,
+    webClientId: WEB_CLIENT_ID,
     expoClientId: WEB_CLIENT_ID,
     scopes: ['profile',
     'email',
