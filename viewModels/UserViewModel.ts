@@ -51,7 +51,7 @@ class UserViewModel {
     @action public setWeightPreference = (prefence: WeightMeasurement) : void => {
         this.weightPreference = prefence;
     }
-
+      
         @action signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
         try {
@@ -62,6 +62,7 @@ class UserViewModel {
             console.error("Error signing in with Google: ", error);
           }
       }
+      
 
       //TODO Fix all the logic in here. Can't signin if they already have an account. 
       @action signInWithEmail = async (email: string, password: string) => {
