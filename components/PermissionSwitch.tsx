@@ -141,10 +141,6 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
         return null;
     }
 
-    console.log(paperTheme)
-
-
-
 
 
     return (
