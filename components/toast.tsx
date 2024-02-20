@@ -10,6 +10,7 @@ interface ToastProps {
   type?: string;
   position?: ToastPosition;
   visibilityTime?: number;
+  onPress?: () => void;
 }
 
 export const toastCrossPlatform = (props: ToastProps) => {
@@ -24,6 +25,7 @@ export const toastCrossPlatform = (props: ToastProps) => {
     text2: props.text,
     position,
     visibilityTime: props.visibilityTime,
+    onPress: props.onPress,
   };
 };
 
@@ -32,11 +34,23 @@ export const toastConfig = (theme: MD3Theme) => {
     success: (props) => (
       <BaseToast
         {...props}
-        style={{ borderLeftColor: "pink" }}
-        contentContainerStyle={{ paddingHorizontal: 15 }}
+        style={{
+          borderLeftColor: "#4BB543",
+          borderTopRightRadius: 8,
+          borderBottomRightRadius: 8,
+        }}
+        contentContainerStyle={{
+          borderTopRightRadius: 6,
+          borderBottomRightRadius: 6,
+          backgroundColor: theme.colors.surface,
+        }}
         text1Style={{
-          fontSize: 15,
-          fontWeight: "400",
+          ...theme.fonts.titleMedium,
+          color: theme.colors.onSurface,
+        }}
+        text2Style={{
+          ...theme.fonts.bodyMedium,
+          color: theme.colors.onSurfaceVariant,
         }}
       />
     ),
@@ -44,11 +58,23 @@ export const toastConfig = (theme: MD3Theme) => {
     error: (props) => (
       <ErrorToast
         {...props}
+        style={{
+          borderLeftColor: theme.colors.error,
+          borderTopRightRadius: 8,
+          borderBottomRightRadius: 8,
+        }}
+        contentContainerStyle={{
+          borderTopRightRadius: 6,
+          borderBottomRightRadius: 6,
+          backgroundColor: theme.colors.errorContainer,
+        }}
         text1Style={{
-          fontSize: 17,
+          ...theme.fonts.titleMedium,
+          color: theme.colors.onErrorContainer,
         }}
         text2Style={{
-          fontSize: 15,
+          ...theme.fonts.bodyMedium,
+          color: theme.colors.onErrorContainer,
         }}
       />
     ),
@@ -56,11 +82,23 @@ export const toastConfig = (theme: MD3Theme) => {
     info: (props) => (
       <InfoToast
         {...props}
+        style={{
+          borderLeftColor: "#1E92F4",
+          borderTopRightRadius: 8,
+          borderBottomRightRadius: 8,
+        }}
+        contentContainerStyle={{
+          borderTopRightRadius: 6,
+          borderBottomRightRadius: 6,
+          backgroundColor: theme.colors.surface,
+        }}
         text1Style={{
-          fontSize: 17,
+          ...theme.fonts.titleMedium,
+          color: theme.colors.onSurface,
         }}
         text2Style={{
-          fontSize: 15,
+          ...theme.fonts.bodyMedium,
+          color: theme.colors.onSurfaceVariant,
         }}
       />
     ),

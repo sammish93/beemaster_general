@@ -47,12 +47,6 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
 
   const [data, setData] = useState("");
 
-  const showToast = () => {
-    Toast.show(
-      toastCrossPlatform({ title: "attention", text: "important message" })
-    );
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -72,10 +66,24 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
           `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
         );
 
-        showToast();
+        Toast.show(
+          toastCrossPlatform({
+            title: "Success!",
+            text: "Click to go home",
+            onPress: () => {
+              navigation.navigate("../index");
+            },
+          })
+        );
       } catch (error) {
-        // TODO Snackbar or toast etc as well.
         setData("Error retrieving data");
+        Toast.show(
+          toastCrossPlatform({
+            title: "Error",
+            text: "Could not retrieve the latest weather forecast.",
+            type: "error",
+          })
+        );
       }
     };
 
