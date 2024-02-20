@@ -29,7 +29,7 @@ export const toastCrossPlatform = (props: ToastProps) => {
   };
 };
 
-export const toastConfig = (theme: MD3Theme) => {
+export const toastConfig = (theme: MD3Theme, width: number) => {
   return {
     success: (props) => (
       <BaseToast
@@ -38,6 +38,7 @@ export const toastConfig = (theme: MD3Theme) => {
           borderLeftColor: "#4BB543",
           borderTopRightRadius: 8,
           borderBottomRightRadius: 8,
+          width: width,
         }}
         contentContainerStyle={{
           borderTopRightRadius: 6,
@@ -62,6 +63,7 @@ export const toastConfig = (theme: MD3Theme) => {
           borderLeftColor: theme.colors.error,
           borderTopRightRadius: 8,
           borderBottomRightRadius: 8,
+          width: width,
         }}
         contentContainerStyle={{
           borderTopRightRadius: 6,
@@ -86,6 +88,7 @@ export const toastConfig = (theme: MD3Theme) => {
           borderLeftColor: "#1E92F4",
           borderTopRightRadius: 8,
           borderBottomRightRadius: 8,
+          width: width,
         }}
         contentContainerStyle={{
           borderTopRightRadius: 6,

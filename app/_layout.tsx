@@ -14,7 +14,7 @@ import { customDarkTheme, customLightTheme } from "@/assets/themes";
 import { ScreenHeight, ScreenWidth } from "@/constants/Dimensions";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
-import { toastConfig } from "@/components/toast";
+import { toastConfig } from "@/components/ToastCustom";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -95,9 +95,26 @@ const RootLayout = () => {
               (Platform.OS === "ios" || Platform.OS === "android") &&
               dimensions.screen.width < ScreenWidth.Compact
             ) {
-              return <BottomBarLayout theme={paperTheme} mode={colorScheme} />;
+              return (
+                <BottomBarLayout
+                  theme={paperTheme}
+                  mode={colorScheme}
+                  width={dimensions.window.width * 0.95}
+                />
+              );
             } else {
-              return <DrawerLayout theme={paperTheme} mode={colorScheme} />;
+              return (
+                <DrawerLayout
+                  theme={paperTheme}
+                  mode={colorScheme}
+                  width={
+                    Platform.OS === "web" &&
+                    dimensions.window.width >= ScreenWidth.Expanded
+                      ? ScreenWidth.Expanded * 0.95
+                      : dimensions.window.width * 0.95
+                  }
+                />
+              );
             }
           })()}
         </GestureHandlerRootView>
@@ -111,13 +128,14 @@ export default observer(RootLayout);
 export type LayoutProps = {
   theme: MD3Theme;
   mode: string;
+  width: number;
 };
 
 const DrawerLayout = (props: LayoutProps) => {
   return (
     <>
       <DrawerScreen theme={props.theme} mode={props.mode} />
-      <Toast config={toastConfig(props.theme)} />
+      <Toast config={toastConfig(props.theme, props.width)} />
     </>
   );
 };
@@ -126,7 +144,7 @@ const BottomBarLayout = (props: LayoutProps) => {
   return (
     <>
       <MaterialBottomTabsScreen theme={props.theme} mode={props.mode} />
-      <Toast config={toastConfig(props.theme)} />
+      <Toast config={toastConfig(props.theme, props.width)} />
     </>
   );
 };
