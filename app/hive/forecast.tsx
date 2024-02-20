@@ -26,6 +26,7 @@ import {
 import { calculateDailyRainfall } from "@/domain/rainfallCalculator";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
+import LoadingScreen from "@/components/LoadingScreen";
 
 type RootStackParamList = {
   hive: {
@@ -46,10 +47,12 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
 
   const [data, setData] = useState("");
+  const [isLoadingScreen, setLoadingScreen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoadingScreen(true);
         const data = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
 
         const thing = deserialiseDailyForecast(
@@ -84,6 +87,7 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
             type: "error",
           })
         );
+      } finally {
       }
     };
 
@@ -98,14 +102,18 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
         canOpenDrawer={!!navigation.openDrawer}
         title="Forecast"
       />
-      <View style={styles(theme).main}>
-        <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
-        <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
-        <Text style={theme.fonts.bodySmall}>{data}</Text>
-        <Button icon={getWindDirectionIconFromAngle(45.8)}>
-          Wind Direction Example
-        </Button>
-      </View>
+      {isLoadingScreen ? (
+        <LoadingScreen />
+      ) : (
+        <View style={styles(theme).main}>
+          <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
+          <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
+          <Text style={theme.fonts.bodySmall}>{data}</Text>
+          <Button icon={getWindDirectionIconFromAngle(45.8)}>
+            Wind Direction Example
+          </Button>
+        </View>
+      )}
     </SafeAreaView>
   );
 };

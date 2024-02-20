@@ -24,6 +24,7 @@ const styles = (theme?: MD3Theme) => {
       maxWidth: screenWidth > ScreenWidth.Widescreen ? ScreenWidth.Widescreen : screenWidth,
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
+      padding: 4,
     },
     topBarContainer: {
       flexDirection: "row",
