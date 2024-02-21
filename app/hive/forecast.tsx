@@ -88,6 +88,7 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
           })
         );
       } finally {
+        setLoadingScreen(false);
       }
     };
 

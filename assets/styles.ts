@@ -73,6 +73,31 @@ const styles = (theme?: MD3Theme) => {
       flex: 0,
       alignItems: "center",
     },
+    activityIndicatorContainer: {
+      flex: 1,
+      backgroundColor: "#3d4553",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    activityIndicatorOrbitBody: {
+      height: 40,
+      width: 40,
+    },
+    activityIndicatorOrbiter: {
+      height: 32,
+      width: 32,
+      position: "absolute",
+      top: -24,
+      left: 44,
+    },
+    activityIndicatorOrbitTrajectory: {
+      borderColor: "transparent",
+      height: 120,
+      width: 120,
+      position: "absolute",
+      justifyContent: "center",
+      alignItems: "center",
+    },
   });
 };
 

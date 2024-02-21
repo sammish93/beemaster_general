@@ -1,0 +1,3 @@
+images/bee.png - https://www.flaticon.com/free-icon/bee_809052 Freepik
+images/bee-hive.png https://www.flaticon.com/free-icon/bee-hive_3392844 Smashicons
+images/weather/<all_icons> https://github.com/metno/weathericons/ Yr
