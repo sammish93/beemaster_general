@@ -2,27 +2,27 @@
 // measurements in.
 
 export enum TemperatureMeasurement {
-    Celsius,
-    Fahrenheit
+    Celsius = "°C",
+    Fahrenheit = "°F"
 }
 
 export enum PrecipitationMeasurement {
-    Millimeters,
-    Centimeters,
-    Inches
+    Millimeters = "mm",
+    Centimeters = "cm",
+    Inches = "in"
 }
 
 export enum WindSpeedMeasurement {
-    MetersPerSecond,
-    Knots,
-    MilesPerHour,
-    KilometersPerHour
+    MetersPerSecond = "m/s",
+    Knots = "kn",
+    MilesPerHour = "mph",
+    KilometersPerHour = "km/h"
 }
 
 export enum WeightMeasurement {
-    Grams,
-    Kilograms,
-    Ounces,
-    Pounds,
-    Stones
+    Grams = "g",
+    Kilograms = "kg",
+    Ounces = "℥",
+    Pounds = "lb",
+    Stones = "st"
 }

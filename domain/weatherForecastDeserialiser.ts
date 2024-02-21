@@ -97,13 +97,16 @@ export const deserialiseDailyForecast = (
  * @param temperatureFormat Optional paramater which uses the {@link TemperatureMeasurement} enum.
  * @param precipitationFormat Optional paramater which uses the {@link PrecipitationMeasurement} enum.
  * @param WindSpeedMeasurement Optional paramater which uses the {@link WindSpeedMeasurement} enum.
+ * @param isDailyRainfallSummarised Optional paramater in case the object should return the daily rainfall 
+ * (opposed to only a 6 hour period rainfall).
  * @returns Returns the weather forecast based on the format of the {@link WeeklySimpleForecast} interface.
  */
 export const deserialiseWeeklySimpleForecast = (
     json: any,
     temperatureFormat?: TemperatureMeasurement, 
     precipitationFormat?: PrecipitationMeasurement, 
-    windSpeedFormat?: WindSpeedMeasurement
+    windSpeedFormat?: WindSpeedMeasurement,
+    isDailyRainfallSummarised?: boolean
     ): WeeklySimpleForecast => {
 
     // Yr's LocationForecast API delivers coordinates in the format [longitude, latitude].
@@ -138,18 +141,25 @@ export const deserialiseWeeklySimpleForecast = (
     // but we don't need all of it.
     const currentForecast =  extractForecastData(
         firstTimeseries, temperatureFormat, precipitationFormat, windSpeedFormat)
+        isDailyRainfallSummarised ? currentForecast.precipitation = calculateDailyRainfall(json, getForecastDateFormat(0)) : null;
     const dayTwoForecast = extractForecastData(
         secondTimeseries, temperatureFormat, precipitationFormat, windSpeedFormat)
+        isDailyRainfallSummarised ? dayTwoForecast.precipitation = calculateDailyRainfall(json, getForecastDateFormat(1)) : null;
     const dayThreeForecast = extractForecastData(
         thirdTimeseries, temperatureFormat, precipitationFormat, windSpeedFormat)
+        isDailyRainfallSummarised ? dayThreeForecast.precipitation = calculateDailyRainfall(json, getForecastDateFormat(2)) : null;
     const dayFourForecast = extractForecastData(
         fourthTimeseries, temperatureFormat, precipitationFormat, windSpeedFormat)
+        isDailyRainfallSummarised ? dayFourForecast.precipitation = calculateDailyRainfall(json, getForecastDateFormat(3)) : null;
     const dayFiveForecast = extractForecastData(
         fifthTimeseries, temperatureFormat, precipitationFormat, windSpeedFormat)
+        isDailyRainfallSummarised ? dayFiveForecast.precipitation = calculateDailyRainfall(json, getForecastDateFormat(4)) : null;
     const daySixForecast = extractForecastData(
         sixthTimeseries, temperatureFormat, precipitationFormat, windSpeedFormat)
+        isDailyRainfallSummarised ? daySixForecast.precipitation = calculateDailyRainfall(json, getForecastDateFormat(5)) : null;
     const daySevenForecast = extractForecastData(
         seventhTimeseries, temperatureFormat, precipitationFormat, windSpeedFormat)
+        isDailyRainfallSummarised ? daySevenForecast.precipitation = calculateDailyRainfall(json, getForecastDateFormat(6)) : null;
 
     return { 
         latLng, 
@@ -317,4 +327,43 @@ export const extractForecastData = (
             precipitation: precipitationValue,
             weatherType: timeseriesEntry.data.next_12_hours ? timeseriesEntry.data.next_12_hours.summary.symbol_code : "default",
         };
+}
+
+/**
+ * A function used to calculate the total daily rainfall in a 24 hour period.
+ * @param json The JSON obtained from Yr's LocationForecast API response.
+ * @param dateIso Parameter representing only the date string in ISO 8601 format. Recommended 
+ * to use the {@link getForecastDateFormat} function.
+ * @returns Returns the total amount of rainfall for a specific date in a 24 hour period.
+ * @example 
+ * // Retrieves tomorrow's rainfall.
+ * const rainfall = calculateDailyRainfall(jsonResponse, getForecastDateFormat(1));
+ * // Prints '16.2'.
+ * console.log(rainfall);
+ */
+export const calculateDailyRainfall = (json: any, dateIso: string): number => {
+    // TODO Add validation that restricts dateIso values if they are previous dates. Not too important.
+    const rainfall: number[] = [];
+    let totalRainfall = 0;
+
+    const forecast = deserialiseDailyForecast(json, dateIso);
+
+    // Each timeseries includes precipitation levels for the next 6 hours.
+    const firstTimeseries = forecast.hourlyForecasts['00HundredHours']
+    const secondTimeseries = forecast.hourlyForecasts['06HundredHours']
+    const thirdTimeseries = forecast.hourlyForecasts['12HundredHours']
+    const fourthTimeseries = forecast.hourlyForecasts['18HundredHours']
+    
+    // Yr's LocationForecast sometimes returns no timeseries in the case that today's date is 
+    // selected and the time has already passed.
+    firstTimeseries ? rainfall.push(firstTimeseries.precipitation) : null
+    secondTimeseries ? rainfall.push(secondTimeseries.precipitation) : null
+    thirdTimeseries ? rainfall.push(thirdTimeseries.precipitation) : null
+    fourthTimeseries ? rainfall.push(fourthTimeseries.precipitation) : null
+
+    rainfall.forEach((number) => {
+        totalRainfall += number;
+    });
+    
+    return totalRainfall
 }
