@@ -3,7 +3,8 @@ import { Text, View, Platform } from 'react-native';
 import { Switch, useTheme } from 'react-native-paper';
 import { requestForegroundPermissionsAsync, PermissionStatus, getCurrentPositionAsync, LocationObject } from 'expo-location';
 import * as MediaLibrary from 'expo-media-library';
-import { PERMISSIONS, request, check } from 'react-native-permissions';
+//import { PERMISSIONS, request, check } from 'react-native-permissions';
+import * as Camera from 'expo-camera';
 
 type PermissionType = 'location' | 'camera' | 'media';
 
@@ -32,6 +33,7 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const [location, setLocation] = useState<LocationState>(null);
     const paperTheme = useTheme();
+
 
 
     useEffect(() => {
@@ -70,13 +72,16 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
                         }
                     });
                 } else {
-                    const cameraStatus = await check(
-                        Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA
-                    );
-                    setStatus(cameraStatus);
-                    setIsEnabled(cameraStatus === 'granted');
+                    if (Platform.OS === 'ios' || Platform.OS === 'android') {
+
+                        const cameraStatus = await Camera.requestCameraPermissionsAsync();
+                        setStatus(cameraStatus.status);
+                        setIsEnabled(cameraStatus.status === 'granted');
+                        break;
+                    }
                 }
-                break;
+
+
             case 'media':   //Not compatible with web
                 if (Platform.OS !== 'web') {
                     const mediaStatus = await MediaLibrary.requestPermissionsAsync();
@@ -112,12 +117,15 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
                             setIsEnabled(false);
                         }
                     } else {
-                        const cameraStatus = await request(
-                            Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA
-                        );
-                        setStatus(cameraStatus);
-                        setIsEnabled(cameraStatus === 'granted');
+                        if (Platform.OS === 'ios' || Platform.OS === 'android') {
+
+                            const cameraStatus = await Camera.requestCameraPermissionsAsync();
+                            setStatus(cameraStatus.status);
+                            setIsEnabled(cameraStatus.status === 'granted');
+                            break;
+                        }
                     }
+
                     break;
                 case 'media':
                     if (Platform.OS !== 'web') {

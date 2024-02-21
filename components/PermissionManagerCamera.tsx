@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+/*import React, { useEffect, useState } from 'react';
 import { Text, View, Platform } from 'react-native';
 import { request, PERMISSIONS } from 'react-native-permissions';
 
-//Used in hive page to ask user for camera permission
+//Used in hiveScan page in toolbox to ask user for camera permission
 
 
 type PermissionStatus = 'granted' | 'denied' | 'undetermined' | 'unavailable' | 'blocked' | 'limited';
@@ -65,7 +65,7 @@ const PermissionManagerCamera = () => {
     );
 };
 
-export default PermissionManagerCamera;
+export default PermissionManagerCamera;*/
 
 
 

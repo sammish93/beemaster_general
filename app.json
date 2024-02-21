@@ -52,30 +52,11 @@
       "expo-localization",
       "@react-native-google-signin/google-signin",
       [
-        "expo-camera",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
-        }
-      ],
-      [
         "expo-media-library",
         {
           "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
           "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
           "isAccessMediaLocationEnabled": true
-        }
-      ],
-      [
-        "react-native-permissions",
-        {
-          "iosPermissions": [
-            "Bluetooth",
-            "PhotoLibrary",
-            "Notifications",
-            "Camera",
-            "LocationWhenInUse",
-            "LocationAlways"
-          ]
         }
       ]
     ],

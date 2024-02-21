@@ -36,29 +36,30 @@ class UserViewModel {
 
     @action public setTheme = (theme: string): void => {
         this.theme = theme;
-        // Functions to allow the user to set their measurement preferences.
-        @action public setTemperaturePreference = (prefence: TemperatureMeasurement): void => {
-            this.temperaturePreference = prefence;
-        }
-
-        @action public setPrecipitationPreference = (prefence: PrecipitationMeasurement): void => {
-            this.precipitationPreference = prefence;
-        }
-
-        @action public setWindSpeedPreference = (prefence: WindSpeedMeasurement): void => {
-            this.windSpeedPreference = prefence;
-        }
-
-        @action public setWeightPreference = (prefence: WeightMeasurement): void => {
-            this.weightPreference = prefence;
-        }
-
-        // Clears all the data in this view model.
-        // Useful for when a user logs out.
-        @action public clear = (): void => {
-            this.userId = "";
-            //this.theme = "light"; // reset theme on logout
-        }
+    }
+    // Functions to allow the user to set their measurement preferences.
+    @action public setTemperaturePreference = (prefence: TemperatureMeasurement): void => {
+        this.temperaturePreference = prefence;
     }
 
+    @action public setPrecipitationPreference = (prefence: PrecipitationMeasurement): void => {
+        this.precipitationPreference = prefence;
+    }
+
+    @action public setWindSpeedPreference = (prefence: WindSpeedMeasurement): void => {
+        this.windSpeedPreference = prefence;
+    }
+
+    @action public setWeightPreference = (prefence: WeightMeasurement): void => {
+        this.weightPreference = prefence;
+    }
+
+    // Clears all the data in this view model.
+    // Useful for when a user logs out.
+    @action public clear = (): void => {
+        this.userId = "";
+        //this.theme = "light"; // reset theme on logout
+    }
+
+}
 export default new UserViewModel()

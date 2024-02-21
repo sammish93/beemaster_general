@@ -27,7 +27,7 @@ const HiveScanScreen = () => {
         <Text style={theme.fonts.titleLarge}>Hive Scan</Text>
         <Text style={theme.fonts.bodyLarge}>Disabled</Text>
       </View>
-      <PermissionManagerCamera />
+      {/*<PermissionManagerCamera />*/}
     </SafeAreaView>
   );
 };
