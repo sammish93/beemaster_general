@@ -88,39 +88,45 @@ const RootLayout = () => {
   }
 
   return (
-    <Provider exampleViewModel={exampleViewModel} userViewModel={userViewModel}>
+    <Provider 
+      exampleViewModel={exampleViewModel} 
+      userViewModel={userViewModel}
+      hiveViewModel={hiveViewModel}
+    >
       <PaperProvider theme={paperTheme}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          {(() => {
-            if (userViewModel.userId === "") {
-              return <LoginLayout />;
-            } else if (
-              (Platform.OS === "ios" || Platform.OS === "android") &&
-              dimensions.screen.width < ScreenWidth.Compact
-            ) {
-              return (
-                <BottomBarLayout
-                  theme={paperTheme}
-                  mode={colorScheme}
-                  width={dimensions.window.width * 0.95}
-                />
-              );
-            } else {
-              return (
-                <DrawerLayout
-                  theme={paperTheme}
-                  mode={colorScheme}
-                  width={
-                    Platform.OS === "web" &&
-                    dimensions.window.width >= ScreenWidth.Expanded
-                      ? ScreenWidth.Expanded * 0.95
-                      : dimensions.window.width * 0.95
-                  }
-                />
-              );
-            }
-          })()}
-        </GestureHandlerRootView>
+        <Portal.Host>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            {(() => {
+              if (userViewModel.userId === "") {
+                return <LoginLayout />;
+              } else if (
+                (Platform.OS === "ios" || Platform.OS === "android") &&
+                dimensions.screen.width < ScreenWidth.Compact
+              ) {
+                return (
+                  <BottomBarLayout
+                    theme={paperTheme}
+                    mode={colorScheme}
+                    width={dimensions.window.width * 0.95}
+                  />
+                );
+              } else {
+                return (
+                  <DrawerLayout
+                    theme={paperTheme}
+                    mode={colorScheme}
+                    width={
+                      Platform.OS === "web" &&
+                      dimensions.window.width >= ScreenWidth.Expanded
+                        ? ScreenWidth.Expanded * 0.95
+                        : dimensions.window.width * 0.95
+                    }
+                  />
+                );
+              }
+            })()}
+          </GestureHandlerRootView>
+        </Portal.Host>
       </PaperProvider>
     </Provider>
   );
