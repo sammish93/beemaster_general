@@ -12,10 +12,11 @@ interface HiveInfoProps {
 const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
     const theme = useTheme();
 
-    const filteredData = isDetailedView ? sensorData : sensorData.filter(({ label }) => 
-        label === 'Temperature' || label === 'Wind' || label === 'Rain'
-    );
+    const filterOnFields = (...list: string[]): {label: string, value: string}[] => {
+        return sensorData.filter(({ label }) => list.includes(label));
+    } 
 
+    const filteredData = isDetailedView ? sensorData : filterOnFields("Temperature", "Wind", "Rain");
     const mid = sensorData.length / 2;
     const firstHalf = filteredData.slice(0, mid);
     const secondHalf = filteredData.slice(mid);
