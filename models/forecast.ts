@@ -32,7 +32,7 @@ export interface WeeklyDetailedForecast {
     daySevenForecast: DailyForecast;
 }
 
-interface ForecastPeriod {
+export interface ForecastPeriod {
     dateTime: string,
     temperature: number;
     humidity: number;

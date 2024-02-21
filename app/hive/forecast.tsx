@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext, useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
@@ -27,6 +27,8 @@ import { calculateDailyRainfall } from "@/domain/rainfallCalculator";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import LoadingScreen from "@/components/LoadingScreen";
+import { WeeklySimpleForecast } from "@/models/forecast";
+import ForecastSummary from "@/components/ForecastSummary";
 
 type RootStackParamList = {
   hive: {
@@ -47,6 +49,7 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
 
   const [data, setData] = useState("");
+  const [forecast, setForecast] = useState<WeeklySimpleForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
 
   useEffect(() => {
@@ -55,19 +58,22 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
         setLoadingScreen(true);
         const data = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
 
-        const thing = deserialiseDailyForecast(
+        const weeklySimplyForecast = deserialiseWeeklySimpleForecast(
           data,
-          getForecastDateFormat(2),
           userViewModel.temperaturePreference,
           userViewModel.precipitationPreference,
-          userViewModel.windSpeedPreference
+          userViewModel.windSpeedPreference,
+          true
         );
 
         const rainfall = calculateDailyRainfall(data, getForecastDateFormat(2));
 
-        setData(
-          `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
-        );
+        //setData(
+        //  `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
+        //);
+
+        setData("Retrieved forecast!");
+        setForecast(weeklySimplyForecast);
 
         Toast.show(
           toastCrossPlatform({
@@ -106,14 +112,25 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
       {isLoadingScreen ? (
         <LoadingScreen />
       ) : (
-        <View style={styles(theme).main}>
-          <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
-          <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
-          <Text style={theme.fonts.bodySmall}>{data}</Text>
-          <Button icon={getWindDirectionIconFromAngle(45.8)}>
-            Wind Direction Example
-          </Button>
-        </View>
+        <ScrollView>
+          <View style={styles(theme).main}>
+            <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
+            <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
+            <Text style={theme.fonts.bodySmall}>{data}</Text>
+            <Button icon={getWindDirectionIconFromAngle(45.8)}>
+              Wind Direction Example
+            </Button>
+            {forecast ? (
+              <ForecastSummary
+                forecast={forecast}
+                locale={userViewModel.i18n.locale}
+                temperatureFormat={userViewModel.temperaturePreference}
+                precipitationFormat={userViewModel.precipitationPreference}
+                windFormat={userViewModel.windSpeedPreference}
+              />
+            ) : null}
+          </View>
+        </ScrollView>
       )}
     </SafeAreaView>
   );
