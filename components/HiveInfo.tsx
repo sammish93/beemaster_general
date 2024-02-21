@@ -2,6 +2,7 @@ import { HiveModel } from "@/models/hiveModel";
 import React from "react";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
+import { sensorData } from "@/data/hiveData";
 
 interface HiveInfoProps {
     item: HiveModel
@@ -11,23 +12,11 @@ interface HiveInfoProps {
 const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
     const theme = useTheme();
 
-    // Temporary solution.
-    const data = [
-        { label: 'Weather', value: "Sunny" },
-        { label: 'Wind', value: `4 km/h` },
-        { label: 'Temperature', value: `21 °C` },
-        { label: 'Rain', value: `0.0mm 0%` },
-        { label: 'Weight', value: `57.6 kg` },
-        { label: 'Hive Temp', value: `34.2 °C` }, 
-        { label: 'Humidity', value: `54%` },
-        { label: 'Counter', value: '421 p/h' },
-    ];
-
-    const filteredData = isDetailedView ? data : data.filter(({ label }) => 
+    const filteredData = isDetailedView ? sensorData : sensorData.filter(({ label }) => 
         label === 'Temperature' || label === 'Wind' || label === 'Rain'
     );
 
-    const mid = data.length / 2;
+    const mid = sensorData.length / 2;
     const firstHalf = filteredData.slice(0, mid);
     const secondHalf = filteredData.slice(mid);
 

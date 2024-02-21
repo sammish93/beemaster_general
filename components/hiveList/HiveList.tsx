@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { NavigationProp } from '@react-navigation/native';
-import { Button, useTheme, Text } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MobXProviderContext } from 'mobx-react';
 import { View, Dimensions } from 'react-native';
