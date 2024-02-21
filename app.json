@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffd669"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -21,7 +21,8 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "monochromeImage": "./assets/images/adaptive-icon-monochromeImage.png",
+        "backgroundColor": "#ffd669"
       },
       "googleServicesFile": "./android/app/google-services.json",
       "package": "no.hiof.beemastergeneral"
