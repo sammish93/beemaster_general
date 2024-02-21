@@ -46,7 +46,7 @@ const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
                                 <Text style={theme.fonts.bodyLarge}>{value}</Text>
                             </View>
                         ))}
-                </View>
+                    </View>
                 )}
             </View>
         </>

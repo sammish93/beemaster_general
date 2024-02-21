@@ -11,7 +11,7 @@ describe('HiveInfo', () => {
     it('renders the hive name correctly', () => {
         const { getByText } = render(<HiveInfo item={mockHiveItem} isDetailedView={false} />);
         expect(getByText('Hive-test')).toBeTruthy();
-    })
+    });
 
     it('renders sensor data when isDetailedView is true', () => {
         const { getByText } = render(<HiveInfo item={mockHiveItem} isDetailedView={true} />);
