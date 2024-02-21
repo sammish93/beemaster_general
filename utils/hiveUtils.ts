@@ -1,4 +1,4 @@
-// File to have hive related logic.
+// File for hive related logic.
 
 export const addHive = (
     hiveViewModel: any, 
@@ -9,3 +9,6 @@ export const addHive = (
     hiveViewModel.addHive({ id: newHiveId, name: hiveName });
     setModalVisible(false);
 };
+
+// TODO: Implement later.
+export const removeHive = () => {}
