@@ -1,6 +1,7 @@
 
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, Platform } from "react-native";
 import { MD3Theme } from "react-native-paper";
+import { red100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 import { customFontConfig, customLightTheme } from "./themes";
 import { ScreenWidth } from "@/constants/Dimensions"
 
@@ -22,9 +23,25 @@ const styles = (theme?: MD3Theme) => {
       flex: 1,
       justifyContent: "center",
       maxWidth: screenWidth > ScreenWidth.Widescreen ? ScreenWidth.Widescreen : screenWidth,
+      width: Platform.select({
+        'web': "50%"
+      }),
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
-      padding: 4,
+      padding: 20
+    },
+    modal: {
+      alignItems: "center",
+    },
+    modalContent: {
+      margin: 10,
+      padding: 10,
+      gap: 10,
+    },
+    modalTitle: {
+      marginTop: 25, 
+      marginBottom: 8, 
+      marginHorizontal: 15
     },
     topBarContainer: {
       flexDirection: "row",
@@ -98,6 +115,17 @@ const styles = (theme?: MD3Theme) => {
       justifyContent: "center",
       alignItems: "center",
     },
+    toggleContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 15,
+      gap: 5
+    },
+    closeButton: {
+      position: 'absolute',
+      top: 0, 
+      right: 0
+    }
   });
 };
 

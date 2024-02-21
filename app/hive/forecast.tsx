@@ -27,6 +27,7 @@ import { calculateDailyRainfall } from "@/domain/rainfallCalculator";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import LoadingScreen from "@/components/LoadingScreen";
+import React from "react";
 
 type RootStackParamList = {
   hive: {

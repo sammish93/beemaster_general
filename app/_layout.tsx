@@ -6,6 +6,7 @@ import { MD3Theme, PaperProvider } from "react-native-paper";
 import { Provider, observer } from "mobx-react";
 import exampleViewModel from "@/viewModels/ExampleViewModel";
 import userViewModel from "@/viewModels/UserViewModel";
+import { hiveViewModel } from "@/viewModels/HiveViewModel";
 import { DrawerScreen } from "@/components/layouts/drawer";
 import { Dimensions, Platform, useColorScheme, Text } from "react-native";
 import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
@@ -15,6 +16,8 @@ import { ScreenHeight, ScreenWidth } from "@/constants/Dimensions";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/components/ToastCustom";
+import { Portal } from 'react-native-paper';
+import React from "react";
 
 export {
   // Catch any errors thrown by the Layout component.
