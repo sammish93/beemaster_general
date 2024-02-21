@@ -3,7 +3,7 @@ import { makeAutoObservable } from "mobx";
 import { hiveListData } from "../data/hiveData"; 
 
 class HiveViewModel {
-    hives: HiveModel[] = [];
+    hives = hiveListData;
 
     constructor() {
         makeAutoObservable(this);
