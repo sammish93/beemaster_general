@@ -7,18 +7,14 @@ import AddHiveButton from "./AddHiveButton";
 import AddHiveModal from "./AddHiveModal";
 import HiveList from "./hiveList/HiveList";
 import { HiveListProps } from "./hiveList/HiveList";
+import { addHive } from "@/utils/hiveUtils";
 
 const Hives = ({ navigation }: HiveListProps) => {
     const [modalVisible, setModalVisible] = useState(false);
     const { hiveViewModel } = useContext(MobXProviderContext);
     const [isListView, setIsListView] = useState(false);
     const theme = useTheme();
-
-    const handleAddHive = (hiveName: string) => {
-        const newHiveId = `hive-${Date.now()}`; // Temporarly solution.
-        hiveViewModel.addHive({ id: newHiveId, name: hiveName });
-        setModalVisible(false);
-      }
+    const handleAddHive = (hiveName: string) => addHive(hiveViewModel, setModalVisible, hiveName);
     
     return (
         <View>
