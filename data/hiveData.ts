@@ -7,7 +7,7 @@ export const hiveListData: HiveModel[] = [
 
 // Dummy sensor data.
 export const sensorData = [
-    { label: 'Weather', value: "Sunny" },
+    { label: 'Weather', value: 'Sunny' },
     { label: 'Wind', value: `4 km/h` },
     { label: 'Temperature', value: `21 °C` },
     { label: 'Rain', value: `0.0mm 0%` },

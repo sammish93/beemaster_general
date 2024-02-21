@@ -1,6 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "module": "ES6",
     "jsx": "react",
     "experimentalDecorators": true,
     "strict": true,
@@ -9,7 +10,8 @@
         "./*"
       ]
     },
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "moduleResolution": "node"
   },
   "include": [
     "**/*.ts",

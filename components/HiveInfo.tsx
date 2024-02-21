@@ -1,5 +1,5 @@
-import { HiveModel } from "@/models/hiveModel";
 import React from "react";
+import { HiveModel } from "@/models/hiveModel";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { sensorData } from "@/data/hiveData";
@@ -12,11 +12,11 @@ interface HiveInfoProps {
 const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
     const theme = useTheme();
 
-    const filterOnFields = (...list: string[]): {label: string, value: string}[] => {
+    const filterOnLabel = (...list: string[]): {label: string, value: string}[] => {
         return sensorData.filter(({ label }) => list.includes(label));
     } 
 
-    const filteredData = isDetailedView ? sensorData : filterOnFields("Temperature", "Wind", "Rain");
+    const filteredData = isDetailedView ? sensorData : filterOnLabel("Temperature", "Wind", "Rain");
     const mid = sensorData.length / 2;
     const firstHalf = filteredData.slice(0, mid);
     const secondHalf = filteredData.slice(mid);
@@ -46,11 +46,11 @@ const HiveInfo = ({ item, isDetailedView }: HiveInfoProps) => {
                                 <Text style={theme.fonts.bodyLarge}>{value}</Text>
                             </View>
                         ))}
-                    </View>
+                </View>
                 )}
             </View>
         </>
-    )
-}
+    );
+};
 
 export default HiveInfo;
