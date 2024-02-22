@@ -76,7 +76,7 @@ const HomeScreen = () => {
           <HiveList isListView={isListView} navigation={navigation} />
         </View>
       </ScrollView>
-      <AddHiveButton onAddHivePress={handleOpenModal} />
+      <AddHiveButton onHivePress={handleOpenModal} text={"Add New Hive"} />
       <AddHiveModal
         isOverlayModalVisible={modalVisible}
         bottomSheetModalRef={bottomSheetModalRef}
