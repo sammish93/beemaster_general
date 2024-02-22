@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigation } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";

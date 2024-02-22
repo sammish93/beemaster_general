@@ -59,6 +59,7 @@
     "expo-media-library": "~15.9.1",
     "expo-camera": "~14.0.5",
     "react-native-toast-message": "^2.2.0",
+    "react-native-virtualized-view": "^1.0.0",
     "react-native-web": "~0.19.6"
   },
   "devDependencies": {

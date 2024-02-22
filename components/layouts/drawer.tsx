@@ -1,4 +1,3 @@
-import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { withLayoutContext } from "expo-router";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";

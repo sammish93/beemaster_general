@@ -14,6 +14,7 @@ const styles = (theme?: MD3Theme) => {
   const screenHeight = Dimensions.get('window').height;
   const isMobile = screenWidth < 768;
 
+
   return StyleSheet.create({
     container: {
       backgroundColor: dynamicTheme.colors.surfaceVariant,
@@ -91,6 +92,9 @@ const styles = (theme?: MD3Theme) => {
     },
     bottomSheetScrollContainer: {
       flex: 0,
+      padding: 12
+    },
+    overlayModal: {
       alignItems: "center",
     },
 
@@ -133,8 +137,17 @@ const styles = (theme?: MD3Theme) => {
 
       color: dynamicTheme.colors.onSecondaryContainer,
       ...dynamicTheme.fonts.bodyMedium,
+    },
 
 
+    overlayContainer: {
+      backgroundColor: dynamicTheme.colors.primaryContainer,
+      alignContent: "center",
+      maxHeight: screenHeight * 0.9,
+      width: screenWidth * 0.9,
+      maxWidth: ScreenWidth.Compact,
+      padding: 12,
+      borderRadius: 20,
     },
     activityIndicatorContainer: {
       flex: 1,
