@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import * as React from 'react';
 import DialogGDPR from "@/components/modals/DialogGDPR";
-import React from "react";
+//import React from "react";
 
 const LoginScreen = () => {
   const theme = useTheme();
