@@ -16,6 +16,10 @@ class HiveViewModel {
     removeHive(hiveId: string) {
         this.hives = this.hives.filter(item => item.id !== hiveId);
     }
+
+    numberOfHives() {
+        return this.hives.length;
+    }
 }
 
 export const hiveViewModel = new HiveViewModel();

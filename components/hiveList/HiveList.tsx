@@ -3,9 +3,8 @@ import { NavigationProp } from "@react-navigation/native";
 import { Button, useTheme, Text, MD3Theme } from "react-native-paper";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import { MobXProviderContext } from "mobx-react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import { TouchableRipple } from "react-native-paper";
-import styles from "./styles";
 import { HiveModel } from "@/models/hiveModel";
 import HiveInfo from "../HiveInfo";
 import { customLightTheme } from "@/assets/themes";
@@ -26,14 +25,6 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
     >
       <View>
         <HiveInfo item={item} isDetailedView={isListView} />
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate("/hive/forecast", { hiveId: item.id });
-          }}
-        >
-          Forecast
-        </Button>
       </View>
     </TouchableRipple>
   );
@@ -46,6 +37,12 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
         keyExtractor={(item) => item.id}
         key={isListView ? "list" : "grid"}
         numColumns={isListView ? 1 : 2}
+        ListEmptyComponent={
+          <Text style={theme.fonts.bodyLarge}>
+            No hives have been registered. To register, use the 'Add New Hive'
+            button.
+          </Text>
+        }
       />
     </GestureHandlerRootView>
   );

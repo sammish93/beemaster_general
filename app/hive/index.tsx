@@ -4,7 +4,7 @@ import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useTheme, Text } from "react-native-paper";
+import { useTheme, Text, Button } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
@@ -52,6 +52,14 @@ const HiveScreen = (params: HiveScreenProps) => {
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Hive Screen</Text>
         <Text>Hive ID: {hiveId}</Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            navigation.navigate("/hive/forecast", { hiveId: hiveId });
+          }}
+        >
+          Forecast
+        </Button>
       </View>
     </SafeAreaView>
   );
