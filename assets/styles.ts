@@ -125,6 +125,11 @@ const styles = (theme?: MD3Theme) => {
       position: 'absolute',
       top: 0, 
       right: 0
+    },
+    filterContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 16
     }
   });
 };

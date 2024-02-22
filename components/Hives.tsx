@@ -4,10 +4,11 @@ import React, { useContext, useState } from "react";
 import { Switch, View, Text } from "react-native";
 import { useTheme } from "react-native-paper";
 import HiveButton from "./AddHiveButton";
-import AddHiveModal from "./AddHiveModal";
+import AddHiveModal from "./modals/AddHiveModal";
 import HiveList from "./hiveList/HiveList";
 import { HiveListProps } from "./hiveList/HiveList";
 import { addHive } from "@/utils/hiveUtils";
+import HiveFilter from "./HiveFilter";
 
 const Hives = ({ navigation }: HiveListProps) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -18,19 +19,13 @@ const Hives = ({ navigation }: HiveListProps) => {
     
     return (
         <View>
-            <HiveButton 
-                text="Add New Filter"
-                mode="contained-tonal"
-                width={140}
-                spaceV={5}
-            />
-            
+            <HiveFilter />
             <View style={styles(theme).toggleContainer}>
                 <Switch value={isListView} onValueChange={() => setIsListView(!isListView)} />
                 <Text style={{ color: "white"}}>{ isListView ? "Detailed View" : "Simplified View"}</Text>
             </View>
             <HiveList isListView={isListView} navigation={navigation} />
-            <HiveButton text="Add New Hive" onAddHivePress={() => setModalVisible(true)}/>
+            <HiveButton text="Add New Hive" onHivePress={() => setModalVisible(true)}/>
             <AddHiveModal 
                 isVisible={modalVisible}
                 title="Enter New Hive Information"
