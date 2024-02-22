@@ -20,7 +20,7 @@ const ChecklistScreen = () => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Checklist"
+        title={userViewModel.i18n.t("checklist")}
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Checklist</Text>

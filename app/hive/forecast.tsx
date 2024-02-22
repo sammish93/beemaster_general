@@ -108,7 +108,7 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Forecast"
+        title={userViewModel.i18n.t("detailed forecast")}
       />
       {isLoadingScreen ? (
         <LoadingScreen />

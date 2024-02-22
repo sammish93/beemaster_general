@@ -20,7 +20,7 @@ const CalendarScreen = () => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Calendar"
+        title={userViewModel.i18n.t("calendar")}
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Calendar</Text>

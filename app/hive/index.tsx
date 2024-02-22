@@ -35,7 +35,7 @@ const HiveScreen = (params: HiveScreenProps) => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title={`Hive ${hiveId}`}
+        title={`${userViewModel.i18n.t("hive")} ${hiveId}`}
         trailingIcons={[
           <TouchableOpacity
             onPress={() => {

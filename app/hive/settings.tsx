@@ -34,7 +34,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Hive Settings"
+        title={userViewModel.i18n.t("settings")}
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Hive Settings</Text>

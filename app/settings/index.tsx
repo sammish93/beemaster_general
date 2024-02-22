@@ -8,7 +8,7 @@ import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import React from 'react';
+import React from "react";
 import PermissionSwitch from "@/components/PermissionSwitch";
 import SwitchTheme from "@/components/SwitchTheme";
 
@@ -17,14 +17,13 @@ const SettingsScreen = () => {
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
 
-
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Settings"
+        title={userViewModel.i18n.t("settings")}
         trailingIcons={[
           <TouchableOpacity
             onPress={() => {
@@ -61,7 +60,6 @@ const SettingsScreen = () => {
         >
           Logout
         </Button>
-
       </View>
     </SafeAreaView>
   );
