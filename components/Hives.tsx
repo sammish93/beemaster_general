@@ -8,7 +8,6 @@ import AddHiveModal from "./modals/AddHiveModal";
 import HiveList from "./hiveList/HiveList";
 import { HiveListProps } from "./hiveList/HiveList";
 import { addHive } from "@/utils/hiveUtils";
-import HiveFilter from "./HiveFilter";
 
 const Hives = ({ navigation }: HiveListProps) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -19,7 +18,6 @@ const Hives = ({ navigation }: HiveListProps) => {
     
     return (
         <View>
-            <HiveFilter />
             <View style={styles(theme).toggleContainer}>
                 <Switch value={isListView} onValueChange={() => setIsListView(!isListView)} />
                 <Text style={{ color: "white"}}>{ isListView ? "Detailed View" : "Simplified View"}</Text>
