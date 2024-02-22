@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { View, Animated, Image, Easing } from "react-native";
 import { useTheme } from "react-native-paper";
 import styles from "@/assets/styles";

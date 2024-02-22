@@ -11,6 +11,11 @@ import { Button, Text, useTheme } from "react-native-paper";
 // More info about how to use the bottom sheets can be found here:
 // https://ui.gorhom.dev/components/bottom-sheet/modal
 
+// NOTE:
+// Don't base your code on this example. I modified Stian's modal (AddHiveModal.tsx) to integrate
+// components from Modals.tsx. Base your code on that. He implements it on app/index.tsx, with the
+// <Hives> component.
+
 // Bottom Sheets don't particularly work well with web so a modal a-la alert box would be better.
 
 const ExampleModal = () => {

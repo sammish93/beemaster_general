@@ -6,7 +6,6 @@ import { Button, useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import React from "react";
 
 const LoginScreen = () => {
   const theme = useTheme();

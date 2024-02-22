@@ -16,8 +16,7 @@ import { ScreenHeight, ScreenWidth } from "@/constants/Dimensions";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/components/ToastCustom";
-import { Portal } from 'react-native-paper';
-import React from "react";
+import { Portal } from "react-native-paper";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -88,8 +87,8 @@ const RootLayout = () => {
   }
 
   return (
-    <Provider 
-      exampleViewModel={exampleViewModel} 
+    <Provider
+      exampleViewModel={exampleViewModel}
       userViewModel={userViewModel}
       hiveViewModel={hiveViewModel}
     >

@@ -10,6 +10,7 @@ const defaultTheme = customLightTheme;
 const styles = (theme?: MD3Theme) => { 
   const dynamicTheme = theme ? theme : customLightTheme
   const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
   
   return StyleSheet.create({
     container: {
@@ -29,19 +30,6 @@ const styles = (theme?: MD3Theme) => {
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
       padding: 20
-    },
-    modal: {
-      alignItems: "center",
-    },
-    modalContent: {
-      margin: 10,
-      padding: 10,
-      gap: 10,
-    },
-    modalTitle: {
-      marginTop: 25, 
-      marginBottom: 8, 
-      marginHorizontal: 15
     },
     topBarContainer: {
       flexDirection: "row",
@@ -88,7 +76,19 @@ const styles = (theme?: MD3Theme) => {
     },
     bottomSheetScrollContainer: {
       flex: 0,
+      padding: 12
+    },
+    overlayModal: {
       alignItems: "center",
+    },
+    overlayContainer: {
+      backgroundColor: dynamicTheme.colors.primaryContainer,
+      alignContent: "center",
+      maxHeight: screenHeight * 0.9,
+      width: screenWidth * 0.9,
+      maxWidth: ScreenWidth.Compact,
+      padding: 12,
+      borderRadius: 20,
     },
     activityIndicatorContainer: {
       flex: 1,
