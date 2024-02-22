@@ -8,7 +8,7 @@ import exampleViewModel from "@/viewModels/ExampleViewModel";
 import userViewModel from "@/viewModels/UserViewModel";
 import { hiveViewModel } from "@/viewModels/HiveViewModel";
 import { DrawerScreen } from "@/components/layouts/drawer";
-import { Dimensions, Platform, useColorScheme, Text } from "react-native";
+import { Dimensions, Platform, useColorScheme, Text, View } from "react-native";
 import { MaterialBottomTabsScreen } from "@/components/layouts/bottomBar";
 import { LoginScreen } from "@/components/layouts/login";
 import { customDarkTheme, customLightTheme } from "@/assets/themes";

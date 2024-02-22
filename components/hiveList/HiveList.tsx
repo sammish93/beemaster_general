@@ -1,13 +1,14 @@
 import { useContext } from "react";
 import { NavigationProp } from "@react-navigation/native";
-import { Button, useTheme, Text } from "react-native-paper";
+import { Button, useTheme, Text, MD3Theme } from "react-native-paper";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import { MobXProviderContext } from "mobx-react";
-import { View, Dimensions } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { TouchableRipple } from "react-native-paper";
 import styles from "./styles";
 import { HiveModel } from "@/models/hiveModel";
 import HiveInfo from "../HiveInfo";
+import { customLightTheme } from "@/assets/themes";
 
 export interface HiveListProps {
   isListView: boolean;
@@ -20,7 +21,7 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
 
   const renderItem = ({ item }: { item: HiveModel }) => (
     <TouchableRipple
-      style={styles(isListView, theme).hiveContainer}
+      style={simpleDetailedStyle(isListView, theme).hiveContainer}
       onPress={() => navigation.navigate("/hive/index", { hiveId: item.id })}
     >
       <View>
@@ -48,6 +49,22 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
       />
     </GestureHandlerRootView>
   );
+};
+
+const simpleDetailedStyle = (isListView: boolean, theme?: MD3Theme) => {
+  const dynamicTheme = theme ? theme : customLightTheme;
+
+  return StyleSheet.create({
+    hiveContainer: {
+      backgroundColor: dynamicTheme.colors.secondaryContainer,
+      maxWidth: isListView ? "100%" : "50%",
+      margin: 6,
+      gap: 12,
+      flex: 1,
+      padding: 10,
+      borderRadius: 10,
+    },
+  });
 };
 
 export default HiveList;

@@ -71,7 +71,9 @@ export const OverlayModal = (props: ModalProps) => {
         onDismiss={props.onClose}
         contentContainerStyle={styles(theme).overlayContainer}
       >
-        <ScrollView>{props.children}</ScrollView>
+        <ScrollView contentContainerStyle={styles(theme).overlayScrollView}>
+          {props.children}
+        </ScrollView>
       </Modal>
     </Portal>
   );

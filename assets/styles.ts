@@ -146,8 +146,15 @@ const styles = (theme?: MD3Theme) => {
       maxHeight: screenHeight * 0.9,
       width: screenWidth * 0.9,
       maxWidth: ScreenWidth.Compact,
-      padding: 12,
+      paddingTop: 12,
+      paddingBottom: 12,
+      paddingLeft: 12,
+      // Accomodates the scrollbar.
+      paddingRight: 4,
       borderRadius: 20,
+    },
+    overlayScrollView: {
+      paddingRight: 8
     },
     activityIndicatorContainer: {
       flex: 1,

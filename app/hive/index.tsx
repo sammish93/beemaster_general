@@ -30,7 +30,7 @@ const HiveScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
 
   return (
-    <SafeAreaView style={styles(theme).container}>
+    <SafeAreaView style={{ ...styles(theme).container }}>
       <StatusBarCustom />
       <TopBar
         navigation={navigation}
