@@ -47,10 +47,14 @@ const RootLayout = () => {
   //const { theme } = useMaterial3Theme();
 
   // Decides which colour scheme to use.
-  const paperTheme =
-    colorScheme === "dark" ? customDarkTheme : customLightTheme;
+  //const paperTheme =
+  //colorScheme === "dark" ? customDarkTheme : customLightTheme;
 
   // Bug fix for react native bottom bar and paper/material 3 compatibility in dark mode.
+  //paperTheme.colors.secondaryContainer = paperTheme.colors.surfaceDisabled;
+
+  const userTheme = userViewModel.theme;
+  const paperTheme = userTheme === "dark" ? customDarkTheme : customLightTheme;
   paperTheme.colors.secondaryContainer = paperTheme.colors.surfaceDisabled;
 
   // Loading in fonts to use in the application.
