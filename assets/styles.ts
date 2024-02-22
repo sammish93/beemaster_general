@@ -6,13 +6,15 @@ import { red100 } from "react-native-paper/lib/typescript/styles/themes/v2/color
 import { customFontConfig, customLightTheme } from "./themes";
 import { ScreenWidth } from "@/constants/Dimensions"
 
+//TODO: GDPR window: adjust the height on web
+
 const defaultTheme = customLightTheme;
- 
-const styles = (theme?: MD3Theme) => { 
+
+const styles = (theme?: MD3Theme) => {
   const dynamicTheme = theme ? theme : customLightTheme
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
-  const isMobile = screenWidth < 768;
+  //const isMobile = screenWidth < 768;
 
 
   return StyleSheet.create({
