@@ -1,17 +1,18 @@
+import React from "react";
 import { useNavigation } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, useTheme, Text } from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 
-type RootStackParamList = {
+export type RootStackParamList = {
   hive: {
     hiveId: string;
   };
@@ -51,15 +52,7 @@ const HiveScreen = (params: HiveScreenProps) => {
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Hive Screen</Text>
-        <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate("/hive/forecast", { hiveId: hiveId });
-          }}
-        >
-          Forecast
-        </Button>
+        <Text>Hive ID: {hiveId}</Text>
       </View>
     </SafeAreaView>
   );

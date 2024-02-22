@@ -1,6 +1,5 @@
 import * as jsonResponse from '@/assets/testResources/weatherApiResponse.json';
-import { calculateDailyRainfall } from '@/domain/rainfallCalculator';
-import { getForecastDateFormat } from '@/domain/weatherForecastDeserialiser';
+import { getForecastDateFormat, calculateDailyRainfall } from '@/domain/weatherForecastDeserialiser';
 
 const mockedDate = new Date('2024-02-14T12:00:00Z');
   

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import isValidCoordinates from "@/domain/validation/coordinateValidation";
 
 interface WeatherApiProps {
@@ -5,35 +6,25 @@ interface WeatherApiProps {
   lng: number
 }
 
-/**
- * Returns a full weather forecast for a specific geographical location.
- *
- * @remarks
- * The web-based REST API used is LocationForecast by Yr.
- * Documentation can be found here - https://api.met.no/weatherapi/locationforecast/2.0/documentation
- * 
- * @param lat - The latitude as a decimal value.
- * @param lng - The longitude as a decimal value.
- * @returns A weather forecast for the next 9-10 days in JSON format. Includes precipitation, 
- * temperature, wind speed, wind direction, humidity, and a weather symbol summarising each forecast.
- */
+// The reason for using axios over React Native's fetch API is because axios allows us to edit 
+// the user agent. Yr's APIs block a number of default (or undefined) user agents which can throw 
+// errors, especially in Expo Go.
 export const fetchWeatherForecast = async (props: WeatherApiProps) => {
-
   if (!isValidCoordinates(props.lat, props.lng)) {
     console.error(`The coordinates '${props.lat}, ${props.lng}' are not valid.`)
     throw new Error(`The coordinates '${props.lat}, ${props.lng}' are not valid.`)
   }
 
   try {
-    const response = await fetch(
-      `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${props.lat}&lon=${props.lng}`
-    );
+    const response = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${props.lat}&lon=${props.lng}`, {
+      headers: {
+        'User-Agent': 'BeemasterGeneral/1.0'
+      }
+    });
 
-    const json = await response.json();
-
-    return json;
+    return response.data;
   } catch (error) {
-    // TODO
-    console.error(error)
+    console.error(error);
+    throw error;
   }
 };
