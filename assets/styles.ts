@@ -6,7 +6,7 @@ import { customFontConfig, customLightTheme } from "./themes";
 import { ScreenWidth } from "@/constants/Dimensions"
 
 const defaultTheme = customLightTheme;
-
+ 
 const styles = (theme?: MD3Theme) => { 
   const dynamicTheme = theme ? theme : customLightTheme
   const screenWidth = Dimensions.get('window').width;
@@ -125,6 +125,11 @@ const styles = (theme?: MD3Theme) => {
       position: 'absolute',
       top: 0, 
       right: 0
+    },
+    filterContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 16
     }
   });
 };

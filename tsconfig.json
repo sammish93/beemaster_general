@@ -9,7 +9,8 @@
         "./*"
       ]
     },
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "moduleResolution": "node"
   },
   "include": [
     "**/*.ts",
