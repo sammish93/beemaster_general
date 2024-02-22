@@ -6,9 +6,9 @@ import { red100 } from "react-native-paper/lib/typescript/styles/themes/v2/color
 import { customFontConfig, customLightTheme } from "./themes";
 import { ScreenWidth } from "@/constants/Dimensions"
 
-
-
-const styles = (theme?: MD3Theme) => {
+const defaultTheme = customLightTheme;
+ 
+const styles = (theme?: MD3Theme) => { 
   const dynamicTheme = theme ? theme : customLightTheme
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
@@ -146,8 +146,15 @@ const styles = (theme?: MD3Theme) => {
       maxHeight: screenHeight * 0.9,
       width: screenWidth * 0.9,
       maxWidth: ScreenWidth.Compact,
-      padding: 12,
+      paddingTop: 12,
+      paddingBottom: 12,
+      paddingLeft: 12,
+      // Accomodates the scrollbar.
+      paddingRight: 4,
       borderRadius: 20,
+    },
+    overlayScrollView: {
+      paddingRight: 8
     },
     activityIndicatorContainer: {
       flex: 1,
@@ -184,6 +191,11 @@ const styles = (theme?: MD3Theme) => {
       position: 'absolute',
       top: 0,
       right: 0
+    },
+    filterContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 16
     }
   });
 };

@@ -29,6 +29,7 @@ import { toastCrossPlatform } from "@/components/ToastCustom";
 import LoadingScreen from "@/components/LoadingScreen";
 import { WeeklySimpleForecast } from "@/models/forecast";
 import ForecastSummary from "@/components/ForecastSummary";
+import "@/assets/customScrollbar.css";
 
 type RootStackParamList = {
   hive: {

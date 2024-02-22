@@ -85,6 +85,144 @@ const ModalContent = (props: ModalContentProps) => {
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
         </Text>
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>{" "}
+        <Text style={theme.fonts.bodyLarge}>
+          This feature will include much more.
+        </Text>
         <VerticalSpacer size={12} />
         <Button mode="contained" onPress={handleAddNewHive}>
           Add Hive
