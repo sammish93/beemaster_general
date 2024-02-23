@@ -6,16 +6,19 @@ import no from '@/constants/localisation/no.json';
 import { PrecipitationMeasurement, TemperatureMeasurement, WeightMeasurement, WindSpeedMeasurement } from "@/constants/Measurements";
 import {auth, db} from "@/firebaseConfig";
 import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithCredential} from "firebase/auth";
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+//import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { Platform } from 'react-native';
 import { 
   WEB_CLIENT_ID} from '@env';
 class UserViewModel {
+  /*
   configure(): void{
     GoogleSignin.configure({
       webClientId: WEB_CLIENT_ID,
     });
     
   }
+  */
     constructor() {
       
         // Makes all the class properties observable. Can change if desired.
@@ -26,7 +29,7 @@ class UserViewModel {
           });
         this.i18n.locale = Localization.locale;
         this.i18n.enableFallback = true;
-        this.configure();
+       // this.configure();
 
         // Manually change the language:
         //this.i18n.locale = "en";
@@ -74,17 +77,22 @@ class UserViewModel {
       }
 
       @action signInWithGoogleNative = async () => {
-        try {
-          const { idToken } = await GoogleSignin.signIn();
-          const googleCredential = GoogleAuthProvider.credential(idToken)
-          const result = await  signInWithCredential(auth, googleCredential);
-          
+        if (Platform.OS !== 'web') {
+          const { GoogleSignin } = await import('@react-native-google-signin/google-signin');
+          GoogleSignin.configure({
+            webClientId: WEB_CLIENT_ID, 
+          });
+          try {
+            const { idToken } = await GoogleSignin.signIn();
+            const googleCredential = GoogleAuthProvider.credential(idToken);
+            const result = await signInWithCredential(auth, googleCredential);
             this.setUserId(result.user.uid);
-            console.log("Native user: ", result.user)
-        } catch (error) {
+          } catch (error) {
             console.error("Error signing in with Google (Native): ", error);
+          }
         }
-    };
+      };
+      
       
 
       //TODO Fix all the logic in here. Can't signin if they already have an account. 
