@@ -64,10 +64,12 @@ const LoginScreen = () => {
 
   const handleGoogleSignIn = () => {
     if (Platform.OS === 'web') {
-      userViewModel.signInWithGoogle()
+      console.log("web signin")
+      userViewModel.signInWithGoogleWeb()
     } else {
+      console.log("native sign in started")
      
-      promptAsync();
+      userViewModel.signInWithGoogleNative()
     }
   };
 
