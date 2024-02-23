@@ -80,6 +80,7 @@ class UserViewModel {
           const result = await  signInWithCredential(auth, googleCredential);
           
             this.setUserId(result.user.uid);
+            console.log("Native user: ", result.user)
         } catch (error) {
             console.error("Error signing in with Google (Native): ", error);
         }
