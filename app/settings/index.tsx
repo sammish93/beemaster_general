@@ -11,6 +11,7 @@ import StatusBarCustom from "@/components/StatusBarCustom";
 import React from 'react';
 import PermissionSwitch from "@/components/PermissionSwitch";
 import SwitchTheme from "@/components/SwitchTheme";
+import DefaultSwitchComponent from "@/components/DefaultSwitch";
 
 
 const SettingsScreen = () => {
@@ -62,16 +63,42 @@ const SettingsScreen = () => {
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
           <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Notifications</Text>
+          <DefaultSwitchComponent type="mobile" />
+          <DefaultSwitchComponent type="sms" />
+          <DefaultSwitchComponent type="email" />
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
           <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Notification Types</Text>
+          <DefaultSwitchComponent type="snow" />
+          <DefaultSwitchComponent type="potential swarm" />
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
+
           <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Actions</Text>
-          <Divider style={{ backgroundColor: theme.colors.outline }} />
+
           <View style={{ justifyContent: 'center', alignItems: 'center', padding: 1, margin: 8 }}>
             <Button
-              style={{ width: 150 }}
+              style={{ width: 150, margin: 4 }}
+              mode="contained"
+              onPress={() => {
+                //TODO: do someting
+              }}
+            >
+              Register Email
+            </Button>
+
+            <Button
+              style={{ width: 150, margin: 4 }}
+              mode="contained"
+              onPress={() => {
+                //TODO: do someting
+              }}
+            >
+              Request Data
+            </Button>
+
+            <Button
+              style={{ width: 150, margin: 4 }}
               mode="contained"
               onPress={() => {
                 userViewModel.clear();
@@ -79,6 +106,17 @@ const SettingsScreen = () => {
             >
               Logout
             </Button>
+
+            <Button
+              style={{ width: 150, margin: 4, backgroundColor: theme.colors.error }}
+              mode="contained"
+              onPress={() => {
+                //TODO: do someting
+              }}
+            >
+              <Text style={{ color: theme.colors.onError }}>Delete Account</Text>
+            </Button>
+
           </View>
 
         </ScrollView>
