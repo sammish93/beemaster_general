@@ -93,3 +93,5 @@ yarn-error.*
 
 #metro config:
 metro-config.js
+
+.env

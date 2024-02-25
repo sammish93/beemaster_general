@@ -31,7 +31,7 @@ const SwitchTheme = () => {
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={[paperTheme.fonts.bodyMedium, { marginRight: 10 }]}>Switch light/dark mode: </Text>
-            <Text>{paperTheme.dark ? 'Dark' : 'Light'}</Text>
+            <Text style={paperTheme.fonts.bodyMedium}>{paperTheme.dark ? 'Dark' : 'Light'}</Text>
             <Switch
                 value={paperTheme.dark}
                 onValueChange={toggleTheme}
