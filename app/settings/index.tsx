@@ -55,11 +55,15 @@ const SettingsScreen = () => {
             String displayed in either English or Norwegian:{" "}
             {userViewModel.i18n.t("welcome")}
           </Text>
+          {/*TODO: ADD Country */}
+
+
           <Divider style={{ backgroundColor: theme.colors.outline }} />
           <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Permissions</Text>
           <PermissionSwitch type="location" />
           <PermissionSwitch type="camera" />
           <PermissionSwitch type="media" />
+
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
           <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Notifications</Text>
@@ -67,15 +71,16 @@ const SettingsScreen = () => {
           <DefaultSwitchComponent type="sms" />
           <DefaultSwitchComponent type="email" />
 
+
           <Divider style={{ backgroundColor: theme.colors.outline }} />
           <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Notification Types</Text>
+          {/*TODO: ADD info button in top corner*/}
           <DefaultSwitchComponent type="snow" />
           <DefaultSwitchComponent type="potential swarm" />
 
+
           <Divider style={{ backgroundColor: theme.colors.outline }} />
-
           <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Actions</Text>
-
           <View style={{ justifyContent: 'center', alignItems: 'center', padding: 1, margin: 8 }}>
             <Button
               style={{ width: 150, margin: 4 }}
