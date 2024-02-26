@@ -53,7 +53,8 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
     <GestureHandlerRootView
       style={{ flex: 1 }}
       onLayout={({ nativeEvent }) => {
-        setParentWidth(nativeEvent.layout.width); // Update parentWidth when the layout is calculated
+        // Update parentWidth when the layout is calculated
+        setParentWidth(nativeEvent.layout.width);
       }}
     >
       <Text>
