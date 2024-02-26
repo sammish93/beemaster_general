@@ -28,7 +28,19 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>myapp</string>
-				<string>com.anonymous.beemaster.ios</string>
+				<string>no.hiof.beemastergeneral.ios</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.139542950378-q528mdoabm63llgmc9d6j8grse82cjc1</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>exp+beemastergeneral</string>
 			</array>
 		</dict>
 	</array>
@@ -46,7 +58,6 @@
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
-		<string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>
@@ -62,6 +73,8 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
