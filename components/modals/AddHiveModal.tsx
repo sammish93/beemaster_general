@@ -75,7 +75,6 @@ const ModalContent = (props: ModalContentProps) => {
         />
       </View>
       <View>
-        <VerticalSpacer size={12} />
         <TextInput
           label="Hive Name"
           value={newHiveName}

@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import { View, Platform } from "react-native";
+import { View, Platform, TouchableOpacity } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useRef, useState } from "react";
 import { useTheme, Text, Switch, Button } from "react-native-paper";
@@ -8,12 +8,12 @@ import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import { ScrollView } from "react-native-virtualized-view";
-import getWeatherTypeIconFromString from "@/domain/weatherIconMapper";
-import AddHiveButton from "@/components/home/AddHiveButton";
 import HiveList from "@/components/home/HiveList";
 import AddHiveModal from "@/components/modals/AddHiveModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import HomeInfoModal from "@/components/modals/HomeInfoModal";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -22,6 +22,7 @@ const HomeScreen = () => {
   const { exampleViewModel } = useContext(MobXProviderContext);
   const [modalVisible, setModalVisible] = useState(false);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const [infoModalVisible, setInfoModalVisible] = useState(false);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const [isListView, setIsListView] = useState(false);
 
@@ -62,6 +63,14 @@ const HomeScreen = () => {
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
         title={userViewModel.i18n.t("home")}
+        trailingIcons={[
+          <TouchableOpacity onPress={() => setInfoModalVisible(true)}>
+            <MaterialCommunityIcons
+              style={styles(theme).trailingIcon}
+              name="information-outline"
+            />
+          </TouchableOpacity>,
+        ]}
       />
       <ScrollView>
         <View style={styles(theme).main}>
@@ -99,6 +108,10 @@ const HomeScreen = () => {
         bottomSheetModalRef={bottomSheetModalRef}
         onClose={() => handleCloseModal()}
         onAddHive={handleAddHive}
+      />
+      <HomeInfoModal
+        isOverlayModalVisible={infoModalVisible}
+        onClose={() => setInfoModalVisible(false)}
       />
     </SafeAreaView>
   );
