@@ -38,7 +38,9 @@ const ModalContent = (props: ModalContentProps) => {
           alignItems: "center",
         }}
       >
-        <Text style={theme.fonts.headlineSmall}>Information</Text>
+        <Text style={{ ...theme.fonts.headlineSmall, flex: 1 }}>
+          Information
+        </Text>
         <IconButton
           icon="close"
           iconColor={theme.colors.onSurfaceVariant}

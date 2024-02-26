@@ -2,7 +2,7 @@ import { useNavigation } from "expo-router";
 import { View, Platform, TouchableOpacity } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useRef, useState } from "react";
-import { useTheme, Text, Switch, Button } from "react-native-paper";
+import { useTheme, Text, Switch, Button, Chip } from "react-native-paper";
 import TopBar from "@/components/TopBar";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,14 +14,17 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import HomeInfoModal from "@/components/modals/HomeInfoModal";
+import AddFilterModal from "@/components/modals/AddFilterModal";
 
 const HomeScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const { exampleViewModel } = useContext(MobXProviderContext);
-  const [modalVisible, setModalVisible] = useState(false);
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const [AddHiveModalVisible, setAddHiveModalVisible] = useState(false);
+  const bottomSheetAddHiveModalRef = useRef<BottomSheetModal>(null);
+  const [AddFilterModalVisible, setAddFilterModalVisible] = useState(false);
+  const bottomSheetAddFilterModalRef = useRef<BottomSheetModal>(null);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const [isListView, setIsListView] = useState(false);
@@ -29,30 +32,54 @@ const HomeScreen = () => {
   const handleAddHive = (hiveName: string) => {
     const newHiveId = `hive-${Date.now()}`; // TODO Temporarly solution.
     hiveViewModel.addHive({ id: newHiveId, name: hiveName });
-    handleCloseModal();
+    handleCloseAddHiveModal();
   };
 
-  const handleModalSheetPressOpen = useCallback(() => {
-    bottomSheetModalRef.current?.present();
+  const handleAddHiveModalSheetPressOpen = useCallback(() => {
+    bottomSheetAddHiveModalRef.current?.present();
   }, []);
 
-  const handleModalSheetPressClose = useCallback(() => {
-    bottomSheetModalRef.current?.dismiss();
+  const handleAddHiveModalSheetPressClose = useCallback(() => {
+    bottomSheetAddHiveModalRef.current?.dismiss();
   }, []);
 
-  const handleOpenModal = () => {
+  const handleOpenAddHiveModal = () => {
     if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleModalSheetPressOpen();
+      handleAddHiveModalSheetPressOpen();
     } else {
-      setModalVisible(true);
+      setAddHiveModalVisible(true);
     }
   };
 
-  const handleCloseModal = () => {
+  const handleCloseAddHiveModal = () => {
     if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleModalSheetPressClose();
+      handleAddHiveModalSheetPressClose();
     } else {
-      setModalVisible(false);
+      setAddHiveModalVisible(false);
+    }
+  };
+
+  const handleAddFilterModalSheetPressOpen = useCallback(() => {
+    bottomSheetAddFilterModalRef.current?.present();
+  }, []);
+
+  const handleAddFilterModalSheetPressClose = useCallback(() => {
+    bottomSheetAddFilterModalRef.current?.dismiss();
+  }, []);
+
+  const handleOpenAddFilterModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleAddFilterModalSheetPressOpen();
+    } else {
+      setAddFilterModalVisible(true);
+    }
+  };
+
+  const handleCloseAddFilterModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleAddFilterModalSheetPressClose();
+    } else {
+      setAddFilterModalVisible(false);
     }
   };
 
@@ -92,22 +119,50 @@ const HomeScreen = () => {
             </Text>
           </View>
           <VerticalSpacer size={8} />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Chip
+              mode="outlined"
+              icon="plus"
+              elevated={true}
+              onPress={handleOpenAddFilterModal}
+            >
+              Add filter
+            </Chip>
+            <HorizontalSpacer size={4} />
+            <Chip onPress={() => console.log("Pressed")}>Fredrikstad</Chip>
+            <HorizontalSpacer size={4} />
+            <Chip onPress={() => console.log("Pressed")}>Harvested</Chip>
+            <HorizontalSpacer size={4} />
+            <Chip onPress={() => console.log("Pressed")}>Disease Risk</Chip>
+          </View>
+          <VerticalSpacer size={8} />
           <HiveList isListView={isListView} navigation={navigation} />
         </View>
       </ScrollView>
       <Button
         icon="plus"
         mode="contained"
-        onPress={handleOpenModal}
+        onPress={handleOpenAddHiveModal}
         style={{ margin: 4 }}
       >
         {userViewModel.i18n.t("add new hive")}
       </Button>
       <AddHiveModal
-        isOverlayModalVisible={modalVisible}
-        bottomSheetModalRef={bottomSheetModalRef}
-        onClose={() => handleCloseModal()}
+        isOverlayModalVisible={AddHiveModalVisible}
+        bottomSheetModalRef={bottomSheetAddHiveModalRef}
+        onClose={() => handleCloseAddHiveModal()}
         onAddHive={handleAddHive}
+      />
+      <AddFilterModal
+        isOverlayModalVisible={AddFilterModalVisible}
+        bottomSheetModalRef={bottomSheetAddFilterModalRef}
+        onClose={() => handleCloseAddFilterModal()}
+        onAddFilter={() => null}
       />
       <HomeInfoModal
         isOverlayModalVisible={infoModalVisible}
