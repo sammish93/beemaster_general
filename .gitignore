@@ -50,6 +50,7 @@ android/app/build/
 
 
 /android/app/google-services.json
+/google-services.json
 /GoogleService-Info.plist
 /ios/GoogleService-Info.plist
 
