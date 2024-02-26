@@ -28,10 +28,7 @@ const styles = (theme?: MD3Theme) => {
     main: {
       flex: 1,
       justifyContent: "center",
-      maxWidth: screenWidth > ScreenWidth.Widescreen ? ScreenWidth.Widescreen : screenWidth,
-      width: Platform.select({
-        'web': "50%"
-      }),
+      width: screenWidth > ScreenWidth.Expanded ? ScreenWidth.Expanded : "100%",
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
       padding: 20

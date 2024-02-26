@@ -9,8 +9,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import { ScrollView } from "react-native-virtualized-view";
 import getWeatherTypeIconFromString from "@/domain/weatherIconMapper";
-import AddHiveButton from "@/components/AddHiveButton";
-import HiveList from "@/components/hiveList/HiveList";
+import AddHiveButton from "@/components/home/AddHiveButton";
+import HiveList from "@/components/home/HiveList";
 import AddHiveModal from "@/components/modals/AddHiveModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
