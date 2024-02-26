@@ -14,9 +14,10 @@ import UserViewModel from "@/viewModels/UserViewModel";
 export interface HiveListProps {
   isListView: boolean;
   navigation: NavigationProp<ReactNavigation.RootParamList>;
+  hives: HiveModel[];
 }
 
-const HiveList = ({ isListView, navigation }: HiveListProps) => {
+const HiveList = ({ isListView, navigation, hives }: HiveListProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
   const [parentWidth, setParentWidth] = useState(0);
@@ -32,11 +33,11 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
 
   // Returns the amount of items in the last row
   const itemsInLastRow = useMemo(() => {
-    const totalItems = hiveViewModel.hives.length;
+    const totalItems = hives.length;
     const remainder = totalItems % numColumns;
 
     return remainder === 0 ? 0 : remainder;
-  }, [hiveViewModel.hives.length, numColumns]);
+  }, [hives.length, numColumns]);
 
   //TODO Modify onPress
   const renderItem = ({ item }: { item: HiveModel }) => (
@@ -59,7 +60,7 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
       }}
     >
       <FlatList
-        data={hiveViewModel.hives}
+        data={hives}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         key={`flatList-${numColumns}-columns`}

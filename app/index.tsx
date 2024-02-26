@@ -1,7 +1,7 @@
 import { useNavigation } from "expo-router";
 import { View, Platform, TouchableOpacity } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useCallback, useContext, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTheme, Text, Switch, Button, Chip } from "react-native-paper";
 import TopBar from "@/components/TopBar";
 import styles from "@/assets/styles";
@@ -15,6 +15,7 @@ import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
+import { HiveModel } from "@/models/hiveModel";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -28,6 +29,10 @@ const HomeScreen = () => {
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const [isListView, setIsListView] = useState(false);
+  const [filterList, setFilterList] = useState<string[]>([]);
+  const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(
+    hiveViewModel.hives
+  );
 
   const handleAddHive = (hiveName: string) => {
     const newHiveId = `hive-${Date.now()}`; // TODO Temporarly solution.
@@ -83,6 +88,29 @@ const HomeScreen = () => {
     }
   };
 
+  const handleFilterChipPress = (filter: string) => {
+    if (filterList.includes(filter)) {
+      setFilterList(filterList.filter((item) => item !== filter));
+    } else {
+      setFilterList([...filterList, filter]);
+    }
+  };
+
+  const handleClearFilterList = () => {
+    setFilterList([]);
+  };
+
+  useEffect(() => {
+    if (filterList.length === 0) {
+      setFilteredHiveList(hiveViewModel.hives);
+    } else {
+      const filtered = hiveViewModel.hives.filter((hive) =>
+        filterList.every((filter) => hive.filters.includes(filter))
+      );
+      setFilteredHiveList(filtered);
+    }
+  }, [filterList]);
+
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />
@@ -122,6 +150,7 @@ const HomeScreen = () => {
           <View
             style={{
               flexDirection: "row",
+              flexWrap: "wrap",
               alignItems: "center",
             }}
           >
@@ -130,18 +159,50 @@ const HomeScreen = () => {
               icon="plus"
               elevated={true}
               onPress={handleOpenAddFilterModal}
+              style={{ marginVertical: 4 }}
             >
               Add filter
             </Chip>
-            <HorizontalSpacer size={4} />
-            <Chip onPress={() => console.log("Pressed")}>Fredrikstad</Chip>
-            <HorizontalSpacer size={4} />
-            <Chip onPress={() => console.log("Pressed")}>Harvested</Chip>
-            <HorizontalSpacer size={4} />
-            <Chip onPress={() => console.log("Pressed")}>Disease Risk</Chip>
+            <HorizontalSpacer size={8} />
+            {hiveViewModel.filters.map((filter: string) => (
+              <View
+                key={`${filter}-chip`}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Chip
+                  selected={filterList.includes(filter)}
+                  showSelectedOverlay={true}
+                  disabled={
+                    !filteredHiveList.some((hive) =>
+                      hive.filters.includes(filter)
+                    )
+                  }
+                  onPress={() => handleFilterChipPress(filter)}
+                  style={{ marginVertical: 4 }}
+                >
+                  {filter}
+                </Chip>
+                <HorizontalSpacer size={8} />
+              </View>
+            ))}
+            <Chip
+              icon="close"
+              disabled={filterList.length === 0}
+              onPress={handleClearFilterList}
+              style={{ marginVertical: 4 }}
+            >
+              Unselect filters
+            </Chip>
           </View>
           <VerticalSpacer size={8} />
-          <HiveList isListView={isListView} navigation={navigation} />
+          <HiveList
+            isListView={isListView}
+            navigation={navigation}
+            hives={filteredHiveList}
+          />
         </View>
       </ScrollView>
       <Button
