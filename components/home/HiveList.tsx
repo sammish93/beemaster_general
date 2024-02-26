@@ -9,6 +9,7 @@ import { HiveModel } from "@/models/hiveModel";
 import HiveCard from "./HiveCard";
 import { customLightTheme } from "@/assets/themes";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
+import UserViewModel from "@/viewModels/UserViewModel";
 
 export interface HiveListProps {
   isListView: boolean;
@@ -26,7 +27,7 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
     // Ensure we don't divide by zero
     if (parentWidth === 0) return 1;
 
-    return Math.floor(parentWidth / (isListView ? 250 : 150));
+    return Math.floor(parentWidth / (isListView ? 250 : 125));
   }, [parentWidth]);
 
   // Returns the amount of items in the last row
@@ -57,9 +58,6 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
         setParentWidth(nativeEvent.layout.width);
       }}
     >
-      <Text>
-        {numColumns} {parentWidth} {screenWidth} {itemsInLastRow}
-      </Text>
       <FlatList
         data={hiveViewModel.hives}
         renderItem={renderItem}
@@ -68,8 +66,7 @@ const HiveList = ({ isListView, navigation }: HiveListProps) => {
         numColumns={numColumns}
         ListEmptyComponent={
           <Text style={theme.fonts.bodyLarge}>
-            No hives have been registered. To register, use the 'Add New Hive'
-            button.
+            {UserViewModel.i18n.t("no hives have been registered")}
             {/*TODO Refresh Button */}
           </Text>
         }

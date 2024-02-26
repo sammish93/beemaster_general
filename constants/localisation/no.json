@@ -94,5 +94,9 @@
     "hive scan": "Bikube Skann",
     "toolbox": "Verktøykasse",
     "updates": "Oppdateringer",
-    "home": "Hjem"
+    "home": "Hjem",
+    "add new hive": "Legg til ny bikube",
+    "detailed view": "Detaljerte utseende",
+    "simplified view": "Enkel utseende",
+    "no hives have been registered": "Ingen bikuber har blitt registrert. Bruk den 'Legg til ny bikube' knappen for å registrere."
   }

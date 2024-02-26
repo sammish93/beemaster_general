@@ -94,5 +94,9 @@
     "hive scan": "Hive Scan",
     "toolbox": "Toolbox",
     "updates": "Updates",
-    "home": "Home"
+    "home": "Home",
+    "add new hive": "Add new hive",
+    "detailed view": "Detailed View",
+    "simplified view": "Simplified View",
+    "no hives have been registered": "No hives have been registered. To register, use the 'Add New Hive' button."
   }

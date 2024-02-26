@@ -1,8 +1,16 @@
 import { HiveModel } from "@/models/hiveModel";
 
 export const hiveListData: HiveModel[] = [
-    { id: "hive-1234-1234-abc", name: "Hooney Beast" },
-    { id: "hive-1235-1235-abc", name: "Hooney Warrior" }
+    { id: "hive-1234-1234-abc", name: "Honey Beast" },
+    { id: "hive-1235-1235-abc", name: "Honey Warrior" },
+    { id: "hive-1235-1236-abc", name: "Honey Warrior" },
+    { id: "hive-1235-1237-abc", name: "Honey Warrior" },
+    { id: "hive-1235-1238-abc", name: "Honey Warrior" },
+    { id: "hive-1235-1239-abc", name: "Honey Warrior" },
+    { id: "hive-1235-1240-abc", name: "Honey Warrior" },
+    { id: "hive-1235-1241-abc", name: "Honey Warrior" },
+    { id: "hive-1235-1242-abc", name: "Honey Warrior" },
+    { id: "hive-1235-1243-abc", name: "Honey Warrior" },
 ];
 
 // Dummy sensor data.

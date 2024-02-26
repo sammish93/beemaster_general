@@ -33,19 +33,6 @@ const styles = (theme?: MD3Theme) => {
       backgroundColor: dynamicTheme.colors.surfaceVariant,
       padding: 20
     },
-    modal: {
-      alignItems: "center",
-    },
-    modalContent: {
-      margin: 10,
-      padding: 10,
-      gap: 10,
-    },
-    modalTitle: {
-      marginTop: 25,
-      marginBottom: 8,
-      marginHorizontal: 15
-    },
     topBarContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
@@ -179,12 +166,6 @@ const styles = (theme?: MD3Theme) => {
       position: "absolute",
       justifyContent: "center",
       alignItems: "center",
-    },
-    toggleContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingVertical: 15,
-      gap: 5
     },
     closeButton: {
       position: 'absolute',

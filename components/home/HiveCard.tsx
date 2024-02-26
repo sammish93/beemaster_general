@@ -5,6 +5,7 @@ import { useTheme, Text, Card, Icon } from "react-native-paper";
 import { sensorData } from "@/data/hiveData";
 import getWeatherTypeIconFromString from "@/domain/weatherIconMapper";
 import { MobXProviderContext } from "mobx-react";
+import { HorizontalSpacer } from "../Spacers";
 
 // Assures that only the string "100%" can be passed.
 type maxWidthString = "100%";
@@ -46,34 +47,41 @@ const HiveCard = ({
 
   return (
     <Card onPress={onPress} style={{ margin: 4, flex: 1, maxWidth: maxWidth }}>
-      <Card.Title title={item.name} />
+      <Card.Title title={item.name} titleStyle={{ alignSelf: "center" }} />
       <Card.Content
         style={{
           flexDirection: "row",
-          justifyContent: "space-between",
         }}
       >
-        <View style={{ flex: 1 }}>
-          {" "}
-          {/* Adjusted to ensure content is within bounds */}
+        <View style={{ flex: 1, alignItems: "center" }}>
           {firstHalf.map(({ label, icon, weatherIcon, value }) => (
             <View
               key={label}
-              style={{ flexDirection: "row", flex: 1, alignItems: "center" }}
+              style={{
+                flexDirection: "row",
+                flex: 1,
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "center",
+              }}
             >
               {icon && (
-                <Icon
-                  source={icon}
-                  size={18}
-                  color={theme.colors.onSurfaceVariant}
-                />
+                <>
+                  <Icon
+                    source={icon}
+                    size={18}
+                    color={theme.colors.onSurfaceVariant}
+                  />
+                  <HorizontalSpacer size={4} />
+                </>
               )}
               {weatherIcon && (
                 <>
                   <Image
                     source={getWeatherTypeIconFromString(weatherIcon)}
-                    style={{ width: 24, height: 24 }}
+                    style={{ width: 18, height: 18 }}
                   />
+                  <HorizontalSpacer size={4} />
                   <Text
                     style={[
                       theme.fonts.bodyMedium,
@@ -97,24 +105,46 @@ const HiveCard = ({
           ))}
         </View>
         {secondHalf.length !== 0 && (
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, alignItems: "center" }}>
             {secondHalf.map(({ label, icon, weatherIcon, value }) => (
               <View
                 key={label}
-                style={{ flexDirection: "row", flex: 1, alignItems: "center" }}
+                style={{
+                  flexDirection: "row",
+                  flex: 1,
+                  alignItems: "center",
+                  width: "100%",
+                  justifyContent: "center",
+                }}
               >
                 {icon && (
-                  <Icon
-                    source={icon}
-                    size={18}
-                    color={theme.colors.onSurfaceVariant}
-                  />
+                  <>
+                    <Icon
+                      source={icon}
+                      size={18}
+                      color={theme.colors.onSurfaceVariant}
+                    />
+                    <HorizontalSpacer size={4} />
+                  </>
                 )}
                 {weatherIcon && (
-                  <Image
-                    source={getWeatherTypeIconFromString(weatherIcon)}
-                    style={{ width: 24, height: 24 }}
-                  />
+                  <>
+                    <Image
+                      source={getWeatherTypeIconFromString(weatherIcon)}
+                      style={{ width: 18, height: 18 }}
+                    />
+                    <HorizontalSpacer size={4} />
+                    <Text
+                      style={[
+                        theme.fonts.bodyMedium,
+                        { flexShrink: 1, marginRight: 4 },
+                      ]}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {userViewModel.i18n.t(weatherIcon)}
+                    </Text>
+                  </>
                 )}
                 <Text
                   style={[theme.fonts.bodyMedium, { flexShrink: 1 }]}
