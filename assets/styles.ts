@@ -14,7 +14,7 @@ const styles = (theme?: MD3Theme) => {
   const dynamicTheme = theme ? theme : customLightTheme
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
-  //const isMobile = screenWidth < 768;
+
 
 
   return StyleSheet.create({
@@ -198,7 +198,8 @@ const styles = (theme?: MD3Theme) => {
       flexDirection: "row",
       alignItems: "center",
       gap: 16
-    }
+    },
+
   });
 };
 

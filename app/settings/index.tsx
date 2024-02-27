@@ -1,7 +1,7 @@
 import { useNavigation } from "expo-router";
-import { TouchableOpacity, View, ScrollView } from "react-native";
+import { TouchableOpacity, View, ScrollView, Platform } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Button, useTheme, Divider, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
@@ -12,12 +12,48 @@ import React from "react";
 import PermissionSwitch from "@/components/PermissionSwitch";
 import SwitchTheme from "@/components/SwitchTheme";
 import DefaultSwitchComponent from "@/components/DefaultSwitch";
+import * as Localization from 'expo-localization';
 
+import { availableLanguages, availableCountries } from '@/constants/LocaleEnums';
 
 const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
+
+  const [currentLanguage, setCurrentLanguage] = useState<string | null>(null);
+  const [currentCountry, setCurrentCountry] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    let regionCode: string;
+    if (Platform.OS === 'web') {
+      regionCode = Localization.locale;
+    } else {
+      const locales = Localization.getLocales();
+      const userLocale = locales[0];
+      regionCode = userLocale.regionCode || '';
+    }
+    console.log('Region Code:', regionCode);
+
+
+    const locales = Localization.getLocales();
+    const userLocale = locales[0];
+    const userLanguage = userLocale.languageCode;
+    console.log('Language Code:', userLanguage);
+
+    const languageOption = availableLanguages.find(lang => lang.code === userLanguage && lang.isEnabled);
+    if (languageOption) {
+      setCurrentLanguage(languageOption.name);
+    }
+
+    const countryOption = availableCountries.find(country => country.code === regionCode && country.isEnabled);
+    if (countryOption) {
+      setCurrentCountry(countryOption.name);
+    }
+
+  }, []);
+
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -42,44 +78,72 @@ const SettingsScreen = () => {
 
       <View style={styles(theme).main}>
         <ScrollView >
-          <Text style={{ ...theme.fonts.titleLarge, textAlign: 'center', padding: 1 }}>Settings</Text>
 
-          <Divider style={{ backgroundColor: theme.colors.outline }} />
-          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Accessibility</Text>
+          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
+            {userViewModel.i18n.t("accessibility")}</Text>
           <SwitchTheme />
-          <Text style={theme.fonts.bodyMedium}>
+
+          {/*<Text style={theme.fonts.bodyMedium}>
             Your language is set to: {userViewModel.i18n.locale}
-          </Text>
-          <Text style={theme.fonts.bodyMedium}>
-            String displayed in either English or Norwegian:{" "}
-            {userViewModel.i18n.t("welcome")}
-          </Text>
-          {/*TODO: ADD Country */}
+          </Text>*/ }
+
+          {
+            currentLanguage && (
+              <Text style={theme.fonts.bodyMedium}>
+                Language: {currentLanguage}
+              </Text>
+            )}
+
+
+
+          {currentCountry && (
+            <Text style={theme.fonts.bodyMedium}>
+              Country: {currentCountry}
+            </Text>
+          )}
+
 
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
-          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Permissions</Text>
+          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
+            {userViewModel.i18n.t("permissions")}</Text>
           <PermissionSwitch type="location" />
           <PermissionSwitch type="camera" />
           <PermissionSwitch type="media" />
 
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
-          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Notifications</Text>
+          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
+            {userViewModel.i18n.t("notifications")}</Text>
           <DefaultSwitchComponent type="mobile" />
           <DefaultSwitchComponent type="sms" />
           <DefaultSwitchComponent type="email" />
 
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
-          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Notification Types</Text>
-          {/*TODO: ADD info button in top corner*/}
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 1 }}>
+            <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
+              {userViewModel.i18n.t("notification types")}</Text>
+            {/*TODO: ADD info button in top corner*/}
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("/settings/info/index");
+              }}
+              style={{ marginLeft: 8 }}
+            >
+              <MaterialCommunityIcons
+                style={styles(theme).trailingIcon}
+                name="information-outline"
+                size={24}
+              />
+            </TouchableOpacity>
+          </View>
           <DefaultSwitchComponent type="snow" />
           <DefaultSwitchComponent type="potential swarm" />
 
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
-          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>Actions</Text>
+
           <View style={{ justifyContent: 'center', alignItems: 'center', padding: 1, margin: 8 }}>
             <Button
               style={{ width: 150, margin: 4 }}
@@ -88,7 +152,7 @@ const SettingsScreen = () => {
                 //TODO: do someting
               }}
             >
-              Register Email
+              {userViewModel.i18n.t("register email")}
             </Button>
 
             <Button
@@ -98,7 +162,7 @@ const SettingsScreen = () => {
                 //TODO: do someting
               }}
             >
-              Request Data
+              {userViewModel.i18n.t("request data")}
             </Button>
 
             <Button
@@ -108,7 +172,7 @@ const SettingsScreen = () => {
                 userViewModel.clear();
               }}
             >
-              Logout
+              {userViewModel.i18n.t("logout")}
             </Button>
 
             <Button
@@ -118,7 +182,8 @@ const SettingsScreen = () => {
                 //TODO: do someting
               }}
             >
-              <Text style={{ color: theme.colors.onError }}>Delete Account</Text>
+              <Text style={[theme.fonts.bodyMedium, { color: theme.colors.onError }]}>
+                {userViewModel.i18n.t("delete account")}</Text>
             </Button>
 
           </View>
@@ -128,6 +193,8 @@ const SettingsScreen = () => {
       </View>
     </SafeAreaView>
   );
+
 };
+
 
 export default observer(SettingsScreen);
