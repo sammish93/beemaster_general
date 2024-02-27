@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useTheme } from "react-native-paper";
 import { Button, TextInput, IconButton, Text } from "react-native-paper";
 import { Platform, View } from "react-native";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { BottomModal, OverlayModal } from "./Modals";
 import { VerticalSpacer } from "../Spacers";
+import { MobXProviderContext } from "mobx-react";
 
 interface AddFilterModalProps {
   isOverlayModalVisible: boolean;
   bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
   onClose: () => void;
-  onAddFilter: (hiveName: string) => void;
+  onAddFilter: (filterName: string) => void;
 }
 
 interface ModalContentProps {
   onClose: () => void;
-  onAddFilter: (hiveName: string) => void;
+  onAddFilter: (filterName: string) => void;
 }
 
 const AddFilterModal = (props: AddFilterModalProps) => {
@@ -52,18 +53,17 @@ const AddFilterModal = (props: AddFilterModalProps) => {
 
 const ModalContent = (props: ModalContentProps) => {
   const theme = useTheme();
+  const { userViewModel } = useContext(MobXProviderContext);
+  const [newFilterName, setNewFilterName] = useState("");
 
-  const [newHiveName, setNewHiveName] = useState("");
-
-  /*
   const handleAddNewFilter = () => {
-    props.onAddHive(newHiveName);
-    resetHiveName();
+    //TODO Validation
+    props.onAddFilter(newFilterName);
+    resetFilterName();
   };
 
-  const resetHiveName = () => setNewHiveName("");
+  const resetFilterName = () => setNewFilterName("");
 
-  */
   return (
     <>
       <View
@@ -74,7 +74,7 @@ const ModalContent = (props: ModalContentProps) => {
         }}
       >
         <Text style={{ ...theme.fonts.headlineSmall, flex: 1 }}>
-          Enter New Filter
+          {userViewModel.i18n.t("enter new filter")}
         </Text>
         <IconButton
           icon="close"
@@ -83,13 +83,15 @@ const ModalContent = (props: ModalContentProps) => {
         />
       </View>
       <View>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
+        <TextInput
+          label="Filter Name"
+          value={newFilterName}
+          onChangeText={setNewFilterName}
+        />
         <VerticalSpacer size={12} />
         {/*//TODO Add more functionality to add filter. */}
-        <Button mode="contained" onPress={() => null}>
-          Add Filter
+        <Button mode="contained" onPress={handleAddNewFilter}>
+          {userViewModel.i18n.t("add filter")}
         </Button>
       </View>
     </>

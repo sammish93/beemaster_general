@@ -98,5 +98,12 @@
     "add new hive": "Legg til ny bikube",
     "detailed view": "Detaljerte utseende",
     "simplified view": "Enkel utseende",
-    "no hives have been registered": "Ingen bikuber har blitt registrert. Bruk den 'Legg til ny bikube' knappen for å registrere."
+    "no hives have been registered": "Ingen bikuber har blitt registrert. Bruk den 'Legg til ny bikube' knappen for å registrere.",
+    "add new filter": "Legg til nytt filter",
+    "unselect filters": "Opphev valg av filtre",
+    "enter new hive information": "Skriv inn ny bikubeinformasjon",
+    "hive name": "Bikubenavn",
+    "add hive": "Legg til bikube",
+    "enter new filter": "Skriv inn nytt filter",
+    "add filter": "Legg til filter"
   }

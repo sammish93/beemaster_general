@@ -98,5 +98,12 @@
     "add new hive": "Add new hive",
     "detailed view": "Detailed View",
     "simplified view": "Simplified View",
-    "no hives have been registered": "No hives have been registered. To register, use the 'Add New Hive' button."
+    "no hives have been registered": "No hives have been registered. To register, use the 'Add New Hive' button.",
+    "add new filter": "Add new filter",
+    "unselect filters": "Unselect filters",
+    "enter new hive information": "Enter new hive information",
+    "hive name": "Hive name",
+    "add hive": "Add hive",
+    "enter new filter": "Enter new filter",
+    "add filter": "Add filter"
   }

@@ -64,6 +64,11 @@ const HomeScreen = () => {
     }
   };
 
+  const handleAddFilter = (filterName: string) => {
+    hiveViewModel.addFilter(filterName);
+    handleCloseAddFilterModal();
+  };
+
   const handleAddFilterModalSheetPressOpen = useCallback(() => {
     bottomSheetAddFilterModalRef.current?.present();
   }, []);
@@ -161,7 +166,7 @@ const HomeScreen = () => {
               onPress={handleOpenAddFilterModal}
               style={{ marginVertical: 4 }}
             >
-              Add filter
+              {userViewModel.i18n.t("add new filter")}
             </Chip>
             <HorizontalSpacer size={8} />
             {hiveViewModel.filters.map((filter: string) => (
@@ -194,7 +199,7 @@ const HomeScreen = () => {
               onPress={handleClearFilterList}
               style={{ marginVertical: 4 }}
             >
-              Unselect filters
+              {userViewModel.i18n.t("unselect filters")}
             </Chip>
           </View>
           <VerticalSpacer size={8} />
@@ -223,7 +228,7 @@ const HomeScreen = () => {
         isOverlayModalVisible={AddFilterModalVisible}
         bottomSheetModalRef={bottomSheetAddFilterModalRef}
         onClose={() => handleCloseAddFilterModal()}
-        onAddFilter={() => null}
+        onAddFilter={handleAddFilter}
       />
       <HomeInfoModal
         isOverlayModalVisible={infoModalVisible}
