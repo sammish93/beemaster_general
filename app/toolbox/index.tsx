@@ -20,7 +20,7 @@ const ToolboxScreen = () => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Toolbox"
+        title={userViewModel.i18n.t("toolbox")}
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Toolbox</Text>

@@ -8,12 +8,10 @@ import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 
-
 const SettingsInfoScreen = () => {
   const paperTheme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-
 
   return (
     <SafeAreaView style={styles(paperTheme).container}>
@@ -21,11 +19,10 @@ const SettingsInfoScreen = () => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Info"
+        title={userViewModel.i18n.t("information")}
       />
       <View style={styles(paperTheme).main}>
         <Text style={paperTheme.fonts.titleLarge}>Settings Info</Text>
-
       </View>
     </SafeAreaView>
   );

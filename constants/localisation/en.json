@@ -1,4 +1,15 @@
 {
     "welcome": "Hello",
-    "name": "Charlie"
+    "name": "Charlie",
+    "settings": "Settings",
+    "information": "Information",
+    "detailed forecast": "Detailed Forecast",
+    "hive": "Hive",
+    "calendar": "Calendar",
+    "checklist": "Checklist",
+    "community": "Community",
+    "hive scan": "Hive Scan",
+    "toolbox": "Toolbox",
+    "updates": "Updates",
+    "home": "Home"
   }

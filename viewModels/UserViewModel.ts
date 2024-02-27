@@ -17,7 +17,7 @@ class UserViewModel {
         this.i18n.enableFallback = true;
 
         // Manually change the language:
-        //this.i18n.locale = "en";
+        //this.i18n.locale = "no";
     }
 
     // Localisation

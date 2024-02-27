@@ -20,7 +20,7 @@ const HiveScanScreen = () => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Hive Scan"
+        title={userViewModel.i18n.t("hive scan")}
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Hive Scan</Text>

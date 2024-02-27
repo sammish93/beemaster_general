@@ -60,7 +60,7 @@ const HomeScreen = () => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Home"
+        title={userViewModel.i18n.t("home")}
       />
       <ScrollView>
         <View style={styles(theme).main}>

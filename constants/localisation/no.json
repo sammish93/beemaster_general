@@ -1,4 +1,15 @@
 {
     "welcome": "Hei hei",
-    "name": "Jørgen"
+    "name": "Jørgen",
+    "settings": "Innstillinger",
+    "information": "Informasjon",
+    "detailed forecast": "Detaljert Værmelding",
+    "hive": "Bikube",
+    "calendar": "Kalender",
+    "checklist": "Sjekkliste",
+    "community": "Lokalsamfunn",
+    "hive scan": "Bikube Skann",
+    "toolbox": "Verktøykasse",
+    "updates": "Oppdateringer",
+    "home": "Hjem"
   }
