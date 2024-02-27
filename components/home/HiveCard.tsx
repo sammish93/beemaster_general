@@ -83,10 +83,7 @@ const HiveCard = ({
                   />
                   <HorizontalSpacer size={4} />
                   <Text
-                    style={[
-                      theme.fonts.bodyMedium,
-                      { flexShrink: 1, marginRight: 4 },
-                    ]}
+                    style={theme.fonts.bodyMedium}
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
@@ -95,7 +92,7 @@ const HiveCard = ({
                 </>
               )}
               <Text
-                style={[theme.fonts.bodyMedium, { flexShrink: 1 }]}
+                style={theme.fonts.bodyMedium}
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
@@ -135,10 +132,7 @@ const HiveCard = ({
                     />
                     <HorizontalSpacer size={4} />
                     <Text
-                      style={[
-                        theme.fonts.bodyMedium,
-                        { flexShrink: 1, marginRight: 4 },
-                      ]}
+                      style={theme.fonts.bodyMedium}
                       numberOfLines={1}
                       ellipsizeMode="tail"
                     >
@@ -147,7 +141,7 @@ const HiveCard = ({
                   </>
                 )}
                 <Text
-                  style={[theme.fonts.bodyMedium, { flexShrink: 1 }]}
+                  style={theme.fonts.bodyMedium}
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >

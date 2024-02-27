@@ -176,6 +176,18 @@ const styles = (theme?: MD3Theme) => {
       flexDirection: "row",
       alignItems: "center",
       gap: 16
+    },
+    cardRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      maxWidth: "100%",
+      flex: 1,
+      gap: 4
+    },
+    weatherTopRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4
     }
   });
 };
