@@ -3,7 +3,10 @@ import {
   TemperatureMeasurement,
   WindSpeedMeasurement,
 } from "@/constants/Measurements";
-import { dateTimeToDateFormatter } from "@/domain/dateTimeFormatter";
+import {
+  dateTimeToDateFormatter,
+  dateTimeToTimeFormatter,
+} from "@/domain/dateTimeFormatter";
 import { roundToOneDecimalPlace } from "@/domain/numberFormatter";
 import getWeatherTypeIconFromString from "@/domain/weatherIconMapper";
 import getWindDirectionIconFromAngle from "@/domain/windDirectionMapper";
@@ -44,6 +47,14 @@ interface DailyDetailedForecastProps {
   windFormat: WindSpeedMeasurement;
 }
 
+interface HourlyForecastCardProps {
+  forecast: ForecastPeriod;
+  locale: string;
+  temperatureFormat: TemperatureMeasurement;
+  precipitationFormat: PrecipitationMeasurement;
+  windFormat: WindSpeedMeasurement;
+}
+
 const DetailedForecastSummary = (props: DetailedForecastProps) => {
   const days = [
     "dayOneForecast",
@@ -75,6 +86,8 @@ const DetailedForecastSummary = (props: DetailedForecastProps) => {
 };
 
 const DailyDetailedForecastSummary = (props: DailyDetailedForecastProps) => {
+  const theme = useTheme();
+
   const hours = [
     "00HundredHours",
     "01HundredHours",
@@ -102,8 +115,19 @@ const DailyDetailedForecastSummary = (props: DailyDetailedForecastProps) => {
     "23HundredHours",
   ];
 
+  const dateTime = props.hourlyForecasts["18HundredHours"]
+    ? props.hourlyForecasts["18HundredHours"].dateTime
+    : props.hourlyForecasts["23HundredHours"].dateTime;
+
+  const formattedDate = dateTimeToDateFormatter(dateTime, props.locale, "full");
+
   return (
     <Card>
+      <Card.Content style={{ flexDirection: "row" }}>
+        <Title style={theme.fonts.headlineSmall} numberOfLines={1}>
+          {formattedDate}
+        </Title>
+      </Card.Content>
       <Card.Content>
         <ScrollView
           horizontal
@@ -112,19 +136,134 @@ const DailyDetailedForecastSummary = (props: DailyDetailedForecastProps) => {
             justifyContent: "space-between",
             flex: 1,
             paddingVertical: 12,
+            gap: 8,
           }}
         >
-          <HorizontalSpacer size={12} />
           {hours.map((hour, index) =>
             props.hourlyForecasts[hour] ? (
-              <Text key={`summary-${hour}`}>
-                {props.hourlyForecasts[hour].dateTime}
-              </Text>
+              <HourlyForecastCard
+                key={`card-${hour}`}
+                forecast={props.hourlyForecasts[hour]}
+                locale={props.locale}
+                temperatureFormat={props.temperatureFormat}
+                precipitationFormat={props.precipitationFormat}
+                windFormat={props.windFormat}
+              />
             ) : null
           )}
-          <HorizontalSpacer size={12} />
         </ScrollView>
       </Card.Content>
+    </Card>
+  );
+};
+
+const HourlyForecastCard = (props: HourlyForecastCardProps) => {
+  const theme = useTheme();
+  const { userViewModel } = useContext(MobXProviderContext);
+
+  const time = dateTimeToTimeFormatter(
+    props.forecast.dateTime,
+    props.locale,
+    "short"
+  );
+  const wind = roundToOneDecimalPlace(props.forecast.windSpeed);
+  const windDirection = getWindDirectionIconFromAngle(
+    props.forecast.windFromDirection
+  );
+  const temperature = roundToOneDecimalPlace(props.forecast.temperature);
+  const precipitation = roundToOneDecimalPlace(props.forecast.precipitation);
+
+  let weather;
+  try {
+    weather = getWeatherTypeIconFromString(props.forecast.weatherType);
+  } catch (error) {
+    weather = null;
+  }
+
+  return (
+    <Card
+      style={{
+        padding: 4,
+        flex: 1,
+        minWidth: 100,
+        maxWidth: "100%",
+      }}
+      mode="contained"
+    >
+      <View style={{ flex: 1, alignItems: "center" }}>
+        {weather ? (
+          <View style={styles(theme).cardRow}>
+            <Image source={weather} style={{ width: 24, height: 24 }} />
+            <Text
+              style={theme.fonts.bodyMedium}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {userViewModel.i18n.t(props.forecast.weatherType)}
+            </Text>
+          </View>
+        ) : null}
+        <View style={styles(theme).cardRow}>
+          <Icon
+            source="thermometer"
+            size={18}
+            color={theme.colors.onSurfaceVariant}
+          />
+          <Text
+            style={theme.fonts.bodyMedium}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {temperature} {props.temperatureFormat}
+          </Text>
+        </View>
+        <View style={styles(theme).cardRow}>
+          <Icon
+            source="water-outline"
+            size={18}
+            color={theme.colors.onSurfaceVariant}
+          />
+          <Text
+            style={theme.fonts.bodyMedium}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {precipitation} {props.precipitationFormat}
+          </Text>
+        </View>
+        <View style={styles(theme).cardRow}>
+          <Icon
+            source="weather-windy"
+            size={18}
+            color={theme.colors.onSurfaceVariant}
+          />
+          <Text
+            style={theme.fonts.bodyMedium}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {wind} {props.windFormat}
+          </Text>
+          <Icon
+            source={windDirection}
+            size={18}
+            color={theme.colors.onSurfaceVariant}
+          />
+        </View>
+        {/* Currently there exists a bug in paper where the Divider disappears if the parent 
+        has align items set to "center" */}
+        <Divider
+          horizontalInset={true}
+          style={{ alignSelf: "stretch", marginVertical: 4 }}
+        />
+        <Text
+          style={theme.fonts.bodyMedium}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {time}
+        </Text>
+      </View>
     </Card>
   );
 };
