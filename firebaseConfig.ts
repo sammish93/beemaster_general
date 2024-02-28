@@ -34,7 +34,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Initializes Firebase Auth
-let auth;
+let auth: Auth;
 if (Platform.OS === 'web') {
   // Web environment
   auth = getAuth(app);
