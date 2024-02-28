@@ -1,9 +1,11 @@
-import { action, makeAutoObservable, observable } from "mobx";
+import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import * as Localization from "expo-localization";
 import { I18n } from "i18n-js";
 import en from '@/constants/localisation/en.json';
 import no from '@/constants/localisation/no.json';
 import { PrecipitationMeasurement, TemperatureMeasurement, WeightMeasurement, WindSpeedMeasurement } from "@/constants/Measurements";
+import { availableLanguages, availableCountries } from '@/constants/LocaleEnums';
+import { Platform } from "react-native";
 
 class UserViewModel {
     constructor() {
@@ -18,7 +20,12 @@ class UserViewModel {
 
         // Manually change the language:
         //this.i18n.locale = "no";
+
+
     }
+
+    @observable currentLanguage: string | null = null;
+    @observable currentCountry: string | null = null;
 
     // Localisation
     @observable i18n;
@@ -61,5 +68,30 @@ class UserViewModel {
         //this.theme = "light"; // reset theme on logout
     }
 
+    @action public updateLocaleSettings = () => {
+        let regionCode: string;
+        if (Platform.OS === 'web') {
+            regionCode = Localization.locale;
+        } else {
+            const locales = Localization.getLocales();
+            const userLocale = locales[0];
+            regionCode = userLocale.regionCode || '';
+        }
+        console.log('Region Code:', regionCode);
+        const locales = Localization.getLocales();
+        const userLocale = locales[0];
+        const userLanguage = userLocale.languageCode;
+        console.log('Language Code:', userLanguage);
+
+        const languageOption = availableLanguages.find(lang => lang.code === userLanguage && lang.isEnabled);
+        const countryOption = availableCountries.find(country => country.code === regionCode && country.isEnabled);
+
+        this.currentLanguage = languageOption ? languageOption.name : null;
+        this.currentCountry = countryOption ? countryOption.name : null;
+
+    };
+
+
 }
+
 export default new UserViewModel()

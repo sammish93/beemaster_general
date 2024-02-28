@@ -45,7 +45,7 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
             case 'camera permission':
                 return userViewModel.i18n.t('camera permission');
             case 'media permission':
-                return userViewModel.i18n.t('mobile permission');
+                return userViewModel.i18n.t('media permission');
 
             default:
                 return type;
