@@ -55,7 +55,6 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
 
   const [data, setData] = useState("");
-  const [forecast, setForecast] = useState<WeeklySimpleForecast>();
   const [detailedForecast, setDetailedForecast] =
     useState<WeeklyDetailedForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
@@ -65,14 +64,6 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
       try {
         setLoadingScreen(true);
         const data = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
-
-        const weeklySimplyForecast = deserialiseWeeklySimpleForecast(
-          data,
-          userViewModel.temperaturePreference,
-          userViewModel.precipitationPreference,
-          userViewModel.windSpeedPreference,
-          true
-        );
 
         const weeklyDetailedForecast = deserialiseWeeklyDetailedForecast(
           data,
@@ -88,7 +79,6 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
         //);
 
         setData("Retrieved forecast!");
-        setForecast(weeklySimplyForecast);
         setDetailedForecast(weeklyDetailedForecast);
 
         Toast.show(
@@ -133,18 +123,6 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
             <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
             <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
             <Text style={theme.fonts.bodySmall}>{data}</Text>
-            {forecast ? (
-              <>
-                <VerticalSpacer size={8} />
-                <ForecastSummary
-                  forecast={forecast}
-                  locale={userViewModel.i18n.locale}
-                  temperatureFormat={userViewModel.temperaturePreference}
-                  precipitationFormat={userViewModel.precipitationPreference}
-                  windFormat={userViewModel.windSpeedPreference}
-                />
-              </>
-            ) : null}
             {detailedForecast ? (
               <>
                 <VerticalSpacer size={8} />

@@ -30,6 +30,7 @@ interface ForecastSummaryProps {
   temperatureFormat: TemperatureMeasurement;
   precipitationFormat: PrecipitationMeasurement;
   windFormat: WindSpeedMeasurement;
+  onPress: () => void;
 }
 
 interface DailyForecastSummaryProps {
@@ -38,6 +39,15 @@ interface DailyForecastSummaryProps {
   temperatureFormat: TemperatureMeasurement;
   precipitationFormat: PrecipitationMeasurement;
   windFormat: WindSpeedMeasurement;
+}
+
+interface DailyForecastSummaryHeaderProps {
+  forecast: ForecastPeriod;
+  locale: string;
+  temperatureFormat: TemperatureMeasurement;
+  precipitationFormat: PrecipitationMeasurement;
+  windFormat: WindSpeedMeasurement;
+  onPress: () => void;
 }
 
 const ForecastSummary = (props: ForecastSummaryProps) => {
@@ -61,6 +71,7 @@ const ForecastSummary = (props: ForecastSummaryProps) => {
           temperatureFormat={props.temperatureFormat}
           precipitationFormat={props.precipitationFormat}
           windFormat={props.windFormat}
+          onPress={props.onPress}
         />
       </Card.Content>
       <ScrollView
@@ -195,7 +206,7 @@ const DailyForecastSummary = (props: DailyForecastSummaryProps) => {
   );
 };
 
-const CurrentForecastHeader = (props: DailyForecastSummaryProps) => {
+const CurrentForecastHeader = (props: DailyForecastSummaryHeaderProps) => {
   const theme = useTheme();
   const { userViewModel } = useContext(MobXProviderContext);
 
@@ -303,7 +314,7 @@ const CurrentForecastHeader = (props: DailyForecastSummaryProps) => {
         >
           <FAB
             icon="arrow-right"
-            onPress={() => null /*TODO Direct the user to further info*/}
+            onPress={props.onPress}
             style={{ position: "relative", left: 25 }}
           />
         </View>
