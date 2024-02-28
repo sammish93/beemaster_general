@@ -34,6 +34,7 @@
     "expo-font": "~11.10.2",
     "expo-linking": "~6.2.2",
     "expo-localization": "~14.8.3",
+    "expo-modules-autolinking": "~1.10.0",
     "expo-random": "~13.6.0",
     "expo-router": "~3.4.5",
     "expo-splash-screen": "~0.26.3",
@@ -58,7 +59,7 @@
     "react-native-screens": "~3.29.0",
     "react-native-web": "~0.19.6",
     "stream": "^0.0.2",
-    "expo-modules-autolinking": "~1.10.0"
+    "@react-native-async-storage/async-storage": "1.21.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
