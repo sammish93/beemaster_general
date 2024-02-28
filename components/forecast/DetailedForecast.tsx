@@ -247,7 +247,8 @@ const HourlyForecastCard = (props: HourlyForecastCardProps) => {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            {precipitation} {props.precipitationFormat}
+            {precipitation} {props.precipitationFormat}{" "}
+            {props.forecast.humidity}%
           </Text>
         </View>
         <View style={styles(theme).cardRow}>

@@ -166,7 +166,8 @@ const DailyForecastSummary = (props: DailyForecastSummaryProps) => {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            {precipitation} {props.precipitationFormat}
+            {precipitation} {props.precipitationFormat}{" "}
+            {props.forecast.humidity}%
           </Text>
         </View>
         <View style={styles(theme).cardRow}>
@@ -279,7 +280,7 @@ const CurrentForecastHeader = (props: DailyForecastSummaryHeaderProps) => {
                 ellipsizeMode="tail"
               >
                 {precipitation}
-                {props.precipitationFormat}
+                {props.precipitationFormat} {props.forecast.humidity}%
               </Text>
             </View>
             <HorizontalSpacer size={8} />
