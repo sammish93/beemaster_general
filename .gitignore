@@ -55,3 +55,5 @@ android/app/build/
 /ios/GoogleService-Info.plist
 
 
+ios/beemastergeneral/GoogleService-Info.plist
+./GoogleService-Info.plist
