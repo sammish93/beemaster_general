@@ -203,8 +203,9 @@ const HourlyForecastCard = (props: HourlyForecastCardProps) => {
       style={{
         padding: 4,
         flex: 1,
-        minWidth: 100,
+        minWidth: 120,
         maxWidth: "100%",
+        justifyContent: "center",
       }}
       mode="contained"
     >
