@@ -60,6 +60,13 @@ interface HourlyForecastCardProps {
   windFormat: WindSpeedMeasurement;
 }
 
+interface DailyDetailedForecastHeaderProps {
+  title: string;
+  dailyHigh: number;
+  dailyLow: number;
+  temperatureFormat: TemperatureMeasurement;
+}
+
 const DetailedForecastSummary = (props: DetailedForecastProps) => {
   const days = [
     "dayOneForecast",
@@ -132,41 +139,12 @@ const DailyDetailedForecastSummary = (props: DailyDetailedForecastProps) => {
   return (
     <Card>
       <Card.Content style={{ flexDirection: "row" }}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            maxWidth: "100%",
-            flex: 1,
-          }}
-        >
-          <Title style={theme.fonts.headlineSmall} numberOfLines={1}>
-            {formattedDate}
-          </Title>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Icon source="thermometer-chevron-up" size={18} color={"#D01B1B"} />
-            <HorizontalSpacer size={4} />
-            <Text style={theme.fonts.bodyLarge} numberOfLines={1}>
-              {dailyHighTemp} {props.temperatureFormat}
-            </Text>
-            <HorizontalSpacer size={12} />
-            <Icon
-              source="thermometer-chevron-down"
-              size={18}
-              color={"#47abd8"}
-            />
-            <HorizontalSpacer size={4} />
-            <Text style={theme.fonts.bodyLarge} numberOfLines={1}>
-              {dailyLowTemp} {props.temperatureFormat}
-            </Text>
-          </View>
-        </View>
+        <DailyDetailedForecastHeader
+          title={formattedDate}
+          dailyHigh={dailyHighTemp}
+          dailyLow={dailyLowTemp}
+          temperatureFormat={props.temperatureFormat}
+        />
       </Card.Content>
       <Card.Content>
         <ScrollView
@@ -305,6 +283,48 @@ const HourlyForecastCard = (props: HourlyForecastCardProps) => {
         </Text>
       </View>
     </Card>
+  );
+};
+
+const DailyDetailedForecastHeader = (
+  props: DailyDetailedForecastHeaderProps
+) => {
+  const theme = useTheme();
+
+  return (
+    <>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          maxWidth: "100%",
+          flex: 1,
+        }}
+      >
+        <Title style={theme.fonts.headlineSmall} numberOfLines={1}>
+          {props.title}
+        </Title>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Icon source="thermometer-chevron-up" size={18} color={"#D01B1B"} />
+          <HorizontalSpacer size={4} />
+          <Text style={theme.fonts.bodyLarge} numberOfLines={1}>
+            {props.dailyHigh} {props.temperatureFormat}
+          </Text>
+          <HorizontalSpacer size={12} />
+          <Icon source="thermometer-chevron-down" size={18} color={"#47abd8"} />
+          <HorizontalSpacer size={4} />
+          <Text style={theme.fonts.bodyLarge} numberOfLines={1}>
+            {props.dailyLow} {props.temperatureFormat}
+          </Text>
+        </View>
+      </View>
+    </>
   );
 };
 
