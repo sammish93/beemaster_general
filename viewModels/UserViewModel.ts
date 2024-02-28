@@ -5,7 +5,7 @@ import en from '@/constants/localisation/en.json';
 import no from '@/constants/localisation/no.json';
 import { PrecipitationMeasurement, TemperatureMeasurement, WeightMeasurement, WindSpeedMeasurement } from "@/constants/Measurements";
 import {auth, db} from "@/firebaseConfig";
-import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithCredential} from "firebase/auth";
+import { getAuth, signInWithPopup,GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithCredential, onAuthStateChanged} from "firebase/auth";
 //import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
 import { 
@@ -29,10 +29,22 @@ class UserViewModel {
           });
         this.i18n.locale = Localization.locale;
         this.i18n.enableFallback = true;
+        this.initializeAuthListener()
        // this.configure();
 
         // Manually change the language:
         //this.i18n.locale = "en";
+    }
+    initializeAuthListener() {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in, update the userId observable
+          this.setUserId(user.uid);
+        } else {
+          // User is signed out, clear the userId
+          this.clear();
+        }
+      });
     }
 
     // Localisation
@@ -70,7 +82,7 @@ class UserViewModel {
         try {
             const result = await signInWithPopup(auth, provider);
             
-            this.setUserId(result.user.uid);
+            
         } catch (error) {
             console.error("Error signing in with Google: ", error);
           }
@@ -86,7 +98,7 @@ class UserViewModel {
             const { idToken } = await GoogleSignin.signIn();
             const googleCredential = GoogleAuthProvider.credential(idToken);
             const result = await signInWithCredential(auth, googleCredential);
-            this.setUserId(result.user.uid);
+            this.initializeAuthListener()
           } catch (error) {
             console.error("Error signing in with Google (Native): ", error);
           }

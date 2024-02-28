@@ -6,7 +6,7 @@ import { Button, useTheme, Text, TextInput } from "react-native-paper";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import { GoogleAuthProvider, signInWithCredential, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithCredential, signInWithPopup} from "firebase/auth";
 import { auth } from "@/firebaseConfig"; // Your Firebase auth import
 import userViewModel from '@/viewModels/UserViewModel'; // Your MobX store
 import * as Google from 'expo-auth-session/providers/google';

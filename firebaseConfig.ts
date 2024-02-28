@@ -1,9 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, initializeAuth, getReactNativePersistence,  browserSessionPersistence, setPersistence} from "firebase/auth";
+import { getAuth, Auth, initializeAuth, getReactNativePersistence,  browserSessionPersistence, setPersistence} from "firebase/auth";
 import  AsyncStorage  from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 
+
+//The getReactNativePersistence seems to work fine. All the solution to take the red line away created other issues. If you wanna look at the issue here it is  https://github.com/firebase/firebase-js-sdk/issues/7615#issuecomment-1711926216
 
 import {
   FIREBASE_API_KEY,
