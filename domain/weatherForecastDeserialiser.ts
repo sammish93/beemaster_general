@@ -367,3 +367,47 @@ export const calculateDailyRainfall = (json: any, dateIso: string): number => {
     
     return totalRainfall
 }
+
+/**
+ * A function designed to return the highest temperature for a single day.
+ * @param forecast A {@link DailyForecast} object representing all existing hourly forecasts for a single day.
+ * @returns Returns a number representing the highest temperature value existing in the forecast parameter.
+ */
+export const calculateDailyHighTemperature = (forecast: DailyForecast): number => {
+    // TODO Add validation that restricts dateIso values if they are previous dates. Not too important.
+    // TODO Test
+    let dailyHigh = -Infinity;
+
+    for (let hour = 0; hour <= 23; hour++) {
+        const hourKey = `${hour.toString().padStart(2, '0')}HundredHours`;
+        const temperature = forecast.hourlyForecasts[hourKey]?.temperature
+
+        if (temperature !== null && temperature > dailyHigh) {
+            dailyHigh = temperature
+        }
+    }
+    
+    return dailyHigh
+}
+
+/**
+ * A function designed to return the lowest temperature for a single day.
+ * @param forecast A {@link DailyForecast} object representing all existing hourly forecasts for a single day.
+ * @returns Returns a number representing the lowest temperature value existing in the forecast parameter.
+ */
+export const calculateDailyLowTemperature = (forecast: DailyForecast): number => {
+    // TODO Add validation that restricts dateIso values if they are previous dates. Not too important.
+    // TODO Test
+    let dailyLow = Infinity;
+
+    for (let hour = 0; hour <= 23; hour++) {
+        const hourKey = `${hour.toString().padStart(2, '0')}HundredHours`;
+        const temperature = forecast.hourlyForecasts[hourKey]?.temperature
+
+        if (temperature !== null && temperature < dailyLow) {
+            dailyLow = temperature
+        }
+    }
+    
+    return dailyLow
+}

@@ -11,6 +11,7 @@ import { roundToOneDecimalPlace } from "@/domain/numberFormatter";
 import getWeatherTypeIconFromString from "@/domain/weatherIconMapper";
 import getWindDirectionIconFromAngle from "@/domain/windDirectionMapper";
 import {
+  DailyForecast,
   ForecastPeriod,
   WeeklyDetailedForecast,
   WeeklySimpleForecast,
@@ -30,6 +31,10 @@ import { useContext } from "react";
 import { MobXProviderContext } from "mobx-react";
 import styles from "@/assets/styles";
 import React from "react";
+import {
+  calculateDailyHighTemperature,
+  calculateDailyLowTemperature,
+} from "@/domain/weatherForecastDeserialiser";
 
 interface DetailedForecastProps {
   forecast: WeeklyDetailedForecast;
@@ -40,7 +45,7 @@ interface DetailedForecastProps {
 }
 
 interface DailyDetailedForecastProps {
-  hourlyForecasts: { [key: string]: ForecastPeriod };
+  dailyForecast: DailyForecast;
   locale: string;
   temperatureFormat: TemperatureMeasurement;
   precipitationFormat: PrecipitationMeasurement;
@@ -73,7 +78,7 @@ const DetailedForecastSummary = (props: DetailedForecastProps) => {
           {index !== 0 && <VerticalSpacer size={8} key={`spacer-${day}`} />}
           <DailyDetailedForecastSummary
             key={`summary-${day}`}
-            hourlyForecasts={props.forecast[day].hourlyForecasts}
+            dailyForecast={props.forecast[day]}
             locale={props.locale}
             temperatureFormat={props.temperatureFormat}
             precipitationFormat={props.precipitationFormat}
@@ -115,18 +120,53 @@ const DailyDetailedForecastSummary = (props: DailyDetailedForecastProps) => {
     "23HundredHours",
   ];
 
-  const dateTime = props.hourlyForecasts["18HundredHours"]
-    ? props.hourlyForecasts["18HundredHours"].dateTime
-    : props.hourlyForecasts["23HundredHours"].dateTime;
+  const dateTime = props.dailyForecast.hourlyForecasts["18HundredHours"]
+    ? props.dailyForecast.hourlyForecasts["18HundredHours"].dateTime
+    : props.dailyForecast.hourlyForecasts["23HundredHours"].dateTime;
 
   const formattedDate = dateTimeToDateFormatter(dateTime, props.locale, "full");
+
+  const dailyHighTemp = calculateDailyHighTemperature(props.dailyForecast);
+  const dailyLowTemp = calculateDailyLowTemperature(props.dailyForecast);
 
   return (
     <Card>
       <Card.Content style={{ flexDirection: "row" }}>
-        <Title style={theme.fonts.headlineSmall} numberOfLines={1}>
-          {formattedDate}
-        </Title>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            maxWidth: "100%",
+            flex: 1,
+          }}
+        >
+          <Title style={theme.fonts.headlineSmall} numberOfLines={1}>
+            {formattedDate}
+          </Title>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Icon source="thermometer-chevron-up" size={18} color={"#D01B1B"} />
+            <HorizontalSpacer size={4} />
+            <Text style={theme.fonts.bodyLarge} numberOfLines={1}>
+              {dailyHighTemp} {props.temperatureFormat}
+            </Text>
+            <HorizontalSpacer size={12} />
+            <Icon
+              source="thermometer-chevron-down"
+              size={18}
+              color={"#47abd8"}
+            />
+            <HorizontalSpacer size={4} />
+            <Text style={theme.fonts.bodyLarge} numberOfLines={1}>
+              {dailyLowTemp} {props.temperatureFormat}
+            </Text>
+          </View>
+        </View>
       </Card.Content>
       <Card.Content>
         <ScrollView
@@ -140,10 +180,10 @@ const DailyDetailedForecastSummary = (props: DailyDetailedForecastProps) => {
           }}
         >
           {hours.map((hour, index) =>
-            props.hourlyForecasts[hour] ? (
+            props.dailyForecast.hourlyForecasts[hour] ? (
               <HourlyForecastCard
                 key={`card-${hour}`}
-                forecast={props.hourlyForecasts[hour]}
+                forecast={props.dailyForecast.hourlyForecasts[hour]}
                 locale={props.locale}
                 temperatureFormat={props.temperatureFormat}
                 precipitationFormat={props.precipitationFormat}
