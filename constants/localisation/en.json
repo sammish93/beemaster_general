@@ -19,5 +19,17 @@
   "register email": "Register Email",
   "request data": "Request Data",
   "logout": "Log Out",
-  "delete account": "Delete Account"
+  "delete account": "Delete Account",
+  "snow": "Snø",
+  "SMS": "SMS",
+  "mobile": "Mobile",
+  "potential swarm": "Potential Swarm",
+  "email": "Email",
+  "switch light/dark mode": "Switch light/dark mode",
+  "language": "Language",
+  "country": "Country",
+  "location permission": "Location Permission",
+  "position": "Position",
+  "camera permission": "Camera Permission",
+  "media permission": "Media Files Permissions"
 }

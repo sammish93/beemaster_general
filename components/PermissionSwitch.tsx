@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, Platform } from 'react-native';
 import { Switch, useTheme } from 'react-native-paper';
 import { requestForegroundPermissionsAsync, PermissionStatus, getCurrentPositionAsync, LocationObject } from 'expo-location';
 import * as MediaLibrary from 'expo-media-library';
 //import { PERMISSIONS, request, check } from 'react-native-permissions';
 import * as Camera from 'expo-camera';
+import { MobXProviderContext } from "mobx-react";
 
-type PermissionType = 'location' | 'camera' | 'media';
+
+type PermissionType = 'location permission' | 'camera permission' | 'media permission';
 
 type LocationState = null | LocationObject['coords'];
 
@@ -34,19 +36,33 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
     const [location, setLocation] = useState<LocationState>(null);
     const paperTheme = useTheme();
 
+    const { userViewModel } = useContext(MobXProviderContext);
 
+    const translateType = (type: PermissionType): string => {
+        switch (type) {
+            case 'location permission':
+                return userViewModel.i18n.t('location permission');
+            case 'camera permission':
+                return userViewModel.i18n.t('camera permission');
+            case 'media permission':
+                return userViewModel.i18n.t('mobile permission');
+
+            default:
+                return type;
+        }
+    };
 
     useEffect(() => {
         checkPermissionStatus();
     }, []);
 
     const checkPermissionStatus = async () => {
-        if (Platform.OS === 'web' && type === 'media') {
+        if (Platform.OS === 'web' && type === 'media permission') {
             return null;
         }
 
         switch (type) {
-            case 'location':
+            case 'location permission':
                 if (Platform.OS === 'ios' || Platform.OS === 'android' || Platform.OS === 'web') {
                     const locationStatus = await requestForegroundPermissionsAsync();
                     setStatus(locationStatus.status);
@@ -57,7 +73,7 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
                     }
                 }
                 break;
-            case 'camera':
+            case 'camera permission':
                 if (Platform.OS === 'web') {
                     navigator.permissions.query({ name: 'camera' as PermissionName }).then(result => {
                         if (result.state === 'granted') {
@@ -82,7 +98,7 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
                 }
 
 
-            case 'media':   //Not compatible with web
+            case 'media permission':   //Not compatible with web
                 if (Platform.OS !== 'web') {
                     const mediaStatus = await MediaLibrary.requestPermissionsAsync();
                     setStatus(mediaStatus.status);
@@ -97,7 +113,7 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
     const toggleSwitch = async () => {
         if (!isEnabled) {
             switch (type) {
-                case 'location':
+                case 'location permission':
                     const locationStatus = await requestForegroundPermissionsAsync();
                     setStatus(locationStatus.status);
                     setIsEnabled(locationStatus.status === PermissionStatus.GRANTED);
@@ -106,7 +122,7 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
                         setLocation(coords);
                     }
                     break;
-                case 'camera':
+                case 'camera permission':
                     if (Platform.OS === 'web') {
                         try {
                             await navigator.mediaDevices.getUserMedia({ video: true });
@@ -127,7 +143,7 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
                     }
 
                     break;
-                case 'media':
+                case 'media permission':
                     if (Platform.OS !== 'web') {
                         const mediaStatus = await MediaLibrary.requestPermissionsAsync();
                         setStatus(mediaStatus.status);
@@ -145,7 +161,7 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
             setLocation(null);
         }
     };
-    if (Platform.OS === 'web' && type === 'media') {
+    if (Platform.OS === 'web' && type === 'media permission') {
         return null;
     }
 
@@ -157,7 +173,7 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
         <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={[paperTheme.fonts.bodyMedium, { marginRight: 10, color: paperTheme.colors.onSurface }]}>
-                    {type === 'location' ? 'Location' : type === 'camera' ? 'Camera' : 'Media File'} permission: {status}
+                    {translateType(type)}
                 </Text>
 
                 <Switch
@@ -165,9 +181,11 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
                     onValueChange={toggleSwitch}
                 />
             </View>
-            {type === 'location' && location && (
+            {type === 'location permission' && location && (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[paperTheme.fonts.bodyMedium, { marginRight: 10, color: paperTheme.colors.onSurface }]}>Posisjon: Lat: {location.latitude}, Long: {location.longitude}</Text>
+                    <Text style={[paperTheme.fonts.bodyMedium, { marginRight: 10, color: paperTheme.colors.onSurface }]}>
+                        {userViewModel.i18n.t("position")}: Lat: {location.latitude}, Long: {location.longitude}
+                    </Text>
                 </View>
             )}
         </View>

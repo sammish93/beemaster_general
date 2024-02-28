@@ -35,16 +35,16 @@ export type CountryOption = {
 
 export const availableLanguages: LanguageOption[] = [
     { code: LanguageEnum.English, name: 'English', isEnabled: true },
-    { code: LanguageEnum.Norwegian, name: 'Norwegian', isEnabled: true },
-    { code: LanguageEnum.NorwegianBokmal, name: 'Norwegian', isEnabled: true },
+    { code: LanguageEnum.Norwegian, name: 'Norsk', isEnabled: true },
+    { code: LanguageEnum.NorwegianBokmal, name: 'Norsk', isEnabled: true },
 ];
 
 
 
 export const availableCountries: CountryOption[] = [
-    { code: CountryEnum.Norway, name: 'Norway', isEnabled: true },
+    { code: CountryEnum.Norway, name: 'Norge', isEnabled: true },
     { code: CountryEnum.England, name: 'England', isEnabled: true },
-    { code: CountryEnum.WebNorway, name: 'Norway', isEnabled: true },
+    { code: CountryEnum.WebNorway, name: 'Norge', isEnabled: true },
     { code: CountryEnum.WebEngland, name: 'England', isEnabled: true },
     { code: CountryEnum.USA, name: 'USA', isEnabled: true },
 

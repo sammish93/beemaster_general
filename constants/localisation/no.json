@@ -19,5 +19,17 @@
   "register email": "Registrer e-post",
   "request data": "Be om data",
   "logout": "Logg ut",
-  "delete account": "Slett konto"
+  "delete account": "Slett konto",
+  "snow": "Snø",
+  "SMS": "SMS",
+  "mobile": "Mobil",
+  "potential swarm": "Potensiell sverm",
+  "email": "E-post",
+  "switch light/dark mode": "Bytte lys/mørk modus",
+  "language": "Språk",
+  "country": "Land",
+  "location permission": "Stedstillatelse",
+  "position": "Posisjon",
+  "camera permission": "Kameratillatelse",
+  "media permission": "Media-Filer tillatelse"
 }

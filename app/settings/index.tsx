@@ -80,7 +80,9 @@ const SettingsScreen = () => {
         <ScrollView >
 
           <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
-            {userViewModel.i18n.t("accessibility")}</Text>
+            {userViewModel.i18n.t("accessibility")}
+          </Text>
+
           <SwitchTheme />
 
           {/*<Text style={theme.fonts.bodyMedium}>
@@ -90,7 +92,7 @@ const SettingsScreen = () => {
           {
             currentLanguage && (
               <Text style={theme.fonts.bodyMedium}>
-                Language: {currentLanguage}
+                {userViewModel.i18n.t("language")}: {currentLanguage}
               </Text>
             )}
 
@@ -98,7 +100,7 @@ const SettingsScreen = () => {
 
           {currentCountry && (
             <Text style={theme.fonts.bodyMedium}>
-              Country: {currentCountry}
+              {userViewModel.i18n.t("country")}: {currentCountry}
             </Text>
           )}
 
@@ -107,9 +109,9 @@ const SettingsScreen = () => {
           <Divider style={{ backgroundColor: theme.colors.outline }} />
           <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
             {userViewModel.i18n.t("permissions")}</Text>
-          <PermissionSwitch type="location" />
-          <PermissionSwitch type="camera" />
-          <PermissionSwitch type="media" />
+          <PermissionSwitch type="location permission" />
+          <PermissionSwitch type="camera permission" />
+          <PermissionSwitch type="media permission" />
 
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -138,9 +140,13 @@ const SettingsScreen = () => {
               />
             </TouchableOpacity>
           </View>
-          <DefaultSwitchComponent type="snow" />
-          <DefaultSwitchComponent type="potential swarm" />
 
+          <Text style={theme.fonts.bodyMedium}>
+            {userViewModel.i18n.t('snow')}
+          </Text>
+          <Text style={theme.fonts.bodyMedium}>
+            {userViewModel.i18n.t('potential swarm')}
+          </Text>
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
