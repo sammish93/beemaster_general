@@ -1,6 +1,7 @@
-import { deserialiseCurrentForecast, deserialiseDailyForecast, deserialiseWeeklyDetailedForecast, deserialiseWeeklySimpleForecast, extractForecastData, getForecastDateFormat, getForecastDateTimeFormat, getHourlyForecastDateFormat } from '@/domain/weatherForecastDeserialiser'; // Adjust the import path accordingly
+import { calculateDailyHighTemperature, calculateDailyLowTemperature, deserialiseCurrentForecast, deserialiseDailyForecast, deserialiseWeeklyDetailedForecast, deserialiseWeeklySimpleForecast, extractForecastData, getForecastDateFormat, getForecastDateTimeFormat, getHourlyForecastDateFormat } from '@/domain/weatherForecastDeserialiser'; // Adjust the import path accordingly
 import { TemperatureMeasurement, PrecipitationMeasurement, WindSpeedMeasurement } from '@/constants/Measurements'; // Adjust the import path
 import * as jsonResponse from '@/assets/testResources/weatherApiResponse.json';
+import { DailyForecast } from '@/models/forecast';
 
 describe('extractForecastData() Function Tests', () => {
 
@@ -401,5 +402,121 @@ describe('deserialiseWeeklyDetailedForecast() Function Tests', () => {
         expect(result.dayFiveForecast.hourlyForecasts['18HundredHours'].dateTime).toEqual("2024-02-18T18:00:00Z");
         expect(result.daySixForecast.hourlyForecasts['18HundredHours'].dateTime).toEqual("2024-02-19T18:00:00Z");
         expect(result.daySevenForecast.hourlyForecasts['18HundredHours'].dateTime).toEqual("2024-02-20T18:00:00Z");
+    });
+});
+
+describe('calculateDailyHighTemperature() Function Tests', () => {
+    it('calculates the highest temperature in a day with varying temperatures', () => {
+        const forecast: DailyForecast = {
+            latLng: [59.9139, 10.7522],
+            hourlyForecasts: {
+                '00HundredHours': { dateTime: "2024-02-15T00:00:00Z", temperature: 1.8 },
+                '01HundredHours': { dateTime: "2024-02-15T01:00:00Z", temperature: 2.5 },
+                '23HundredHours': { dateTime: "2024-02-15T23:00:00Z", temperature: 3.2 },
+            }
+        };
+
+        const dailyHigh = calculateDailyHighTemperature(forecast);
+
+        expect(dailyHigh).toBe(3.2);
+    });
+
+    it('handles empty forecast gracefully', () => {
+        const forecast: DailyForecast = {
+            latLng: [59.9139, 10.7522],
+            hourlyForecasts: {}
+        };
+
+        const dailyHigh = calculateDailyHighTemperature(forecast);
+
+        expect(dailyHigh).toBe(-Infinity)
+    });
+
+    it('ignores null hourly forecasts', () => {
+        const forecast: DailyForecast = {
+            latLng: [59.9139, 10.7522],
+            hourlyForecasts: {
+                '00HundredHours': null,
+                '01HundredHours': { dateTime: "2024-02-15T01:00:00Z", temperature: 0.5 },
+                '23HundredHours': null,
+            }
+        };
+
+        const dailyHigh = calculateDailyHighTemperature(forecast);
+
+        expect(dailyHigh).toBe(0.5);
+    });
+
+    it('calculates the highest temperature correctly when temperatures decrease throughout the day', () => {
+        const forecast: DailyForecast = {
+            latLng: [59.9139, 10.7522],
+            hourlyForecasts: {
+                '00HundredHours': { dateTime: "2024-02-15T00:00:00Z", temperature: 10.0 },
+                '12HundredHours': { dateTime: "2024-02-15T12:00:00Z", temperature: 5.0 },
+                '23HundredHours': { dateTime: "2024-02-15T23:00:00Z", temperature: 2.0 },
+            }
+        };
+
+        const dailyHigh = calculateDailyHighTemperature(forecast);
+
+        expect(dailyHigh).toBe(10.0);
+    });
+});
+
+describe('calculateDailyLowTemperature() Function Tests', () => {
+    it('calculates the lowest temperature in a day with varying temperatures', () => {
+        const forecast: DailyForecast = {
+            latLng: [59.9139, 10.7522],
+            hourlyForecasts: {
+                '00HundredHours': { dateTime: "2024-02-15T00:00:00Z", temperature: 3.5 },
+                '01HundredHours': { dateTime: "2024-02-15T01:00:00Z", temperature: 2.5 },
+                '23HundredHours': { dateTime: "2024-02-15T23:00:00Z", temperature: 1.2 },
+            }
+        };
+
+        const dailyLow = calculateDailyLowTemperature(forecast);
+
+        expect(dailyLow).toBe(1.2);
+    });
+
+    it('returns Infinity for an empty forecast', () => {
+        const forecast: DailyForecast = {
+            latLng: [59.9139, 10.7522],
+            hourlyForecasts: {}
+        };
+
+        const dailyLow = calculateDailyLowTemperature(forecast);
+
+        expect(dailyLow).toBe(Infinity);
+    });
+
+    it('ignores null hourly forecasts and identifies the lowest temperature', () => {
+        const forecast: DailyForecast = {
+            latLng: [59.9139, 10.7522],
+            hourlyForecasts: {
+                '00HundredHours': null,
+                '01HundredHours': { dateTime: "2024-02-15T01:00:00Z", temperature: 5.0 },
+                '23HundredHours': null,
+            }
+        };
+
+        const dailyLow = calculateDailyLowTemperature(forecast);
+
+        expect(dailyLow).toBe(5.0);
+    });
+
+    it('calculates the lowest temperature correctly when temperatures increase throughout the day', () => {
+        const forecast: DailyForecast = {
+            latLng: [59.9139, 10.7522],
+            hourlyForecasts: {
+                '00HundredHours': { dateTime: "2024-02-15T00:00:00Z", temperature: 2.0 },
+                '12HundredHours': { dateTime: "2024-02-15T12:00:00Z", temperature: 5.0 },
+                '23HundredHours': { dateTime: "2024-02-15T23:00:00Z", temperature: 10.0 },
+            }
+        };
+
+        const dailyLow = calculateDailyLowTemperature(forecast);
+
+        expect(dailyLow).toBe(2.0);
     });
 });

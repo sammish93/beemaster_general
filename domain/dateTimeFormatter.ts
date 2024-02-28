@@ -6,7 +6,6 @@ export const dateTimeToTimeFormatter = (
     timeStyle: DateTimeStyle = "short",
     is12HourClock: boolean = false
 ): string => {
-    //TODO Test
     const date = typeof dateTime === "string" ? new Date(dateTime) : dateTime;
 
     const timeFormatter = new Intl.DateTimeFormat(locale, {
@@ -22,7 +21,6 @@ export const dateTimeToDateFormatter = (
     locale: string,
     dateStyle: DateTimeStyle = "short"
 ): string => {
-    //TODO Test
     const date = typeof dateTime === "string" ? new Date(dateTime) : dateTime;
 
     const options: Intl.DateTimeFormatOptions = {
@@ -39,7 +37,6 @@ export const dateTimeFormatter = (
     timeStyle: DateTimeStyle = "short",
     is12HourClock: boolean = false
   ): string => {
-    //TODO Test
     const date = typeof dateTime === "string" ? new Date(dateTime) : dateTime;
   
     const formatter = new Intl.DateTimeFormat(locale, {
@@ -55,7 +52,6 @@ export const dateTimeToDayFormatter = (
     dateTime: string | Date,
     locale: string,
 ): string => {
-    //TODO Test
     const date = typeof dateTime === 'string' ? new Date(dateTime) : dateTime;
 
     const formatter = new Intl.DateTimeFormat(locale, {

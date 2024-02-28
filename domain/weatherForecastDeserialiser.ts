@@ -375,7 +375,6 @@ export const calculateDailyRainfall = (json: any, dateIso: string): number => {
  */
 export const calculateDailyHighTemperature = (forecast: DailyForecast): number => {
     // TODO Add validation that restricts dateIso values if they are previous dates. Not too important.
-    // TODO Test
     let dailyHigh = -Infinity;
 
     for (let hour = 0; hour <= 23; hour++) {
@@ -397,7 +396,6 @@ export const calculateDailyHighTemperature = (forecast: DailyForecast): number =
  */
 export const calculateDailyLowTemperature = (forecast: DailyForecast): number => {
     // TODO Add validation that restricts dateIso values if they are previous dates. Not too important.
-    // TODO Test
     let dailyLow = Infinity;
 
     for (let hour = 0; hour <= 23; hour++) {
