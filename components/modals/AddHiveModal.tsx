@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useTheme } from "react-native-paper";
 import { Button, TextInput, IconButton, Text } from "react-native-paper";
 import { Platform, View } from "react-native";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { BottomModal, OverlayModal } from "./Modals";
 import { VerticalSpacer } from "../Spacers";
+import { MobXProviderContext } from "mobx-react";
 
 interface AddHiveModalProps {
   isOverlayModalVisible: boolean;
@@ -46,10 +47,11 @@ const AddHiveModal = (props: AddHiveModalProps) => {
 
 const ModalContent = (props: ModalContentProps) => {
   const theme = useTheme();
-
+  const { userViewModel } = useContext(MobXProviderContext);
   const [newHiveName, setNewHiveName] = useState("");
 
   const handleAddNewHive = () => {
+    //TODO Validation
     props.onAddHive(newHiveName);
     resetHiveName();
   };
@@ -66,7 +68,7 @@ const ModalContent = (props: ModalContentProps) => {
         }}
       >
         <Text style={{ ...theme.fonts.headlineSmall, flex: 1 }}>
-          Enter New Hive Information
+          {userViewModel.i18n.t("enter new hive information")}
         </Text>
         <IconButton
           icon="close"
@@ -75,9 +77,8 @@ const ModalContent = (props: ModalContentProps) => {
         />
       </View>
       <View>
-        <VerticalSpacer size={12} />
         <TextInput
-          label="Hive Name"
+          label={userViewModel.i18n.t("hive name")}
           value={newHiveName}
           onChangeText={setNewHiveName}
         />
@@ -225,7 +226,7 @@ const ModalContent = (props: ModalContentProps) => {
         </Text>
         <VerticalSpacer size={12} />
         <Button mode="contained" onPress={handleAddNewHive}>
-          Add Hive
+          {userViewModel.i18n.t("add hive")}
         </Button>
         {/*//TODO Add more functionality to add hive.*/}
       </View>

@@ -27,9 +27,14 @@ import {
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import LoadingScreen from "@/components/LoadingScreen";
-import { WeeklySimpleForecast } from "@/models/forecast";
-import ForecastSummary from "@/components/ForecastSummary";
+import {
+  WeeklyDetailedForecast,
+  WeeklySimpleForecast,
+} from "@/models/forecast";
+import ForecastSummary from "@/components/forecast/ForecastSummary";
 import "@/assets/customScrollbar.css";
+import DetailedForecast from "@/components/forecast/DetailedForecast";
+import { VerticalSpacer } from "@/components/Spacers";
 
 type RootStackParamList = {
   hive: {
@@ -50,7 +55,8 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
 
   const [data, setData] = useState("");
-  const [forecast, setForecast] = useState<WeeklySimpleForecast>();
+  const [detailedForecast, setDetailedForecast] =
+    useState<WeeklyDetailedForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
 
   useEffect(() => {
@@ -59,12 +65,11 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
         setLoadingScreen(true);
         const data = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
 
-        const weeklySimplyForecast = deserialiseWeeklySimpleForecast(
+        const weeklyDetailedForecast = deserialiseWeeklyDetailedForecast(
           data,
           userViewModel.temperaturePreference,
           userViewModel.precipitationPreference,
-          userViewModel.windSpeedPreference,
-          true
+          userViewModel.windSpeedPreference
         );
 
         const rainfall = calculateDailyRainfall(data, getForecastDateFormat(2));
@@ -74,7 +79,7 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
         //);
 
         setData("Retrieved forecast!");
-        setForecast(weeklySimplyForecast);
+        setDetailedForecast(weeklyDetailedForecast);
 
         Toast.show(
           toastCrossPlatform({
@@ -118,17 +123,17 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
             <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
             <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
             <Text style={theme.fonts.bodySmall}>{data}</Text>
-            <Button icon={getWindDirectionIconFromAngle(45.8)}>
-              Wind Direction Example
-            </Button>
-            {forecast ? (
-              <ForecastSummary
-                forecast={forecast}
-                locale={userViewModel.i18n.locale}
-                temperatureFormat={userViewModel.temperaturePreference}
-                precipitationFormat={userViewModel.precipitationPreference}
-                windFormat={userViewModel.windSpeedPreference}
-              />
+            {detailedForecast ? (
+              <>
+                <VerticalSpacer size={8} />
+                <DetailedForecast
+                  forecast={detailedForecast}
+                  locale={userViewModel.i18n.locale}
+                  temperatureFormat={userViewModel.temperaturePreference}
+                  precipitationFormat={userViewModel.precipitationPreference}
+                  windFormat={userViewModel.windSpeedPreference}
+                />
+              </>
             ) : null}
           </View>
         </ScrollView>

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import isValidCoordinates from "@/domain/validation/coordinateValidation";
+import { Platform } from 'react-native';
 
 interface WeatherApiProps {
   lat: number,
@@ -16,13 +17,19 @@ export const fetchWeatherForecast = async (props: WeatherApiProps) => {
   }
 
   try {
-    const response = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${props.lat}&lon=${props.lng}`, {
-      headers: {
-        'User-Agent': 'BeemasterGeneral/1.0'
-      }
-    });
-
-    return response.data;
+    if (Platform.OS === "web") {
+      const response = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${props.lat}&lon=${props.lng}`);
+    
+      return response.data;
+    } else {
+      const response = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${props.lat}&lon=${props.lng}`, {
+        headers: {
+          'User-Agent': 'BeemasterGeneral/1.0'
+        }
+      });
+      
+      return response.data;
+    }    
   } catch (error) {
     console.error(error);
     throw error;

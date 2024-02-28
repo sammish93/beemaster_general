@@ -28,26 +28,10 @@ const styles = (theme?: MD3Theme) => {
     main: {
       flex: 1,
       justifyContent: "center",
-      maxWidth: screenWidth > ScreenWidth.Widescreen ? ScreenWidth.Widescreen : screenWidth,
-      width: Platform.select({
-        'web': "50%"
-      }),
+      width: screenWidth > ScreenWidth.Expanded ? ScreenWidth.Expanded : "100%",
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
       padding: 20
-    },
-    modal: {
-      alignItems: "center",
-    },
-    modalContent: {
-      margin: 10,
-      padding: 10,
-      gap: 10,
-    },
-    modalTitle: {
-      marginTop: 25,
-      marginBottom: 8,
-      marginHorizontal: 15
     },
     topBarContainer: {
       flexDirection: "row",
@@ -183,12 +167,6 @@ const styles = (theme?: MD3Theme) => {
       justifyContent: "center",
       alignItems: "center",
     },
-    toggleContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingVertical: 15,
-      gap: 5
-    },
     closeButton: {
       position: 'absolute',
       top: 0,
@@ -200,6 +178,18 @@ const styles = (theme?: MD3Theme) => {
       gap: 16
     },
 
+    cardRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      maxWidth: "100%",
+      flex: 1,
+      gap: 4
+    },
+    weatherTopRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4
+    }
   });
 };
 
