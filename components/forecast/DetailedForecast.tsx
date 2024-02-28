@@ -270,6 +270,7 @@ const HourlyForecastCard = (props: HourlyForecastCardProps) => {
             color={theme.colors.onSurfaceVariant}
           />
         </View>
+        {weather ? null : <VerticalSpacer size={24} />}
         {/* Currently there exists a bug in paper where the Divider disappears if the parent 
         has align items set to "center" */}
         <Divider
