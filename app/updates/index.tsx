@@ -26,7 +26,7 @@ const UpdatesScreen = () => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Updates"
+        title={userViewModel.i18n.t("updates")}
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Updates</Text>

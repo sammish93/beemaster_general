@@ -6,6 +6,9 @@ import { Button, useTheme, Text, TextInput } from "react-native-paper";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
+import * as React from 'react';
+import DialogGDPR from "@/components/modals/DialogGDPR";
+//import React from "react";
 import { Platform } from 'react-native';
 
 
@@ -43,6 +46,17 @@ const LoginScreen = () => {
 
   const handleAnonymousSignIn = () => {
     userViewModel.signInAnonymously();
+  };
+  const [showDialog, setShowDialog] = React.useState(false)
+
+
+
+  const handleLoginPress = () => {
+    setShowDialog(true);  //Viser gdpr-dialogen
+
+  }
+  const hideDialog = () => {
+    setShowDialog(false); // Hides the GDPR dialog
   };
 
   return (

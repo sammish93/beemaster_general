@@ -1,4 +1,3 @@
-import React from "react";
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
@@ -9,6 +8,8 @@ import {
 } from "@/components/layouts/stacks";
 import { Text } from "react-native";
 import { MD3Theme } from "react-native-paper";
+import { useContext } from "react";
+import { MobXProviderContext } from "mobx-react";
 
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
 
@@ -33,85 +34,90 @@ export type BottomTabsScreenProps = {
   mode: string;
 };
 
-export const MaterialBottomTabsScreen = (props: BottomTabsScreenProps) => (
-  <MaterialBottomTabs.Navigator
-    activeColor={props.theme.colors.onBackground}
-    inactiveColor={props.theme.colors.onBackground}
-    barStyle={{
-      backgroundColor: props.theme.colors.primaryContainer,
-    }}
-  >
-    <MaterialBottomTabs.Screen
-      name="index"
-      component={IndexStack}
-      options={{
-        tabBarLabel: "Home",
-        tabBarIcon: (propsIcon) => (
-          <MaterialCommunityIcons
-            color={
-              propsIcon.focused
-                ? props.theme.colors.onSecondaryContainer
-                : props.theme.colors.onSurfaceVariant
-            }
-            size={24}
-            name={propsIcon.focused ? "home" : "home-outline"}
-          />
-        ),
+export const MaterialBottomTabsScreen = (props: BottomTabsScreenProps) => {
+  // Correct placement of useContext hook
+  const { userViewModel } = useContext(MobXProviderContext);
+
+  return (
+    <MaterialBottomTabs.Navigator
+      activeColor={props.theme.colors.onBackground}
+      inactiveColor={props.theme.colors.onBackground}
+      barStyle={{
+        backgroundColor: props.theme.colors.primaryContainer,
       }}
-    />
-    <MaterialBottomTabs.Screen
-      name="toolbox/index"
-      component={ToolboxStack}
-      options={{
-        tabBarLabel: "Toolbox",
-        tabBarIcon: (propsIcon) => (
-          <MaterialCommunityIcons
-            color={
-              propsIcon.focused
-                ? props.theme.colors.onSecondaryContainer
-                : props.theme.colors.onSurfaceVariant
-            }
-            size={24}
-            name={propsIcon.focused ? "toolbox" : "toolbox-outline"}
-          />
-        ),
-      }}
-    />
-    <MaterialBottomTabs.Screen
-      name="updates/index"
-      component={UpdatesStack}
-      options={{
-        tabBarLabel: "Updates",
-        tabBarIcon: (propsIcon) => (
-          <MaterialCommunityIcons
-            color={
-              propsIcon.focused
-                ? props.theme.colors.onSecondaryContainer
-                : props.theme.colors.onSurfaceVariant
-            }
-            size={24}
-            name={propsIcon.focused ? "bell" : "bell-outline"}
-          />
-        ),
-      }}
-    />
-    <MaterialBottomTabs.Screen
-      name="settings/index"
-      component={SettingsStack}
-      options={{
-        tabBarLabel: "Settings",
-        tabBarIcon: (propsIcon) => (
-          <MaterialCommunityIcons
-            color={
-              propsIcon.focused
-                ? props.theme.colors.onSecondaryContainer
-                : props.theme.colors.onSurfaceVariant
-            }
-            size={24}
-            name={propsIcon.focused ? "cog" : "cog-outline"}
-          />
-        ),
-      }}
-    />
-  </MaterialBottomTabs.Navigator>
-);
+    >
+      <MaterialBottomTabs.Screen
+        name="index"
+        component={IndexStack}
+        options={{
+          tabBarLabel: userViewModel.i18n.t("home"),
+          tabBarIcon: (propsIcon) => (
+            <MaterialCommunityIcons
+              color={
+                propsIcon.focused
+                  ? props.theme.colors.onSecondaryContainer
+                  : props.theme.colors.onSurfaceVariant
+              }
+              size={24}
+              name={propsIcon.focused ? "home" : "home-outline"}
+            />
+          ),
+        }}
+      />
+      <MaterialBottomTabs.Screen
+        name="toolbox/index"
+        component={ToolboxStack}
+        options={{
+          tabBarLabel: userViewModel.i18n.t("toolbox"),
+          tabBarIcon: (propsIcon) => (
+            <MaterialCommunityIcons
+              color={
+                propsIcon.focused
+                  ? props.theme.colors.onSecondaryContainer
+                  : props.theme.colors.onSurfaceVariant
+              }
+              size={24}
+              name={propsIcon.focused ? "toolbox" : "toolbox-outline"}
+            />
+          ),
+        }}
+      />
+      <MaterialBottomTabs.Screen
+        name="updates/index"
+        component={UpdatesStack}
+        options={{
+          tabBarLabel: userViewModel.i18n.t("updates"),
+          tabBarIcon: (propsIcon) => (
+            <MaterialCommunityIcons
+              color={
+                propsIcon.focused
+                  ? props.theme.colors.onSecondaryContainer
+                  : props.theme.colors.onSurfaceVariant
+              }
+              size={24}
+              name={propsIcon.focused ? "bell" : "bell-outline"}
+            />
+          ),
+        }}
+      />
+      <MaterialBottomTabs.Screen
+        name="settings/index"
+        component={SettingsStack}
+        options={{
+          tabBarLabel: userViewModel.i18n.t("settings"),
+          tabBarIcon: (propsIcon) => (
+            <MaterialCommunityIcons
+              color={
+                propsIcon.focused
+                  ? props.theme.colors.onSecondaryContainer
+                  : props.theme.colors.onSurfaceVariant
+              }
+              size={24}
+              name={propsIcon.focused ? "cog" : "cog-outline"}
+            />
+          ),
+        }}
+      />
+    </MaterialBottomTabs.Navigator>
+  );
+};

@@ -20,7 +20,7 @@ const CommunityScreen = () => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Community"
+        title={userViewModel.i18n.t("community")}
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Community</Text>

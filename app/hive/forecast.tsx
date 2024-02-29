@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext, useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import { fetchWeatherForecast } from "@/data/api/weatherApi";
 import {
+  calculateDailyRainfall,
   deserialiseDailyForecast,
   deserialiseWeeklyDetailedForecast,
   deserialiseWeeklySimpleForecast,
@@ -23,7 +24,17 @@ import {
   TemperatureMeasurement,
   WindSpeedMeasurement,
 } from "@/constants/Measurements";
-import { calculateDailyRainfall } from "@/domain/rainfallCalculator";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "@/components/ToastCustom";
+import LoadingScreen from "@/components/LoadingScreen";
+import {
+  WeeklyDetailedForecast,
+  WeeklySimpleForecast,
+} from "@/models/forecast";
+import ForecastSummary from "@/components/forecast/ForecastSummary";
+import "@/assets/customScrollbar.css";
+import DetailedForecast from "@/components/forecast/DetailedForecast";
+import { VerticalSpacer } from "@/components/Spacers";
 
 type RootStackParamList = {
   hive: {
@@ -44,15 +55,18 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
 
   const [data, setData] = useState("");
+  const [detailedForecast, setDetailedForecast] =
+    useState<WeeklyDetailedForecast>();
+  const [isLoadingScreen, setLoadingScreen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoadingScreen(true);
         const data = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
 
-        const thing = deserialiseDailyForecast(
+        const weeklyDetailedForecast = deserialiseWeeklyDetailedForecast(
           data,
-          getForecastDateFormat(2),
           userViewModel.temperaturePreference,
           userViewModel.precipitationPreference,
           userViewModel.windSpeedPreference
@@ -60,12 +74,33 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
 
         const rainfall = calculateDailyRainfall(data, getForecastDateFormat(2));
 
-        setData(
-          `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
+        //setData(
+        //  `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
+        //);
+
+        setData("Retrieved forecast!");
+        setDetailedForecast(weeklyDetailedForecast);
+
+        Toast.show(
+          toastCrossPlatform({
+            title: "Success!",
+            text: "Click to go home",
+            onPress: () => {
+              navigation.navigate("../index");
+            },
+          })
         );
       } catch (error) {
-        // TODO Snackbar or toast etc as well.
         setData("Error retrieving data");
+        Toast.show(
+          toastCrossPlatform({
+            title: "Error",
+            text: "Could not retrieve the latest weather forecast.",
+            type: "error",
+          })
+        );
+      } finally {
+        setLoadingScreen(false);
       }
     };
 
@@ -78,16 +113,31 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title="Forecast"
+        title={userViewModel.i18n.t("detailed forecast")}
       />
-      <View style={styles(theme).main}>
-        <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
-        <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
-        <Text style={theme.fonts.bodySmall}>{data}</Text>
-        <Button icon={getWindDirectionIconFromAngle(45.8)}>
-          Wind Direction Example
-        </Button>
-      </View>
+      {isLoadingScreen ? (
+        <LoadingScreen />
+      ) : (
+        <ScrollView>
+          <View style={styles(theme).main}>
+            <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
+            <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
+            <Text style={theme.fonts.bodySmall}>{data}</Text>
+            {detailedForecast ? (
+              <>
+                <VerticalSpacer size={8} />
+                <DetailedForecast
+                  forecast={detailedForecast}
+                  locale={userViewModel.i18n.locale}
+                  temperatureFormat={userViewModel.temperaturePreference}
+                  precipitationFormat={userViewModel.precipitationPreference}
+                  windFormat={userViewModel.windSpeedPreference}
+                />
+              </>
+            ) : null}
+          </View>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };

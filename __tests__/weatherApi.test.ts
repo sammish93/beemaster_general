@@ -4,17 +4,21 @@ jest.mock('@/domain/validation/coordinateValidation', () => ({
     default: jest.fn(),
 }));
 
-global.fetch = jest.fn(() =>
-    Promise.resolve(new Response(JSON.stringify(jsonResponse)))
-) as jest.Mock;
+jest.mock('axios');
 
 // Clears each mock before each test is run.
 beforeEach(() => {
-    (fetch as jest.Mock).mockClear();
+    jest.mocked(axios.get).mockClear();
     (isValidCoordinates as jest.Mock).mockClear();
 });
 
+// Setting up the Axios mock inside beforeEach if necessary
+beforeEach(() => {
+    jest.mocked(axios.get).mockResolvedValue({ data: jsonResponse });
+});
+
 // Imports after mocks to avoid hoisting problems.
+import axios from 'axios';
 import { fetchWeatherForecast } from '@/data/api/weatherApi';
 import isValidCoordinates from '@/domain/validation/coordinateValidation';
 import * as jsonResponse from '@/assets/testResources/weatherApiResponse.json';
@@ -27,7 +31,7 @@ describe('Weather API Tests', () => {
         const forecast = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
 
         expect(forecast).toEqual(mockForecast);
-        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(axios.get).toHaveBeenCalledTimes(1);
         expect(isValidCoordinates).toHaveBeenCalledWith(59.9139, 10.7522);
     });
 
@@ -36,6 +40,6 @@ describe('Weather API Tests', () => {
 
         await expect(fetchWeatherForecast({ lat: 123456, lng: 123456 }))
         .rejects.toThrow(`The coordinates '123456, 123456' are not valid.`);
-        expect(fetch).not.toHaveBeenCalled();
+        expect(axios.get).not.toHaveBeenCalled();
     });
 });
