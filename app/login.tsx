@@ -6,24 +6,8 @@ import { Button, useTheme, Text, TextInput } from "react-native-paper";
 import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import { GoogleAuthProvider, signInWithCredential, signInWithPopup} from "firebase/auth";
-import { auth } from "@/firebaseConfig"; // Your Firebase auth import
-import userViewModel from '@/viewModels/UserViewModel'; // Your MobX store
-import * as Google from 'expo-auth-session/providers/google';
-
 import { Platform } from 'react-native';
 
-import { 
-  WEB_CLIENT_ID,
-  ANDROID_CLIENT_ID,
-  IOS_CLIENT_ID, 
-  FIREBASE_API_KEY,
-  FIREBASE_AUTH_DOMAIN,
-  FIREBASE_PROJECT_ID,
-  FIREBASE_STORAGE_BUCKET,
-  FIREBASE_MESSAGING_SENDER_ID,
-  FIREBASE_APP_ID,
-  FIREBASE_MEASUREMENT_ID,} from '@env';
 
 const LoginScreen = () => {
   const theme = useTheme();
@@ -33,41 +17,15 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
 
-  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    
-    iosClientId: IOS_CLIENT_ID,
-    androidClientId: ANDROID_CLIENT_ID,
-    webClientId: WEB_CLIENT_ID,
-    expoClientId: WEB_CLIENT_ID,
-    scopes: ['profile',
-    'email',
-    'openid',
-    'https://www.googleapis.com/auth/userinfo.email',
-    'https://www.googleapis.com/auth/userinfo.profile']
+ //TODO: Figure out wth web is doing
 
-  })
-
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential)
-        .then((result) => {
-          userViewModel.setUserId(result.user.uid); // Update MobX store
-        })
-        .catch((error) => {
-          console.error("Error signing in with Google: ", error);
-        });
-    }
-  }, [response]);
-
-
+  console.log(`Platform.OS: ${Platform.OS}`);
   const handleGoogleSignIn = () => {
     if (Platform.OS === 'web') {
       console.log("web signin")
       userViewModel.signInWithGoogleWeb()
     } else {
-      console.log("native sign in started")
+      console.log("native sign in started log")
      
       userViewModel.signInWithGoogleNative()
     }
