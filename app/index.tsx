@@ -114,7 +114,7 @@ const HomeScreen = () => {
       );
       setFilteredHiveList(filtered);
     }
-  }, [hiveViewModel.hives, filterList]);
+  }, [filterList]);
 
   return (
     <SafeAreaView style={styles(theme).container}>
