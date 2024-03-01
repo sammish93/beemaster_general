@@ -1,3 +1,4 @@
+/*
 export interface HiveModel {
     id: string
     name: string
@@ -8,4 +9,13 @@ export interface HiveModel {
     weight?: number
     humidity?: number
     precipitation?: number 
+}
+*/
+
+
+export interface HiveModel {
+  id: string
+  name: string
+  filters: string[],
+
 }
