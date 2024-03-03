@@ -91,6 +91,37 @@ class UserViewModel {
 
     };
 
+    /**
+     * Fetches user parameters from the database.
+     * For now, it uses dummy data. In a real application,
+     * this method would fetch data from the backend and update
+     * the UserViewModel accordingly.
+     * @example
+     * // Usage example:
+     * // Call this method when you need to fetch and update
+     * // user parameters from the database.
+     * UserViewModel.fetchUserParametersFromDatabase();
+     */
+
+    @action fetchUserParametersFromDatabase() {
+        // Dummy data for now
+        const userDataFromDatabase = {
+            userId: "3536",
+            theme: "dark",
+            temperaturePreference: TemperatureMeasurement.Fahrenheit,
+            precipitationPreference: PrecipitationMeasurement.Inches,
+            windSpeedPreference: WindSpeedMeasurement.MilesPerHour,
+            weightPreference: WeightMeasurement.Kilograms
+        };
+
+        this.setUserId(userDataFromDatabase.userId);
+        this.setTheme(userDataFromDatabase.theme);
+        this.setTemperaturePreference(userDataFromDatabase.temperaturePreference);
+        this.setPrecipitationPreference(userDataFromDatabase.precipitationPreference);
+        this.setWindSpeedPreference(userDataFromDatabase.windSpeedPreference);
+        this.setWeightPreference(userDataFromDatabase.weightPreference);
+    }
+
 
 }
 
