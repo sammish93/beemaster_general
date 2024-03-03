@@ -102,28 +102,41 @@ const SettingsScreen = () => {
               />
             </TouchableOpacity>
           </View>
-
-          <Text style={theme.fonts.bodyMedium}>
-            {userViewModel.i18n.t('potential swarm')}
-          </Text>
-          <Text style={theme.fonts.bodyMedium}>
-            {userViewModel.i18n.t('consider feeding')}
-          </Text>
-          <Text style={theme.fonts.bodyMedium}>
-            {userViewModel.i18n.t('honey harvest')}
-          </Text>
-          <Text style={theme.fonts.bodyMedium}>
-            {userViewModel.i18n.t('maintenance')}
-          </Text>
-          <Text style={theme.fonts.bodyMedium}>
-            {userViewModel.i18n.t('expand hive')}
-          </Text>
-          <Text style={theme.fonts.bodyMedium}>
-            {userViewModel.i18n.t('check hive')}
-          </Text>
-          <Text style={theme.fonts.bodyMedium}>
-            {userViewModel.i18n.t('reminder')}
-          </Text>
+          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+            <Text style={theme.fonts.bodyMedium}>
+              {userViewModel.i18n.t('potential swarm')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+            <Text style={theme.fonts.bodyMedium}>
+              {userViewModel.i18n.t('consider feeding')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+            <Text style={theme.fonts.bodyMedium}>
+              {userViewModel.i18n.t('honey harvest')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+            <Text style={theme.fonts.bodyMedium}>
+              {userViewModel.i18n.t('maintenance')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+            <Text style={theme.fonts.bodyMedium}>
+              {userViewModel.i18n.t('expand hive')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+            <Text style={theme.fonts.bodyMedium}>
+              {userViewModel.i18n.t('check hive')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+            <Text style={theme.fonts.bodyMedium}>
+              {userViewModel.i18n.t('reminder')}
+            </Text>
+          </TouchableOpacity>
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
