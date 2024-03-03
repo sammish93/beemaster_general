@@ -124,5 +124,12 @@
   "hive name": "Bikubenavn",
   "add hive": "Legg til bikube",
   "enter new filter": "Skriv inn nytt filter",
-  "add filter": "Legg til filter"
+  "add filter": "Legg til filter",
+  "reminder": "Påminnelse",
+  "check hive": "Sjekk bikube",
+  "expand hive": "Utvide bikuben",
+  "weather": "Vær",
+  "maintenance": "Vedlikehold",
+  "honey harvest": "Høste honning",
+  "consider feeding": "Vurder fôring"
 }

@@ -88,7 +88,7 @@ const SettingsScreen = () => {
           <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 1 }}>
             <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
               {userViewModel.i18n.t('notification types')}</Text>
-            {/*TODO: ADD info button in top corner*/}
+
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("/settings/info/index");
@@ -102,11 +102,27 @@ const SettingsScreen = () => {
               />
             </TouchableOpacity>
           </View>
-          <Text style={theme.fonts.bodyMedium}>
-            {userViewModel.i18n.t('snow')}
-          </Text>
+
           <Text style={theme.fonts.bodyMedium}>
             {userViewModel.i18n.t('potential swarm')}
+          </Text>
+          <Text style={theme.fonts.bodyMedium}>
+            {userViewModel.i18n.t('consider feeding')}
+          </Text>
+          <Text style={theme.fonts.bodyMedium}>
+            {userViewModel.i18n.t('honey harvest')}
+          </Text>
+          <Text style={theme.fonts.bodyMedium}>
+            {userViewModel.i18n.t('maintenance')}
+          </Text>
+          <Text style={theme.fonts.bodyMedium}>
+            {userViewModel.i18n.t('expand hive')}
+          </Text>
+          <Text style={theme.fonts.bodyMedium}>
+            {userViewModel.i18n.t('check hive')}
+          </Text>
+          <Text style={theme.fonts.bodyMedium}>
+            {userViewModel.i18n.t('reminder')}
           </Text>
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />

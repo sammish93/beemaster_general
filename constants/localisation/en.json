@@ -124,5 +124,12 @@
   "hive name": "Hive name",
   "add hive": "Add hive",
   "enter new filter": "Enter new filter",
-  "add filter": "Add filter"
+  "add filter": "Add filter",
+  "reminder": "Reminder",
+  "check hive": "Check Hive",
+  "expand hive": "Expand Hive",
+  "weather": "Weather",
+  "maintenance": "Maintenance",
+  "honey harvest": "Honey Harvest",
+  "consider feeding": "Consider Feeding"
 }
