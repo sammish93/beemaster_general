@@ -131,5 +131,7 @@
   "weather": "Vær",
   "maintenance": "Vedlikehold",
   "honey harvest": "Høste honning",
-  "consider feeding": "Vurder fôring"
+  "consider feeding": "Vurder fôring",
+  "change parameter": "Endre parameter",
+  "save": "Lagre"
 }

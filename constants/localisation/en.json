@@ -131,5 +131,7 @@
   "weather": "Weather",
   "maintenance": "Maintenance",
   "honey harvest": "Honey Harvest",
-  "consider feeding": "Consider Feeding"
+  "consider feeding": "Consider Feeding",
+  "change parameter": "Change Parameter",
+  "save": "Save"
 }

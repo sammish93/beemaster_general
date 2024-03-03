@@ -1,7 +1,7 @@
 import { useNavigation } from "expo-router";
 import { TouchableOpacity, View, ScrollView, Platform } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Button, useTheme, Divider, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
@@ -12,19 +12,26 @@ import React from "react";
 import PermissionSwitch from "@/components/PermissionSwitch";
 import SwitchTheme from "@/components/SwitchTheme";
 import DefaultSwitchComponent from "@/components/DefaultSwitch";
-
+import AddFilterModal from "@/components/modals/EditNotificationParametersModal"; // Endre denne stien til riktig sti basert på hvor AddFilterModal er plassert
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const bottomSheetAddFilterModalRef = useRef<BottomSheetModal>(null);
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
+  const [selectedNotificationType, setSelectedNotificationType] = useState("");
+
   useEffect(() => {
     userViewModel.updateLocaleSettings();
   }, [userViewModel]);
-
+  const handleOpenModal = (notificationType: string) => {
+    setSelectedNotificationType(notificationType);
+    setModalVisible(true);
+  };
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -45,6 +52,17 @@ const SettingsScreen = () => {
             />
           </TouchableOpacity>,
         ]}
+      />
+      <AddFilterModal
+        isOverlayModalVisible={modalVisible}
+        bottomSheetModalRef={bottomSheetAddFilterModalRef}
+        onClose={() => setModalVisible(false)}
+        onSave={(newValue) => {
+          // Implementer logikken for lagring av den nye verdien
+          console.log("New value for", selectedNotificationType, ":", newValue);
+          setModalVisible(false);
+        }}
+        parameterName={selectedNotificationType}
       />
 
       <View style={styles(theme).main}>
@@ -102,37 +120,37 @@ const SettingsScreen = () => {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+          <TouchableOpacity onPress={() => handleOpenModal("potential swarm")}>
             <Text style={theme.fonts.bodyMedium}>
               {userViewModel.i18n.t('potential swarm')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+          <TouchableOpacity onPress={() => handleOpenModal("consider feeding")}>
             <Text style={theme.fonts.bodyMedium}>
               {userViewModel.i18n.t('consider feeding')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+          <TouchableOpacity onPress={() => handleOpenModal("honey harvest")}>
             <Text style={theme.fonts.bodyMedium}>
               {userViewModel.i18n.t('honey harvest')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+          <TouchableOpacity onPress={() => handleOpenModal("maintenance")}>
             <Text style={theme.fonts.bodyMedium}>
               {userViewModel.i18n.t('maintenance')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+          <TouchableOpacity onPress={() => handleOpenModal("expand hive")}>
             <Text style={theme.fonts.bodyMedium}>
               {userViewModel.i18n.t('expand hive')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+          <TouchableOpacity onPress={() => handleOpenModal("check hive'")}>
             <Text style={theme.fonts.bodyMedium}>
               {userViewModel.i18n.t('check hive')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {/*TODO: do someting*/ }}>
+          <TouchableOpacity onPress={() => handleOpenModal("reminder")}>
             <Text style={theme.fonts.bodyMedium}>
               {userViewModel.i18n.t('reminder')}
             </Text>
