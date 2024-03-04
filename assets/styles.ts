@@ -183,12 +183,11 @@ const styles = (theme?: MD3Theme) => {
       alignItems: "center",
       maxWidth: "100%",
       flex: 1,
-      gap: 4
     },
     weatherTopRow: {
       flexDirection: "row",
       alignItems: "center",
-      gap: 4
+      gap: 2,
     }
   });
 };

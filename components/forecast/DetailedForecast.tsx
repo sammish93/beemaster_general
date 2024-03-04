@@ -148,13 +148,13 @@ const DailyDetailedForecastSummary = (props: DailyDetailedForecastProps) => {
       </Card.Content>
       <Card.Content>
         <ScrollView
-          horizontal
+          horizontal={true}
           showsHorizontalScrollIndicator={true}
           contentContainerStyle={{
             justifyContent: "space-between",
-            flex: 1,
             paddingVertical: 12,
             gap: 8,
+            flexGrow: 1,
           }}
         >
           {hours.map((hour, index) =>
@@ -295,39 +295,32 @@ const DailyDetailedForecastHeader = (
   const theme = useTheme();
 
   return (
-    <>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          maxWidth: "100%",
-          flex: 1,
-        }}
-      >
-        <Title style={theme.fonts.headlineSmall} numberOfLines={1}>
-          {props.title}
-        </Title>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Icon source="thermometer-chevron-up" size={18} color={"#D01B1B"} />
-          <HorizontalSpacer size={4} />
-          <Text style={theme.fonts.bodyLarge} numberOfLines={1}>
-            {props.dailyHigh} {props.temperatureFormat}
-          </Text>
-          <HorizontalSpacer size={12} />
-          <Icon source="thermometer-chevron-down" size={18} color={"#47abd8"} />
-          <HorizontalSpacer size={4} />
-          <Text style={theme.fonts.bodyLarge} numberOfLines={1}>
-            {props.dailyLow} {props.temperatureFormat}
-          </Text>
-        </View>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        maxWidth: "100%",
+        flex: 1,
+      }}
+    >
+      <Text style={{ ...theme.fonts.headlineSmall, flex: 1 }} numberOfLines={1}>
+        {props.title}
+      </Text>
+      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+        <Icon source="thermometer-chevron-up" size={18} color={"#D01B1B"} />
+        <HorizontalSpacer size={4} />
+        <Text style={theme.fonts.bodyLarge} numberOfLines={1}>
+          {props.dailyHigh} {props.temperatureFormat}
+        </Text>
+        <HorizontalSpacer size={12} />
+        <Icon source="thermometer-chevron-down" size={18} color={"#47abd8"} />
+        <HorizontalSpacer size={4} />
+        <Text style={theme.fonts.bodyLarge} numberOfLines={1}>
+          {props.dailyLow} {props.temperatureFormat}
+        </Text>
       </View>
-    </>
+    </View>
   );
 };
 
