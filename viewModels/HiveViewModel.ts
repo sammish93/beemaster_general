@@ -39,6 +39,7 @@ class HiveViewModel {
 
 
   @action async fetchHives() {
+
     try {
       const userId = auth.currentUser?.uid ; 
       const querySnapshot = await getDocs(collection(db, `users/${userId}/hives`));

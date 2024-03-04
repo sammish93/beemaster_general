@@ -39,7 +39,7 @@
     "expo-font": "~11.10.2",
     "expo-linking": "~6.2.2",
     "expo-localization": "~14.8.3",
-    "expo-location": "~16.5.3",
+    "expo-location": "~16.5.5",
     "expo-media-library": "~15.9.1",
     "expo-modules-autolinking": "~1.10.0",
     "expo-random": "~13.6.0",
