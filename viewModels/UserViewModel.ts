@@ -124,8 +124,10 @@ class UserViewModel {
               });
                 
             } else {
-                
-                console.error("Error signing in with email: ", error);
+              console.error("Error signing in with email: ", error);
+              runInAction(() => {
+                this.signUpError = "An error occurred during sign in";
+              });    
             }
         }
     };
@@ -150,8 +152,12 @@ class UserViewModel {
             });
           } else {
               console.error("Error signing up with email: ", error);
+
+              runInAction(() => {
+                this.signUpError = "An error occurred during sign up";
+              });
               
-              this.signUpError = "An error occurred during sign up";
+              
           }
       }
     }
