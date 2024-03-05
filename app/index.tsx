@@ -21,7 +21,6 @@ const HomeScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-  const { exampleViewModel } = useContext(MobXProviderContext);
   const [AddHiveModalVisible, setAddHiveModalVisible] = useState(false);
   const bottomSheetAddHiveModalRef = useRef<BottomSheetModal>(null);
   const [AddFilterModalVisible, setAddFilterModalVisible] = useState(false);

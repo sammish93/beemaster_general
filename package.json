@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "test": "jest",
     "test-watch-all": "jest --watchAll",
-    "clearJestCache": "jest --clearCache"
+    "clearJestCache": "jest --clearCache",
+    "eas-build-post-install": "echo $GOOGLE_SERVICES_BASE64 | base64 --decode > ./android/app/google-services.json"
   },
   "jest": {
     "preset": "jest-expo",
@@ -29,14 +30,14 @@
     "@react-navigation/material-bottom-tabs": "^6.2.19",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/stack": "^6.3.20",
-    "expo": "~50.0.7",
+    "expo": "~50.0.8",
     "expo-file-system": "~16.0.6",
     "axios": "^1.6.7",
     "expo-font": "~11.10.2",
     "expo-linking": "~6.2.2",
     "expo-localization": "~14.8.3",
-    "expo-location": "~16.5.3",
-    "expo-router": "~3.4.7",
+    "expo-location": "~16.5.5",
+    "expo-router": "~3.4.8",
     "expo-splash-screen": "~0.26.3",
     "expo-status-bar": "~1.11.1",
     "expo-system-ui": "~2.9.3",
@@ -54,14 +55,15 @@
     "react-native-paper": "^5.12.3",
     "react-native-qrcode-scanner": "^1.5.5",
     "react-native-reanimated": "~3.6.2",
-    "react-native-safe-area-context": "^4.8.2",
+    "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
     "react-native-vector-icons": "^10.0.3",
     "expo-media-library": "~15.9.1",
     "expo-camera": "~14.0.5",
     "react-native-toast-message": "^2.2.0",
     "react-native-virtualized-view": "^1.0.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "expo-dev-client": "~3.3.9"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

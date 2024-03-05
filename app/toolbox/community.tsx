@@ -12,7 +12,6 @@ const CommunityScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-  const { exampleViewModel } = useContext(MobXProviderContext);
 
   return (
     <SafeAreaView style={styles(theme).container}>

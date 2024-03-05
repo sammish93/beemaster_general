@@ -4,7 +4,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { MD3Theme, PaperProvider } from "react-native-paper";
 import { Provider, observer } from "mobx-react";
-import exampleViewModel from "@/viewModels/ExampleViewModel";
 import userViewModel from "@/viewModels/UserViewModel";
 import { hiveViewModel } from "@/viewModels/HiveViewModel";
 import { DrawerScreen } from "@/components/layouts/drawer";
@@ -91,11 +90,7 @@ const RootLayout = () => {
   }
 
   return (
-    <Provider
-      exampleViewModel={exampleViewModel}
-      userViewModel={userViewModel}
-      hiveViewModel={hiveViewModel}
-    >
+    <Provider userViewModel={userViewModel} hiveViewModel={hiveViewModel}>
       <PaperProvider theme={paperTheme}>
         <Portal.Host>
           <GestureHandlerRootView style={{ flex: 1 }}>

@@ -1,3 +1,4 @@
+/*
 import { action, makeAutoObservable, observable } from "mobx";
 
 // Ensure that the view model is singleton and observable by wrapping application in a <Provider>
@@ -35,3 +36,4 @@ class ExampleViewModel {
 }
 
 export default new ExampleViewModel()
+*/

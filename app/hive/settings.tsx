@@ -25,7 +25,6 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-  const { exampleViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
 
   return (
