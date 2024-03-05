@@ -36,6 +36,7 @@ import "@/assets/customScrollbar.css";
 import DetailedForecast from "@/components/forecast/DetailedForecast";
 import { VerticalSpacer } from "@/components/Spacers";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { LineChart } from "react-native-chart-kit";
 
 type RootStackParamList = {
   hive: {
@@ -80,16 +81,6 @@ const HiveScreen = (params: HiveScreenProps) => {
 
         setData("Retrieved forecast!");
         setForecast(weeklySimplyForecast);
-
-        Toast.show(
-          toastCrossPlatform({
-            title: "Success!",
-            text: "Click to go home",
-            onPress: () => {
-              navigation.navigate("../index");
-            },
-          })
-        );
       } catch (error) {
         setData("Error retrieving data");
         Toast.show(
@@ -106,6 +97,13 @@ const HiveScreen = (params: HiveScreenProps) => {
 
     fetchData();
   }, []);
+
+  const [parentDims, setParentDims] = useState({ width: 0, height: 0 });
+
+  const onParentLayout = (event) => {
+    const { width, height } = event.nativeEvent.layout;
+    setParentDims({ width, height });
+  };
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -148,8 +146,55 @@ const HiveScreen = (params: HiveScreenProps) => {
                     navigation.navigate("/hive/forecast", { hiveId: hiveId });
                   }}
                 />
+                <VerticalSpacer size={12} />
               </>
             ) : null}
+            <View onLayout={onParentLayout}>
+              <LineChart
+                data={{
+                  labels: [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                    "Sunday",
+                  ],
+                  datasets: [
+                    {
+                      data: [55.2, 56.1, 56.7, 59.5, 61.0, 52.4, 52.7],
+                    },
+                  ],
+                }}
+                width={parentDims.width} // from react-native
+                height={220}
+                yAxisLabel=""
+                yAxisSuffix="kg"
+                yAxisInterval={1} // optional, defaults to 1
+                chartConfig={{
+                  backgroundColor: "#e26a00",
+                  backgroundGradientFrom: "#fb8c00",
+                  backgroundGradientTo: "#ffa726",
+                  decimalPlaces: 2, // optional, defaults to 2dp
+                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                  labelColor: (opacity = 1) =>
+                    `rgba(255, 255, 255, ${opacity})`,
+                  style: {
+                    borderRadius: 16,
+                  },
+                  propsForDots: {
+                    r: "6",
+                    strokeWidth: "2",
+                    stroke: "#ffa726",
+                  },
+                }}
+                bezier
+                style={{
+                  borderRadius: 16,
+                }}
+              />
+            </View>
           </View>
         </ScrollView>
       )}
