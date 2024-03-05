@@ -88,8 +88,6 @@ class UserViewModel {
         try {
              console.log("signin with web")
             const result = await signInWithPopup(auth, provider);
-            this.initializeAuthListener()
-            
         } catch (error) {
             console.error("Error signing in with Google: ", error);
           }
@@ -103,11 +101,10 @@ class UserViewModel {
           webClientId: WEB_CLIENT_ID})
           
           try {
-            
             const { idToken }      = await GoogleSignin.signIn();
             const googleCredential = GoogleAuthProvider.credential(idToken);
             const result           = await signInWithCredential(auth, googleCredential);
-            this.initializeAuthListener()
+            
           } catch (error) {
             console.error("Error signing in with Google (Native): ", error);
           }
@@ -116,23 +113,19 @@ class UserViewModel {
       
       
 
-        //TODO Fix all the logic in here. Can't signin if they already have an account. 
+        
     @action signInWithEmail = async (email: string, password: string) => {
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
-            this.setUserId(result.user.uid);
+            
         } catch (error) {
-            if (error === 'auth/invalid-login-credentials') {
+            if (error.code === 'auth/invalid-login-credentials') {
                 
-                console.log("User not found, creating a new account...");
-                try {
-                    const signUpResult = await createUserWithEmailAndPassword(auth, email, password);
-                    this.setUserId(signUpResult.user.uid);
-                    console.log("User signed up and signed in successfully");
-                } catch (signUpError) {
-                    console.error("Error signing up: ", signUpError);
-                    
-                }
+                console.error("Incorrect email or password");
+                runInAction(() => {
+                  this.signUpError = "Incorrect email or password";
+              });
+                
             } else {
                 
                 console.error("Error signing in with email: ", error);
@@ -140,14 +133,33 @@ class UserViewModel {
         }
     };
 
-    @action signUpWithEmail = async (email: string, password: string) => {
-        try {
-            const result = await createUserWithEmailAndPassword(auth, email, password);
-            this.setUserId(result.user.uid);
-        } catch (error) {
-            console.error("Error signing up with email: ", error);
-        }
+    @observable signUpError = "";
+    
+    @action clearSignUpError = () => {
+      this.signUpError = "";
     }
+  
+
+
+    @action signUpWithEmail = async (email: string, password: string) => {
+      try {
+          const result = await createUserWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+          if (error.code  === 'auth/email-already-in-use') {
+             
+              console.error("Email is already in use");
+             
+              runInAction(() => {
+                this.signUpError = "Email is already in use";
+            });
+          } else {
+              console.error("Error signing up with email: ", error);
+              
+              this.signUpError = "An error occurred during sign up";
+          }
+      }
+    }
+  
 
 
     @action signInAnonymously = async () => {

@@ -11,16 +11,39 @@ import DialogGDPR from "@/components/modals/DialogGDPR";
 //import React from "react";
 import { Platform } from 'react-native';
 
-
+//TODO add the GDPR and cleanup code
 const LoginScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
+  const { signUpError } = userViewModel;
+  
+  const handleEmailChange = (email: string) => {
+    setEmail(email)
+    if(emailError) setEmailError('')
+    userViewModel.clearSignUpError()
+  } 
 
- //TODO: Figure out wth web is doing
+  const handlePasswordChange = (password: string) => {
+    setPassword(password)
+    if(passwordError) setPasswordError('')
+    userViewModel.clearSignUpError()
+  }
+
+  
+  useEffect(() => {
+    setEmailError('')
+    setPasswordError('')
+    userViewModel.clearSignUpError()
+  }, [isSignUp, userViewModel])
+
+
+
 
   console.log(`Platform.OS: ${Platform.OS}`);
   const handleGoogleSignIn = () => {
@@ -35,11 +58,23 @@ const LoginScreen = () => {
   };
 
   const handleEmailSignIn = () => {
+    if (!email.trim()) {
+      setEmailError('Please enter your email');
+      return;
+    }
+    if (!password.trim()) {
+      setPasswordError('Please enter your password');
+      return;
+    }
+
+    if (password.length < 6) {
+      setPasswordError('Password must be at least 6 characters long');
+      return;
+    }
+
     if (isSignUp) {
-      
       userViewModel.signUpWithEmail(email, password);
     } else {
-     
       userViewModel.signInWithEmail(email, password);
     }
   };
@@ -68,7 +103,7 @@ const LoginScreen = () => {
           label="Email"
           placeholder="Enter your email"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={handleEmailChange}
           style={{
             borderWidth: 1, 
             borderColor: 'gray', 
@@ -77,12 +112,13 @@ const LoginScreen = () => {
             marginBottom: 5 
           }}  
         />
+        {emailError ? <Text style={{ color: 'red', textAlign: 'center' }}>{emailError}</Text> : null}
         <TextInput
           label="Password"
           placeholder="Enter your password"
           value={password}
           secureTextEntry
-          onChangeText={setPassword}
+          onChangeText={handlePasswordChange}
           style={{
             borderWidth: 1, 
             borderColor: 'gray', 
@@ -92,6 +128,8 @@ const LoginScreen = () => {
           }}  
           
         />
+         {passwordError ? <Text style={{ color: 'red', textAlign: 'center' }}>{passwordError}</Text> : null}
+         {signUpError && <Text style={{ color: 'red', textAlign: 'center'}}>{signUpError}</Text>}
         {isSignUp ? (
           <>
             
