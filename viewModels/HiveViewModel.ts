@@ -12,8 +12,7 @@ class HiveViewModel {
 
   constructor() {
     makeAutoObservable(this);
-    this.fetchHives()
-    this.fetchFilters();
+   
   }
 
   //TODO: fix the logic for the filters. when a filter is selected and there are hives with the said filter they show up but unable to select more filters.

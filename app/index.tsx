@@ -114,8 +114,17 @@ const HomeScreen = () => {
       );
       setFilteredHiveList(filtered);
     }
-  }, [filterList]);
+  }, [ hiveViewModel.hives, filterList]);
 
+
+  useEffect(() => {
+    if (userViewModel.authInitialized) {
+      console.log(userViewModel.authInitialized)
+      
+      hiveViewModel.fetchHives();
+      hiveViewModel.fetchFilters();
+    }
+  }, [userViewModel.authInitialized]); 
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />
