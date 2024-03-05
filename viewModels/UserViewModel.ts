@@ -33,17 +33,21 @@ class UserViewModel {
 
     @observable currentLanguage: string | null = null;
     @observable currentCountry: string | null = null;
-    initializeAuthListener() {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // User is signed in, update the userId observable
-          this.setUserId(user.uid);
-        } else {
-            // User is signed out, clear the userId
-          this.clear();
-        }
-      });
-    }
+    
+    @observable authInitialized = false;
+
+      initializeAuthListener() {
+        onAuthStateChanged(auth, (user) => {
+          runInAction(() => {
+            if (user) {
+              this.userId = user.uid;
+            } else {
+              this.userId = "";
+            }
+            this.authInitialized = true;
+          });
+        });
+      }
 
     // Localisation
     @observable i18n;
