@@ -15,7 +15,7 @@ class HiveViewModel {
    
   }
 
-  //TODO: fix the logic for the filters. when a filter is selected and there are hives with the said filter they show up but unable to select more filters.
+
 
   @action async fetchFilters() {
     try {
