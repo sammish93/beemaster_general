@@ -193,7 +193,13 @@ const HourlyForecastCard = (props: HourlyForecastCardProps) => {
 
   let weather;
   try {
-    weather = getWeatherTypeIconFromString(props.forecast.weatherType);
+    // Forecasts in 72 hours don't have a specific weatherType. Passing this default weather type to
+    // the function below throws an error.
+    if (props.forecast.weatherType === "default") {
+      weather = null;
+    } else {
+      weather = getWeatherTypeIconFromString(props.forecast.weatherType);
+    }
   } catch (error) {
     weather = null;
   }

@@ -26,3 +26,13 @@ export enum WeightMeasurement {
     Pounds = "lb",
     Stones = "st"
 }
+
+export enum HumidityMeasurement {
+    Percent = "%"
+}
+
+export enum BeeCountMeasurement {
+    PerSecond = "p/s",
+    PerMinute = "p/m",
+    PerHour = "p/h"
+}

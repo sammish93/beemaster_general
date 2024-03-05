@@ -37,6 +37,13 @@ import DetailedForecast from "@/components/forecast/DetailedForecast";
 import { VerticalSpacer } from "@/components/Spacers";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { LineChart } from "react-native-chart-kit";
+import SensorGraph from "@/components/sensor/SensorGraph";
+import {
+  beeCountSensorData,
+  humiditySensorData,
+  temperatureSensorData,
+  weightSensorData,
+} from "@/data/sensorData";
 
 type RootStackParamList = {
   hive: {
@@ -98,13 +105,6 @@ const HiveScreen = (params: HiveScreenProps) => {
     fetchData();
   }, []);
 
-  const [parentDims, setParentDims] = useState({ width: 0, height: 0 });
-
-  const onParentLayout = (event) => {
-    const { width, height } = event.nativeEvent.layout;
-    setParentDims({ width, height });
-  };
-
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />
@@ -130,7 +130,7 @@ const HiveScreen = (params: HiveScreenProps) => {
       ) : (
         <ScrollView>
           <View style={styles(theme).main}>
-            <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
+            <Text style={theme.fonts.titleLarge}>Forecast</Text>
             <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
             <Text style={theme.fonts.bodySmall}>{data}</Text>
             {forecast ? (
@@ -146,55 +146,40 @@ const HiveScreen = (params: HiveScreenProps) => {
                     navigation.navigate("/hive/forecast", { hiveId: hiveId });
                   }}
                 />
-                <VerticalSpacer size={12} />
               </>
             ) : null}
-            <View onLayout={onParentLayout}>
-              <LineChart
-                data={{
-                  labels: [
-                    "Monday",
-                    "Tuesday",
-                    "Wednesday",
-                    "Thursday",
-                    "Friday",
-                    "Saturday",
-                    "Sunday",
-                  ],
-                  datasets: [
-                    {
-                      data: [55.2, 56.1, 56.7, 59.5, 61.0, 52.4, 52.7],
-                    },
-                  ],
-                }}
-                width={parentDims.width} // from react-native
-                height={220}
-                yAxisLabel=""
-                yAxisSuffix="kg"
-                yAxisInterval={1} // optional, defaults to 1
-                chartConfig={{
-                  backgroundColor: "#e26a00",
-                  backgroundGradientFrom: "#fb8c00",
-                  backgroundGradientTo: "#ffa726",
-                  decimalPlaces: 2, // optional, defaults to 2dp
-                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                  labelColor: (opacity = 1) =>
-                    `rgba(255, 255, 255, ${opacity})`,
-                  style: {
-                    borderRadius: 16,
-                  },
-                  propsForDots: {
-                    r: "6",
-                    strokeWidth: "2",
-                    stroke: "#ffa726",
-                  },
-                }}
-                bezier
-                style={{
-                  borderRadius: 16,
-                }}
-              />
-            </View>
+            {/* TODO Fetch sensor data from db and if tests render components if hive sensor exists */}
+            <VerticalSpacer size={8} />
+            <Text style={theme.fonts.titleLarge}>Weight</Text>
+            <VerticalSpacer size={8} />
+            <SensorGraph
+              sensorDataList={weightSensorData}
+              isDecimal={true}
+              colourScheme="blue"
+            />
+            <VerticalSpacer size={8} />
+            <Text style={theme.fonts.titleLarge}>Temperature</Text>
+            <VerticalSpacer size={8} />
+            <SensorGraph
+              sensorDataList={temperatureSensorData}
+              isDecimal={true}
+              colourScheme="orange"
+            />
+            <VerticalSpacer size={8} />
+            <Text style={theme.fonts.titleLarge}>Humidity</Text>
+            <VerticalSpacer size={8} />
+            <SensorGraph
+              sensorDataList={humiditySensorData}
+              isDecimal={true}
+              colourScheme="green"
+            />
+            <VerticalSpacer size={8} />
+            <Text style={theme.fonts.titleLarge}>Bee Count</Text>
+            <VerticalSpacer size={8} />
+            <SensorGraph
+              sensorDataList={beeCountSensorData}
+              colourScheme="violet"
+            />
           </View>
         </ScrollView>
       )}
