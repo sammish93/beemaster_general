@@ -8,9 +8,7 @@ import { availableLanguages, availableCountries } from '@/constants/LocaleEnums'
 import { Platform } from "react-native";
 import {auth, db} from "@/firebaseConfig";
 import { getAuth, signInWithPopup,GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithCredential, onAuthStateChanged} from "firebase/auth";
-  //import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { 
-  WEB_CLIENT_ID} from '@env';
+import { WEB_CLIENT_ID} from '@env';
 class UserViewModel {
     constructor() {
       
@@ -23,7 +21,6 @@ class UserViewModel {
         this.i18n.locale         = Localization.locale;
         this.i18n.enableFallback = true;
         this.initializeAuthListener()
-         // this.configure();
 
         // Manually change the language:
         //this.i18n.locale = "no";
@@ -133,14 +130,13 @@ class UserViewModel {
         }
     };
 
+    //sets firebase errors for signin and signup actions
     @observable signUpError = "";
-    
+
     @action clearSignUpError = () => {
       this.signUpError = "";
     }
   
-
-
     @action signUpWithEmail = async (email: string, password: string) => {
       try {
           const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -171,6 +167,7 @@ class UserViewModel {
       }
     }
 
+    //TODO logout and auth connect
       // Clears all the data in this view model.
       // Useful for when a user logs out.
     @action public clear = (): void => {
