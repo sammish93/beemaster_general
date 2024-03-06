@@ -51,7 +51,9 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
+  const { hiveViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
+  const selectedHive = hiveViewModel.getSelectedHive();
 
   const [data, setData] = useState("");
   const [detailedForecast, setDetailedForecast] =

@@ -101,8 +101,8 @@ const SensorGraph = (props: SensorGraphProps) => {
             font: theme.fonts.bodySmall,
           },
           propsForVerticalLabels: {
-            translateY: -5,
-            translateX: -5,
+            dy: -5,
+            dx: -5,
           },
         }}
         verticalLabelRotation={25}

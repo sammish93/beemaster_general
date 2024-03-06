@@ -124,5 +124,7 @@
   "hive name": "Bikubenavn",
   "add hive": "Legg til bikube",
   "enter new filter": "Skriv inn nytt filter",
-  "add filter": "Legg til filter"
+  "add filter": "Legg til filter",
+  "modify hive filters": "Endre filtre",
+  "update filters": "Oppdater filtre"
 }

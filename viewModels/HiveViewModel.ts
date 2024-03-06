@@ -5,6 +5,7 @@ import { filterData, hiveListData } from "../data/hiveData";
 class HiveViewModel {
     hives = hiveListData;
     filters = filterData;
+    selectedHive?: HiveModel
 
     constructor() {
         makeAutoObservable(this);
@@ -32,6 +33,14 @@ class HiveViewModel {
 
     numberOfFilters() {
         return this.filters.length;
+    }
+
+    addSelectedHive(hive: HiveModel) {
+        this.selectedHive = hive;
+    }
+
+    getSelectedHive() {
+        return this.selectedHive;
     }
 }
 

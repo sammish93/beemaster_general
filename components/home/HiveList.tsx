@@ -44,7 +44,10 @@ const HiveList = ({ isListView, navigation, hives }: HiveListProps) => {
     <HiveCard
       item={item}
       isDetailedView={isListView}
-      onPress={() => navigation.navigate("/hive/index", { hiveId: item.id })}
+      onPress={() => {
+        hiveViewModel.addSelectedHive(item);
+        navigation.navigate("/hive/index", { hiveId: item.id });
+      }}
       maxWidth={
         numColumns > 1 ? parentWidth / numColumns - itemsInLastRow * 8 : "100%"
       }

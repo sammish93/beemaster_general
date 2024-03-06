@@ -60,7 +60,9 @@ const HiveScreen = (params: HiveScreenProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
+  const { hiveViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
+  const selectedHive = hiveViewModel.getSelectedHive();
 
   const [data, setData] = useState("");
   const [forecast, setForecast] = useState<WeeklySimpleForecast>();
@@ -133,6 +135,7 @@ const HiveScreen = (params: HiveScreenProps) => {
             <Text style={theme.fonts.titleLarge}>Forecast</Text>
             <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
             <Text style={theme.fonts.bodySmall}>{data}</Text>
+            <Text style={theme.fonts.bodySmall}>{selectedHive.name}</Text>
             {forecast ? (
               <>
                 <VerticalSpacer size={8} />
