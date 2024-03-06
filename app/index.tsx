@@ -35,7 +35,12 @@ const HomeScreen = () => {
 
   const handleAddHive = (hiveName: string) => {
     const newHiveId = `hive-${Date.now()}`; // TODO Temporarly solution.
-    hiveViewModel.addHive({ id: newHiveId, name: hiveName });
+    hiveViewModel.addHive({
+      id: newHiveId,
+      name: hiveName,
+      latLng: { lat: 53.483959, lng: -2.244644 },
+      filters: [],
+    });
     handleCloseAddHiveModal();
   };
 
@@ -104,6 +109,7 @@ const HomeScreen = () => {
     setFilterList([]);
   };
 
+  // Refreshes the GUI to show only the hives that contain the current filter criterium.
   useEffect(() => {
     if (filterList.length === 0) {
       setFilteredHiveList(hiveViewModel.hives);
@@ -114,6 +120,14 @@ const HomeScreen = () => {
       setFilteredHiveList(filtered);
     }
   }, [filterList]);
+
+  // In the case that a hive is deleted then the GUI is refreshed and all filters are cleared.
+  useEffect(() => {
+    if (filteredHiveList.length !== hiveViewModel.numberOfHives()) {
+      setFilteredHiveList(hiveViewModel.hives);
+      handleClearFilterList();
+    }
+  }, [hiveViewModel.hives]);
 
   return (
     <SafeAreaView style={styles(theme).container}>

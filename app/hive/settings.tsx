@@ -12,8 +12,10 @@ import StatusBarCustom from "@/components/StatusBarCustom";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import AddHiveModal from "@/components/modals/AddHiveModal";
 import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
-import RepositionHiveModal from "@/components/modals/RepositionHive";
+import RepositionHiveModal from "@/components/modals/RepositionHiveModal";
 import { VerticalSpacer } from "@/components/Spacers";
+import RegisterSensorModal from "@/components/modals/RegisterSensorModal";
+import DialogDeleteHive from "@/components/modals/DialogDeleteHive";
 
 type RootStackParamList = {
   hive: {
@@ -39,7 +41,11 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   const [repositionHiveModalVisible, setRepositionHiveModalVisible] =
     useState(false);
   const bottomSheetRepositionHiveModalRef = useRef<BottomSheetModal>(null);
+  const [registerSensorModalVisible, setRegisterSensorModalVisible] =
+    useState(false);
+  const bottomSheetRegisterSensorModalRef = useRef<BottomSheetModal>(null);
   const [newHiveName, setNewHiveName] = useState(selectedHive.name);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleRepositionHiveModalSheetPressOpen = useCallback(() => {
     bottomSheetRepositionHiveModalRef.current?.present();
@@ -87,6 +93,45 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
     } else {
       setAddFiltersToHiveModalVisible(false);
     }
+  };
+
+  const handleRegisterSensorModalSheetPressOpen = useCallback(() => {
+    bottomSheetRegisterSensorModalRef.current?.present();
+  }, []);
+
+  const handleRegisterSensorModalSheetPressClose = useCallback(() => {
+    bottomSheetRegisterSensorModalRef.current?.dismiss();
+  }, []);
+
+  const handleOpenRegisterSensorModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleRegisterSensorModalSheetPressOpen();
+    } else {
+      setRegisterSensorModalVisible(true);
+    }
+  };
+
+  const handleCloseRegisterSensorModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleRegisterSensorModalSheetPressClose();
+    } else {
+      setRegisterSensorModalVisible(false);
+    }
+  };
+
+  const handleDeleteButtonPress = () => {
+    setShowDeleteDialog(true);
+  };
+
+  const hideDeleteDialog = () => {
+    setShowDeleteDialog(false);
+  };
+
+  const handleDeleteHive = () => {
+    // TODO Db writes
+    hideDeleteDialog();
+    hiveViewModel.removeHive(selectedHive.id);
+    navigation.navigate("../index");
   };
 
   const handleUpdateName = (name: string) => {
@@ -148,6 +193,24 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
           >
             {userViewModel.i18n.t("reposition hive")}
           </Button>
+          <VerticalSpacer size={8} />
+          <Button
+            icon="remote"
+            mode="contained"
+            onPress={handleOpenRegisterSensorModal}
+            style={{ margin: 4 }}
+          >
+            {userViewModel.i18n.t("manage sensors")}
+          </Button>
+          <VerticalSpacer size={8} />
+          <Button
+            icon="delete"
+            mode="contained"
+            onPress={handleDeleteButtonPress}
+            style={{ margin: 4, backgroundColor: theme.colors.error }}
+          >
+            {userViewModel.i18n.t("delete hive")}
+          </Button>
         </View>
       </ScrollView>
       <AddFiltersToHiveModal
@@ -160,6 +223,17 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
         bottomSheetModalRef={bottomSheetRepositionHiveModalRef}
         onClose={() => handleCloseRepositionHiveModal()}
       />
+      <RegisterSensorModal
+        isOverlayModalVisible={registerSensorModalVisible}
+        bottomSheetModalRef={bottomSheetRegisterSensorModalRef}
+        onClose={() => handleCloseRegisterSensorModal()}
+      />
+      {showDeleteDialog ? (
+        <DialogDeleteHive
+          hideDialog={hideDeleteDialog}
+          deleteHive={handleDeleteHive}
+        />
+      ) : null}
     </SafeAreaView>
   );
 };

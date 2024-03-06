@@ -136,5 +136,14 @@
   "temperature": "Temperature",
   "humidity": "Humidity",
   "bee count": "Bee count",
-  "location": "Location"
+  "location": "Location",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "delete hive": "Delete hive",
+  "do you wish to delete this hive permanently": "Do you wish to delete this hive permanently?",
+  "manage sensors": "Manage sensors",
+  "add weight sensor": "Add weight sensor",
+  "add temperature sensor": "Add temperature sensor",
+  "add humidity sensor": "Add humidity sensor",
+  "add bee count sensor": "Add bee count sensor"
 }
