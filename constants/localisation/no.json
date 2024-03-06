@@ -126,5 +126,15 @@
   "enter new filter": "Skriv inn nytt filter",
   "add filter": "Legg til filter",
   "modify hive filters": "Endre filtre",
-  "update filters": "Oppdater filtre"
+  "update filters": "Oppdater filtre",
+  "reposition hive": "Reposisjoner bikube",
+  "update location": "Oppdater lokasjon",
+  "rename": "Gi nytt navn",
+  "rename hive": "Gi kube nytt navn",
+  "forecast": "Værmelding",
+  "weight": "Vekt",
+  "temperature": "Temperatur",
+  "humidity": "Luftfuktighet",
+  "bee count": "Bie telling",
+  "location": "Lokasjon"
 }

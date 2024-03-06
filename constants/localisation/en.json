@@ -126,5 +126,15 @@
   "enter new filter": "Enter new filter",
   "add filter": "Add filter",
   "modify hive filters": "Modify hive filters",
-  "update filters": "Update filters"
+  "update filters": "Update filters",
+  "reposition hive": "Reposition hive",
+  "update location": "Update location",
+  "rename": "Rename",
+  "rename hive": "Rename hive",
+  "forecast": "Forecast",
+  "weight": "Weight",
+  "temperature": "Temperature",
+  "humidity": "Humidity",
+  "bee count": "Bee count",
+  "location": "Location"
 }

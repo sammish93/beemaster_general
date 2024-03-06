@@ -64,7 +64,7 @@ const ModalContent = (props: ModalContentProps) => {
         }}
       >
         <Text style={{ ...theme.fonts.headlineSmall, flex: 1 }}>
-          Reposition hive
+          {userViewModel.i18n.t("reposition hive")}
         </Text>
         <IconButton
           icon="close"
@@ -73,12 +73,23 @@ const ModalContent = (props: ModalContentProps) => {
         />
       </View>
       <View>
-        <Text style={theme.fonts.bodyLarge}>Map component here</Text>
-        <Text style={theme.fonts.bodyLarge}>
-          Lat: {selectedHive.latLng.lat}, Lng: {selectedHive.latLng.lng}
-        </Text>
+        <View
+          style={{
+            height: 100,
+            backgroundColor: "red",
+            borderRadius: 16,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={theme.fonts.bodyLarge}>Map component here</Text>
+          <Text style={theme.fonts.bodyLarge}>
+            Lat: {selectedHive.latLng.lat}, Lng: {selectedHive.latLng.lng}
+          </Text>
+        </View>
+        <VerticalSpacer size={8} />
         <Button mode="contained" onPress={handleRepositionHive}>
-          Update location
+          {userViewModel.i18n.t("update location")}
         </Button>
       </View>
     </>

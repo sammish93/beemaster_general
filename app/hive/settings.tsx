@@ -4,7 +4,7 @@ import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useRef, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useTheme, Text, Button } from "react-native-paper";
+import { useTheme, Text, Button, TextInput } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,6 +13,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import AddHiveModal from "@/components/modals/AddHiveModal";
 import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
 import RepositionHiveModal from "@/components/modals/RepositionHive";
+import { VerticalSpacer } from "@/components/Spacers";
 
 type RootStackParamList = {
   hive: {
@@ -38,6 +39,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   const [repositionHiveModalVisible, setRepositionHiveModalVisible] =
     useState(false);
   const bottomSheetRepositionHiveModalRef = useRef<BottomSheetModal>(null);
+  const [newHiveName, setNewHiveName] = useState(selectedHive.name);
 
   const handleRepositionHiveModalSheetPressOpen = useCallback(() => {
     bottomSheetRepositionHiveModalRef.current?.present();
@@ -87,6 +89,10 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
     }
   };
 
+  const handleUpdateName = (name: string) => {
+    selectedHive.name = name;
+  };
+
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />
@@ -98,6 +104,33 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
       <ScrollView>
         <View style={styles(theme).main}>
           <Text>{hiveId}</Text>
+          <Text>Hive name: {selectedHive.name}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <TextInput
+              label={userViewModel.i18n.t("rename hive")}
+              value={newHiveName}
+              onChangeText={setNewHiveName}
+              mode="outlined"
+              style={{
+                flex: 3,
+                backgroundColor: theme.colors.primaryContainer,
+              }}
+            />
+            <Button
+              icon="pencil"
+              mode="contained"
+              onPress={() => handleUpdateName(newHiveName)}
+              style={{ margin: 4, flex: 1 }}
+            >
+              {userViewModel.i18n.t("rename")}
+            </Button>
+          </View>
+          <VerticalSpacer size={8} />
           <Button
             icon="pencil"
             mode="contained"
@@ -106,13 +139,14 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
           >
             {userViewModel.i18n.t("modify hive filters")}
           </Button>
+          <VerticalSpacer size={8} />
           <Button
             icon="map-marker"
             mode="contained"
             onPress={handleOpenRepositionHiveModal}
             style={{ margin: 4 }}
           >
-            Reposition hive
+            {userViewModel.i18n.t("reposition hive")}
           </Button>
         </View>
       </ScrollView>

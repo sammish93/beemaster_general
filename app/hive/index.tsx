@@ -132,7 +132,9 @@ const HiveScreen = (params: HiveScreenProps) => {
       ) : (
         <ScrollView>
           <View style={styles(theme).main}>
-            <Text style={theme.fonts.titleLarge}>Forecast</Text>
+            <Text style={theme.fonts.titleLarge}>
+              {userViewModel.i18n.t("forecast")}
+            </Text>
             <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
             <Text style={theme.fonts.bodySmall}>{data}</Text>
             <Text style={theme.fonts.bodySmall}>{selectedHive.name}</Text>
@@ -153,7 +155,9 @@ const HiveScreen = (params: HiveScreenProps) => {
             ) : null}
             {/* TODO Fetch sensor data from db and if tests render components if hive sensor exists */}
             <VerticalSpacer size={8} />
-            <Text style={theme.fonts.titleLarge}>Weight</Text>
+            <Text style={theme.fonts.titleLarge}>
+              {userViewModel.i18n.t("weight")}
+            </Text>
             <VerticalSpacer size={8} />
             <SensorGraph
               sensorDataList={weightSensorData}
@@ -161,7 +165,9 @@ const HiveScreen = (params: HiveScreenProps) => {
               colourScheme="blue"
             />
             <VerticalSpacer size={8} />
-            <Text style={theme.fonts.titleLarge}>Temperature</Text>
+            <Text style={theme.fonts.titleLarge}>
+              {userViewModel.i18n.t("temperature")}
+            </Text>
             <VerticalSpacer size={8} />
             <SensorGraph
               sensorDataList={temperatureSensorData}
@@ -169,7 +175,9 @@ const HiveScreen = (params: HiveScreenProps) => {
               colourScheme="orange"
             />
             <VerticalSpacer size={8} />
-            <Text style={theme.fonts.titleLarge}>Humidity</Text>
+            <Text style={theme.fonts.titleLarge}>
+              {userViewModel.i18n.t("humidity")}
+            </Text>
             <VerticalSpacer size={8} />
             <SensorGraph
               sensorDataList={humiditySensorData}
@@ -177,12 +185,33 @@ const HiveScreen = (params: HiveScreenProps) => {
               colourScheme="green"
             />
             <VerticalSpacer size={8} />
-            <Text style={theme.fonts.titleLarge}>Bee Count</Text>
+            <Text style={theme.fonts.titleLarge}>
+              {userViewModel.i18n.t("bee count")}
+            </Text>
             <VerticalSpacer size={8} />
             <SensorGraph
               sensorDataList={beeCountSensorData}
               colourScheme="violet"
             />
+            <VerticalSpacer size={8} />
+            <Text style={theme.fonts.titleLarge}>
+              {userViewModel.i18n.t("location")}
+            </Text>
+            <VerticalSpacer size={8} />
+            <View
+              style={{
+                height: 100,
+                backgroundColor: "red",
+                borderRadius: 16,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={theme.fonts.bodyLarge}>Map component here</Text>
+              <Text style={theme.fonts.bodyLarge}>
+                Lat: {selectedHive.latLng.lat}, Lng: {selectedHive.latLng.lng}
+              </Text>
+            </View>
           </View>
         </ScrollView>
       )}
