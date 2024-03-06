@@ -3,6 +3,7 @@ import { Text, View, Platform } from 'react-native';
 import { Switch, useTheme } from 'react-native-paper';
 import { MobXProviderContext } from "mobx-react";
 import { usePermissionManager } from '../domain/permissionManager';
+import { VerticalSpacer } from "./Spacers";
 
 type PermissionType = 'location permission' | 'camera permission' | 'media permission';
 
@@ -42,17 +43,19 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
     return (
         <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={[paperTheme.fonts.bodyMedium, { marginRight: 10, color: paperTheme.colors.onSurface }]}>
+                <Text style={[paperTheme.fonts.bodyLarge, { marginRight: 10, color: paperTheme.colors.onSurface }]}>
                     {translateType(type)}
                 </Text>
                 <Switch
                     value={isEnabled}
                     onValueChange={toggleSwitch}
                 />
+
             </View>
+            <VerticalSpacer size={6} />
             {type === 'location permission' && location && (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[paperTheme.fonts.bodyMedium, { marginRight: 10, color: paperTheme.colors.onSurface }]}>
+                    <Text style={[paperTheme.fonts.bodyLarge, { marginRight: 10, color: paperTheme.colors.onSurface }]}>
                         {userViewModel.i18n.t("position")}: Lat: {location.latitude}, Long: {location.longitude}
                     </Text>
                 </View>

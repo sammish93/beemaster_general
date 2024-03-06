@@ -88,139 +88,139 @@ const ModalContent = (props: ModalContentProps) => {
         </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
-        </Text>{" "}
+        </Text>
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
         </Text>

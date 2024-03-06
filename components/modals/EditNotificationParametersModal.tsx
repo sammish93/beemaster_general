@@ -1,12 +1,13 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useTheme } from "react-native-paper";
 import { Button, TextInput, IconButton, Text } from "react-native-paper";
 import { Platform, View } from "react-native";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { BottomModal, OverlayModal } from "./Modals";
+import { VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
 
-interface AddFilterModalProps {
+interface NotificationModalProps {
     isOverlayModalVisible: boolean;
     bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
     onClose: () => void;
@@ -20,7 +21,7 @@ interface ModalContentProps {
     parameterName: string;
 }
 
-const AddFilterModal = (props: AddFilterModalProps) => {
+const NotificationModal = (props: NotificationModalProps) => {
     return (() => {
         if (Platform.OS === "android" || Platform.OS === "ios") {
             return (
@@ -90,6 +91,7 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                     onChangeText={setNewValue}
                     keyboardType="numeric"
                 />
+                <VerticalSpacer size={12} />
                 <Button mode="contained" onPress={handleSave}>
                     {userViewModel.i18n.t("save")}
                 </Button>
@@ -98,4 +100,4 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
     );
 };
 
-export default AddFilterModal;
+export default NotificationModal;

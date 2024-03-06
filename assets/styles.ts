@@ -189,7 +189,12 @@ const styles = (theme?: MD3Theme) => {
       flexDirection: "row",
       alignItems: "center",
       gap: 4
-    }
+    },
+    settingsButton: {
+      width: Platform.OS === 'web' ? '50%' : screenWidth - 52,
+      margin: 4,
+      alignSelf: 'center'
+    },
   });
 };
 

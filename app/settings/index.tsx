@@ -12,25 +12,41 @@ import React from "react";
 import PermissionSwitch from "@/components/PermissionSwitch";
 import SwitchTheme from "@/components/SwitchTheme";
 import DefaultSwitchComponent from "@/components/DefaultSwitch";
-import AddFilterModal from "@/components/modals/EditNotificationParametersModal"; // Endre denne stien til riktig sti basert på hvor AddFilterModal er plassert
+import NotificationModal from "@/components/modals/EditNotificationParametersModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { VerticalSpacer } from "@/components/Spacers";
 
 const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-  const [modalVisible, setModalVisible] = useState(false);
-  const bottomSheetAddFilterModalRef = useRef<BottomSheetModal>(null);
+  const bottomSheetAddHiveModalRef = useRef<BottomSheetModal>(null);
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
   const [selectedNotificationType, setSelectedNotificationType] = useState("");
+  const [AddHiveModalVisible, setAddHiveModalVisible] = useState(false);
 
   useEffect(() => {
     userViewModel.updateLocaleSettings();
   }, [userViewModel]);
+
+
+
   const handleOpenModal = (notificationType: string) => {
     setSelectedNotificationType(notificationType);
-    setModalVisible(true);
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      bottomSheetAddHiveModalRef.current?.present();
+    } else {
+      setAddHiveModalVisible(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      bottomSheetAddHiveModalRef.current?.dismiss();
+    } else {
+      setAddHiveModalVisible(false);
+    }
   };
 
   return (
@@ -53,49 +69,42 @@ const SettingsScreen = () => {
           </TouchableOpacity>,
         ]}
       />
-      <AddFilterModal
-        isOverlayModalVisible={modalVisible}
-        bottomSheetModalRef={bottomSheetAddFilterModalRef}
-        onClose={() => setModalVisible(false)}
-        onSave={(newValue) => {
-          // Implementer logikken for lagring av den nye verdien
-          console.log("New value for", selectedNotificationType, ":", newValue);
-          setModalVisible(false);
-        }}
-        parameterName={selectedNotificationType}
-      />
+
 
       <View style={styles(theme).main}>
         <ScrollView >
 
-          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
+          <Text style={{ ...theme.fonts.headlineSmall, textAlign: 'center', padding: 1 }}>
             {userViewModel.i18n.t('accessibility')}
           </Text>
 
           <SwitchTheme />
 
           {currentLanguage && (
-            <Text style={theme.fonts.bodyMedium}>
+            <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('language')}: {currentLanguage}
             </Text>
           )}
           {currentCountry && (
-            <Text style={theme.fonts.bodyMedium}>
+            <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('country')}: {currentCountry}
             </Text>
           )}
+          <VerticalSpacer size={12} />
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
-          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
+
+          <Text style={{ ...theme.fonts.headlineSmall, textAlign: 'center', padding: 1 }}>
             {userViewModel.i18n.t('permissions')}</Text>
           <PermissionSwitch type='location permission' />
           <PermissionSwitch type='camera permission' />
           <PermissionSwitch type='media permission' />
 
+
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
-          <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
+          <Text style={{ ...theme.fonts.headlineSmall, textAlign: 'center', padding: 1 }}>
             {userViewModel.i18n.t('notifications')}</Text>
           <DefaultSwitchComponent type='mobile' />
           <DefaultSwitchComponent type='sms' />
@@ -104,7 +113,7 @@ const SettingsScreen = () => {
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
           <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 1 }}>
-            <Text style={{ ...theme.fonts.bodyLarge, textAlign: 'center', padding: 1 }}>
+            <Text style={{ ...theme.fonts.headlineSmall, textAlign: 'center', padding: 1 }}>
               {userViewModel.i18n.t('notification types')}</Text>
 
             <TouchableOpacity
@@ -121,56 +130,58 @@ const SettingsScreen = () => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => handleOpenModal("potential swarm")}>
-            <Text style={theme.fonts.bodyMedium}>
+            <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('potential swarm')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleOpenModal("consider feeding")}>
-            <Text style={theme.fonts.bodyMedium}>
+            <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('consider feeding')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleOpenModal("honey harvest")}>
-            <Text style={theme.fonts.bodyMedium}>
+            <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('honey harvest')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleOpenModal("maintenance")}>
-            <Text style={theme.fonts.bodyMedium}>
+            <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('maintenance')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleOpenModal("expand hive")}>
-            <Text style={theme.fonts.bodyMedium}>
+            <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('expand hive')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleOpenModal("check hive'")}>
-            <Text style={theme.fonts.bodyMedium}>
+            <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('check hive')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleOpenModal("reminder")}>
-            <Text style={theme.fonts.bodyMedium}>
+            <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('reminder')}
             </Text>
           </TouchableOpacity>
+          <VerticalSpacer size={12} />
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
           <View style={{ justifyContent: 'center', alignItems: 'center', padding: 1, margin: 8 }}>
             <Button
-              style={{ width: 150, margin: 4 }}
+              style={styles(theme).settingsButton}
               mode="contained"
               onPress={() => {
                 //TODO: do someting
               }}
             >
+
               {userViewModel.i18n.t('register email')}
             </Button>
 
             <Button
-              style={{ width: 150, margin: 4 }}
+              style={styles(theme).settingsButton}
               mode="contained"
               onPress={() => {
                 //TODO: do someting
@@ -180,7 +191,7 @@ const SettingsScreen = () => {
             </Button>
 
             <Button
-              style={{ width: 150, margin: 4 }}
+              style={styles(theme).settingsButton}
               mode="contained"
               onPress={() => {
                 userViewModel.clear();
@@ -190,18 +201,29 @@ const SettingsScreen = () => {
             </Button>
 
             <Button
-              style={{ width: 150, margin: 4, backgroundColor: theme.colors.error }}
+              style={[styles(theme).settingsButton, { backgroundColor: theme.colors.error }]}
               mode="contained"
               onPress={() => {
                 //TODO: do someting
               }}
             >
-              <Text style={[theme.fonts.bodyMedium, { color: theme.colors.onError }]}>
+              <Text style={[theme.fonts.labelLarge, { color: theme.colors.onError }]}>
                 {userViewModel.i18n.t('delete account')}</Text>
             </Button>
           </View>
         </ScrollView>
       </View>
+      <NotificationModal
+        isOverlayModalVisible={AddHiveModalVisible}
+        bottomSheetModalRef={bottomSheetAddHiveModalRef}
+        onClose={() => handleCloseModal()}
+        onSave={(newValue) => {
+          // TODO: Implementer logikken for lagring av den nye verdien
+          console.log("New value for", selectedNotificationType, ":", newValue);
+          handleCloseModal();
+        }}
+        parameterName={selectedNotificationType}
+      />
     </SafeAreaView>
   );
 
