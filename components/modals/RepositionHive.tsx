@@ -7,7 +7,7 @@ import { BottomModal, OverlayModal } from "./Modals";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
 
-interface AddFiltersToHiveModalProps {
+interface RepositionHiveModalProps {
   isOverlayModalVisible: boolean;
   bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
   onClose: () => void;
@@ -17,7 +17,7 @@ interface ModalContentProps {
   onClose: () => void;
 }
 
-const AddFiltersToHiveModal = (props: AddFiltersToHiveModalProps) => {
+const RepositionHiveModal = (props: RepositionHiveModalProps) => {
   return (() => {
     if (Platform.OS === "android" || Platform.OS === "ios") {
       return (
@@ -48,20 +48,10 @@ const ModalContent = (props: ModalContentProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const selectedHive = hiveViewModel.getSelectedHive();
-  const [filterList, setFilterList] = useState<string[]>(selectedHive.filters);
 
-  const handleAddNewFilters = () => {
-    //TODO Db writing
-    selectedHive.filters = filterList;
+  const handleRepositionHive = () => {
+    //TODO Db writing and insert map component
     props.onClose();
-  };
-
-  const handleFilterCheckboxPress = (filter: string) => {
-    if (filterList.includes(filter)) {
-      setFilterList(filterList.filter((item) => item !== filter));
-    } else {
-      setFilterList([...filterList, filter]);
-    }
   };
 
   return (
@@ -74,7 +64,7 @@ const ModalContent = (props: ModalContentProps) => {
         }}
       >
         <Text style={{ ...theme.fonts.headlineSmall, flex: 1 }}>
-          {userViewModel.i18n.t("modify hive filters")}
+          Reposition hive
         </Text>
         <IconButton
           icon="close"
@@ -83,28 +73,16 @@ const ModalContent = (props: ModalContentProps) => {
         />
       </View>
       <View>
-        {hiveViewModel.filters.map((filter: string) => (
-          <View
-            key={`${filter}-checkbox`}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Checkbox
-              status={filterList.includes(filter) ? "checked" : "unchecked"}
-              onPress={() => handleFilterCheckboxPress(filter)}
-            />
-            <HorizontalSpacer size={4} />
-            <Text style={theme.fonts.bodyLarge}>{filter}</Text>
-          </View>
-        ))}
-        <Button mode="contained" onPress={handleAddNewFilters}>
-          {userViewModel.i18n.t("update filters")}
+        <Text style={theme.fonts.bodyLarge}>Map component here</Text>
+        <Text style={theme.fonts.bodyLarge}>
+          Lat: {selectedHive.latLng.lat}, Lng: {selectedHive.latLng.lng}
+        </Text>
+        <Button mode="contained" onPress={handleRepositionHive}>
+          Update location
         </Button>
       </View>
     </>
   );
 };
 
-export default AddFiltersToHiveModal;
+export default RepositionHiveModal;

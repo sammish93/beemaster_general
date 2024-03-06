@@ -72,7 +72,7 @@ const HiveScreen = (params: HiveScreenProps) => {
     const fetchData = async () => {
       try {
         setLoadingScreen(true);
-        const data = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
+        const data = await fetchWeatherForecast(selectedHive.latLng);
 
         const weeklySimplyForecast = deserialiseWeeklySimpleForecast(
           data,

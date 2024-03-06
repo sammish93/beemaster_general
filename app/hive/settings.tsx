@@ -12,6 +12,7 @@ import StatusBarCustom from "@/components/StatusBarCustom";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import AddHiveModal from "@/components/modals/AddHiveModal";
 import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
+import RepositionHiveModal from "@/components/modals/RepositionHive";
 
 type RootStackParamList = {
   hive: {
@@ -31,9 +32,36 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
   const selectedHive = hiveViewModel.getSelectedHive();
-  const [AddFiltersToHiveModalVisible, setAddFiltersToHiveModalVisible] =
+  const [addFiltersToHiveModalVisible, setAddFiltersToHiveModalVisible] =
     useState(false);
   const bottomSheetAddFiltersToHiveModalRef = useRef<BottomSheetModal>(null);
+  const [repositionHiveModalVisible, setRepositionHiveModalVisible] =
+    useState(false);
+  const bottomSheetRepositionHiveModalRef = useRef<BottomSheetModal>(null);
+
+  const handleRepositionHiveModalSheetPressOpen = useCallback(() => {
+    bottomSheetRepositionHiveModalRef.current?.present();
+  }, []);
+
+  const handleRepositionHiveModalSheetPressClose = useCallback(() => {
+    bottomSheetRepositionHiveModalRef.current?.dismiss();
+  }, []);
+
+  const handleOpenRepositionHiveModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleRepositionHiveModalSheetPressOpen();
+    } else {
+      setRepositionHiveModalVisible(true);
+    }
+  };
+
+  const handleCloseRepositionHiveModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleRepositionHiveModalSheetPressClose();
+    } else {
+      setRepositionHiveModalVisible(false);
+    }
+  };
 
   const handleAddFiltersToHiveModalSheetPressOpen = useCallback(() => {
     bottomSheetAddFiltersToHiveModalRef.current?.present();
@@ -78,13 +106,25 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
           >
             {userViewModel.i18n.t("modify hive filters")}
           </Button>
+          <Button
+            icon="map-marker"
+            mode="contained"
+            onPress={handleOpenRepositionHiveModal}
+            style={{ margin: 4 }}
+          >
+            Reposition hive
+          </Button>
         </View>
       </ScrollView>
       <AddFiltersToHiveModal
-        isOverlayModalVisible={AddFiltersToHiveModalVisible}
+        isOverlayModalVisible={addFiltersToHiveModalVisible}
         bottomSheetModalRef={bottomSheetAddFiltersToHiveModalRef}
         onClose={() => handleCloseAddFiltersToHiveModal()}
-        onAddFilters={handleCloseAddFiltersToHiveModal}
+      />
+      <RepositionHiveModal
+        isOverlayModalVisible={repositionHiveModalVisible}
+        bottomSheetModalRef={bottomSheetRepositionHiveModalRef}
+        onClose={() => handleCloseRepositionHiveModal()}
       />
     </SafeAreaView>
   );
