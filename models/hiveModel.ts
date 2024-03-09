@@ -3,9 +3,10 @@ export interface HiveModel {
     name: string
     filters: string[],
     weather?: string
-    wind?: string 
-    temprature?: number
+    wind?: string
+    temperature?: number
     weight?: number
     humidity?: number
-    precipitation?: number 
+    precipitation?: number
+    currentTemp: number;
 }

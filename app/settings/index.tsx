@@ -129,6 +129,11 @@ const SettingsScreen = () => {
               />
             </TouchableOpacity>
           </View>
+          <TouchableOpacity onPress={() => handleOpenModal("weather")}>
+            <Text style={theme.fonts.bodyLarge}>
+              {userViewModel.i18n.t('weather')}
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => handleOpenModal("potential swarm")}>
             <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('potential swarm')}
@@ -154,6 +159,7 @@ const SettingsScreen = () => {
               {userViewModel.i18n.t('expand hive')}
             </Text>
           </TouchableOpacity>
+
           <TouchableOpacity onPress={() => handleOpenModal("check hive'")}>
             <Text style={theme.fonts.bodyLarge}>
               {userViewModel.i18n.t('check hive')}

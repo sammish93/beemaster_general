@@ -31,14 +31,11 @@ export type CountryOption = {
 };
 
 
-
-
 export const availableLanguages: LanguageOption[] = [
     { code: LanguageEnum.English, name: 'English', isEnabled: true },
     { code: LanguageEnum.Norwegian, name: 'Norsk', isEnabled: true },
     { code: LanguageEnum.NorwegianBokmal, name: 'Norsk', isEnabled: true },
 ];
-
 
 
 export const availableCountries: CountryOption[] = [
@@ -49,3 +46,12 @@ export const availableCountries: CountryOption[] = [
     { code: CountryEnum.USA, name: 'USA', isEnabled: true },
 
 ];
+
+type SnowSignificanceThreshold = {
+    [key: string]: string[];
+};
+
+export const snowSignificanceThreshold: SnowSignificanceThreshold = {
+    'NO': ['snø', 'kraftig snøfall'],
+    'US': ['heavy snow'],
+};
