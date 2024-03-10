@@ -15,11 +15,7 @@ interface NotificationModalProps {
     parameterName: string;
 }
 
-interface ModalContentProps {
-    onClose: () => void;
-    onSave: (newValue: string) => void;
-    parameterName: string;
-}
+
 
 const NotificationModal = (props: NotificationModalProps) => {
     return (() => {
@@ -30,11 +26,9 @@ const NotificationModal = (props: NotificationModalProps) => {
                     bottomSheetModalRef={props.bottomSheetModalRef}
                     onClose={props.onClose}
                 >
-                    <ModalContent
-                        onClose={props.onClose}
+                    <ModalContent onClose={props.onClose}
                         onSave={props.onSave}
-                        parameterName={props.parameterName}
-                    />
+                        parameterName={props.parameterName} />
                 </BottomModal>
             );
         } else {
@@ -44,39 +38,46 @@ const NotificationModal = (props: NotificationModalProps) => {
                     bottomSheetModalRef={props.bottomSheetModalRef}
                     onClose={props.onClose}
                 >
-                    <ModalContent
+                    <ModalContent parameterName={props.parameterName}
                         onClose={props.onClose}
-                        onSave={props.onSave}
-                        parameterName={props.parameterName}
-                    />
+                        onSave={props.onSave} />
                 </OverlayModal>
             );
         }
     })();
 };
+interface ModalContentProps {
+    onClose: () => void;
+    onSave: (newValue: string) => void;
+    parameterName: string;
+}
 
 const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => void; parameterName: string }) => {
     const theme = useTheme();
-    const { userViewModel } = useContext(MobXProviderContext);
-    const [newValue, setNewValue] = useState("");
-
+    const userViewModel = useContext(MobXProviderContext).userViewModel;
+    const [thresholdWeightDecrease, setThresholdWeightDecrease] = useState(`${userViewModel.thresholdWeightDecrease}`);
+    const [earlySpringStartMonth, setEarlySpringStartMonth] = useState(`${userViewModel.earlySpringStartMonth}`);
+    const [earlySpringEndMonth, setEarlySpringEndMonth] = useState(`${userViewModel.earlySpringEndMonth}`);
+    const [autumnStartMonth, setAutumnStartMonth] = useState(`${userViewModel.autumnStartMonth}`);
+    const [autumnEndMonth, setAutumnEndMonth] = useState(`${userViewModel.autumnEndMonth}`);
+    const [thresholdExitCount, setThresholdExitCount] = useState(`${userViewModel.thresholdExitCount}`);
     const handleSave = () => {
-        // Implement validation if needed
-        props.onSave(newValue);
+        userViewModel.setThresholdWeightDecrease(parseFloat(thresholdWeightDecrease));
+        userViewModel.setEarlySpringStartMonth(parseInt(earlySpringStartMonth, 10));
+        userViewModel.setEarlySpringEndMonth(parseInt(earlySpringEndMonth, 10));
+        userViewModel.setAutumnStartMonth(parseInt(autumnStartMonth, 10));
+        userViewModel.setAutumnEndMonth(parseInt(autumnEndMonth, 10));
+        userViewModel.setThresholdExitCount(parseInt(thresholdExitCount));
         props.onClose();
     };
 
     return (
         <>
             <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                }}
-            >
+                style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }} >
+
                 <Text style={{ ...theme.fonts.headlineSmall, flex: 1 }}>
-                    {userViewModel.i18n.t("change parameter")}: {props.parameterName}
+                    {props.parameterName}
                 </Text>
                 <IconButton
                     icon="close"
@@ -84,14 +85,42 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                     onPress={props.onClose}
                 />
             </View>
+
+
             <View>
-                <TextInput
-                    label={props.parameterName}
-                    value={newValue}
-                    onChangeText={setNewValue}
-                    keyboardType="numeric"
-                />
+                <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
+                    Hive Decrease in Early spring: Adjust Early Spring Parameters
+                </Text>
+                <TextInput label="Threshold Weight Decrease" value={thresholdWeightDecrease} onChangeText={setThresholdWeightDecrease} keyboardType="numeric" />
+                <TextInput label="Early Spring Start Month" value={earlySpringStartMonth} onChangeText={setEarlySpringStartMonth} keyboardType="numeric" />
+                <TextInput label="Early Spring End Month" value={earlySpringEndMonth} onChangeText={setEarlySpringEndMonth} keyboardType="numeric" />
                 <VerticalSpacer size={12} />
+
+
+                <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
+                    Hive Decreases in Autumn: Adjust Autumn Parameters
+                </Text>
+                <TextInput label="Threshold Weight Decrease" value={thresholdWeightDecrease} onChangeText={setThresholdWeightDecrease} keyboardType="numeric" />
+                <TextInput label="Autumn Start Month" value={autumnStartMonth} onChangeText={setAutumnStartMonth} keyboardType="numeric" />
+                <TextInput label="Autumn End Month" value={autumnEndMonth} onChangeText={setAutumnEndMonth} keyboardType="numeric" />
+                <VerticalSpacer size={12} />
+
+
+                <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
+                    Snow Forecast in Autumn: Adjust Autumn Parameters
+                </Text>
+                <TextInput label="Autumn Start Month" value={autumnStartMonth} onChangeText={setAutumnStartMonth} keyboardType="numeric" />
+                <TextInput label="Autumn End Month" value={autumnEndMonth} onChangeText={setAutumnEndMonth} keyboardType="numeric" />
+                <VerticalSpacer size={12} />
+
+
+                <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
+                    Bee Exits is Consistently Low: Adjust Threshold Exit Parameter
+                </Text>
+                <TextInput label=" Count for Threshold Exit " value={thresholdExitCount} onChangeText={setThresholdExitCount} keyboardType="numeric" />
+                <VerticalSpacer size={12} />
+
+
                 <Button mode="contained" onPress={handleSave}>
                     {userViewModel.i18n.t("save")}
                 </Button>

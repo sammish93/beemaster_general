@@ -101,7 +101,6 @@ const SettingsScreen = () => {
           <PermissionSwitch type='camera permission' />
           <PermissionSwitch type='media permission' />
 
-
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
           <Text style={{ ...theme.fonts.headlineSmall, textAlign: 'center', padding: 1 }}>
@@ -129,44 +128,44 @@ const SettingsScreen = () => {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => handleOpenModal("weather")}>
-            <Text style={theme.fonts.bodyLarge}>
+          <TouchableOpacity >
+            <Text style={theme.fonts.bodyLarge} onPress={() => handleOpenModal(userViewModel.i18n.t('weather'))}>
               {userViewModel.i18n.t('weather')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleOpenModal("potential swarm")}>
-            <Text style={theme.fonts.bodyLarge}>
+          <TouchableOpacity >
+            <Text style={theme.fonts.bodyLarge} onPress={() => handleOpenModal(userViewModel.i18n.t('potential swarm'))}>
               {userViewModel.i18n.t('potential swarm')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleOpenModal("consider feeding")}>
-            <Text style={theme.fonts.bodyLarge}>
+          <TouchableOpacity >
+            <Text style={theme.fonts.bodyLarge} onPress={() => handleOpenModal(userViewModel.i18n.t('consider feeding'))}>
               {userViewModel.i18n.t('consider feeding')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleOpenModal("honey harvest")}>
-            <Text style={theme.fonts.bodyLarge}>
+          <TouchableOpacity >
+            <Text style={theme.fonts.bodyLarge} onPress={() => handleOpenModal(userViewModel.i18n.t('honey harvest'))}>
               {userViewModel.i18n.t('honey harvest')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleOpenModal("maintenance")}>
-            <Text style={theme.fonts.bodyLarge}>
+          <TouchableOpacity >
+            <Text style={theme.fonts.bodyLarge} onPress={() => handleOpenModal(userViewModel.i18n.t('maintenance'))}>
               {userViewModel.i18n.t('maintenance')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleOpenModal("expand hive")}>
-            <Text style={theme.fonts.bodyLarge}>
+          <TouchableOpacity >
+            <Text style={theme.fonts.bodyLarge} onPress={() => handleOpenModal(userViewModel.i18n.t('expand hive'))}>
               {userViewModel.i18n.t('expand hive')}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => handleOpenModal("check hive'")}>
-            <Text style={theme.fonts.bodyLarge}>
+          <TouchableOpacity >
+            <Text style={theme.fonts.bodyLarge} onPress={() => handleOpenModal(userViewModel.i18n.t('check hive'))}>
               {userViewModel.i18n.t('check hive')}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleOpenModal("reminder")}>
-            <Text style={theme.fonts.bodyLarge}>
+          <TouchableOpacity >
+            <Text style={theme.fonts.bodyLarge} onPress={() => handleOpenModal(userViewModel.i18n.t('reminder'))}>
               {userViewModel.i18n.t('reminder')}
             </Text>
           </TouchableOpacity>
