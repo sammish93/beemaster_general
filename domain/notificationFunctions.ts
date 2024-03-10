@@ -400,8 +400,6 @@ export const createBeekeepingReminder = (
     return reminders;
 };
 
-
-
 /**
  * Function to display reminders for a specific date.
  * @param reminders Array of reminders.
