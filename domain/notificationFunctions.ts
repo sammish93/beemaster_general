@@ -104,6 +104,11 @@ export const doesHiveWeightDecreaseInEarlySpring = (weights: number[]): boolean 
 };
 
 
+/**
+ * Determines if the weight of a hive decreases significantly during the autumn months.
+ * @param weights An array of numbers representing the recorded weights of the hive over time.
+ * @returns A boolean value indicating whether the weight of the hive decreases significantly during the autumn period.
+ */
 export const doesHiveWeightDecreaseInAutumn = (weights: number[]): boolean => {
     const thresholdWeightDecrease = userViewModel.thresholdWeightDecrease;
     const autumnStartMonth = userViewModel.autumnStartMonth;
@@ -121,7 +126,11 @@ export const doesHiveWeightDecreaseInAutumn = (weights: number[]): boolean => {
 };
 
 
-
+/**
+ * Checks if there is a snow forecast during the autumn months.
+ * @param weatherConditions An array of objects, each containing a `date` (as a Date object) and a `forecast` string.
+ * @returns A boolean value indicating whether snow is forecasted during the autumn period.
+ */
 export const isSnowForecastInAutumn = (weatherConditions: { date: Date; forecast: string }[]): boolean => {
     const autumnStartMonth = userViewModel.autumnStartMonth;
     const autumnEndMonth = userViewModel.autumnEndMonth;
@@ -137,7 +146,11 @@ export const isSnowForecastInAutumn = (weatherConditions: { date: Date; forecast
     return false;
 };
 
-
+/**
+ * Determines if the recorded number of bee exits from the hive is consistently low.
+ * @param beeExits An array of numbers, each representing the count of bee exits during a given period.
+ * @returns A boolean value indicating whether the bee exits have consistently been below a specified threshold.
+ */
 export const haveFewBeesExited = (beeExits: number[]): boolean => {
     const thresholdExitCount = userViewModel.thresholdExitCount;
 
@@ -160,7 +173,13 @@ export const areStrongWindsForecast = (forecast: number[]): boolean => {
 
 
 
-
+/**
+ * Determines if 'snow' is forecasted during specific seasons (autumn, early winter, and early spring) based on the current month.
+ * This function checks if the array of weather conditions contains 'snow' and then verifies if the current month
+ * falls within the predefined months for autumn, early winter, or early spring as specified in the userViewModel.
+ * @param weatherConditions An array of strings, each representing a forecast description.
+ * @returns A boolean value indicating whether snow is forecasted during the specified seasons based on the current month.
+ */
 export const isSnowForecastInSpecificSeasons = (weatherConditions: string[]): boolean => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;
