@@ -37,7 +37,7 @@ const DialogModal = ({ hideDialog, deleteHive }: DialogDeleteHiveProps) => {
         <Dialog.ScrollArea
           style={{ borderBlockColor: theme.colors.primaryContainer }}
         >
-          <ScrollView>
+          <ScrollView style={dynamicStyles.overlayScrollView}>
             <Text style={theme.fonts.bodyMedium}>
               {userViewModel.i18n.t(
                 "do you wish to delete this hive permanently"

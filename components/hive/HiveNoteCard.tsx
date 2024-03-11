@@ -29,7 +29,14 @@ const HiveNoteCard = ({ item, onAddNote }: HiveNoteCardProps) => {
   return (
     <Card
       onPress={handleOnPress}
-      style={{ margin: 4, flex: 1, maxWidth: "100%" }}
+      style={{
+        backgroundColor: item.isSticky
+          ? theme.colors.elevation.level1
+          : theme.colors.elevation.level5,
+        margin: 4,
+        flex: 1,
+        maxWidth: "100%",
+      }}
     >
       <Card.Content
         style={{
