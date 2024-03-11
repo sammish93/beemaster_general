@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Dialog, Portal, Text } from "react-native-paper";
 import { ScrollView, Platform } from "react-native";
-import getStyles from "@/assets/styles";
+import styles from "@/assets/styles";
 import { useTheme } from "react-native-paper";
 import { VerticalSpacer } from "../Spacers";
 
@@ -28,13 +28,12 @@ const DialogGDPR = ({ hideDialog }: DialogGDPRProps) => {
  */
 
 const DialogModal = ({ hideDialog }: DialogGDPRProps) => {
-  const dynamicStyles = getStyles();
   const theme = useTheme();
 
   return (
     <Portal>
       <Dialog
-        style={{ ...dynamicStyles.overlayContainer, alignSelf: "center" }}
+        style={{ ...styles(theme).overlayContainer, alignSelf: "center" }}
         visible={true}
         onDismiss={hideDialog}
       >
@@ -50,7 +49,7 @@ const DialogModal = ({ hideDialog }: DialogGDPRProps) => {
         <Dialog.ScrollArea
           style={{ borderBlockColor: theme.colors.primaryContainer }}
         >
-          <ScrollView style={dynamicStyles.overlayScrollView}>
+          <ScrollView style={styles(theme).overlayScrollView}>
             <Text style={theme.fonts.bodyMedium}>
               • Data controller: Group/HiØ
             </Text>
