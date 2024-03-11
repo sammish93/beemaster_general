@@ -46,6 +46,7 @@ const HiveNotes = ({ notes, sortNotes }: HiveNotesProps) => {
         keyExtractor={(item) => item.id}
         key={`flatList-${notes}-row`}
         numColumns={1}
+        style={{ paddingRight: 12 }}
         ListEmptyComponent={
           <Text style={theme.fonts.bodyLarge}>
             No notes have been registered
