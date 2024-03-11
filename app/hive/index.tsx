@@ -6,7 +6,7 @@ import { useLocalSearchParams } from "expo-router";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "@/assets/styles";
-import { useTheme, Text, Button } from "react-native-paper";
+import { useTheme, Text, Button, Divider } from "react-native-paper";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";

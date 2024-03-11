@@ -119,7 +119,7 @@ const HomeScreen = () => {
       );
       setFilteredHiveList(filtered);
     }
-  }, [filterList]);
+  }, [ hiveViewModel.hives, filterList]);
 
   // In the case that a hive is deleted then the GUI is refreshed and all filters are cleared.
   useEffect(() => {
@@ -129,6 +129,15 @@ const HomeScreen = () => {
     }
   }, [hiveViewModel.hives]);
 
+
+  useEffect(() => {
+    if (userViewModel.authInitialized) {
+      console.log(userViewModel.authInitialized)
+      
+      hiveViewModel.fetchHives();
+      hiveViewModel.fetchFilters();
+    }
+  }, [userViewModel.authInitialized]); 
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />

@@ -6,17 +6,21 @@ import no from '@/constants/localisation/no.json';
 import { PrecipitationMeasurement, TemperatureMeasurement, WeightMeasurement, WindSpeedMeasurement } from "@/constants/Measurements";
 import { availableLanguages, availableCountries } from '@/constants/LocaleEnums';
 import { Platform } from "react-native";
-
+import {auth, db} from "@/firebaseConfig";
+import { getAuth, signInWithPopup,GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithCredential, onAuthStateChanged} from "firebase/auth";
+import { WEB_CLIENT_ID} from '@env';
 class UserViewModel {
     constructor() {
-        // Makes all the class properties observable. Can change if desired.
+      
+          // Makes all the class properties observable. Can change if desired.
         makeAutoObservable(this)
         this.i18n = new I18n({
             en,
             no,
         });
-        this.i18n.locale = Localization.locale;
+        this.i18n.locale         = Localization.locale;
         this.i18n.enableFallback = true;
+        this.initializeAuthListener()
 
         // Manually change the language:
         //this.i18n.locale = "no";
@@ -26,6 +30,21 @@ class UserViewModel {
 
     @observable currentLanguage: string | null = null;
     @observable currentCountry: string | null = null;
+    
+    @observable authInitialized = false;
+
+      initializeAuthListener() {
+        onAuthStateChanged(auth, (user) => {
+          runInAction(() => {
+            if (user) {
+              this.userId = user.uid;
+            } else {
+              this.userId = "";
+            }
+            this.authInitialized = true;
+          });
+        });
+      }
 
     // Localisation
     @observable i18n;
@@ -34,8 +53,8 @@ class UserViewModel {
     // Allows the user to customise the display of measurements based on their preference.
     @observable temperaturePreference: TemperatureMeasurement = TemperatureMeasurement.Celsius;
     @observable precipitationPreference: PrecipitationMeasurement = PrecipitationMeasurement.Millimeters;
-    @observable windSpeedPreference: WindSpeedMeasurement = WindSpeedMeasurement.MetersPerSecond;
-    @observable weightPreference: WeightMeasurement = WeightMeasurement.Grams;
+    @observable windSpeedPreference: WindSpeedMeasurement         = WindSpeedMeasurement.MetersPerSecond;
+    @observable weightPreference: WeightMeasurement               = WeightMeasurement.Grams;
 
     @action public setUserId = (val: string): void => {
         this.userId = val;
@@ -60,9 +79,103 @@ class UserViewModel {
     @action public setWeightPreference = (prefence: WeightMeasurement): void => {
         this.weightPreference = prefence;
     }
+      
+    @action signInWithGoogleWeb = async () => {
+      const provider = new GoogleAuthProvider();
+        try {
+             console.log("signin with web")
+            const result = await signInWithPopup(auth, provider);
+        } catch (error) {
+            console.error("Error signing in with Google: ", error);
+          }
+      }
 
-    // Clears all the data in this view model.
-    // Useful for when a user logs out.
+    @action signInWithGoogleNative = async () => {
+       if (Platform.OS !== 'web') {
+        const { GoogleSignin } = await import('@react-native-google-signin/google-signin');
+        
+        GoogleSignin.configure({
+          webClientId: WEB_CLIENT_ID})
+          
+          try {
+            const { idToken }      = await GoogleSignin.signIn();
+            const googleCredential = GoogleAuthProvider.credential(idToken);
+            const result           = await signInWithCredential(auth, googleCredential);
+            
+          } catch (error) {
+            console.error("Error signing in with Google (Native): ", error);
+          }
+        }
+      };
+      
+      
+
+        
+    @action signInWithEmail = async (email: string, password: string) => {
+        try {
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            
+        } catch (error) {
+            if (error.code === 'auth/invalid-login-credentials') {
+                
+                console.error("Incorrect email or password");
+                runInAction(() => {
+                  this.signUpError = "Incorrect email or password";
+              });
+                
+            } else {
+              console.error("Error signing in with email: ", error);
+              runInAction(() => {
+                this.signUpError = "An error occurred during sign in";
+              });    
+            }
+        }
+    };
+
+    //sets firebase errors for signin and signup actions
+    @observable signUpError = "";
+
+    @action clearSignUpError = () => {
+      this.signUpError = "";
+    }
+  
+    @action signUpWithEmail = async (email: string, password: string) => {
+      try {
+          const result = await createUserWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+          if (error.code  === 'auth/email-already-in-use') {
+             
+              console.error("Email is already in use");
+             
+              runInAction(() => {
+                this.signUpError = "Email is already in use";
+            });
+          } else {
+              console.error("Error signing up with email: ", error);
+
+              runInAction(() => {
+                this.signUpError = "An error occurred during sign up";
+              });
+              
+              
+          }
+      }
+    }
+  
+
+
+    @action signInAnonymously = async () => {
+      try {
+          const result = await signInAnonymously(auth);
+          this.setUserId(result.user.uid);
+      } catch (error) {
+          console.error("Error signing in anonymously: ", error);
+      }
+    }
+
+    //TODO logout and auth connect
+      // Clears all the data in this view model.
+      // Useful for when a user logs out.
     @action public clear = (): void => {
         this.userId = "";
         //this.theme = "light"; // reset theme on logout
