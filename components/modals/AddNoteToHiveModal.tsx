@@ -6,15 +6,19 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { BottomModal, OverlayModal } from "./Modals";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
+import { HiveModel } from "@/models/hiveModel";
+import { HiveNote } from "@/models/note";
 
 interface AddNoteToHiveModalProps {
   isOverlayModalVisible: boolean;
   bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
   onClose: () => void;
+  onAddNote: (notes: HiveNote[]) => HiveNote[];
 }
 
 interface ModalContentProps {
   onClose: () => void;
+  onAddNote: (notes: HiveNote[]) => HiveNote[];
 }
 
 const AddNoteToHiveModal = (props: AddNoteToHiveModalProps) => {
@@ -26,7 +30,7 @@ const AddNoteToHiveModal = (props: AddNoteToHiveModalProps) => {
           bottomSheetModalRef={props.bottomSheetModalRef}
           onClose={props.onClose}
         >
-          <ModalContent onClose={props.onClose} />
+          <ModalContent onClose={props.onClose} onAddNote={props.onAddNote} />
         </BottomModal>
       );
     } else {
@@ -36,7 +40,7 @@ const AddNoteToHiveModal = (props: AddNoteToHiveModalProps) => {
           bottomSheetModalRef={props.bottomSheetModalRef}
           onClose={props.onClose}
         >
-          <ModalContent onClose={props.onClose} />
+          <ModalContent onClose={props.onClose} onAddNote={props.onAddNote} />
         </OverlayModal>
       );
     }
@@ -52,7 +56,19 @@ const ModalContent = (props: ModalContentProps) => {
   const [note, setNote] = useState<string>("");
 
   const handleAddNewNote = () => {
-    //TODO Db writing
+    //TODO Db writing and modify ID
+    const hive: HiveModel = hiveViewModel.selectedHive;
+    const newNote: HiveNote = {
+      id: "test-abc-123",
+      note: note,
+      isSticky: sticky,
+      timestamp: new Date(Date.now()),
+    };
+
+    hive.notes.push(newNote);
+    hive.notes = props.onAddNote(hive.notes);
+
+    hiveViewModel.addSelectedHive(hive);
 
     props.onClose();
   };

@@ -1,3 +1,5 @@
+import { HiveNote } from "./note"
+
 export interface HiveModel {
     id: string
     name: string
@@ -8,5 +10,6 @@ export interface HiveModel {
     temprature?: number
     weight?: number
     humidity?: number
-    precipitation?: number 
+    precipitation?: number
+    notes: HiveNote[]
 }

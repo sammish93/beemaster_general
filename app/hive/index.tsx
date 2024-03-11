@@ -48,6 +48,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import AddNoteToHiveModal from "@/components/modals/AddNoteToHiveModal";
 import { notes } from "@/data/hiveData";
 import HiveNotes from "@/components/hive/HiveNotes";
+import { HiveNote } from "@/models/note";
 
 type RootStackParamList = {
   hive: {
@@ -137,6 +138,17 @@ const HiveScreen = (params: HiveScreenProps) => {
 
     fetchData();
   }, []);
+
+  // Sorting the notes so that the stickied notes appear on the top. Additionally, sorts based on timestamp
+  // from newest first.
+  const sortNotes = (notes: HiveNote[]) => {
+    return notes?.sort((a, b) => {
+      if (Number(b.isSticky) - Number(a.isSticky) !== 0) {
+        return Number(b.isSticky) - Number(a.isSticky);
+      }
+      return b.timestamp.getTime() - a.timestamp.getTime();
+    });
+  };
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -254,7 +266,10 @@ const HiveScreen = (params: HiveScreenProps) => {
               {userViewModel.i18n.t("notes")}
             </Text>
             <VerticalSpacer size={8} />
-            <HiveNotes notes={notes} />
+            <HiveNotes
+              notes={hiveViewModel.selectedHive.notes}
+              sortNotes={sortNotes}
+            />
           </View>
         </ScrollView>
       )}
@@ -262,6 +277,7 @@ const HiveScreen = (params: HiveScreenProps) => {
         isOverlayModalVisible={addNoteToHiveModalVisible}
         bottomSheetModalRef={bottomSheetAddNoteToHiveModalRef}
         onClose={() => handleCloseAddNoteToHiveModal()}
+        onAddNote={sortNotes}
       />
     </SafeAreaView>
   );

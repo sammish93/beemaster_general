@@ -15,16 +15,21 @@ import { HiveNote } from "@/models/note";
 
 export interface HiveNotesProps {
   notes: HiveNote[];
+  sortNotes: (notes: HiveNote[]) => HiveNote[];
 }
 
-const HiveNotes = ({ notes }: HiveNotesProps) => {
+const HiveNotes = ({ notes, sortNotes }: HiveNotesProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
   const [parentWidth, setParentWidth] = useState(0);
   const screenWidth = Dimensions.get("window").width;
 
+  const sortedNotes = useMemo(() => {
+    sortNotes(notes);
+  }, [notes]);
+
   const renderItem = ({ item }: { item: HiveNote }) => (
-    <HiveNoteCard item={item} onPress={() => null} />
+    <HiveNoteCard item={item} onPress={() => null} onAddNote={sortNotes} />
   );
 
   return (

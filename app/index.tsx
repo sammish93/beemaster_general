@@ -40,6 +40,7 @@ const HomeScreen = () => {
       name: hiveName,
       latLng: { lat: 53.483959, lng: -2.244644 },
       filters: [],
+      notes: [],
     });
     handleCloseAddHiveModal();
   };

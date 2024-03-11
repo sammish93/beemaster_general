@@ -11,9 +11,10 @@ import { HiveNote } from "@/models/note";
 interface HiveNoteCardProps {
   item: HiveNote;
   onPress: () => void;
+  onAddNote: (notes: HiveNote[]) => HiveNote[];
 }
 
-const HiveNoteCard = ({ onPress, item }: HiveNoteCardProps) => {
+const HiveNoteCard = ({ item, onPress, onAddNote }: HiveNoteCardProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
 
@@ -31,7 +32,8 @@ const HiveNoteCard = ({ onPress, item }: HiveNoteCardProps) => {
           numberOfLines={1}
           ellipsizeMode="tail"
         >
-          Note: {item.note} Sticky: {item.isSticky.toString()}
+          Note: {item.note} Sticky: {item.isSticky.toString()} Date:{" "}
+          {item.timestamp.toString()}
         </Text>
       </Card.Content>
     </Card>
