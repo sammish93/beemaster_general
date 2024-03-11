@@ -13,12 +13,12 @@ interface AddNoteToHiveModalProps {
   isOverlayModalVisible: boolean;
   bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
   onClose: () => void;
-  onAddNote: (notes: HiveNote[]) => HiveNote[];
+  onAddNote: (notes: HiveNote[]) => void;
 }
 
 interface ModalContentProps {
   onClose: () => void;
-  onAddNote: (notes: HiveNote[]) => HiveNote[];
+  onAddNote: (notes: HiveNote[]) => void;
 }
 
 const AddNoteToHiveModal = (props: AddNoteToHiveModalProps) => {
@@ -66,10 +66,10 @@ const ModalContent = (props: ModalContentProps) => {
     };
 
     hive.notes.push(newNote);
-    hive.notes = props.onAddNote(hive.notes);
 
     hiveViewModel.addSelectedHive(hive);
 
+    props.onAddNote(hiveViewModel.selectedHive.notes);
     props.onClose();
   };
 

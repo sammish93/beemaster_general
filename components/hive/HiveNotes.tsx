@@ -15,7 +15,7 @@ import { HiveNote } from "@/models/note";
 
 export interface HiveNotesProps {
   notes: HiveNote[];
-  sortNotes: (notes: HiveNote[]) => HiveNote[];
+  sortNotes: (notes: HiveNote[]) => void;
 }
 
 const HiveNotes = ({ notes, sortNotes }: HiveNotesProps) => {
@@ -25,11 +25,11 @@ const HiveNotes = ({ notes, sortNotes }: HiveNotesProps) => {
   const screenWidth = Dimensions.get("window").width;
 
   const sortedNotes = useMemo(() => {
-    sortNotes(notes);
-  }, [notes]);
+    sortNotes(hiveViewModel.selectedHive.notes);
+  }, [hiveViewModel.selectedHive.notes]);
 
   const renderItem = ({ item }: { item: HiveNote }) => (
-    <HiveNoteCard item={item} onPress={() => null} onAddNote={sortNotes} />
+    <HiveNoteCard item={item} onAddNote={sortNotes} />
   );
 
   return (

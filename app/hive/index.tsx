@@ -142,7 +142,7 @@ const HiveScreen = (params: HiveScreenProps) => {
   // Sorting the notes so that the stickied notes appear on the top. Additionally, sorts based on timestamp
   // from newest first.
   const sortNotes = (notes: HiveNote[]) => {
-    return notes?.sort((a, b) => {
+    return notes?.sort((a: HiveNote, b: HiveNote) => {
       if (Number(b.isSticky) - Number(a.isSticky) !== 0) {
         return Number(b.isSticky) - Number(a.isSticky);
       }

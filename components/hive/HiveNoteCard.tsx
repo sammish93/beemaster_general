@@ -10,18 +10,27 @@ import { HiveNote } from "@/models/note";
 
 interface HiveNoteCardProps {
   item: HiveNote;
-  onPress: () => void;
-  onAddNote: (notes: HiveNote[]) => HiveNote[];
+  onAddNote: (notes: HiveNote[]) => void;
 }
 
-const HiveNoteCard = ({ item, onPress, onAddNote }: HiveNoteCardProps) => {
+const HiveNoteCard = ({ item, onAddNote }: HiveNoteCardProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
+  const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
 
-  //TODO Swap out with real data.
+  const handleOnPress = () => {
+    item.isSticky = !item.isSticky;
+    hiveViewModel.selectedHive.notes = onAddNote([
+      ...hiveViewModel.selectedHive.notes,
+    ]);
+  };
 
+  //TODO Swap out with real data.
   return (
-    <Card onPress={onPress} style={{ margin: 4, flex: 1, maxWidth: "100%" }}>
+    <Card
+      onPress={handleOnPress}
+      style={{ margin: 4, flex: 1, maxWidth: "100%" }}
+    >
       <Card.Content
         style={{
           flexDirection: "row",
