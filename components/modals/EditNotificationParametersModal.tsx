@@ -94,6 +94,7 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
 
 
     const handleSave = () => {
+
         switch (parameterName) {
             case userViewModel.i18n.t('weather'):
                 userViewModel.setThresholdWindSpeedStrong(parseInt(thresholdWindSpeedStrong));

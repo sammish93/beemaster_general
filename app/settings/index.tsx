@@ -27,6 +27,7 @@ const SettingsScreen = () => {
   const [AddHiveModalVisible, setAddHiveModalVisible] = useState(false);
 
   useEffect(() => {
+    userViewModel.fetchUserParametersFromDatabase();
     userViewModel.updateLocaleSettings();
   }, [userViewModel]);
 
