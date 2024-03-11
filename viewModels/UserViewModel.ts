@@ -40,16 +40,24 @@ class UserViewModel {
     @observable weightPreference: WeightMeasurement = WeightMeasurement.Grams;
 
 
-    @observable maxTempParam?: number;
-    @observable thresholdWeightDecrease: number = 0;
+
+    @observable maxTempParamTooWarm?: number;
+    @observable thresholdWeightDecreaseInAutumn: number = 0;
+    @observable thresholdWeightDecreaseEarlySpring: number = 0;
+    @observable thresholdWeightDecreaseSwarm: number = 0;
     @observable earlySpringStartMonth: number = 0;
     @observable earlySpringEndMonth: number = 0;
     @observable autumnStartMonth: number = 0;
     @observable autumnEndMonth: number = 0;
 
-    @observable thresholdExitCount: number = 0;
-    @observable thresholdTemp: number = 0;
-    @observable thresholdWindSpeed: number = 0;
+    @observable thresholdExitCountHigh: number = 0;
+    @observable thresholdExitCountLow: number = 0;
+
+
+    @observable thresholdTempWarm: number = 0;
+    @observable thresholdWindSpeedStrong: number = 0;
+    @observable thresholdWindSpeedLow: number = 0;
+
     @observable autumnMonths: number[] = [];
     @observable summerStartMonth: number = 0;
     @observable earlyWinterMonths: number[] = [];
@@ -91,14 +99,17 @@ class UserViewModel {
         this.weightPreference = prefence;
     }
 
-
-
-    @action public setMaxTempParam = (value: number): void => {
-        this.maxTempParam = value;
+    @action public setMaxTempParamTooWarm = (value: number): void => {
+        this.maxTempParamTooWarm = value;
     }
-
-    @action public setThresholdWeightDecrease = (value: number): void => {
-        this.thresholdWeightDecrease = value;
+    @action public setThresholdWeightDecreaseInAutumn = (value: number): void => {
+        this.thresholdWeightDecreaseInAutumn = value;
+    }
+    @action public setThresholdWeightDecreaseEarlySpring = (value: number): void => {
+        this.thresholdWeightDecreaseEarlySpring = value;
+    }
+    @action public setThresholdWeightDecreaseSwarm = (value: number): void => {
+        this.thresholdWeightDecreaseSwarm = value;
     }
 
     @action public setEarlySpringStartMonth = (month: number): void => {
@@ -117,17 +128,23 @@ class UserViewModel {
         this.autumnEndMonth = month;
     }
 
-    @action public setThresholdExitCount = (value: number): void => {
-        this.thresholdExitCount = value;
+
+    @action public setThresholdExitCountHigh = (value: number): void => {
+        this.thresholdExitCountHigh = value;
+    }
+    @action public setThresholdExitCountLow = (value: number): void => {
+        this.thresholdExitCountLow = value;
     }
 
-    @action public setThresholdTemp = (value: number): void => {
-        this.thresholdTemp = value;
+    @action public setThresholdTempWarm = (value: number): void => {
+        this.thresholdTempWarm = value;
     }
-    @action public setThresholdWindSpeed = (value: number): void => {
-        this.thresholdWindSpeed = value;
+    @action public setThresholdWindSpeedStrong = (value: number): void => {
+        this.thresholdWindSpeedStrong = value;
     }
-
+    @action public setThresholdWindSpeedLow = (value: number): void => {
+        this.thresholdWindSpeedLow = value;
+    }
     @action public setAutumnMonths = (value: number[]): void => {
         this.autumnMonths = value;
     }
@@ -219,26 +236,31 @@ class UserViewModel {
             precipitationPreference: PrecipitationMeasurement.Millimeters,
             windSpeedPreference: WindSpeedMeasurement.MetersPerSecond,
             weightPreference: WeightMeasurement.Kilograms,
+            maxTempParamTooWarm: 40,
 
-            maxTempParam: 30,
-            thresholdWeightDecrease: 10,
-            earlySpringStartMonth: 3,
-            earlySpringEndMonth: 5,
-            autumnStartMonth: 9,
-            autumnEndMonth: 10,
-            thresholdExitCount: 70,
-            thresholdTemp: 33,
-            thresholdWindSpeed: 10.5,
-            autumnMonths: [8, 9],
-            earlySpringMonths: [3, 4],
-            earlyWinterMonths: [11, 1],
-            humidityThreshold: 50,
-            summerStartMonth: 6,
-            earlyAutumnMonth: 8,
+            thresholdWeightDecreaseInAutumn: 10,
+            thresholdWeightDecreaseEarlySpring: 10,
+            thresholdWeightDecreaseSwarm: 10,
+            thresholdExitCountLow: 20,
+            thresholdExitCountHigh: 80,
+            thresholdTempWarm: 33,
+            thresholdWindSpeedStrong: 10.5,
+            thresholdWindSpeedLow: 3.5,
             thresholdWeightIncrease: 2,
             thresholdMaxTempChange: 10,
             thresholdMaxHumidityChange: 60,
+
+            autumnMonths: [8, 9],
+            autumnStartMonth: 9,
+            autumnEndMonth: 10,
+            earlyAutumnMonth: 8,
+            earlySpringMonths: [3, 4],
             lateSpringStartMonth: 5,
+            earlySpringStartMonth: 3,
+            earlySpringEndMonth: 5,
+            earlyWinterMonths: [11, 1],
+            humidityThreshold: 50,
+            summerStartMonth: 6,
             earlySummerEndMonth: 7
 
 
@@ -247,30 +269,43 @@ class UserViewModel {
 
         this.setUserId(userDataFromDatabase.userId);
         this.setTheme(userDataFromDatabase.theme);
+
         this.setTemperaturePreference(userDataFromDatabase.temperaturePreference);
         this.setPrecipitationPreference(userDataFromDatabase.precipitationPreference);
         this.setWindSpeedPreference(userDataFromDatabase.windSpeedPreference);
         this.setWeightPreference(userDataFromDatabase.weightPreference);
-        this.setMaxTempParam(userDataFromDatabase.maxTempParam);
-        this.setThresholdWeightDecrease(userDataFromDatabase.thresholdWeightDecrease);
-        this.setEarlySpringStartMonth(userDataFromDatabase.earlySpringStartMonth);
-        this.setEarlySpringEndMonth(userDataFromDatabase.earlySpringEndMonth);
-        this.setAutumnStartMonth(userDataFromDatabase.autumnStartMonth);
-        this.setAutumnEndMonth(userDataFromDatabase.autumnEndMonth);
-        this.setThresholdExitCount(userDataFromDatabase.thresholdExitCount);
-        this.setThresholdTemp(userDataFromDatabase.thresholdTemp);
-        this.setThresholdWindSpeed(userDataFromDatabase.thresholdWindSpeed);
-        this.setAutumnMonths(userDataFromDatabase.autumnMonths);
-        this.setEarlyWinterMonths(userDataFromDatabase.earlyWinterMonths);
-        this.setEarlySpringMonths(userDataFromDatabase.earlySpringMonths);
-        this.setHumidityThreshold(userDataFromDatabase.humidityThreshold);
-        this.setSummerStartMonth(userDataFromDatabase.summerStartMonth);
-        this.setEarlyAutumnMonth(userDataFromDatabase.earlyAutumnMonth);
+
+        this.setMaxTempParamTooWarm(userDataFromDatabase.maxTempParamTooWarm);
+
+        this.setThresholdWeightDecreaseInAutumn(userDataFromDatabase.thresholdWeightDecreaseInAutumn);
+        this.setThresholdWeightDecreaseEarlySpring(userDataFromDatabase.thresholdWeightDecreaseEarlySpring);
+        this.setThresholdWeightDecreaseSwarm(userDataFromDatabase.thresholdWeightDecreaseSwarm);
+        this.setThresholdTempWarm(userDataFromDatabase.thresholdTempWarm);
+        this.setThresholdWindSpeedStrong(userDataFromDatabase.thresholdWindSpeedStrong);
+        this.setThresholdWindSpeedLow(userDataFromDatabase.thresholdWindSpeedLow);
+        this.setThresholdExitCountHigh(userDataFromDatabase.thresholdExitCountHigh);
+        this.setThresholdExitCountLow(userDataFromDatabase.thresholdExitCountLow);
         this.setThresholdWeightIncrease(userDataFromDatabase.thresholdWeightIncrease);
         this.setThresholdMaxTempChange(userDataFromDatabase.thresholdMaxTempChange);
         this.setThresholdMaxHumidityChange(userDataFromDatabase.thresholdMaxHumidityChange);
-        this.setEarlySummerEndMonth(userDataFromDatabase.earlySummerEndMonth);
+        this.setHumidityThreshold(userDataFromDatabase.humidityThreshold);
+
+        this.setEarlySpringStartMonth(userDataFromDatabase.earlySpringStartMonth);
+        this.setEarlySpringEndMonth(userDataFromDatabase.earlySpringEndMonth);
+        this.setEarlySpringMonths(userDataFromDatabase.earlySpringMonths);
         this.setLateSpringStartMonth(userDataFromDatabase.lateSpringStartMonth)
+
+        this.setEarlyAutumnMonth(userDataFromDatabase.earlyAutumnMonth);
+        this.setAutumnStartMonth(userDataFromDatabase.autumnStartMonth);
+        this.setAutumnEndMonth(userDataFromDatabase.autumnEndMonth);
+        this.setAutumnMonths(userDataFromDatabase.autumnMonths);
+
+        this.setEarlySummerEndMonth(userDataFromDatabase.earlySummerEndMonth);
+        this.setSummerStartMonth(userDataFromDatabase.summerStartMonth);
+        this.setEarlyWinterMonths(userDataFromDatabase.earlyWinterMonths);
+
+
+
     }
 
 

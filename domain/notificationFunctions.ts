@@ -4,6 +4,7 @@ import { TemperatureMeasurement } from "@/constants/Measurements";
 import { snowSignificanceThreshold } from '@/constants/LocaleEnums';
 import userViewModel from '@/viewModels/UserViewModel';
 
+
 /**
  * Checks if the temperature is consistently warm over a specified number of days.
  * This function uses the user's temperature unit preference from the UserViewModel to interpret the forecast data.
@@ -18,7 +19,7 @@ export const areTemperaturesConsistentlyWarm = (forecast: number[], numberOfDays
     for (const temperature of forecast) {
         const temp = convertTemperature(temperature, TemperatureMeasurement.Celsius, userViewModel.temperaturePreference);
 
-        if (temp >= userViewModel.thresholdTemp) {
+        if (temp >= userViewModel.thresholdTempWarm) {
             consecutiveWarmDays++;
             if (consecutiveWarmDays === numberOfDays) {
                 return true;
@@ -29,6 +30,7 @@ export const areTemperaturesConsistentlyWarm = (forecast: number[], numberOfDays
     }
     return false;
 };
+
 
 /**
  * Determines if temperatures are increasing each day throughout a sequence in spring.
@@ -49,6 +51,7 @@ export const isWarmerEachDayInSpring = (temperatures: number[]): boolean => {
     }
     return true;
 };
+
 
 /**
  * Evaluates weather forecasts to determine if snow is expected based on user's location.
@@ -72,7 +75,7 @@ export const isSnowForecast = (forecast: string[]): boolean => {
  */
 export const isHiveTooWarm = (hives: HiveModel[]): boolean => {
     for (const hive of hives) {
-        if (hive.currentTemp > (userViewModel.maxTempParam ?? 0)) {
+        if (hive.currentTemp > (userViewModel.maxTempParamTooWarm ?? 0)) {
             return true;
         }
     }
@@ -89,13 +92,13 @@ export const isHiveTooWarm = (hives: HiveModel[]): boolean => {
  * @returns A boolean indicating whether the hive decreases in weight significantly during early spring, as defined by the user. This function uses the threshold for significant weight decrease, early spring start month, and end month from the user's preferences in UserViewModel.
  */
 export const doesHiveWeightDecreaseInEarlySpring = (weights: number[]): boolean => {
-    const { thresholdWeightDecrease, earlySpringStartMonth, earlySpringEndMonth } = userViewModel;
+    const { thresholdWeightDecreaseEarlySpring, earlySpringStartMonth, earlySpringEndMonth } = userViewModel;
     const currentMonth = new Date().getMonth() + 1;
 
     if (currentMonth >= earlySpringStartMonth && currentMonth <= earlySpringEndMonth) {
         for (let i = 1; i < weights.length; i++) {
             const weightDecrease = weights[i - 1] - weights[i];
-            if (weightDecrease >= thresholdWeightDecrease) {
+            if (weightDecrease >= thresholdWeightDecreaseEarlySpring) {
                 return true;
             }
         }
@@ -110,14 +113,14 @@ export const doesHiveWeightDecreaseInEarlySpring = (weights: number[]): boolean 
  * @returns A boolean value indicating whether the weight of the hive decreases significantly during the autumn period.
  */
 export const doesHiveWeightDecreaseInAutumn = (weights: number[]): boolean => {
-    const thresholdWeightDecrease = userViewModel.thresholdWeightDecrease;
+    const thresholdWeightDecreaseInAutumn = userViewModel.thresholdWeightDecreaseInAutumn;
     const autumnStartMonth = userViewModel.autumnStartMonth;
     const autumnEndMonth = userViewModel.autumnEndMonth;
     const currentMonth = new Date().getMonth() + 1;
     if (currentMonth >= autumnStartMonth && currentMonth <= autumnEndMonth) {
         for (let i = 1; i < weights.length; i++) {
             const weightDecrease = weights[i - 1] - weights[i];
-            if (weightDecrease >= thresholdWeightDecrease) {
+            if (weightDecrease >= thresholdWeightDecreaseInAutumn) {
                 return true;
             }
         }
@@ -146,16 +149,18 @@ export const isSnowForecastInAutumn = (weatherConditions: { date: Date; forecast
     return false;
 };
 
+
 /**
  * Determines if the recorded number of bee exits from the hive is consistently low.
  * @param beeExits An array of numbers, each representing the count of bee exits during a given period.
  * @returns A boolean value indicating whether the bee exits have consistently been below a specified threshold.
  */
 export const haveFewBeesExited = (beeExits: number[]): boolean => {
-    const thresholdExitCount = userViewModel.thresholdExitCount;
+    const thresholdExitCount = userViewModel.thresholdExitCountLow;
 
     return beeExits.every(exitCount => exitCount <= thresholdExitCount);
 };
+
 
 
 
@@ -166,12 +171,10 @@ export const haveFewBeesExited = (beeExits: number[]): boolean => {
  * @returns A boolean indicating whether strong winds are forecast.
  */
 export const areStrongWindsForecast = (forecast: number[]): boolean => {
-    const thresholdWindSpeed = userViewModel.thresholdWindSpeed;
+    const thresholdWindSpeed = userViewModel.thresholdWindSpeedStrong;
 
     return forecast.some(windSpeed => windSpeed >= thresholdWindSpeed);
 };
-
-
 
 /**
  * Determines if 'snow' is forecasted during specific seasons (autumn, early winter, and early spring) based on the current month.
@@ -220,15 +223,15 @@ export const isWarmDryLowWindDay = (
     const currentMonth = currentDate.getMonth() + 1;
     const earlySpringStartMonth = userViewModel.earlySpringStartMonth;
     const autumnEndMonth = userViewModel.autumnEndMonth;
-    const thresholdWindSpeed = userViewModel.thresholdWindSpeed;
-    const thresholdTemp = userViewModel.thresholdTemp;
+    const thresholdWindSpeedLow = userViewModel.thresholdWindSpeedLow;
+    const thresholdTempWarm = userViewModel.thresholdTempWarm;
     const humidityThreshold = userViewModel.humidityThreshold;
 
     if (currentMonth >= earlySpringStartMonth && currentMonth <= autumnEndMonth) {
         return weatherConditions.some(condition =>
-            condition.temperature >= thresholdTemp &&
+            condition.temperature >= thresholdTempWarm &&
             condition.humidity <= humidityThreshold &&
-            condition.windSpeed <= thresholdWindSpeed
+            condition.windSpeed <= thresholdWindSpeedLow
         );
     }
     return false;
@@ -247,16 +250,16 @@ export const isWarmDryLowWindDayBetweenSummerAndEarlyAutumn = (
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;
     const humidityThreshold = userViewModel.humidityThreshold;
-    const thresholdTemp = userViewModel.thresholdTemp;
-    const thresholdWindSpeed = userViewModel.thresholdWindSpeed;
+    const thresholdTempWarm = userViewModel.thresholdTempWarm;
+    const thresholdWindSpeedLow = userViewModel.thresholdWindSpeedLow;
     const summerStartMonth = userViewModel.summerStartMonth;
     const earlyAutumnMonth = userViewModel.earlyAutumnMonth;
 
     if (currentMonth >= summerStartMonth && currentMonth <= earlyAutumnMonth) {
         return weatherConditions.some(condition =>
-            condition.temperature >= thresholdTemp &&
+            condition.temperature >= thresholdTempWarm &&
             condition.humidity <= humidityThreshold &&
-            condition.windSpeed <= thresholdWindSpeed
+            condition.windSpeed <= thresholdWindSpeedLow
         );
     }
     return false;
@@ -284,6 +287,7 @@ export const doesHiveWeightIncreaseSignificantly = (weights: number[]): boolean 
 
 
 //CHECK HIVE 
+
 /**
  * Function for checking if hive temperature increases or decreases drastically in short time.
  * @param temperatures Array of daily hive temperatures.
@@ -299,6 +303,7 @@ export const isTemperatureChangeDrastic = (temperatures: number[]): boolean => {
     return false;
 };
 
+
 /**
  * Function for checking if humidity increases or decreases drastically in short time.
  * @param humidities Array of daily humidity values.
@@ -313,6 +318,7 @@ export const isHumidityChangeDrastic = (humidities: number[]): boolean => {
     }
     return false;
 };
+
 
 /**
  * Function for checking the risk of swarming based on user-defined periods for late spring and early summer.
@@ -340,6 +346,7 @@ export const isSwarmingRiskBasedOnUserDefinedSeason = (
 
 
 //POSSIBLE SWARM 
+
 /**
  * Function for checking if hive weight decreases significantly based on user-defined threshold.
  * @param weights Array of daily hive weights.
@@ -348,7 +355,7 @@ export const isSwarmingRiskBasedOnUserDefinedSeason = (
 export const doesHiveWeightDecreaseSignificantly = (weights: number[]): boolean => {
     for (let i = 1; i < weights.length; i++) {
         const weightDecrease = weights[i - 1] - weights[i];
-        if (weightDecrease >= userViewModel.thresholdWeightDecrease) {
+        if (weightDecrease >= userViewModel.thresholdWeightDecreaseSwarm) {
             return true;
         }
     }
@@ -363,7 +370,7 @@ export const doesHiveWeightDecreaseSignificantly = (weights: number[]): boolean 
  */
 export const haveLotsOfBeesExited = (beeExits: number[]): boolean => {
     for (const exitCount of beeExits) {
-        if (exitCount >= userViewModel.thresholdExitCount) {
+        if (exitCount >= userViewModel.thresholdExitCountHigh) {
             return true;
         }
     }
@@ -374,7 +381,7 @@ export const haveLotsOfBeesExited = (beeExits: number[]): boolean => {
 
 
 
-//REMINDER //TODO:Se over denne, om det er riktig tenkt.
+//REMINDER 
 interface BeekeepingReminder {
     date: Date;
     task: string;

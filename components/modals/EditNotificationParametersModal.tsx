@@ -56,59 +56,75 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
     const { onClose, onSave, parameterName } = props;
     const theme = useTheme();
     const userViewModel = useContext(MobXProviderContext).userViewModel;
-    const [thresholdWeightDecrease, setThresholdWeightDecrease] = useState(`${userViewModel.thresholdWeightDecrease}`);
-    const [earlySpringStartMonth, setEarlySpringStartMonth] = useState(`${userViewModel.earlySpringStartMonth}`);
-    const [earlySpringEndMonth, setEarlySpringEndMonth] = useState(`${userViewModel.earlySpringEndMonth}`);
-    const [autumnStartMonth, setAutumnStartMonth] = useState(`${userViewModel.autumnStartMonth}`);
-    const [autumnEndMonth, setAutumnEndMonth] = useState(`${userViewModel.autumnEndMonth}`);
-    const [thresholdExitCount, setThresholdExitCount] = useState(`${userViewModel.thresholdExitCount}`);
-    const [thresholdWindSpeed, setThresholdWindSpeed] = useState(`${userViewModel.thresholdWindSpeed}`);
-    const [autumnMonths, setAutumnMonths] = useState(`${userViewModel.autumnMonths}`);
-    const [earlyWinterMonths, setEarlyWinterMonths] = useState(`${userViewModel.earlyWinterMonths}`);
-    const [earlySpringMonths, setEarlySpringMonths] = useState(`${userViewModel.earlySpringMonths}`);
-    const [thresholdTemp, setThresholdTemp] = useState(`${userViewModel.thresholdTemp}`);
-    const [humidityThreshold, setHumidityThreshold] = useState(`${userViewModel.humidityThreshold}`);
-    const [summerStartMonth, setSummerStartMonth] = useState(`${userViewModel.summerStartMonth}`);
-    const [earlyAutumnMonth, setEarlyAutumnMonth] = useState(`${userViewModel.earlyAutumnMonth}`);
+
+    //Thresholds
+    const [thresholdWeightDecreaseInAutumn, setThresholdWeightDecreaseInAutumn] = useState(`${userViewModel.thresholdWeightDecreaseInAutumn}`);
+    const [thresholdWeightDecreaseEarlySpring, setThresholdWeightDecreaseEarlySpring] = useState(`${userViewModel.thresholdWeightDecreaseEarlySpring}`);
+    const [thresholdWeightDecreaseSwarm, setThresholdWeightDecreaseSwarm] = useState(`${userViewModel.thresholdWeightDecreaseSwarm}`);
+    const [thresholdExitCountHigh, setThresholdExitCountHigh] = useState(`${userViewModel.thresholdExitCountHigh}`);
+    const [thresholdExitCountLow, setThresholdExitCountLow] = useState(`${userViewModel.thresholdExitCountLow}`);
+    const [thresholdWindSpeedStrong, setThresholdWindSpeedStrong] = useState(`${userViewModel.thresholdWindSpeedStrong}`);
+    const [thresholdWindSpeedLow, setThresholdWindSpeedLow] = useState(`${userViewModel.thresholdWindSpeedLow}`);
+    const [thresholdTempWarm, setThresholdTempWarm] = useState(`${userViewModel.thresholdTempWarm}`);
     const [thresholdWeightIncrease, setThresholdWeightIncrease] = useState(`${userViewModel.thresholdWeightIncrease}`);
     const [thresholdMaxTempChange, setThresholdMaxTempChange] = useState(`${userViewModel.thresholdMaxTempChange}`);
-    const [thresholdMaxHumidityChange, setThresholdMaxHumidityChange] = useState(`${userViewModel.thresholdMaxHumidityChange}`)
-    const [lateSpringStartMonth, setLateSpringStartMonth] = useState(`${userViewModel.lateSpringStartMonth}`)
-    const [earlySummerEndMonth, setEarlySummerEndMonth] = useState(`${userViewModel.earlySummerEndMont}`)
+    const [thresholdMaxHumidityChange, setThresholdMaxHumidityChange] = useState(`${userViewModel.thresholdMaxHumidityChange}`);
+    const [humidityThreshold, setHumidityThreshold] = useState(`${userViewModel.humidityThreshold}`);
+
+    //Spring
+    const [earlySpringStartMonth, setEarlySpringStartMonth] = useState(`${userViewModel.earlySpringStartMonth}`);
+    const [earlySpringEndMonth, setEarlySpringEndMonth] = useState(`${userViewModel.earlySpringEndMonth}`);
+    const [earlySpringMonths, setEarlySpringMonths] = useState(`${userViewModel.earlySpringMonths}`);
+    const [lateSpringStartMonth, setLateSpringStartMonth] = useState(`${userViewModel.lateSpringStartMonth}`);
+
+    //Autumn
+    const [autumnStartMonth, setAutumnStartMonth] = useState(`${userViewModel.autumnStartMonth}`);
+    const [autumnEndMonth, setAutumnEndMonth] = useState(`${userViewModel.autumnEndMonth}`);
+    const [autumnMonths, setAutumnMonths] = useState(`${userViewModel.autumnMonths}`);
+    const [earlyAutumnMonth, setEarlyAutumnMonth] = useState(`${userViewModel.earlyAutumnMonth}`);
+
+    //Winter
+    const [earlyWinterMonths, setEarlyWinterMonths] = useState(`${userViewModel.earlyWinterMonths}`);
+
+    //Summer
+    const [summerStartMonth, setSummerStartMonth] = useState(`${userViewModel.summerStartMonth}`);
+    const [earlySummerEndMonth, setEarlySummerEndMonth] = useState(`${userViewModel.earlySummerEndMonth}`);
+
+
 
 
     const handleSave = () => {
         switch (parameterName) {
             case userViewModel.i18n.t('weather'):
-                userViewModel.setThresholdWindSpeed(parseInt(thresholdWindSpeed));
+                userViewModel.setThresholdWindSpeedStrong(parseInt(thresholdWindSpeedStrong));
                 userViewModel.setAutumnMonths(parseInt(autumnMonths));
                 userViewModel.setEarlyWinterMonths(parseInt(earlyWinterMonths));
                 userViewModel.setEarlySpringMonths(parseInt(earlySpringMonths));
                 break;
             case userViewModel.i18n.t('potential swarm'):
-                userViewModel.setThresholdWeightDecrease(parseInt(thresholdWeightDecrease));
-                userViewModel.setThresholdExitCount(parseInt(thresholdExitCount));
+                userViewModel.setThresholdWeightDecreaseSwarm(parseInt(thresholdWeightDecreaseSwarm));
+                userViewModel.setThresholdExitCountHigh(parseInt(thresholdExitCountHigh));
                 break;
             case userViewModel.i18n.t('consider feeding'):
-                userViewModel.setThresholdWeightDecrease(parseFloat(thresholdWeightDecrease));
+                userViewModel.setThresholdWeightDecreaseEarlySpring(parseFloat(thresholdWeightDecreaseEarlySpring));
                 userViewModel.setEarlySpringStartMonth(parseInt(earlySpringStartMonth, 10));
                 userViewModel.setEarlySpringEndMonth(parseInt(earlySpringEndMonth, 10));
                 userViewModel.setAutumnStartMonth(parseInt(autumnStartMonth, 10));
                 userViewModel.setAutumnEndMonth(parseInt(autumnEndMonth, 10));
-                userViewModel.setThresholdExitCount(parseInt(thresholdExitCount));
+                userViewModel.setThresholdExitCountLow(parseInt(thresholdExitCountLow));
                 break;
             case userViewModel.i18n.t('honey harvest'):
                 userViewModel.setHumidityThreshold(parseInt(humidityThreshold));
-                userViewModel.setThresholdTemp(parseInt(thresholdTemp));
-                userViewModel.setThresholdWindSpeed(parseInt(thresholdWindSpeed));
+                userViewModel.setThresholdTempWarm(parseInt(thresholdTempWarm));
+                userViewModel.setThresholdWindSpeedLow(parseInt(thresholdWindSpeedLow));
                 userViewModel.setSummerStartMonth(parseInt(summerStartMonth));
                 userViewModel.setEarlyAutumnMonth(parseInt(earlyAutumnMonth));
                 break;
             case userViewModel.i18n.t('maintenance'):
                 userViewModel.setEarlySpringStartMonth(parseInt(earlySpringStartMonth, 10));
                 userViewModel.setAutumnEndMonth(parseInt(autumnEndMonth, 10));
-                userViewModel.setThresholdWindSpeed(parseInt(thresholdWindSpeed));
-                userViewModel.setThresholdTemp(parseInt(thresholdTemp));
+                userViewModel.setThresholdWindSpeedLow(parseInt(thresholdWindSpeedLow));
+                userViewModel.setThresholdTempWarm(parseInt(thresholdTempWarm));
                 userViewModel.setHumidityThreshold(parseInt(humidityThreshold));
                 break;
             case userViewModel.i18n.t('expand hive'):
@@ -139,7 +155,7 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
                             Strong Wind Forecast: Threshold Parameter
                         </Text>
-                        <TextInput label="Threshold Wind Speed" value={thresholdWindSpeed} onChangeText={setThresholdWindSpeed} keyboardType="numeric" />
+                        <TextInput label="Threshold Wind Speed" value={thresholdWindSpeedStrong} onChangeText={setThresholdWindSpeedStrong} keyboardType="numeric" />
                         <VerticalSpacer size={12} />
 
                         <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
@@ -157,12 +173,12 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
                             Hive weight decreases: Threshold Parameter
                         </Text>
-                        <TextInput label="thresholdWeightDecrease" value={thresholdWeightDecrease} onChangeText={setThresholdWeightDecrease} keyboardType="numeric" />
+                        <TextInput label="thresholdWeightDecrease" value={thresholdWeightDecreaseSwarm} onChangeText={setThresholdWeightDecreaseSwarm} keyboardType="numeric" />
 
                         <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
                             Number of bees have been exiting the hive: Threshold Parameter
                         </Text>
-                        <TextInput label="thresholdExitCount" value={thresholdExitCount} onChangeText={setThresholdWeightIncrease} keyboardType="numeric" />
+                        <TextInput label="thresholdExitCount" value={thresholdExitCountHigh} onChangeText={setThresholdExitCountHigh} keyboardType="numeric" />
 
                     </View>
                 );
@@ -172,8 +188,8 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
                             Warm, dry days with low wind speed between summer and early autumn
                         </Text>
-                        <TextInput label="Threshold Wind Speed" value={thresholdWindSpeed} onChangeText={setThresholdWindSpeed} keyboardType="numeric" />
-                        <TextInput label="Threshold Temperature" value={thresholdTemp} onChangeText={setThresholdTemp} keyboardType="numeric" />
+                        <TextInput label="Threshold Wind Speed" value={thresholdWindSpeedLow} onChangeText={setThresholdWindSpeedLow} keyboardType="numeric" />
+                        <TextInput label="Threshold Temperature" value={thresholdTempWarm} onChangeText={setThresholdTempWarm} keyboardType="numeric" />
                         <TextInput label="Humidity Threshold %" value={humidityThreshold} onChangeText={setHumidityThreshold} keyboardType="numeric" />
                         <TextInput label="Early Autumn Month" value={earlyAutumnMonth} onChangeText={setEarlyAutumnMonth} keyboardType="numeric" />
                         <TextInput label="Summer Start Month" value={summerStartMonth} onChangeText={setSummerStartMonth} keyboardType="numeric" />
@@ -189,8 +205,8 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         </Text>
                         <TextInput label="Early Spring Start Month" value={earlySpringStartMonth} onChangeText={setEarlySpringStartMonth} keyboardType="numeric" />
                         <TextInput label="Autumn End Month" value={autumnEndMonth} onChangeText={setAutumnEndMonth} keyboardType="numeric" />
-                        <TextInput label="Threshold Wind Speed" value={thresholdWindSpeed} onChangeText={setThresholdWindSpeed} keyboardType="numeric" />
-                        <TextInput label="Threshold Temperature" value={thresholdTemp} onChangeText={setThresholdTemp} keyboardType="numeric" />
+                        <TextInput label="Threshold Wind Speed" value={thresholdWindSpeedLow} onChangeText={setThresholdWindSpeedLow} keyboardType="numeric" />
+                        <TextInput label="Threshold Temperature" value={thresholdTempWarm} onChangeText={setThresholdTempWarm} keyboardType="numeric" />
                         <TextInput label="Humidity Threshold %" value={humidityThreshold} onChangeText={setHumidityThreshold} keyboardType="numeric" />
                         <VerticalSpacer size={12} />
 
@@ -224,19 +240,14 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         <TextInput label="Early Summer End Month" value={earlySummerEndMonth} onChangeText={setEarlySummerEndMonth} keyboardType="numeric" />
                     </View>
                 );
-            case userViewModel.i18n.t('reminder'):
-                return (
-                    <View>
-                        {/* Input fields and content specific to "Potensiell sverm" */}
-                    </View>
-                );
+
             case userViewModel.i18n.t('consider feeding'):
                 return (
                     <View>
                         <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
                             Hive Decrease in Early spring: Adjust Early Spring Parameters
                         </Text>
-                        <TextInput label="Threshold Weight Decrease" value={thresholdWeightDecrease} onChangeText={setThresholdWeightDecrease} keyboardType="numeric" />
+                        <TextInput label="Threshold Weight Decrease" value={thresholdWeightDecreaseEarlySpring} onChangeText={setThresholdWeightDecreaseEarlySpring} keyboardType="numeric" />
                         <TextInput label="Early Spring Start Month" value={earlySpringStartMonth} onChangeText={setEarlySpringStartMonth} keyboardType="numeric" />
                         <TextInput label="Early Spring End Month" value={earlySpringEndMonth} onChangeText={setEarlySpringEndMonth} keyboardType="numeric" />
                         <VerticalSpacer size={12} />
@@ -245,7 +256,7 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
                             Hive Decreases in Autumn: Adjust Autumn Parameters
                         </Text>
-                        <TextInput label="Threshold Weight Decrease" value={thresholdWeightDecrease} onChangeText={setThresholdWeightDecrease} keyboardType="numeric" />
+                        <TextInput label="Threshold Weight Decrease" value={thresholdWeightDecreaseInAutumn} onChangeText={setThresholdWeightDecreaseInAutumn} keyboardType="numeric" />
                         <TextInput label="Autumn Start Month" value={autumnStartMonth} onChangeText={setAutumnStartMonth} keyboardType="numeric" />
                         <TextInput label="Autumn End Month" value={autumnEndMonth} onChangeText={setAutumnEndMonth} keyboardType="numeric" />
                         <VerticalSpacer size={12} />
@@ -262,11 +273,17 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
                             Bee Exits is Consistently Low: Adjust Threshold Exit Parameter
                         </Text>
-                        <TextInput label=" Count for Threshold Exit " value={thresholdExitCount} onChangeText={setThresholdExitCount} keyboardType="numeric" />
+                        <TextInput label=" Count for Threshold Exit " value={thresholdExitCountLow} onChangeText={setThresholdExitCountLow} keyboardType="numeric" />
                         <VerticalSpacer size={12} />
                     </View>
                 );
-            // More cases as per your notification types
+            case userViewModel.i18n.t('reminder'):
+                return (
+                    <View>
+                        {/* TODO: Add functionality*/}
+                    </View>
+                );
+
             default:
                 return <View><Text>Ukjent parameter</Text></View>;
         }

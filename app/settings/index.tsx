@@ -223,7 +223,7 @@ const SettingsScreen = () => {
         bottomSheetModalRef={bottomSheetAddHiveModalRef}
         onClose={() => handleCloseModal()}
         onSave={(newValue) => {
-          // TODO: Implementer logikken for lagring av den nye verdien
+          // TODO: Add functionality for saving values
           console.log("New value for", selectedNotificationType, ":", newValue);
           handleCloseModal();
         }}
