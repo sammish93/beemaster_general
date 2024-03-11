@@ -23,7 +23,7 @@
         "NSPhotoLibraryUsageDescription": "Allow app to have premission to PhotoLibrary to be able to upload images?",
         "NSFileProviderDomainUsageDescription": "Allow this app needs access to the file system to store and manage files?"
       },
-      "googleServicesFile": "./ios/GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +31,7 @@
         "monochromeImage": "./assets/images/adaptive-icon-monochrome.png",
         "backgroundColor": "#ffd669"
       },
-      "googleServicesFile": "./android/app/google-services.json",
+      "googleServicesFile": "./google-services.json",
       "package": "no.hiof.beemastergeneral",
       "permissions": [
         "android.permission.CAMERA",
