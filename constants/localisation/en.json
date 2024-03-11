@@ -145,5 +145,10 @@
   "add weight sensor": "Add weight sensor",
   "add temperature sensor": "Add temperature sensor",
   "add humidity sensor": "Add humidity sensor",
-  "add bee count sensor": "Add bee count sensor"
+  "add bee count sensor": "Add bee count sensor",
+  "notes": "Notes",
+  "add note": "Add note",
+  "add a new note": "Add a new note",
+  "pinned note": "Pinned note",
+  "note text": "Note text"
 }

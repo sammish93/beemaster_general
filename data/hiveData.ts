@@ -1,4 +1,5 @@
 import { HiveModel } from "@/models/hiveModel";
+import { HiveNote } from "@/models/note";
 
 export const hiveListData: HiveModel[] = [
     { id: "hive-1234-1234-abc", name: "Honey Beast", filters: ["fredrikstad"], latLng: {lat: 59.9139, lng: 10.7522} },
@@ -26,3 +27,11 @@ export const sensorData = [
 ];
 
 export const filterData = ["fredrikstad", "oslo", "diseased", "harvested"]
+
+export const notes: HiveNote[] = [
+    { id: 'abc-123', note: 'Hive is lovely. Simply perfect', isSticky: true },
+    { id: 'abc-1234', note: 'Checked on Sunday 15th', isSticky: false },
+    { id: 'abc-12345', note: 'Queen bee born in 2023', isSticky: true },
+    { id: 'abc-123456', note: 'No signs of those pesky varroas - February 2024', isSticky: false },
+    { id: 'abc-1234567', note: 'They\'re here. The varroa have returned. Please tell Jane that I l....', isSticky: false },
+];

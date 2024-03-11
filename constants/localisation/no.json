@@ -145,5 +145,10 @@
   "add weight sensor": "Legg til vektsensor",
   "add temperature sensor": "Legg til temperatursensor",
   "add humidity sensor": "Legg til fuktighetssensor",
-  "add bee count sensor": "Legg til bitellingsensor"
+  "add bee count sensor": "Legg til bitellingsensor",
+  "notes": "Notater",
+  "add note": "Legg til notat",
+  "add a new note": "Legg til et nytt notat",
+  "pinned note": "Festet notat",
+  "note text": "Notat tekst"
 }
