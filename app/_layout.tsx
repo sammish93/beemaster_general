@@ -16,6 +16,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/components/ToastCustom";
 import { Portal } from "react-native-paper";
+import notificationViewModel from "@/viewModels/NotificationViewModel";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -90,7 +91,11 @@ const RootLayout = () => {
   }
 
   return (
-    <Provider userViewModel={userViewModel} hiveViewModel={hiveViewModel}>
+    <Provider
+      userViewModel={userViewModel}
+      hiveViewModel={hiveViewModel}
+      notificationViewModel={notificationViewModel}
+    >
       <PaperProvider theme={paperTheme}>
         <Portal.Host>
           <GestureHandlerRootView style={{ flex: 1 }}>
