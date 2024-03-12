@@ -13,14 +13,20 @@ import { dateTimeFormatter } from "@/domain/dateTimeFormatter";
 interface HiveNoteCardProps {
   item: HiveNote;
   onAddNote: (notes: HiveNote[]) => void;
+  onPress: () => void;
 }
 
-const HiveNoteCard = ({ item, onAddNote }: HiveNoteCardProps) => {
+const HiveNoteCard = ({ item, onAddNote, onPress }: HiveNoteCardProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
 
-  const handleOnPress = () => {
+  const handleOnPressCard = () => {
+    hiveViewModel.addSelectedNote(item);
+    onPress();
+  };
+
+  const handleOnPressSticky = () => {
     item.isSticky = !item.isSticky;
     hiveViewModel.selectedHive.notes = onAddNote([
       ...hiveViewModel.selectedHive.notes,
@@ -30,6 +36,7 @@ const HiveNoteCard = ({ item, onAddNote }: HiveNoteCardProps) => {
   //TODO Swap out with real data.
   return (
     <Card
+      onPress={handleOnPressCard}
       style={{
         backgroundColor: item.isSticky
           ? theme.colors.elevation.level1
@@ -73,7 +80,7 @@ const HiveNoteCard = ({ item, onAddNote }: HiveNoteCardProps) => {
         >
           <FAB
             icon={item.isSticky ? "pin-off" : "pin"}
-            onPress={handleOnPress}
+            onPress={handleOnPressSticky}
             size="small"
             style={{ position: "relative", left: 25 }}
           />

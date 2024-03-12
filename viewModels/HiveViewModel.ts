@@ -1,15 +1,16 @@
-import { userViewModel } from '@/viewModels/UserViewModel';
 import { HiveModel } from "@/models/hiveModel";
 import { action, makeAutoObservable, runInAction } from "mobx";
 import { filterData, hiveListData } from "../data/hiveData"; 
-import { doc, getDoc, collection, getDocs } from "firebase/firestore"; 
-import { db, auth } from "@/firebaseConfig";
+import { HiveNote } from "@/models/note";
+import { auth, db } from "@/firebaseConfig";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 class HiveViewModel {
   hives: HiveModel[] = [];
   filters: string[] = [];
 
     selectedHive?: HiveModel
+    selectedNote?: HiveNote
 
   constructor() {
     makeAutoObservable(this);
@@ -100,6 +101,30 @@ class HiveViewModel {
     getSelectedHive() {
         return this.selectedHive;
     }
+
+    addSelectedNote(note: HiveNote) {
+        this.selectedNote = note;
+    }
+
+    getSelectedNote() {
+        return this.selectedNote;
+    }
+
+    modifyNote(noteObject: HiveNote) {
+        if (this.selectedHive) {
+            const noteIndex = this.selectedHive.notes.findIndex(note => note.id === noteObject.id);
+            if (noteIndex !== -1) {
+                this.selectedHive.notes[noteIndex] = noteObject;
+            }
+        }
+    }
+
+    removeNote(noteId: string) {
+        if (this.selectedHive) {
+            this.selectedHive.notes = this.selectedHive.notes.filter(note => note.id !== noteId);
+        }
+    }
+    
 }
 
 export const hiveViewModel = new HiveViewModel();

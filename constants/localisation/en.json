@@ -150,5 +150,8 @@
   "add note": "Add note",
   "add a new note": "Add a new note",
   "pinned note": "Pinned note",
-  "note text": "Note text"
+  "note text": "Note text",
+  "modify an existing note": "Modify an existing note",
+  "modify note": "Modify note",
+  "delete note": "Delete note"
 }

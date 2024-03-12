@@ -49,6 +49,7 @@ import AddNoteToHiveModal from "@/components/modals/AddNoteToHiveModal";
 import { notes } from "@/data/hiveData";
 import HiveNotes from "@/components/hive/HiveNotes";
 import { HiveNote } from "@/models/note";
+import ModifyNoteModal from "@/components/modals/ModifyNoteModal";
 
 type RootStackParamList = {
   hive: {
@@ -75,6 +76,8 @@ const HiveScreen = (params: HiveScreenProps) => {
   const [addNoteToHiveModalVisible, setAddNoteToHiveModalVisible] =
     useState(false);
   const bottomSheetAddNoteToHiveModalRef = useRef<BottomSheetModal>(null);
+  const [modifyNoteModalVisible, setModifyNoteModalVisible] = useState(false);
+  const bottomSheetModifyNoteModalRef = useRef<BottomSheetModal>(null);
 
   const handleAddNoteToHiveModalSheetPressOpen = useCallback(() => {
     bottomSheetAddNoteToHiveModalRef.current?.present();
@@ -97,6 +100,30 @@ const HiveScreen = (params: HiveScreenProps) => {
       handleAddNoteToHiveModalSheetPressClose();
     } else {
       setAddNoteToHiveModalVisible(false);
+    }
+  };
+
+  const handleModifyNoteModalSheetPressOpen = useCallback(() => {
+    bottomSheetModifyNoteModalRef.current?.present();
+  }, []);
+
+  const handleModifyNoteModalSheetPressClose = useCallback(() => {
+    bottomSheetModifyNoteModalRef.current?.dismiss();
+  }, []);
+
+  const handleOpenModifyNoteModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleModifyNoteModalSheetPressOpen();
+    } else {
+      setModifyNoteModalVisible(true);
+    }
+  };
+
+  const handleCloseModifyNoteModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleModifyNoteModalSheetPressClose();
+    } else {
+      setModifyNoteModalVisible(false);
     }
   };
 
@@ -269,6 +296,7 @@ const HiveScreen = (params: HiveScreenProps) => {
             <HiveNotes
               notes={hiveViewModel.selectedHive.notes}
               sortNotes={sortNotes}
+              onPress={() => handleOpenModifyNoteModal()}
             />
           </View>
         </ScrollView>
@@ -278,6 +306,12 @@ const HiveScreen = (params: HiveScreenProps) => {
         bottomSheetModalRef={bottomSheetAddNoteToHiveModalRef}
         onClose={() => handleCloseAddNoteToHiveModal()}
         onAddNote={sortNotes}
+      />
+      <ModifyNoteModal
+        isOverlayModalVisible={modifyNoteModalVisible}
+        bottomSheetModalRef={bottomSheetModifyNoteModalRef}
+        onClose={() => handleCloseModifyNoteModal()}
+        onModifyNote={sortNotes}
       />
     </SafeAreaView>
   );
