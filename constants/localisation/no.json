@@ -150,5 +150,8 @@
   "add note": "Legg til notat",
   "add a new note": "Legg til et nytt notat",
   "pinned note": "Festet notat",
-  "note text": "Notat tekst"
+  "note text": "Notat tekst",
+  "modify an existing note": "Endre et eksisterende notat",
+  "modify note": "Endre notat",
+  "delete note": "Slett notat"
 }

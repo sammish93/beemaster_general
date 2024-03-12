@@ -99,6 +99,7 @@ const ModalContent = (props: ModalContentProps) => {
             <Text style={theme.fonts.bodyLarge}>{filter}</Text>
           </View>
         ))}
+        <VerticalSpacer size={8} />
         <Button mode="contained" onPress={handleAddNewFilters}>
           {userViewModel.i18n.t("update filters")}
         </Button>

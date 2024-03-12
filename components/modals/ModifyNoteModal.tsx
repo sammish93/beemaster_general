@@ -9,19 +9,19 @@ import { MobXProviderContext } from "mobx-react";
 import { HiveModel } from "@/models/hiveModel";
 import { HiveNote } from "@/models/note";
 
-interface AddNoteToHiveModalProps {
+interface ModifyNoteModalProps {
   isOverlayModalVisible: boolean;
   bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
   onClose: () => void;
-  onAddNote: (notes: HiveNote[]) => void;
+  onModifyNote: (notes: HiveNote[]) => void;
 }
 
 interface ModalContentProps {
   onClose: () => void;
-  onAddNote: (notes: HiveNote[]) => void;
+  onModifyNote: (notes: HiveNote[]) => void;
 }
 
-const AddNoteToHiveModal = (props: AddNoteToHiveModalProps) => {
+const ModifyNoteModal = (props: ModifyNoteModalProps) => {
   return (() => {
     if (Platform.OS === "android" || Platform.OS === "ios") {
       return (
@@ -30,7 +30,10 @@ const AddNoteToHiveModal = (props: AddNoteToHiveModalProps) => {
           bottomSheetModalRef={props.bottomSheetModalRef}
           onClose={props.onClose}
         >
-          <ModalContent onClose={props.onClose} onAddNote={props.onAddNote} />
+          <ModalContent
+            onClose={props.onClose}
+            onModifyNote={props.onModifyNote}
+          />
         </BottomModal>
       );
     } else {
@@ -40,7 +43,10 @@ const AddNoteToHiveModal = (props: AddNoteToHiveModalProps) => {
           bottomSheetModalRef={props.bottomSheetModalRef}
           onClose={props.onClose}
         >
-          <ModalContent onClose={props.onClose} onAddNote={props.onAddNote} />
+          <ModalContent
+            onClose={props.onClose}
+            onModifyNote={props.onModifyNote}
+          />
         </OverlayModal>
       );
     }
@@ -52,24 +58,36 @@ const ModalContent = (props: ModalContentProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const selectedHive = hiveViewModel.getSelectedHive();
-  const [sticky, setSticky] = useState<boolean>(false);
-  const [note, setNote] = useState<string>("");
+  const [sticky, setSticky] = useState<boolean>(
+    hiveViewModel.getSelectedNote().isSticky
+  );
+  const [note, setNote] = useState<string>(
+    hiveViewModel.getSelectedNote().note
+  );
 
-  const handleAddNewNote = () => {
+  const handleDeleteNote = () => {
     //TODO Db writing and modify ID
-    const hive: HiveModel = hiveViewModel.selectedHive;
+    const note: HiveNote = hiveViewModel.selectedNote;
+
+    hiveViewModel.removeNote(note.id);
+
+    props.onModifyNote(hiveViewModel.selectedHive.notes);
+    props.onClose();
+  };
+
+  const handleModifyNote = () => {
+    //TODO Db writing and modify ID
+    const existingNote: HiveNote = hiveViewModel.selectedNote;
     const newNote: HiveNote = {
-      id: "test-abc-123",
+      id: existingNote.id,
       note: note,
       isSticky: sticky,
-      timestamp: new Date(Date.now()),
+      timestamp: existingNote.timestamp,
     };
 
-    hive.notes.push(newNote);
+    hiveViewModel.modifyNote(newNote);
 
-    hiveViewModel.addSelectedHive(hive);
-
-    props.onAddNote(hiveViewModel.selectedHive.notes);
+    props.onModifyNote(hiveViewModel.selectedHive.notes);
     props.onClose();
   };
 
@@ -87,7 +105,7 @@ const ModalContent = (props: ModalContentProps) => {
         }}
       >
         <Text style={{ ...theme.fonts.headlineSmall, flex: 1 }}>
-          {userViewModel.i18n.t("add a new note")}
+          {userViewModel.i18n.t("modify an existing note")}
         </Text>
         <IconButton
           icon="close"
@@ -118,12 +136,27 @@ const ModalContent = (props: ModalContentProps) => {
           onChangeText={setNote}
         />
         <VerticalSpacer size={8} />
-        <Button mode="contained" onPress={handleAddNewNote}>
-          {userViewModel.i18n.t("add note")}
-        </Button>
+        <View style={{ flexDirection: "row" }}>
+          <Button
+            mode="contained"
+            style={{ backgroundColor: theme.colors.error, flex: 1 }}
+            textColor={theme.colors.onError}
+            onPress={handleDeleteNote}
+          >
+            {userViewModel.i18n.t("delete note")}
+          </Button>
+          <HorizontalSpacer size={4} />
+          <Button
+            mode="contained"
+            style={{ flex: 1 }}
+            onPress={handleModifyNote}
+          >
+            {userViewModel.i18n.t("modify note")}
+          </Button>
+        </View>
       </View>
     </>
   );
 };
 
-export default AddNoteToHiveModal;
+export default ModifyNoteModal;

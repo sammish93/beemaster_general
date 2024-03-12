@@ -1,11 +1,13 @@
 import { HiveModel } from "@/models/hiveModel";
 import { makeAutoObservable } from "mobx";
 import { filterData, hiveListData } from "../data/hiveData"; 
+import { HiveNote } from "@/models/note";
 
 class HiveViewModel {
     hives = hiveListData;
     filters = filterData;
     selectedHive?: HiveModel
+    selectedNote?: HiveNote
 
     constructor() {
         makeAutoObservable(this);
@@ -42,6 +44,30 @@ class HiveViewModel {
     getSelectedHive() {
         return this.selectedHive;
     }
+
+    addSelectedNote(note: HiveNote) {
+        this.selectedNote = note;
+    }
+
+    getSelectedNote() {
+        return this.selectedNote;
+    }
+
+    modifyNote(noteObject: HiveNote) {
+        if (this.selectedHive) {
+            const noteIndex = this.selectedHive.notes.findIndex(note => note.id === noteObject.id);
+            if (noteIndex !== -1) {
+                this.selectedHive.notes[noteIndex] = noteObject;
+            }
+        }
+    }
+
+    removeNote(noteId: string) {
+        if (this.selectedHive) {
+            this.selectedHive.notes = this.selectedHive.notes.filter(note => note.id !== noteId);
+        }
+    }
+    
 }
 
 export const hiveViewModel = new HiveViewModel();

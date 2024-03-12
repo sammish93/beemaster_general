@@ -16,9 +16,10 @@ import { HiveNote } from "@/models/note";
 export interface HiveNotesProps {
   notes: HiveNote[];
   sortNotes: (notes: HiveNote[]) => void;
+  onPress: () => void;
 }
 
-const HiveNotes = ({ notes, sortNotes }: HiveNotesProps) => {
+const HiveNotes = ({ notes, sortNotes, onPress }: HiveNotesProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
   const [parentWidth, setParentWidth] = useState(0);
@@ -29,7 +30,7 @@ const HiveNotes = ({ notes, sortNotes }: HiveNotesProps) => {
   }, [hiveViewModel.selectedHive.notes]);
 
   const renderItem = ({ item }: { item: HiveNote }) => (
-    <HiveNoteCard item={item} onAddNote={sortNotes} />
+    <HiveNoteCard item={item} onAddNote={sortNotes} onPress={() => onPress()} />
   );
 
   return (
