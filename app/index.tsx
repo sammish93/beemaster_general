@@ -8,7 +8,7 @@ import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import { ScrollView } from "react-native-virtualized-view";
-import HiveList from "@/components/home/HiveList";
+import HiveList from "@/components/hive/HiveList";
 import AddHiveModal from "@/components/modals/AddHiveModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
@@ -40,6 +40,7 @@ const HomeScreen = () => {
       name: hiveName,
       latLng: { lat: 53.483959, lng: -2.244644 },
       filters: [],
+      notes: [],
     });
     handleCloseAddHiveModal();
   };

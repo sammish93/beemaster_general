@@ -50,7 +50,8 @@ class HiveViewModel {
             id: doc.id,
             name: data.hiveName,
             filters: data.hiveFilter,
-            latLng: data.latLng
+            latLng: data.latLng,
+            notes: []
           } as HiveModel; 
         });
         

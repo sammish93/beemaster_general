@@ -1,7 +1,7 @@
 import { useNavigation } from "expo-router";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { Platform, ScrollView, TouchableOpacity, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -44,6 +44,11 @@ import {
   temperatureSensorData,
   weightSensorData,
 } from "@/data/sensorData";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import AddNoteToHiveModal from "@/components/modals/AddNoteToHiveModal";
+import { notes } from "@/data/hiveData";
+import HiveNotes from "@/components/hive/HiveNotes";
+import { HiveNote } from "@/models/note";
 
 type RootStackParamList = {
   hive: {
@@ -67,6 +72,33 @@ const HiveScreen = (params: HiveScreenProps) => {
   const [data, setData] = useState("");
   const [forecast, setForecast] = useState<WeeklySimpleForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
+  const [addNoteToHiveModalVisible, setAddNoteToHiveModalVisible] =
+    useState(false);
+  const bottomSheetAddNoteToHiveModalRef = useRef<BottomSheetModal>(null);
+
+  const handleAddNoteToHiveModalSheetPressOpen = useCallback(() => {
+    bottomSheetAddNoteToHiveModalRef.current?.present();
+  }, []);
+
+  const handleAddNoteToHiveModalSheetPressClose = useCallback(() => {
+    bottomSheetAddNoteToHiveModalRef.current?.dismiss();
+  }, []);
+
+  const handleOpenAddNoteToHiveModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleAddNoteToHiveModalSheetPressOpen();
+    } else {
+      setAddNoteToHiveModalVisible(true);
+    }
+  };
+
+  const handleCloseAddNoteToHiveModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleAddNoteToHiveModalSheetPressClose();
+    } else {
+      setAddNoteToHiveModalVisible(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,6 +139,17 @@ const HiveScreen = (params: HiveScreenProps) => {
     fetchData();
   }, []);
 
+  // Sorting the notes so that the stickied notes appear on the top. Additionally, sorts based on timestamp
+  // from newest first.
+  const sortNotes = (notes: HiveNote[]) => {
+    return notes?.sort((a: HiveNote, b: HiveNote) => {
+      if (Number(b.isSticky) - Number(a.isSticky) !== 0) {
+        return Number(b.isSticky) - Number(a.isSticky);
+      }
+      return b.timestamp.getTime() - a.timestamp.getTime();
+    });
+  };
+
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />
@@ -115,6 +158,12 @@ const HiveScreen = (params: HiveScreenProps) => {
         canOpenDrawer={!!navigation.openDrawer}
         title={`${userViewModel.i18n.t("hive")} ${hiveId}`}
         trailingIcons={[
+          <TouchableOpacity onPress={handleOpenAddNoteToHiveModal}>
+            <MaterialCommunityIcons
+              style={styles(theme).trailingIcon}
+              name="pencil"
+            />
+          </TouchableOpacity>,
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("/hive/settings", { hiveId: hiveId });
@@ -212,9 +261,24 @@ const HiveScreen = (params: HiveScreenProps) => {
                 Lat: {selectedHive.latLng.lat}, Lng: {selectedHive.latLng.lng}
               </Text>
             </View>
+            <VerticalSpacer size={8} />
+            <Text style={theme.fonts.titleLarge}>
+              {userViewModel.i18n.t("notes")}
+            </Text>
+            <VerticalSpacer size={8} />
+            <HiveNotes
+              notes={hiveViewModel.selectedHive.notes}
+              sortNotes={sortNotes}
+            />
           </View>
         </ScrollView>
       )}
+      <AddNoteToHiveModal
+        isOverlayModalVisible={addNoteToHiveModalVisible}
+        bottomSheetModalRef={bottomSheetAddNoteToHiveModalRef}
+        onClose={() => handleCloseAddNoteToHiveModal()}
+        onAddNote={sortNotes}
+      />
     </SafeAreaView>
   );
 };

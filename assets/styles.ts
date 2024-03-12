@@ -83,49 +83,10 @@ const styles = (theme?: MD3Theme) => {
     overlayModal: {
       alignItems: "center",
     },
-
-    centeredViewGDPR: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-
-
-    },
-    dialogStyle: {
-      width: '75%',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-
-    dialogStyleMobile: {
-      width: screenWidth * 0.9,
-      alignSelf: 'center',
-      maxHeight: screenHeight * 0.7,
-
-
-
-    },
-
     scrollViewContent: {
       paddingHorizontal: 4,
       paddingTop: 6,
-
     },
-
-    titleDialogGDPR: {
-      textAlign: 'center',
-    },
-    listItem: {
-      marginTop: 8,
-      width: '100%',
-      flexShrink: 1,
-
-      color: dynamicTheme.colors.onSecondaryContainer,
-      ...dynamicTheme.fonts.bodyMedium,
-    },
-
-
     overlayContainer: {
       backgroundColor: dynamicTheme.colors.primaryContainer,
       alignContent: "center",
