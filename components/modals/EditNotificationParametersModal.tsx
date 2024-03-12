@@ -43,6 +43,7 @@ const NotificationModal = (props: NotificationModalProps) => {
 
     );
 };
+export default NotificationModal;
 
 interface ModalContentProps extends NotificationModalProps {
     onSave: (newValue: any) => void;
@@ -444,4 +445,4 @@ const ModalContent = (props: ModalContentProps) => {
     );
 };
 
-export default NotificationModal;
+
