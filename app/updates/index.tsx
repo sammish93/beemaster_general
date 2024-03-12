@@ -14,6 +14,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { ScrollView } from "react-native-gesture-handler";
 import ExampleModal from "@/components/modals/ExampleModal";
+import NotificationList from "@/components/notification/NotificationList";
 
 const UpdatesScreen = () => {
   const theme = useTheme();
@@ -31,15 +32,10 @@ const UpdatesScreen = () => {
       />
       <ScrollView>
         <View style={styles(theme).main}>
-          <Text style={theme.fonts.bodyMedium}>
-            {notificationViewModel.notifications[0].message}
-          </Text>
-          <Text style={theme.fonts.bodyMedium}>
-            {notificationViewModel.notifications[1].message}
-          </Text>
-          <Text style={theme.fonts.bodyMedium}>
-            {notificationViewModel.notifications[2].message}
-          </Text>
+          <NotificationList
+            navigation={navigation}
+            notifications={notificationViewModel.notifications}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
