@@ -7,7 +7,7 @@ import { PrecipitationMeasurement, TemperatureMeasurement, WeightMeasurement, Wi
 import { availableLanguages, availableCountries } from '@/constants/LocaleEnums';
 import { Platform } from "react-native";
 import {auth, db} from "@/firebaseConfig";
-import { getAuth, signInWithPopup,GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithCredential, onAuthStateChanged} from "firebase/auth";
+import { signOut, signInWithPopup,GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithCredential, onAuthStateChanged} from "firebase/auth";
 import { WEB_CLIENT_ID} from '@env';
 class UserViewModel {
     constructor() {
@@ -82,6 +82,9 @@ class UserViewModel {
       
     @action signInWithGoogleWeb = async () => {
       const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: 'select_account' 
+    });
         try {
              console.log("signin with web")
             const result = await signInWithPopup(auth, provider);
@@ -98,6 +101,7 @@ class UserViewModel {
           webClientId: WEB_CLIENT_ID})
           
           try {
+            await GoogleSignin.signOut()
             const { idToken }      = await GoogleSignin.signIn();
             const googleCredential = GoogleAuthProvider.credential(idToken);
             const result           = await signInWithCredential(auth, googleCredential);
@@ -174,6 +178,20 @@ class UserViewModel {
     }
 
     //TODO logout and auth connect
+
+    @action logout = async () => {
+      try {
+
+        await signOut(auth);
+        console.log("user signed out")
+        
+      } catch (error) {
+        console.error("Error signing out: ", error);
+        
+      }
+    }
+
+    
       // Clears all the data in this view model.
       // Useful for when a user logs out.
     @action public clear = (): void => {

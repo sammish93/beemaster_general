@@ -136,7 +136,7 @@ const SettingsScreen = () => {
               style={{ width: 150, margin: 4 }}
               mode="contained"
               onPress={() => {
-                userViewModel.clear();
+                userViewModel.logout()
               }}
             >
               {userViewModel.i18n.t('logout')}
