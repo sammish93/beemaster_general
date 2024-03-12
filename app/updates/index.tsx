@@ -19,6 +19,7 @@ const UpdatesScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
+  const { notificationViewModel } = useContext(MobXProviderContext);
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -28,10 +29,19 @@ const UpdatesScreen = () => {
         canOpenDrawer={!!navigation.openDrawer}
         title={userViewModel.i18n.t("updates")}
       />
-      <View style={styles(theme).main}>
-        <Text style={theme.fonts.titleLarge}>Updates</Text>
-        <ExampleModal />
-      </View>
+      <ScrollView>
+        <View style={styles(theme).main}>
+          <Text style={theme.fonts.bodyMedium}>
+            {notificationViewModel.notifications[0].message}
+          </Text>
+          <Text style={theme.fonts.bodyMedium}>
+            {notificationViewModel.notifications[1].message}
+          </Text>
+          <Text style={theme.fonts.bodyMedium}>
+            {notificationViewModel.notifications[2].message}
+          </Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

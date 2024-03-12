@@ -67,7 +67,6 @@ class HiveViewModel {
             this.selectedHive.notes = this.selectedHive.notes.filter(note => note.id !== noteId);
         }
     }
-    
 }
 
 export const hiveViewModel = new HiveViewModel();
