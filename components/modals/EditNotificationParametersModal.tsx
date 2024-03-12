@@ -1,11 +1,14 @@
-import { useContext, useState } from "react";
-import { useTheme } from "react-native-paper";
-import { Button, TextInput, IconButton, Text } from "react-native-paper";
+import React, { useContext, useState } from "react";
+import { useTheme, Button, TextInput, IconButton, Text, Modal, Portal } from "react-native-paper";
 import { Platform, View } from "react-native";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { MobXProviderContext } from "mobx-react";
+import DatePickerModal from "./DatePickerModal";
+import { Calendar } from 'react-native-calendars';
 import { BottomModal, OverlayModal } from "./Modals";
 import { VerticalSpacer } from "../Spacers";
-import { MobXProviderContext } from "mobx-react";
+
+
 
 interface NotificationModalProps {
     isOverlayModalVisible: boolean;
@@ -15,44 +18,39 @@ interface NotificationModalProps {
     parameterName: string;
 }
 
-
-
 const NotificationModal = (props: NotificationModalProps) => {
-    return (() => {
-        if (Platform.OS === "android" || Platform.OS === "ios") {
-            return (
+
+    return (
+        <>
+            {Platform.OS === "android" || Platform.OS === "ios" ? (
                 <BottomModal
                     isOverlayModalVisible={props.isOverlayModalVisible}
                     bottomSheetModalRef={props.bottomSheetModalRef}
-                    onClose={props.onClose}
-                >
-                    <ModalContent onClose={props.onClose}
-                        onSave={props.onSave}
-                        parameterName={props.parameterName} />
+                    onClose={props.onClose}>
+                    <ModalContent {...props} />
                 </BottomModal>
-            );
-        } else {
-            return (
+
+            ) : (
                 <OverlayModal
                     isOverlayModalVisible={props.isOverlayModalVisible}
                     bottomSheetModalRef={props.bottomSheetModalRef}
                     onClose={props.onClose}
                 >
-                    <ModalContent parameterName={props.parameterName}
-                        onClose={props.onClose}
-                        onSave={props.onSave} />
+                    <ModalContent {...props} />
                 </OverlayModal>
-            );
-        }
-    })();
+            )}
+        </>
+
+    );
 };
-interface ModalContentProps {
-    onClose: () => void;
-    onSave: (newValue: string) => void;
-    parameterName: string;
+
+interface ModalContentProps extends NotificationModalProps {
+    onSave: (newValue: any) => void;
 }
 
-const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => void; parameterName: string }) => {
+
+
+const ModalContent = (props: ModalContentProps) => {
     const { onClose, onSave, parameterName } = props;
     const theme = useTheme();
     const userViewModel = useContext(MobXProviderContext).userViewModel;
@@ -89,9 +87,6 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
     //Summer
     const [summerStartMonth, setSummerStartMonth] = useState(`${userViewModel.summerStartMonth}`);
     const [earlySummerEndMonth, setEarlySummerEndMonth] = useState(`${userViewModel.earlySummerEndMonth}`);
-
-
-
 
     const handleSave = () => {
 
@@ -147,7 +142,91 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
         props.onClose();
     };
 
+
+    //One month
+    const [datePickerVisible, setDatePickerVisible] = useState(false);
+    const [activeField, setActiveField] = useState('');
+
+    const onConfirm = (selectedDate: Date) => {
+        const selectedMonth = selectedDate.getMonth() + 1;
+        switch (activeField) {
+            case 'earlyAutumnMonth':
+                setEarlyAutumnMonth(selectedMonth.toString());
+                break;
+            case 'summerStartMonth':
+                setSummerStartMonth(selectedMonth.toString());
+                break;
+            case 'earlySpringStartMonth':
+                setEarlySpringStartMonth(selectedMonth.toString());
+                break;
+            case 'autumnEndMonth':
+                setAutumnEndMonth(selectedMonth.toString());
+                break;
+            case 'lateSpringStartMonth':
+                setLateSpringStartMonth(selectedMonth.toString());
+                break;
+            case 'earlySummerEndMonth':
+                setEarlySummerEndMonth(selectedMonth.toString());
+                break;
+            case 'earlySpringEndMonth':
+                setEarlySpringEndMonth(selectedMonth.toString());
+                break;
+            case 'autumnStartMonth':
+                setAutumnStartMonth(selectedMonth.toString());
+                break;
+            case 'autumnStartMonth':
+                setAutumnStartMonth(selectedMonth.toString());
+                break;
+
+            default:
+                console.log('unknown error');
+        }
+        setDatePickerVisible(false);
+    };
+
+
+    //More than one month
+    const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
+    const [markedDates, setMarkedDates] = useState({});
+    const [selectedMonths, setSelectedMonths] = useState({});
+    const [activeField2, setActiveField2] = useState('');
+
+    const onDayPress = (day: { dateString: string; }) => {
+        const newMarkedDates = { ...markedDates, [day.dateString]: { selected: true } };
+        setMarkedDates(newMarkedDates);
+    };
+
+    const openCalendarModal = (field: string) => {
+        setActiveField2(field);
+        setCalendarModalVisible(true);
+    };
+    const onConfirmSelection = () => {
+
+        const months = Object.keys(markedDates).map(date => new Date(date).getMonth() + 1);
+        const monthsString = months.join(',');
+
+        setSelectedMonths(prev => ({ ...prev, [activeField]: monthsString }));
+
+
+        switch (activeField2) {
+            case 'autumnMonths':
+                setAutumnMonths(monthsString);
+                break;
+            case 'earlyWinterMonths':
+                setEarlyWinterMonths(monthsString);
+                break;
+            case 'earlySpringMonths':
+                setEarlySpringMonths(monthsString);
+                break;
+
+        }
+        setCalendarModalVisible(false)
+    };
+
+
     // Function to render content based on parameterName
+    //TODO:Add Translation
+
     const renderContent = () => {
         switch (parameterName) {
             case userViewModel.i18n.t('weather'):
@@ -163,9 +242,19 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                             'snow' is forecasted during specific seasons
                         </Text>
                         <TextInput label="Autumn Months" value={autumnMonths} onChangeText={setAutumnMonths} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => openCalendarModal('autumnMonths')}>
+                            Set Autumn Months
+                        </Button>
                         <TextInput label="Early Winter Months" value={earlyWinterMonths} onChangeText={setEarlyWinterMonths} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => openCalendarModal('earlyWinterMonths')}>
+                            Set Autumn Months
+                        </Button>
                         <TextInput label="Early Spring Months" value={earlySpringMonths} onChangeText={setEarlySpringMonths} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => openCalendarModal('earlySpringMonths')}>
+                            Set Autumn Months
+                        </Button>
                         <VerticalSpacer size={12} />
+
                     </View>
                 );
             case userViewModel.i18n.t('potential swarm'):
@@ -174,12 +263,12 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
                             Hive weight decreases: Threshold Parameter
                         </Text>
-                        <TextInput label="thresholdWeightDecrease" value={thresholdWeightDecreaseSwarm} onChangeText={setThresholdWeightDecreaseSwarm} keyboardType="numeric" />
+                        <TextInput label="Threshold Weight Decrease" value={thresholdWeightDecreaseSwarm} onChangeText={setThresholdWeightDecreaseSwarm} keyboardType="numeric" />
 
                         <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
                             Number of bees have been exiting the hive: Threshold Parameter
                         </Text>
-                        <TextInput label="thresholdExitCount" value={thresholdExitCountHigh} onChangeText={setThresholdExitCountHigh} keyboardType="numeric" />
+                        <TextInput label="Threshold Exit Count" value={thresholdExitCountHigh} onChangeText={setThresholdExitCountHigh} keyboardType="numeric" />
 
                     </View>
                 );
@@ -193,7 +282,10 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         <TextInput label="Threshold Temperature" value={thresholdTempWarm} onChangeText={setThresholdTempWarm} keyboardType="numeric" />
                         <TextInput label="Humidity Threshold %" value={humidityThreshold} onChangeText={setHumidityThreshold} keyboardType="numeric" />
                         <TextInput label="Early Autumn Month" value={earlyAutumnMonth} onChangeText={setEarlyAutumnMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('earlyAutumnMonth'); setDatePickerVisible(true); }}>Set Early Autumn Month</Button>
+
                         <TextInput label="Summer Start Month" value={summerStartMonth} onChangeText={setSummerStartMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('summerStartMonth'); setDatePickerVisible(true); }}>Set Summer Start Month</Button>
 
                         <VerticalSpacer size={12} />
                     </View>
@@ -205,7 +297,11 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                             Warm and/or Dry Days With Low Wind Speed between early spring and late autumn
                         </Text>
                         <TextInput label="Early Spring Start Month" value={earlySpringStartMonth} onChangeText={setEarlySpringStartMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('earlySpringStartMonth'); setDatePickerVisible(true); }}>Set Early Spring Start Month</Button>
+
                         <TextInput label="Autumn End Month" value={autumnEndMonth} onChangeText={setAutumnEndMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('autumnEndMonth'); setDatePickerVisible(true); }}>Set Autumn End Month</Button>
+
                         <TextInput label="Threshold Wind Speed" value={thresholdWindSpeedLow} onChangeText={setThresholdWindSpeedLow} keyboardType="numeric" />
                         <TextInput label="Threshold Temperature" value={thresholdTempWarm} onChangeText={setThresholdTempWarm} keyboardType="numeric" />
                         <TextInput label="Humidity Threshold %" value={humidityThreshold} onChangeText={setHumidityThreshold} keyboardType="numeric" />
@@ -238,7 +334,11 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                             The risk of swarming: Threshold Parameter for late spring and early summer
                         </Text>
                         <TextInput label="Late Spring Start Month" value={lateSpringStartMonth} onChangeText={setLateSpringStartMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('lateSpringStartMonth'); setDatePickerVisible(true); }}>Set Late Spring Start Month</Button>
+
                         <TextInput label="Early Summer End Month" value={earlySummerEndMonth} onChangeText={setEarlySummerEndMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('earlySummerEndMonth'); setDatePickerVisible(true); }}>Set Early Summer End Month</Button>
+
                     </View>
                 );
 
@@ -250,7 +350,11 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         </Text>
                         <TextInput label="Threshold Weight Decrease" value={thresholdWeightDecreaseEarlySpring} onChangeText={setThresholdWeightDecreaseEarlySpring} keyboardType="numeric" />
                         <TextInput label="Early Spring Start Month" value={earlySpringStartMonth} onChangeText={setEarlySpringStartMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('earlySpringStartMonth'); setDatePickerVisible(true); }}>Set Early Spring Start Month</Button>
+
                         <TextInput label="Early Spring End Month" value={earlySpringEndMonth} onChangeText={setEarlySpringEndMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('earlySpringEndMonth'); setDatePickerVisible(true); }}>Set Early Spring End Month</Button>
+
                         <VerticalSpacer size={12} />
 
 
@@ -259,7 +363,11 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                         </Text>
                         <TextInput label="Threshold Weight Decrease" value={thresholdWeightDecreaseInAutumn} onChangeText={setThresholdWeightDecreaseInAutumn} keyboardType="numeric" />
                         <TextInput label="Autumn Start Month" value={autumnStartMonth} onChangeText={setAutumnStartMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('autumnStartMonth'); setDatePickerVisible(true); }}>Set Autumn Start Month</Button>
+
                         <TextInput label="Autumn End Month" value={autumnEndMonth} onChangeText={setAutumnEndMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('autumnEndMonth'); setDatePickerVisible(true); }}>Set Autumn End Month</Button>
+
                         <VerticalSpacer size={12} />
 
 
@@ -267,7 +375,11 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                             Snow Forecast in Autumn: Adjust Autumn Parameters
                         </Text>
                         <TextInput label="Autumn Start Month" value={autumnStartMonth} onChangeText={setAutumnStartMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('autumnStartMonth'); setDatePickerVisible(true); }}>Set Autumn Start Month</Button>
+
                         <TextInput label="Autumn End Month" value={autumnEndMonth} onChangeText={setAutumnEndMonth} keyboardType="numeric" />
+                        <Button mode="contained" onPress={() => { setActiveField('autumnEndMonth'); setDatePickerVisible(true); }}>Set Autumn End Month</Button>
+
                         <VerticalSpacer size={12} />
 
 
@@ -281,7 +393,8 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
             case userViewModel.i18n.t('reminder'):
                 return (
                     <View>
-                        {/* TODO: Add functionality*/}
+                        {/*TODO:Add functionality */}
+
                     </View>
                 );
 
@@ -289,6 +402,9 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                 return <View><Text>Ukjent parameter</Text></View>;
         }
     };
+
+
+
 
     return (
         <>
@@ -304,8 +420,21 @@ const ModalContent = (props: ModalContentProps & { onSave: (newValue: any) => vo
                     onPress={props.onClose}
                 />
             </View>
-
             {renderContent()}
+            <VerticalSpacer size={12} />
+            {datePickerVisible && (
+                <DatePickerModal onConfirm={onConfirm} />
+            )}
+            <Portal>
+                <Modal visible={isCalendarModalVisible} onDismiss={() => setCalendarModalVisible(false)}>
+                    <Calendar
+                        onDayPress={onDayPress}
+                        markedDates={markedDates}
+                        markingType={'multi-dot'}
+                    />
+                    <Button mode="contained" onPress={onConfirmSelection}>Confirm</Button>
+                </Modal>
+            </Portal>
             <VerticalSpacer size={12} />
             <Button mode="contained" onPress={handleSave}>
                 {userViewModel.i18n.t("save")}

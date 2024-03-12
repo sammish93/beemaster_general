@@ -224,8 +224,8 @@ const SettingsScreen = () => {
         bottomSheetModalRef={bottomSheetAddHiveModalRef}
         onClose={() => handleCloseModal()}
         onSave={(newValue) => {
-          // TODO: Add functionality for saving values
-          console.log("New value for", selectedNotificationType, ":", newValue);
+          // TODO: Add functionality for saving values to database
+          console.log("New value for", selectedNotificationType, " saved to database:", newValue);
           handleCloseModal();
         }}
         parameterName={selectedNotificationType}

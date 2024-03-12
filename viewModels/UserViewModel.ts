@@ -45,33 +45,31 @@ class UserViewModel {
     @observable thresholdWeightDecreaseInAutumn: number = 0;
     @observable thresholdWeightDecreaseEarlySpring: number = 0;
     @observable thresholdWeightDecreaseSwarm: number = 0;
-    @observable earlySpringStartMonth: number = 0;
-    @observable earlySpringEndMonth: number = 0;
-    @observable autumnStartMonth: number = 0;
-    @observable autumnEndMonth: number = 0;
-
     @observable thresholdExitCountHigh: number = 0;
     @observable thresholdExitCountLow: number = 0;
-
-
     @observable thresholdTempWarm: number = 0;
     @observable thresholdWindSpeedStrong: number = 0;
     @observable thresholdWindSpeedLow: number = 0;
+    @observable thresholdWeightIncrease: number = 0;
+    @observable thresholdMaxTempChange: number = 0;
+    @observable thresholdMaxHumidityChange: number = 0;
+    @observable humidityThreshold: number = 0;
 
     @observable autumnMonths: number[] = [];
     @observable summerStartMonth: number = 0;
     @observable earlyWinterMonths: number[] = [];
     @observable earlySpringMonths: number[] = [];
-    @observable humidityThreshold: number = 0;
     @observable earlyAutumnMonth: number = 0;
-
-    @observable thresholdWeightIncrease: number = 0;
-
-    @observable thresholdMaxTempChange: number = 0;
-    @observable thresholdMaxHumidityChange: number = 0;
-
     @observable lateSpringStartMonth: number = 0;
     @observable earlySummerEndMonth: number = 0;
+    @observable earlySpringStartMonth: number = 0;
+    @observable earlySpringEndMonth: number = 0;
+    @observable autumnStartMonth: number = 0;
+    @observable autumnEndMonth: number = 0;
+
+
+
+
 
 
 
