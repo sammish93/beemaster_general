@@ -1,13 +1,10 @@
-import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { NotificationType } from "@/constants/Notifications";
 
-export interface NotificationModalProps {
-    isOverlayModalVisible: boolean;
-    bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
-    onClose: () => void;
-    onSave: (newValue: string) => void;
-    parameterName: string;
-}
-
-export interface ModalContentProps extends NotificationModalProps {
-    onSave: (newValue: any) => void;
+export interface HiveNotification {
+    id: string;
+    hiveId: string;
+    notificationType: NotificationType;
+    timestamp: Date;
+    isRead: boolean;
+    message: string;
 }

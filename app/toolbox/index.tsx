@@ -12,7 +12,6 @@ const ToolboxScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-  const { exampleViewModel } = useContext(MobXProviderContext);
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -24,9 +23,6 @@ const ToolboxScreen = () => {
       />
       <View style={styles(theme).main}>
         <Text style={theme.fonts.titleLarge}>Toolbox</Text>
-        <Text style={theme.fonts.bodyLarge}>
-          String from View Model with a state: {exampleViewModel.testString}
-        </Text>
         <Button
           mode="contained"
           onPress={() => {

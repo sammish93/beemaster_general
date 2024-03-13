@@ -173,62 +173,10 @@ const ModalContent = (props: ModalContentProps) => {
         <Text style={theme.fonts.bodyLarge}>
           This feature will include much more.
         </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
         <VerticalSpacer size={12} />
         <Button mode="contained" onPress={handleAddNewHive}>
           {userViewModel.i18n.t("add hive")}
         </Button>
-        {/*//TODO Add more functionality to add hive.*/}
       </View>
     </>
   );

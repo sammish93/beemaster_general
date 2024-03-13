@@ -51,8 +51,9 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-  const { exampleViewModel } = useContext(MobXProviderContext);
+  const { hiveViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
+  const selectedHive = hiveViewModel.getSelectedHive();
 
   const [data, setData] = useState("");
   const [detailedForecast, setDetailedForecast] =
@@ -63,7 +64,7 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
     const fetchData = async () => {
       try {
         setLoadingScreen(true);
-        const data = await fetchWeatherForecast({ lat: 59.9139, lng: 10.7522 });
+        const data = await fetchWeatherForecast(selectedHive.latLng);
 
         const weeklyDetailedForecast = deserialiseWeeklyDetailedForecast(
           data,

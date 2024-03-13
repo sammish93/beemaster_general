@@ -30,7 +30,7 @@ yarn-error.*
 
 # local env files
 .env*.local
-
+.env
 # typescript
 *.tsbuildinfo
 
@@ -95,3 +95,12 @@ yarn-error.*
 metro-config.js
 
 .env
+
+/android/app/google-services.json
+/google-services.json
+/GoogleService-Info.plist
+/ios/GoogleService-Info.plist
+
+
+ios/beemastergeneral/GoogleService-Info.plist
+./GoogleService-Info.plist

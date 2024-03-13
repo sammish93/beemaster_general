@@ -1,4 +1,4 @@
-package com.anonymous.beemaster_general
+package no.hiof.beemastergeneral
 
 import android.os.Build
 import android.os.Bundle

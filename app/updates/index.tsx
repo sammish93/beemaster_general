@@ -14,11 +14,13 @@ import {
 } from "@gorhom/bottom-sheet";
 import { ScrollView } from "react-native-gesture-handler";
 import ExampleModal from "@/components/modals/ExampleModal";
+import NotificationList from "@/components/notification/NotificationList";
 
 const UpdatesScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
+  const { notificationViewModel } = useContext(MobXProviderContext);
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -28,10 +30,14 @@ const UpdatesScreen = () => {
         canOpenDrawer={!!navigation.openDrawer}
         title={userViewModel.i18n.t("updates")}
       />
-      <View style={styles(theme).main}>
-        <Text style={theme.fonts.titleLarge}>Updates</Text>
-        <ExampleModal />
-      </View>
+      <ScrollView>
+        <View style={styles(theme).main}>
+          <NotificationList
+            navigation={navigation}
+            notifications={notificationViewModel.notifications}
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

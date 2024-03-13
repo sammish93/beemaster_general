@@ -4,6 +4,7 @@
     "jsx": "react-native",
     "experimentalDecorators": true,
     "strict": true,
+    "module": "esnext",
     "paths": {
       "@/*": [
         "./*"

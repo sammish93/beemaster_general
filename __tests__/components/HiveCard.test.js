@@ -1,4 +1,4 @@
-import HiveCard from "@/components/home/HiveCard";
+import HiveCard from "@/components/hive/HiveCard";
 import { render } from "@testing-library/react-native";
 import * as React from "react";
 import { customLightTheme, customFontConfig } from "@/assets/themes";

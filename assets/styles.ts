@@ -83,49 +83,10 @@ const styles = (theme?: MD3Theme) => {
     overlayModal: {
       alignItems: "center",
     },
-
-    centeredViewGDPR: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-
-
-    },
-    dialogStyle: {
-      width: '75%',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-
-    dialogStyleMobile: {
-      width: screenWidth * 0.9,
-      alignSelf: 'center',
-      maxHeight: screenHeight * 0.7,
-
-
-
-    },
-
     scrollViewContent: {
       paddingHorizontal: 4,
       paddingTop: 6,
-
     },
-
-    titleDialogGDPR: {
-      textAlign: 'center',
-    },
-    listItem: {
-      marginTop: 8,
-      width: '100%',
-      flexShrink: 1,
-
-      color: dynamicTheme.colors.onSecondaryContainer,
-      ...dynamicTheme.fonts.bodyMedium,
-    },
-
-
     overlayContainer: {
       backgroundColor: dynamicTheme.colors.primaryContainer,
       alignContent: "center",
@@ -183,18 +144,19 @@ const styles = (theme?: MD3Theme) => {
       alignItems: "center",
       maxWidth: "100%",
       flex: 1,
-      gap: 4
     },
     weatherTopRow: {
       flexDirection: "row",
       alignItems: "center",
-      gap: 4
+      gap: 2
     },
     settingsButton: {
       width: Platform.OS === 'web' ? '50%' : screenWidth - 52,
       margin: 4,
       alignSelf: 'center'
     },
+
+
   });
 };
 

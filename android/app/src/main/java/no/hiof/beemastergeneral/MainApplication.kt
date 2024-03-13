@@ -1,4 +1,4 @@
-package com.anonymous.beemaster_general
+package no.hiof.beemastergeneral
 
 import android.app.Application
 import android.content.res.Configuration

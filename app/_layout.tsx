@@ -4,7 +4,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { MD3Theme, PaperProvider } from "react-native-paper";
 import { Provider, observer } from "mobx-react";
-import exampleViewModel from "@/viewModels/ExampleViewModel";
 import userViewModel from "@/viewModels/UserViewModel";
 import { hiveViewModel } from "@/viewModels/HiveViewModel";
 import { DrawerScreen } from "@/components/layouts/drawer";
@@ -17,6 +16,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/components/ToastCustom";
 import { Portal } from "react-native-paper";
+import notificationViewModel from "@/viewModels/NotificationViewModel";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -92,9 +92,9 @@ const RootLayout = () => {
 
   return (
     <Provider
-      exampleViewModel={exampleViewModel}
       userViewModel={userViewModel}
       hiveViewModel={hiveViewModel}
+      notificationViewModel={notificationViewModel}
     >
       <PaperProvider theme={paperTheme}>
         <Portal.Host>

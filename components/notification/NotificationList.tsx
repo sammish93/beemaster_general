@@ -6,49 +6,30 @@ import { MobXProviderContext } from "mobx-react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { TouchableRipple } from "react-native-paper";
 import { HiveModel } from "@/models/hiveModel";
-import HiveCard from "./HiveCard";
+import HiveCard from "@/components/hive/HiveCard";
 import { customLightTheme } from "@/assets/themes";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import UserViewModel from "@/viewModels/UserViewModel";
+import { HiveNotification } from "@/models/notification";
+import NotificationCard from "./NotificationCard";
 
-export interface HiveListProps {
-  isListView: boolean;
+export interface NotificationListProps {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
-  hives: HiveModel[];
+  notifications: HiveNotification[];
 }
 
-const HiveList = ({ isListView, navigation, hives }: HiveListProps) => {
+const NotificationList = ({
+  navigation,
+  notifications,
+}: NotificationListProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
   const [parentWidth, setParentWidth] = useState(0);
   const screenWidth = Dimensions.get("window").width;
 
-  // Returns the number of columns to display. This ensures that the grid is responsive.
-  const numColumns = useMemo(() => {
-    // Ensure we don't divide by zero
-    if (parentWidth === 0) return 1;
-
-    return Math.floor(parentWidth / (isListView ? 250 : 125));
-  }, [parentWidth]);
-
-  // Returns the amount of items in the last row
-  const itemsInLastRow = useMemo(() => {
-    const totalItems = hives.length;
-    const remainder = totalItems % numColumns;
-
-    return remainder === 0 ? 0 : remainder;
-  }, [hives.length, numColumns]);
-
   //TODO Modify onPress
-  const renderItem = ({ item }: { item: HiveModel }) => (
-    <HiveCard
-      item={item}
-      isDetailedView={isListView}
-      onPress={() => navigation.navigate("/hive/index", { hiveId: item.id })}
-      maxWidth={
-        numColumns > 1 ? parentWidth / numColumns - itemsInLastRow * 8 : "100%"
-      }
-    />
+  const renderItem = ({ item }: { item: HiveNotification }) => (
+    <NotificationCard item={item} navigation={navigation} />
   );
 
   return (
@@ -60,14 +41,13 @@ const HiveList = ({ isListView, navigation, hives }: HiveListProps) => {
       }}
     >
       <FlatList
-        data={hives}
+        data={notifications}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        key={`flatList-${numColumns}-columns`}
-        numColumns={numColumns}
+        numColumns={1}
         ListEmptyComponent={
           <Text style={theme.fonts.bodyLarge}>
-            {UserViewModel.i18n.t("no hives have been registered")}
+            No new notifications
             {/*TODO Refresh Button */}
           </Text>
         }
@@ -76,4 +56,4 @@ const HiveList = ({ isListView, navigation, hives }: HiveListProps) => {
   );
 };
 
-export default HiveList;
+export default NotificationList;

@@ -8,7 +8,7 @@ import styles from "@/assets/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import { ScrollView } from "react-native-virtualized-view";
-import HiveList from "@/components/home/HiveList";
+import HiveList from "@/components/hive/HiveList";
 import AddHiveModal from "@/components/modals/AddHiveModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
@@ -21,7 +21,6 @@ const HomeScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-  const { exampleViewModel } = useContext(MobXProviderContext);
   const [AddHiveModalVisible, setAddHiveModalVisible] = useState(false);
   const bottomSheetAddHiveModalRef = useRef<BottomSheetModal>(null);
   const [AddFilterModalVisible, setAddFilterModalVisible] = useState(false);
@@ -36,7 +35,13 @@ const HomeScreen = () => {
 
   const handleAddHive = (hiveName: string) => {
     const newHiveId = `hive-${Date.now()}`; // TODO Temporarly solution.
-    hiveViewModel.addHive({ id: newHiveId, name: hiveName });
+    hiveViewModel.addHive({
+      id: newHiveId,
+      name: hiveName,
+      latLng: { lat: 53.483959, lng: -2.244644 },
+      filters: [],
+      notes: [],
+    });
     handleCloseAddHiveModal();
   };
 
@@ -105,6 +110,7 @@ const HomeScreen = () => {
     setFilterList([]);
   };
 
+  // Refreshes the GUI to show only the hives that contain the current filter criterium.
   useEffect(() => {
     if (filterList.length === 0) {
       setFilteredHiveList(hiveViewModel.hives);
@@ -114,8 +120,25 @@ const HomeScreen = () => {
       );
       setFilteredHiveList(filtered);
     }
-  }, [filterList]);
+  }, [ hiveViewModel.hives, filterList]);
 
+  // In the case that a hive is deleted then the GUI is refreshed and all filters are cleared.
+  useEffect(() => {
+    if (filteredHiveList.length !== hiveViewModel.numberOfHives()) {
+      setFilteredHiveList(hiveViewModel.hives);
+      handleClearFilterList();
+    }
+  }, [hiveViewModel.hives]);
+
+
+  useEffect(() => {
+    if (userViewModel.authInitialized) {
+      console.log(userViewModel.authInitialized)
+      
+      hiveViewModel.fetchHives();
+      hiveViewModel.fetchFilters();
+    }
+  }, [userViewModel.authInitialized]); 
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />

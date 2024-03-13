@@ -200,7 +200,7 @@ const SettingsScreen = () => {
               style={styles(theme).settingsButton}
               mode="contained"
               onPress={() => {
-                userViewModel.clear();
+                userViewModel.logout()
               }}
             >
               {userViewModel.i18n.t('logout')}

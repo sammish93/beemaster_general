@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "beemaster_general",
-    "slug": "beemaster_general",
+    "slug": "beemaster-general",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
@@ -12,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffd669"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "no.hiof.beemastergeneral.ios",
@@ -22,25 +20,27 @@
         "NSBluetoothAlwaysUsageDescription": "Allow app to run Bluetooth?",
         "NSCameraUsageDescription": "Allow this app to have premission to your camera to be able to take pictures?",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow this app to acsess your location?",
-        "NSPhotoLibraryUsageDescription": "Allow app to have premission to PhotoLibrary to be able to upload images?",
-        "NSFileProviderDomainUsageDescription": "Allow this app needs access to the file system to store and manage files?"
+        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos.",
+        "NSFileProviderDomainUsageDescription": "Allow this app needs access to the file system to store and manage files?",
+        "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos."
       },
-      "googleServicesFile": "./ios/GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "monochromeImage": "./assets/images/adaptive-icon-monochromeImage.png",
+        "monochromeImage": "./assets/images/adaptive-icon-monochrome.png",
         "backgroundColor": "#ffd669"
       },
-      "googleServicesFile": "./android/app/google-services.json",
+      "googleServicesFile": "./google-services.json",
       "package": "no.hiof.beemastergeneral",
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.BLUETOOTH",
         "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.WRITE_EXTERNAL_STORAGE"
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION"
       ]
     },
     "web": {
@@ -59,6 +59,14 @@
           "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
           "isAccessMediaLocationEnabled": true
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
       ]
     ],
     "experiments": {
@@ -69,8 +77,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "09bb6fb4-caca-4358-b2af-9602c9d36a05"
+        "projectId": "3a51118d-d727-4962-83c9-efb621bcd2ae"
       }
-    }
+    },
+    "owner": "sammish"
   }
 }

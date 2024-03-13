@@ -79,7 +79,7 @@ const ForecastSummary = (props: ForecastSummaryProps) => {
         showsHorizontalScrollIndicator={true}
         contentContainerStyle={{
           justifyContent: "space-between",
-          flex: 1,
+          flexGrow: 1,
           paddingVertical: 12,
         }}
       >
@@ -248,7 +248,6 @@ const CurrentForecastHeader = (props: DailyForecastSummaryHeaderProps) => {
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
-              maxWidth: "100%",
               flex: 1,
             }}
           >
@@ -267,7 +266,7 @@ const CurrentForecastHeader = (props: DailyForecastSummaryHeaderProps) => {
                 {props.temperatureFormat}
               </Text>
             </View>
-            <HorizontalSpacer size={8} />
+            <HorizontalSpacer size={4} />
             <View style={styles(theme).weatherTopRow}>
               <Icon
                 source="water-outline"
@@ -283,7 +282,7 @@ const CurrentForecastHeader = (props: DailyForecastSummaryHeaderProps) => {
                 {props.precipitationFormat} {props.forecast.humidity}%
               </Text>
             </View>
-            <HorizontalSpacer size={8} />
+            <HorizontalSpacer size={4} />
             <View style={styles(theme).weatherTopRow}>
               <Icon
                 source="weather-windy"
