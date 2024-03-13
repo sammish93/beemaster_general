@@ -11,6 +11,7 @@ class UserViewModel {
     constructor() {
         // Makes all the class properties observable. Can change if desired.
         makeAutoObservable(this)
+        
         this.i18n = new I18n({
             en,
             no,

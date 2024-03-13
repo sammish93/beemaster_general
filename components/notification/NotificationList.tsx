@@ -11,6 +11,7 @@ import { customLightTheme } from "@/assets/themes";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import UserViewModel from "@/viewModels/UserViewModel";
 import { HiveNotification } from "@/models/notification";
+import NotificationCard from "./NotificationCard";
 
 export interface NotificationListProps {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
@@ -28,12 +29,7 @@ const NotificationList = ({
 
   //TODO Modify onPress
   const renderItem = ({ item }: { item: HiveNotification }) => (
-    <>
-      <Text>
-        ID: {item.id}, HiveID: {item.hiveId}
-      </Text>
-      <Text>Message: {item.message}</Text>
-    </>
+    <NotificationCard item={item} navigation={navigation} />
   );
 
   return (

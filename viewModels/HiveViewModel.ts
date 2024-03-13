@@ -45,6 +45,10 @@ class HiveViewModel {
         return this.selectedHive;
     }
 
+    getHiveFromId(hiveId: string): HiveModel | undefined {
+        return this.hives.find(item => item.id === hiveId);
+    }
+
     addSelectedNote(note: HiveNote) {
         this.selectedNote = note;
     }
