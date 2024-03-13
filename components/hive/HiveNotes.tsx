@@ -17,9 +17,15 @@ export interface HiveNotesProps {
   notes: HiveNote[];
   sortNotes: (notes: HiveNote[]) => void;
   onPress: () => void;
+  isWidescreen: boolean;
 }
 
-const HiveNotes = ({ notes, sortNotes, onPress }: HiveNotesProps) => {
+const HiveNotes = ({
+  notes,
+  sortNotes,
+  onPress,
+  isWidescreen,
+}: HiveNotesProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
   const [parentWidth, setParentWidth] = useState(0);
@@ -48,7 +54,9 @@ const HiveNotes = ({ notes, sortNotes, onPress }: HiveNotesProps) => {
         key={`flatList-${notes}-row`}
         style={{
           paddingRight: 12,
-          maxHeight: Dimensions.get("window").height * 0.7,
+          maxHeight: isWidescreen
+            ? null
+            : Dimensions.get("window").height * 0.7,
         }}
         ListEmptyComponent={
           <Text style={theme.fonts.bodyLarge}>

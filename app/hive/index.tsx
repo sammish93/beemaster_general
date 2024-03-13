@@ -1,5 +1,11 @@
 import { useNavigation } from "expo-router";
-import { Platform, ScrollView, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
@@ -34,7 +40,7 @@ import {
 import ForecastSummary from "@/components/forecast/ForecastSummary";
 import "@/assets/customScrollbar.css";
 import DetailedForecast from "@/components/forecast/DetailedForecast";
-import { VerticalSpacer } from "@/components/Spacers";
+import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { LineChart } from "react-native-chart-kit";
 import SensorGraph from "@/components/sensor/SensorGraph";
@@ -49,6 +55,7 @@ import AddNoteToHiveModal from "@/components/modals/AddNoteToHiveModal";
 import HiveNotes from "@/components/hive/HiveNotes";
 import { HiveNote } from "@/models/note";
 import ModifyNoteModal from "@/components/modals/ModifyNoteModal";
+import { ScreenWidth } from "@/constants/Dimensions";
 
 type RootStackParamList = {
   hive: {
@@ -207,96 +214,209 @@ const HiveScreen = (params: HiveScreenProps) => {
       ) : (
         <ScrollView>
           <View style={styles(theme).main}>
-            <Text style={theme.fonts.titleLarge}>
-              {userViewModel.i18n.t("forecast")}
-            </Text>
-            <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
-            <Text style={theme.fonts.bodySmall}>{data}</Text>
-            <Text style={theme.fonts.bodySmall}>{selectedHive.name}</Text>
-            {forecast ? (
-              <>
+            {Dimensions.get("window").width >= ScreenWidth.Expanded ? (
+              <View style={{ flexDirection: "row" }}>
+                <View style={{ flex: 1 }}>
+                  {forecast ? (
+                    <>
+                      <Text style={theme.fonts.titleLarge}>
+                        {userViewModel.i18n.t("forecast")}
+                      </Text>
+                      <Text style={theme.fonts.bodyLarge}>
+                        Hive ID: {hiveId}
+                      </Text>
+                      <Text style={theme.fonts.bodySmall}>{data}</Text>
+                      <Text style={theme.fonts.bodySmall}>
+                        {selectedHive.name}
+                      </Text>
+                      <VerticalSpacer size={8} />
+                      <ForecastSummary
+                        forecast={forecast}
+                        locale={userViewModel.i18n.locale}
+                        temperatureFormat={userViewModel.temperaturePreference}
+                        precipitationFormat={
+                          userViewModel.precipitationPreference
+                        }
+                        windFormat={userViewModel.windSpeedPreference}
+                        onPress={() => {
+                          navigation.navigate("/hive/forecast", {
+                            hiveId: hiveId,
+                          });
+                        }}
+                      />
+                    </>
+                  ) : null}
+                  {/* TODO Fetch sensor data from db and if tests render components if hive sensor exists */}
+                  <VerticalSpacer size={8} />
+                  <Text style={theme.fonts.titleLarge}>
+                    {userViewModel.i18n.t("weight")}
+                  </Text>
+                  <VerticalSpacer size={8} />
+                  <SensorGraph
+                    sensorDataList={weightSensorData}
+                    isDecimal={true}
+                    colourScheme="blue"
+                  />
+                  <VerticalSpacer size={8} />
+                  <Text style={theme.fonts.titleLarge}>
+                    {userViewModel.i18n.t("temperature")}
+                  </Text>
+                  <VerticalSpacer size={8} />
+                  <SensorGraph
+                    sensorDataList={temperatureSensorData}
+                    isDecimal={true}
+                    colourScheme="orange"
+                  />
+                  <VerticalSpacer size={8} />
+                  <Text style={theme.fonts.titleLarge}>
+                    {userViewModel.i18n.t("humidity")}
+                  </Text>
+                  <VerticalSpacer size={8} />
+                  <SensorGraph
+                    sensorDataList={humiditySensorData}
+                    isDecimal={true}
+                    colourScheme="green"
+                  />
+                  <VerticalSpacer size={8} />
+                  <Text style={theme.fonts.titleLarge}>
+                    {userViewModel.i18n.t("bee count")}
+                  </Text>
+                  <VerticalSpacer size={8} />
+                  <SensorGraph
+                    sensorDataList={beeCountSensorData}
+                    colourScheme="violet"
+                  />
+                </View>
+                <HorizontalSpacer size={20} />
+                <View style={{ flex: 1 }}>
+                  <Text style={theme.fonts.titleLarge}>
+                    {userViewModel.i18n.t("location")}
+                  </Text>
+                  <VerticalSpacer size={8} />
+                  <View
+                    style={{
+                      height: 100,
+                      backgroundColor: "red",
+                      borderRadius: 16,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={theme.fonts.bodyLarge}>
+                      Map component here
+                    </Text>
+                    <Text style={theme.fonts.bodyLarge}>
+                      Lat: {selectedHive.latLng.lat}, Lng:{" "}
+                      {selectedHive.latLng.lng}
+                    </Text>
+                  </View>
+                  <VerticalSpacer size={8} />
+                  <Text style={theme.fonts.titleLarge}>
+                    {userViewModel.i18n.t("notes")}
+                  </Text>
+                  <VerticalSpacer size={8} />
+                  <HiveNotes
+                    notes={hiveViewModel.selectedHive.notes}
+                    sortNotes={sortNotes}
+                    onPress={() => handleOpenModifyNoteModal()}
+                    isWidescreen={true}
+                  />
+                </View>
+              </View>
+            ) : (
+              <View>
+                {forecast ? (
+                  <>
+                    <VerticalSpacer size={8} />
+                    <ForecastSummary
+                      forecast={forecast}
+                      locale={userViewModel.i18n.locale}
+                      temperatureFormat={userViewModel.temperaturePreference}
+                      precipitationFormat={
+                        userViewModel.precipitationPreference
+                      }
+                      windFormat={userViewModel.windSpeedPreference}
+                      onPress={() => {
+                        navigation.navigate("/hive/forecast", {
+                          hiveId: hiveId,
+                        });
+                      }}
+                    />
+                  </>
+                ) : null}
+                {/* TODO Fetch sensor data from db and if tests render components if hive sensor exists */}
                 <VerticalSpacer size={8} />
-                <ForecastSummary
-                  forecast={forecast}
-                  locale={userViewModel.i18n.locale}
-                  temperatureFormat={userViewModel.temperaturePreference}
-                  precipitationFormat={userViewModel.precipitationPreference}
-                  windFormat={userViewModel.windSpeedPreference}
-                  onPress={() => {
-                    navigation.navigate("/hive/forecast", { hiveId: hiveId });
-                  }}
+                <Text style={theme.fonts.titleLarge}>
+                  {userViewModel.i18n.t("weight")}
+                </Text>
+                <VerticalSpacer size={8} />
+                <SensorGraph
+                  sensorDataList={weightSensorData}
+                  isDecimal={true}
+                  colourScheme="blue"
                 />
-              </>
-            ) : null}
-            {/* TODO Fetch sensor data from db and if tests render components if hive sensor exists */}
-            <VerticalSpacer size={8} />
-            <Text style={theme.fonts.titleLarge}>
-              {userViewModel.i18n.t("weight")}
-            </Text>
-            <VerticalSpacer size={8} />
-            <SensorGraph
-              sensorDataList={weightSensorData}
-              isDecimal={true}
-              colourScheme="blue"
-            />
-            <VerticalSpacer size={8} />
-            <Text style={theme.fonts.titleLarge}>
-              {userViewModel.i18n.t("temperature")}
-            </Text>
-            <VerticalSpacer size={8} />
-            <SensorGraph
-              sensorDataList={temperatureSensorData}
-              isDecimal={true}
-              colourScheme="orange"
-            />
-            <VerticalSpacer size={8} />
-            <Text style={theme.fonts.titleLarge}>
-              {userViewModel.i18n.t("humidity")}
-            </Text>
-            <VerticalSpacer size={8} />
-            <SensorGraph
-              sensorDataList={humiditySensorData}
-              isDecimal={true}
-              colourScheme="green"
-            />
-            <VerticalSpacer size={8} />
-            <Text style={theme.fonts.titleLarge}>
-              {userViewModel.i18n.t("bee count")}
-            </Text>
-            <VerticalSpacer size={8} />
-            <SensorGraph
-              sensorDataList={beeCountSensorData}
-              colourScheme="violet"
-            />
-            <VerticalSpacer size={8} />
-            <Text style={theme.fonts.titleLarge}>
-              {userViewModel.i18n.t("location")}
-            </Text>
-            <VerticalSpacer size={8} />
-            <View
-              style={{
-                height: 100,
-                backgroundColor: "red",
-                borderRadius: 16,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={theme.fonts.bodyLarge}>Map component here</Text>
-              <Text style={theme.fonts.bodyLarge}>
-                Lat: {selectedHive.latLng.lat}, Lng: {selectedHive.latLng.lng}
-              </Text>
-            </View>
-            <VerticalSpacer size={8} />
-            <Text style={theme.fonts.titleLarge}>
-              {userViewModel.i18n.t("notes")}
-            </Text>
-            <VerticalSpacer size={8} />
-            <HiveNotes
-              notes={hiveViewModel.selectedHive.notes}
-              sortNotes={sortNotes}
-              onPress={() => handleOpenModifyNoteModal()}
-            />
+                <VerticalSpacer size={8} />
+                <Text style={theme.fonts.titleLarge}>
+                  {userViewModel.i18n.t("temperature")}
+                </Text>
+                <VerticalSpacer size={8} />
+                <SensorGraph
+                  sensorDataList={temperatureSensorData}
+                  isDecimal={true}
+                  colourScheme="orange"
+                />
+                <VerticalSpacer size={8} />
+                <Text style={theme.fonts.titleLarge}>
+                  {userViewModel.i18n.t("humidity")}
+                </Text>
+                <VerticalSpacer size={8} />
+                <SensorGraph
+                  sensorDataList={humiditySensorData}
+                  isDecimal={true}
+                  colourScheme="green"
+                />
+                <VerticalSpacer size={8} />
+                <Text style={theme.fonts.titleLarge}>
+                  {userViewModel.i18n.t("bee count")}
+                </Text>
+                <VerticalSpacer size={8} />
+                <SensorGraph
+                  sensorDataList={beeCountSensorData}
+                  colourScheme="violet"
+                />
+                <VerticalSpacer size={8} />
+                <Text style={theme.fonts.titleLarge}>
+                  {userViewModel.i18n.t("location")}
+                </Text>
+                <VerticalSpacer size={8} />
+                <View
+                  style={{
+                    height: 100,
+                    backgroundColor: "red",
+                    borderRadius: 16,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={theme.fonts.bodyLarge}>Map component here</Text>
+                  <Text style={theme.fonts.bodyLarge}>
+                    Lat: {selectedHive.latLng.lat}, Lng:{" "}
+                    {selectedHive.latLng.lng}
+                  </Text>
+                </View>
+                <VerticalSpacer size={8} />
+                <Text style={theme.fonts.titleLarge}>
+                  {userViewModel.i18n.t("notes")}
+                </Text>
+                <VerticalSpacer size={8} />
+                <HiveNotes
+                  notes={hiveViewModel.selectedHive.notes}
+                  sortNotes={sortNotes}
+                  onPress={() => handleOpenModifyNoteModal()}
+                  isWidescreen={false}
+                />
+              </View>
+            )}
           </View>
         </ScrollView>
       )}
