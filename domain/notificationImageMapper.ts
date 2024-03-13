@@ -6,7 +6,7 @@ import { NotificationType } from "@/constants/Notifications";
  * @returns Returns an object of type {@link NodeRequire} that can be used with elements such as <Image> 
  * to render an image stored locally.
  */
-const getImageResourceFromNotificationType = (notificationType: NotificationType): NodeRequire => {
+const getImageResourceFromNotificationType = (notificationType: NotificationType): any => {
     switch(notificationType) {
         case NotificationType.ConsiderFeeding:
             return require("@/assets/images/notifications/considerFeeding.jpg");
