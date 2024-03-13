@@ -319,7 +319,6 @@ const HiveScreen = (params: HiveScreenProps) => {
                     notes={hiveViewModel.selectedHive.notes}
                     sortNotes={sortNotes}
                     onPress={() => handleOpenModifyNoteModal()}
-                    isWidescreen={true}
                   />
                 </View>
               </View>
@@ -413,7 +412,6 @@ const HiveScreen = (params: HiveScreenProps) => {
                   notes={hiveViewModel.selectedHive.notes}
                   sortNotes={sortNotes}
                   onPress={() => handleOpenModifyNoteModal()}
-                  isWidescreen={false}
                 />
               </View>
             )}
