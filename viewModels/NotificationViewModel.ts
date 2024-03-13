@@ -21,6 +21,10 @@ class NotificationViewModel {
         this.notifications = [...this.notifications, notification];
     }
 
+    getNotificationFromId(notificationId: string): HiveNotification | undefined {
+        return this.notifications.find(item => item.id === notificationId);
+    }
+
     modifyNotification(notification: HiveNotification) {
         const noteIndex = this.notifications.findIndex(notificationObject => notificationObject.id === notification.id);
         if (noteIndex !== -1) {

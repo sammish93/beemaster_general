@@ -6,31 +6,30 @@ import { MobXProviderContext } from "mobx-react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { TouchableRipple } from "react-native-paper";
 import { HiveModel } from "@/models/hiveModel";
-import HiveCard from "./HiveNoteCard";
+import HiveCard from "@/components/hive/HiveCard";
 import { customLightTheme } from "@/assets/themes";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import UserViewModel from "@/viewModels/UserViewModel";
-import HiveNoteCard from "./HiveNoteCard";
-import { HiveNote } from "@/models/note";
+import { HiveNotification } from "@/models/notification";
+import NotificationCard from "./NotificationCard";
 
-export interface HiveNotesProps {
-  notes: HiveNote[];
-  sortNotes: (notes: HiveNote[]) => void;
-  onPress: () => void;
+export interface NotificationListProps {
+  navigation: NavigationProp<ReactNavigation.RootParamList>;
+  notifications: HiveNotification[];
 }
 
-const HiveNotes = ({ notes, sortNotes, onPress }: HiveNotesProps) => {
+const NotificationList = ({
+  navigation,
+  notifications,
+}: NotificationListProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
   const [parentWidth, setParentWidth] = useState(0);
   const screenWidth = Dimensions.get("window").width;
 
-  const sortedNotes = useMemo(() => {
-    sortNotes(hiveViewModel.selectedHive.notes);
-  }, [hiveViewModel.selectedHive.notes]);
-
-  const renderItem = ({ item }: { item: HiveNote }) => (
-    <HiveNoteCard item={item} onAddNote={sortNotes} onPress={() => onPress()} />
+  //TODO Modify onPress
+  const renderItem = ({ item }: { item: HiveNotification }) => (
+    <NotificationCard item={item} navigation={navigation} />
   );
 
   return (
@@ -42,16 +41,13 @@ const HiveNotes = ({ notes, sortNotes, onPress }: HiveNotesProps) => {
       }}
     >
       <FlatList
-        data={notes}
+        data={notifications}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        key={`flatList-${notes}-row`}
-        style={{
-          paddingRight: 12,
-        }}
+        numColumns={1}
         ListEmptyComponent={
           <Text style={theme.fonts.bodyLarge}>
-            No notes have been registered
+            No new notifications
             {/*TODO Refresh Button */}
           </Text>
         }
@@ -60,4 +56,4 @@ const HiveNotes = ({ notes, sortNotes, onPress }: HiveNotesProps) => {
   );
 };
 
-export default HiveNotes;
+export default NotificationList;

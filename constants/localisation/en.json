@@ -153,5 +153,16 @@
   "note text": "Note text",
   "modify an existing note": "Modify an existing note",
   "modify note": "Modify note",
-  "delete note": "Delete note"
+  "delete note": "Delete note",
+  "confirm": "Confirm",
+  "mute notification": "Mute notification",
+  "consider feeding": "Consider feeding",
+  "consider expanding": "Consider expanding",
+  "honey harvest": "Honey harvest",
+  "maintenance": "Maintenance",
+  "weather": "Weather",
+  "check hive": "Check hive",
+  "possible swarm": "Possible Swarm",
+  "custom reminder": "Custom Reminder",
+  "mute_notifications": "Do you wish to mute '%{notificationType}' notifications for '%{hiveName}'?"
 }
