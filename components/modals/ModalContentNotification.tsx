@@ -408,11 +408,12 @@ const ModalContent = (props: ModalContentProps) => {
                     onPress={props.onClose}
                 />
             </View>
-            {renderContent()}
-            <VerticalSpacer size={12} />
             {datePickerVisible && (
                 <DatePickerModal onConfirm={onConfirm} />
             )}
+            {renderContent()}
+            <VerticalSpacer size={12} />
+
             <Portal>
                 <Modal visible={isCalendarModalVisible} onDismiss={() => setCalendarModalVisible(false)}>
                     <Calendar
