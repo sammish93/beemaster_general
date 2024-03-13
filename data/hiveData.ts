@@ -2,7 +2,7 @@ import { HiveModel } from "@/models/hiveModel";
 import { HiveNote } from "@/models/note";
 
 
-const notes: HiveNote[] = [
+export const notes: HiveNote[] = [
     { id: 'abc-123', note: 'Hive is lovely. Simply perfect', isSticky: true, timestamp: new Date("2024-03-03T06:00:00Z") },
     { id: 'abc-1234', note: 'Checked on Sunday 15th', isSticky: false, timestamp: new Date("2024-02-24T06:00:00Z") },
     { id: 'abc-12345', note: 'Queen bee born in 2023', isSticky: true, timestamp: new Date("2024-03-01T06:00:00Z") },

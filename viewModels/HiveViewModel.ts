@@ -1,3 +1,4 @@
+import { notes } from '@/data/hiveData';
 import { HiveModel } from "@/models/hiveModel";
 import { action, makeAutoObservable, runInAction } from "mobx";
 import { filterData, hiveListData } from "../data/hiveData"; 
@@ -52,7 +53,9 @@ class HiveViewModel {
             name: data.hiveName,
             filters: data.hiveFilter,
             latLng: data.latLng,
-            notes: []
+            // Notes is just dummy data right now.
+            // TODO Write dummy data to DB.
+            notes: notes
           } as HiveModel; 
         });
         
