@@ -67,7 +67,10 @@ const NotificationCard = ({ item, navigation }: NotificationProps) => {
 
   return (
     <>
-      <Card style={{ margin: 4, flex: 1, maxWidth: "100%" }}>
+      <Card
+        onPress={handleCardPress}
+        style={{ margin: 4, flex: 1, maxWidth: "100%" }}
+      >
         <Card.Content
           style={{
             flex: 1,
