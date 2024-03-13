@@ -10,6 +10,7 @@ import { HiveNotification } from "@/models/notification";
 import { dateTimeFormatter } from "@/domain/dateTimeFormatter";
 import { NavigationProp } from "@react-navigation/native";
 import DialogMuteSpecificHiveNotification from "../modals/DialogMuteSpecificHiveNotification";
+import getImageResourceFromNotificationType from "@/domain/notificationImageMapper";
 
 interface NotificationProps {
   item: HiveNotification;
@@ -58,11 +59,10 @@ const NotificationCard = ({ item, navigation }: NotificationProps) => {
   const handleCardPress = () => {
     // TODO DB integration and error handling when hive doesn't exist
     const hive: HiveModel = hiveViewModel.getHiveFromId(item.hiveId);
-    console.log(hive);
 
     hiveViewModel.addSelectedHive(hive);
 
-    navigation.navigate("/hive/index", { hiveId: item.id });
+    navigation.navigate("/hive/index", { hiveId: hive.id });
   };
 
   return (
@@ -85,11 +85,13 @@ const NotificationCard = ({ item, navigation }: NotificationProps) => {
             }}
           >
             <Image
-              source={{
-                uri: "https://picsum.photos/700",
-              }}
+              source={getImageResourceFromNotificationType(
+                item.notificationType
+              )}
               style={{
                 flex: 1,
+                width: "100%",
+                height: "100%",
                 borderBottomLeftRadius: 12,
                 borderTopLeftRadius: 12,
               }}

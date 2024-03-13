@@ -46,7 +46,6 @@ import {
 } from "@/data/sensorData";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import AddNoteToHiveModal from "@/components/modals/AddNoteToHiveModal";
-import { notes } from "@/data/hiveData";
 import HiveNotes from "@/components/hive/HiveNotes";
 import { HiveNote } from "@/models/note";
 import ModifyNoteModal from "@/components/modals/ModifyNoteModal";
