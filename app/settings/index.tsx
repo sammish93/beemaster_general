@@ -12,7 +12,7 @@ import React from "react";
 import PermissionSwitch from "@/components/PermissionSwitch";
 import SwitchTheme from "@/components/SwitchTheme";
 import DefaultSwitchComponent from "@/components/DefaultSwitch";
-import NotificationModal from "@/components/modals/EditNotificationParametersModal";
+import NotificationModal from "@/components/modals/NotificationModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { VerticalSpacer } from "@/components/Spacers";
 

@@ -6,12 +6,14 @@ import { VerticalSpacer } from "../Spacers";
 import { Calendar } from 'react-native-calendars';
 import { View } from "react-native";
 
+
 interface ModalContentProps {
     onClose: () => void;
     onSave: (newValue: string) => void;
     parameterName: string;
 
 }
+
 
 const ModalContent = (props: ModalContentProps) => {
     const { onClose, onSave, parameterName } = props;
@@ -51,58 +53,82 @@ const ModalContent = (props: ModalContentProps) => {
     const [summerStartMonth, setSummerStartMonth] = useState(`${userViewModel.summerStartMonth}`);
     const [earlySummerEndMonth, setEarlySummerEndMonth] = useState(`${userViewModel.earlySummerEndMonth}`);
 
-    const handleSave = () => {
+    const getSaveAction = (parameterName: any) => {
+        const translations = {
+            weather: userViewModel.i18n.t('weather'),
+            potentialSwarm: userViewModel.i18n.t('potential swarm'),
+            considerFeeding: userViewModel.i18n.t('consider feeding'),
+            honeyHarvest: userViewModel.i18n.t('honey harvest'),
+            maintenance: userViewModel.i18n.t('maintenance'),
+            expandHive: userViewModel.i18n.t('expand hive'),
+            checkHive: userViewModel.i18n.t('check hive'),
+            reminder: userViewModel.i18n.t('reminder')
 
-        switch (parameterName) {
-            case userViewModel.i18n.t('weather'):
+        };
+        const actions = {
+            [translations.weather]: () => {
                 userViewModel.setThresholdWindSpeedStrong(parseInt(thresholdWindSpeedStrong));
                 userViewModel.setAutumnMonths(parseInt(autumnMonths));
                 userViewModel.setEarlyWinterMonths(parseInt(earlyWinterMonths));
                 userViewModel.setEarlySpringMonths(parseInt(earlySpringMonths));
-                break;
-            case userViewModel.i18n.t('potential swarm'):
+
+            },
+            [translations.potentialSwarm]: () => {
                 userViewModel.setThresholdWeightDecreaseSwarm(parseInt(thresholdWeightDecreaseSwarm));
                 userViewModel.setThresholdExitCountHigh(parseInt(thresholdExitCountHigh));
-                break;
-            case userViewModel.i18n.t('consider feeding'):
+
+            },
+            [translations.considerFeeding]: () => {
                 userViewModel.setThresholdWeightDecreaseEarlySpring(parseFloat(thresholdWeightDecreaseEarlySpring));
                 userViewModel.setEarlySpringStartMonth(parseInt(earlySpringStartMonth, 10));
                 userViewModel.setEarlySpringEndMonth(parseInt(earlySpringEndMonth, 10));
                 userViewModel.setAutumnStartMonth(parseInt(autumnStartMonth, 10));
                 userViewModel.setAutumnEndMonth(parseInt(autumnEndMonth, 10));
                 userViewModel.setThresholdExitCountLow(parseInt(thresholdExitCountLow));
-                break;
-            case userViewModel.i18n.t('honey harvest'):
+            },
+            [translations.honeyHarvest]: () => {
                 userViewModel.setHumidityThreshold(parseInt(humidityThreshold));
                 userViewModel.setThresholdTempWarm(parseInt(thresholdTempWarm));
                 userViewModel.setThresholdWindSpeedLow(parseInt(thresholdWindSpeedLow));
                 userViewModel.setSummerStartMonth(parseInt(summerStartMonth));
                 userViewModel.setEarlyAutumnMonth(parseInt(earlyAutumnMonth));
-                break;
-            case userViewModel.i18n.t('maintenance'):
+
+            },
+            [translations.maintenance]: () => {
                 userViewModel.setEarlySpringStartMonth(parseInt(earlySpringStartMonth, 10));
                 userViewModel.setAutumnEndMonth(parseInt(autumnEndMonth, 10));
                 userViewModel.setThresholdWindSpeedLow(parseInt(thresholdWindSpeedLow));
                 userViewModel.setThresholdTempWarm(parseInt(thresholdTempWarm));
                 userViewModel.setHumidityThreshold(parseInt(humidityThreshold));
-                break;
-            case userViewModel.i18n.t('expand hive'):
+
+            },
+            [translations.expandHive]: () => {
                 userViewModel.setThresholdWeightIncrease(parseInt(thresholdWeightIncrease));
-                break;
-            case userViewModel.i18n.t('check hive'):
+
+            },
+            [translations.checkHive]: () => {
                 userViewModel.setThresholdMaxTempChange(parseInt(thresholdMaxTempChange));
                 userViewModel.setThresholdMaxHumidityChange(parseInt(thresholdMaxHumidityChange));
                 userViewModel.setLateSpringStartMonth(parseInt(lateSpringStartMonth));
                 userViewModel.setEarlySummerEndMonth(parseInt(earlySummerEndMonth));
-                break;
-            case userViewModel.i18n.t('reminder'):
-                break;
-            default:
-                break;
+            },
+            [translations.reminder]: () => {
 
+            },
+
+        };
+        return actions[parameterName];
+    };
+
+    const handleSave = () => {
+        const action = getSaveAction(parameterName);
+        if (action) {
+            action();
+        } else {
+            console.log('Unknown parameterName:', parameterName);
         }
-
         props.onClose();
+
     };
 
 
@@ -187,9 +213,8 @@ const ModalContent = (props: ModalContentProps) => {
     };
 
 
-    // Function to render content based on parameterName
-    //TODO:Add Translation
 
+    //TODO:Add Translation
     const renderContent = () => {
         switch (parameterName) {
             case userViewModel.i18n.t('weather'):
@@ -208,6 +233,7 @@ const ModalContent = (props: ModalContentProps) => {
                         <Button mode="contained" onPress={() => openCalendarModal('autumnMonths')}>
                             Set Autumn Months
                         </Button>
+
                         <TextInput label="Early Winter Months" value={earlyWinterMonths} onChangeText={setEarlyWinterMonths} keyboardType="numeric" />
                         <Button mode="contained" onPress={() => openCalendarModal('earlyWinterMonths')}>
                             Set Autumn Months
@@ -365,6 +391,8 @@ const ModalContent = (props: ModalContentProps) => {
                 return <View><Text>Ukjent parameter</Text></View>;
         }
     };
+
+
 
     return (
         <>
