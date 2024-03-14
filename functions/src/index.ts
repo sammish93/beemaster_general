@@ -12,16 +12,17 @@ export const addWeightData = onRequest(async (request, response) => {
   // Get weight data from request.
   const id = request.body.id;
   const weightData = request.body.weight;
-  const dateString = request.body.date; // On ISO 8601-format.
-  if (!id || !weightData || !dateString) {
-    response.status(400).send("Missing fields in request - id, weight, date.");
+  if (!id || !weightData) {
+    response.status(400).send("Missing fields in request - id, weight.");
     return;
   }
 
+  // Timestamp in ISO 8601-format.
+  const timeStamp = new Date().toISOString();
   try {
     await admin.firestore().collection("sensorWeight").doc(id).set({
       weight: weightData,
-      date: dateString,
+      date: timeStamp,
     });
     response.json({result: `Weight data with ID: ${id} added to db.`});
   } catch (error) {
