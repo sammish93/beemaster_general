@@ -3,6 +3,7 @@ import { Switch, useTheme } from 'react-native-paper';
 import { Text, View } from 'react-native';
 import { MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
+import { VerticalSpacer } from "./Spacers";
 
 type Type = 'mobile' | 'sms' | 'email';
 interface PermissionSwitchProps {
@@ -33,12 +34,14 @@ const DefaultSwitchComponent = ({ type }: PermissionSwitchProps) => {
         <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
-                <Text style={[paperTheme.fonts.bodyMedium, { marginRight: 10, color: paperTheme.colors.onSurface }]}>
+                <Text style={[paperTheme.fonts.bodyLarge, { marginRight: 10, color: paperTheme.colors.onSurface }]}>
                     {translateType(type)}
                 </Text>
-
                 <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+
             </View>
+            <VerticalSpacer size={6} />
+
         </View >)
 };
 

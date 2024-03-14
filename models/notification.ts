@@ -7,4 +7,4 @@ export interface HiveNotification {
     timestamp: Date;
     isRead: boolean;
     message: string;
-  }
+}

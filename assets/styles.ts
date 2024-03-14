@@ -148,8 +148,15 @@ const styles = (theme?: MD3Theme) => {
     weatherTopRow: {
       flexDirection: "row",
       alignItems: "center",
-      gap: 2,
-    }
+      gap: 2
+    },
+    settingsButton: {
+      width: Platform.OS === 'web' ? '50%' : screenWidth - 52,
+      margin: 4,
+      alignSelf: 'center'
+    },
+
+
   });
 };
 

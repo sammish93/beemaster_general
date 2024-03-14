@@ -4,12 +4,13 @@ export interface HiveModel {
     id: string
     name: string
     filters: string[],
-    latLng: {lat: number, lng: number},
+    latLng: { lat: number, lng: number },
     weather?: string
-    wind?: string 
-    temprature?: number
+    wind?: string
+    temperature?: number
     weight?: number
     humidity?: number
     precipitation?: number
+    currentTemp: number;
     notes: HiveNote[]
 }

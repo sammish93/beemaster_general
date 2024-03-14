@@ -1,5 +1,7 @@
+import { TemperatureMeasurement } from "@/constants/Measurements";
+
 export const celsiusToFahrenheit = (celsiusValue: number): number => {
-    return (celsiusValue * 9/5) + 32;
+    return (celsiusValue * 9 / 5) + 32;
 }
 
 export const millimetersToCentimeters = (millimeterValue: number): number => {
@@ -37,3 +39,18 @@ export const gramsToPounds = (gramsValue: number): number => {
 export const gramsToStones = (gramsValue: number): number => {
     return gramsValue / 6350.29;
 };
+
+
+export const convertTemperature = (temperature: number, fromUnit: TemperatureMeasurement, toUnit: TemperatureMeasurement): number => {
+    if (fromUnit === toUnit) {
+        return temperature;
+    }
+    if (fromUnit === TemperatureMeasurement.Celsius && toUnit === TemperatureMeasurement.Fahrenheit) {
+        return (temperature * 9 / 5) + 32;
+    }
+    if (fromUnit === TemperatureMeasurement.Fahrenheit && toUnit === TemperatureMeasurement.Celsius) {
+        return (temperature - 32) * 5 / 9;
+    }
+
+    return temperature;
+}
