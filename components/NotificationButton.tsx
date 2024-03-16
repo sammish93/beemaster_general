@@ -6,6 +6,8 @@ import * as Device from 'expo-device';
 import styles from "@/assets/styles";
 import { Subscription } from 'expo-modules-core';
 
+// Sets global notification handling behavior.
+
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
@@ -14,6 +16,10 @@ Notifications.setNotificationHandler({
     }),
 });
 
+/**
+ * Component to display a notification button and the latest notification received.
+ * It only renders on iOS and Android platforms, not on the web.
+ */
 const NotificationButton = () => {
     if (Platform.OS === 'web') {
         return null;
@@ -21,9 +27,13 @@ const NotificationButton = () => {
     const theme = useTheme();
     const [expoPushToken, setExpoPushToken] = useState<string>(" ");
     const [notification, setNotification] = useState<Notifications.Notification | null>(null);
-
     const notificationListener = useRef<Subscription | null>(null);
     const responseListener = useRef<Subscription | null>(null);
+
+    /**
+     * Updates the state with the new token.
+     * @param token The new token, which might be undefined.
+     */
     const updateState = (token: string | undefined) => {
         setExpoPushToken(token ?? "default value");
     };
@@ -69,6 +79,10 @@ const NotificationButton = () => {
 }
 export default NotificationButton;
 
+
+/**
+ * Schedules a push notification to be sent after a short delay.
+ */
 async function getPushNotification() {
     await Notifications.scheduleNotificationAsync({
         content: {
@@ -81,6 +95,10 @@ async function getPushNotification() {
 }
 
 
+/**
+ * Registers for push notifications and requests permissions if necessary.
+ * Returns the push token for the device.
+ */
 async function registerForPushNotificationsAsync() {
     let token;
     if (Platform.OS === 'android') {
