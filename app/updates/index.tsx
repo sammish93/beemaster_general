@@ -12,7 +12,7 @@ import {
   BottomSheetModalProvider,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-virtualized-view";
 import ExampleModal from "@/components/modals/ExampleModal";
 import NotificationList from "@/components/notification/NotificationList";
 

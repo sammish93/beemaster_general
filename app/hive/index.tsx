@@ -1,11 +1,6 @@
 import { useNavigation } from "expo-router";
-import {
-  Dimensions,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, Platform, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
