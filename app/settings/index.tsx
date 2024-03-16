@@ -15,6 +15,7 @@ import DefaultSwitchComponent from "@/components/DefaultSwitch";
 import NotificationModal from "@/components/modals/NotificationModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { VerticalSpacer } from "@/components/Spacers";
+import NotificationButton from "@/components/NotificationButton";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -109,6 +110,7 @@ const SettingsScreen = () => {
           <DefaultSwitchComponent type='mobile' />
           <DefaultSwitchComponent type='sms' />
           <DefaultSwitchComponent type='email' />
+          <NotificationButton />
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
@@ -216,6 +218,7 @@ const SettingsScreen = () => {
               <Text style={[theme.fonts.labelLarge, { color: theme.colors.onError }]}>
                 {userViewModel.i18n.t('delete account')}</Text>
             </Button>
+
           </View>
         </ScrollView>
       </View>
@@ -230,6 +233,7 @@ const SettingsScreen = () => {
         }}
         parameterName={selectedNotificationType}
       />
+
     </SafeAreaView>
   );
 
