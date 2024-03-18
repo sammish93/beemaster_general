@@ -8,3 +8,7 @@ export enum NotificationType {
     PossibleSwarm = "possible swarm",
     CustomReminder = "custom reminder"
 }
+
+export type NotificationPreference = {
+    [key in NotificationType]: boolean;
+}

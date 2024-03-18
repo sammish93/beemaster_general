@@ -5,73 +5,65 @@ import { filterData, hiveListData } from "../data/hiveData";
 import { HiveNote } from "@/models/note";
 import { auth, db } from "@/firebaseConfig";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { NotificationPreference, NotificationType } from '@/constants/Notifications';
+import { notificationPreferences } from '@/data/notificationData';
 
 class HiveViewModel {
-  hives: HiveModel[] = [];
-  filters: string[] = [];
-
+    hives: HiveModel[] = [];
+    filters: string[] = [];
     selectedHive?: HiveModel
     selectedNote?: HiveNote
 
-  constructor() {
-    makeAutoObservable(this);
-   
-  }
+    constructor() {
+        makeAutoObservable(this);
+    }
 
-
-
-  @action async fetchFilters() {
-    try {
-      const userId = auth.currentUser?.uid
-      console.log("user id: ", userId)
-      const userDocRef = doc(db, `users/${userId}`);
-      const userDoc = await getDoc(userDocRef);
-      if (userDoc.exists()) {
-        runInAction(() => {
-          this.filters = userDoc.data().filters || [];
-        });} 
-        else {
-          console.log("User document not found");
+    @action async fetchFilters() {
+        try {
+        const userId = auth.currentUser?.uid
+        console.log("user id: ", userId)
+        const userDocRef = doc(db, `users/${userId}`);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+            runInAction(() => {
+            this.filters = userDoc.data().filters || [];
+            });} 
+            else {
+            console.log("User document not found");
+            }
+            console.log("this.filters: " ,this.filters)
+        } catch (error) {
+            console.error("Error fetching filters:", error);
         }
-        console.log("this.filters: " ,this.filters)
-      } catch (error) {
-        console.error("Error fetching filters:", error);
-      }
     }
 
-
-  @action async fetchHives() {
-
-    try {
-      const userId = auth.currentUser?.uid ; 
-      const querySnapshot = await getDocs(collection(db, `users/${userId}/hives`));
-      runInAction(() => {
-        const hives = querySnapshot.docs.map(doc => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            name: data.hiveName,
-            filters: data.hiveFilter,
-            latLng: data.latLng,
-            // Notes is just dummy data right now.
-            // TODO Write dummy data to DB.
-            notes: notes
-          } as HiveModel; 
+    @action async fetchHives() {
+        try {
+        const userId = auth.currentUser?.uid ; 
+        const querySnapshot = await getDocs(collection(db, `users/${userId}/hives`));
+        runInAction(() => {
+            const hives = querySnapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                name: data.hiveName,
+                filters: data.hiveFilter,
+                latLng: data.latLng,
+                // Notes is just dummy data right now.
+                // TODO Write dummy data to DB.
+                notes: notes,
+                preferences: notificationPreferences
+            } as HiveModel; 
+            });
+            
+            this.hives = hives; 
         });
-        
-        this.hives = hives; 
-      });
 
-      
-
-      console.log("Hives: ", this.hives)
-      } catch (error) {
-          console.error("Error fetching hives: ", error);
-      }
+        console.log("Hives: ", this.hives)
+        } catch (error) {
+            console.error("Error fetching hives: ", error);
+        }
     }
-
-  
-
 
     addHive(hive: HiveModel) {
         this.hives.push(hive);
@@ -129,6 +121,14 @@ class HiveViewModel {
     removeNote(noteId: string) {
         if (this.selectedHive) {
             this.selectedHive.notes = this.selectedHive.notes.filter(note => note.id !== noteId);
+        }
+    }
+
+    toggleNotificationPreference(type: NotificationType): void {
+        if (this.selectedHive && this.selectedHive.preferences) {
+            this.selectedHive.preferences[type] = !this.selectedHive.preferences[type];
+        } else {
+            // TODO Error handling
         }
     }
 }

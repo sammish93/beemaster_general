@@ -1,5 +1,6 @@
 import { HiveModel } from "@/models/hiveModel";
 import { HiveNote } from "@/models/note";
+import { notificationPreferences } from "./notificationData";
 
 
 export const notes: HiveNote[] = [
@@ -11,16 +12,16 @@ export const notes: HiveNote[] = [
 ];
 
 export const hiveListData: HiveModel[] = [
-    { id: "hive-1234-1234-abc", name: "Honey Beast", filters: ["fredrikstad"], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes },
-    { id: "hive-1234-1235-abc", name: "Honey Warrior", filters: ["harvested"], latLng: {lat: 59.9139, lng: 10.7522}, notes: [] },
-    { id: "hive-1234-1236-abc", name: "Honey Queen", filters: ["oslo"], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes },
-    { id: "hive-1234-1237-abc", name: "Honey Egg", filters: [], latLng: {lat: 59.9139, lng: 10.7522}, notes: [] },
-    { id: "hive-1234-1238-abc", name: "Honey Turnip", filters: ["fredrikstad", "harvested"], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes },
-    { id: "hive-1234-1239-abc", name: "Honey Grass", filters: ["oslo", "harvested"], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes },
-    { id: "hive-1234-1240-abc", name: "Honey Mate", filters: ["fredrikstad"], latLng: {lat: 59.9139, lng: 10.7522}, notes: [] },
-    { id: "hive-1234-1241-abc", name: "Honey Lad", filters: ["oslo"], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes },
-    { id: "hive-1234-1242-abc", name: "Honey Lump", filters: ["fredrikstad", "diseased"], latLng: {lat: 59.9139, lng: 10.7522}, notes: [] },
-    { id: "hive-1234-1243-abc", name: "Honey Grape", filters: [], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes },
+    { id: "hive-1234-1234-abc", name: "Honey Beast", filters: ["fredrikstad"], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes, preferences: notificationPreferences },
+    { id: "hive-1234-1235-abc", name: "Honey Warrior", filters: ["harvested"], latLng: {lat: 59.9139, lng: 10.7522}, notes: [], preferences: notificationPreferences },
+    { id: "hive-1234-1236-abc", name: "Honey Queen", filters: ["oslo"], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes, preferences: notificationPreferences },
+    { id: "hive-1234-1237-abc", name: "Honey Egg", filters: [], latLng: {lat: 59.9139, lng: 10.7522}, notes: [], preferences: notificationPreferences },
+    { id: "hive-1234-1238-abc", name: "Honey Turnip", filters: ["fredrikstad", "harvested"], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes, preferences: notificationPreferences },
+    { id: "hive-1234-1239-abc", name: "Honey Grass", filters: ["oslo", "harvested"], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes, preferences: notificationPreferences },
+    { id: "hive-1234-1240-abc", name: "Honey Mate", filters: ["fredrikstad"], latLng: {lat: 59.9139, lng: 10.7522}, notes: [], preferences: notificationPreferences },
+    { id: "hive-1234-1241-abc", name: "Honey Lad", filters: ["oslo"], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes, preferences: notificationPreferences },
+    { id: "hive-1234-1242-abc", name: "Honey Lump", filters: ["fredrikstad", "diseased"], latLng: {lat: 59.9139, lng: 10.7522}, notes: [], preferences: notificationPreferences },
+    { id: "hive-1234-1243-abc", name: "Honey Grape", filters: [], latLng: {lat: 59.9139, lng: 10.7522}, notes: notes, preferences: notificationPreferences },
 ];
 
 // Dummy sensor data.

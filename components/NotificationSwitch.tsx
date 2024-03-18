@@ -15,13 +15,27 @@ const NotificationSwitchComponent = ({
   type,
   hiveId,
 }: NotificationSwitchProps) => {
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const { userViewModel } = useContext(MobXProviderContext);
+  const { hiveViewModel } = useContext(MobXProviderContext);
+  const [isSwitchOn, setIsSwitchOn] = React.useState(
+    hiveId === undefined
+      ? userViewModel.notificationPreferences[type]
+      : hiveViewModel.selectedHive.preferences[type]
+  );
+
   const onToggleSwitch = () => {
-    // TODO Do something here.
+    if (hiveId) {
+      // TODO DB
+      console.log(hiveId);
+      hiveViewModel.toggleNotificationPreference(type);
+    } else {
+      // TODO DB
+      userViewModel.toggleNotificationPreference(type);
+      console.log("hello");
+    }
+
     setIsSwitchOn(!isSwitchOn);
   };
-  const paperTheme = useTheme();
 
   return <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />;
 };

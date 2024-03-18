@@ -1,3 +1,4 @@
+import { NotificationPreference, NotificationType } from "@/constants/Notifications"
 import { HiveNote } from "./note"
 
 export interface HiveModel {
@@ -11,6 +12,7 @@ export interface HiveModel {
     weight?: number
     humidity?: number
     precipitation?: number
-    currentTemp: number;
+    currentTemp: number
     notes: HiveNote[]
+    preferences: NotificationPreference
 }

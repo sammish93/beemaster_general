@@ -9,6 +9,8 @@ import { Platform } from "react-native";
 import { auth, db } from "@/firebaseConfig";
 import { signOut, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithCredential, onAuthStateChanged } from "firebase/auth";
 import { WEB_CLIENT_ID } from '@env';
+import { NotificationPreference, NotificationType } from "@/constants/Notifications";
+import { notificationPreferences } from "@/data/notificationData";
 class UserViewModel {
 
     constructor() {
@@ -87,11 +89,7 @@ class UserViewModel {
     @observable autumnStartMonth: number = 0;
     @observable autumnEndMonth: number = 0;
 
-
-
-
-
-
+    @observable notificationPreferences: NotificationPreference = notificationPreferences;
 
     @action public setUserId = (val: string): void => {
         this.userId = val;
@@ -115,6 +113,10 @@ class UserViewModel {
 
     @action public setWeightPreference = (prefence: WeightMeasurement): void => {
         this.weightPreference = prefence;
+    }
+
+    @action toggleNotificationPreference(type: NotificationType): void {
+        this.notificationPreferences[type] = !this.notificationPreferences[type];
     }
 
     @action signInWithGoogleWeb = async () => {

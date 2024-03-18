@@ -1,4 +1,4 @@
-import { NotificationType } from "@/constants/Notifications";
+import { NotificationPreference, NotificationType } from "@/constants/Notifications";
 import { HiveNotification } from "@/models/notification";
 
 export const notifications: HiveNotification[] = [
@@ -13,3 +13,14 @@ export const notifications: HiveNotification[] = [
     { id: "abc-9", hiveId: "hive-1234-1236-abc", notificationType: NotificationType.CustomReminder, timestamp: new Date(Date.now()), isRead: false, message: "You should've picked up Janet from the airport yesterday." },
     { id: "abc-10", hiveId: "hive-1234-1236-abc", notificationType: NotificationType.CheckHive, timestamp: new Date(Date.now()), isRead: false, message: "The temperature of the hive decreased during the day. Consider checking the hive." },
     ];
+
+export const notificationPreferences: NotificationPreference = {
+    [NotificationType.ConsiderFeeding]: true,
+    [NotificationType.ConsiderExpanding]: true,
+    [NotificationType.HoneyHarvest]: true,
+    [NotificationType.Maintenance]: true,
+    [NotificationType.Weather]: true,
+    [NotificationType.CheckHive]: true,
+    [NotificationType.PossibleSwarm]: true,
+    [NotificationType.CustomReminder]: true,
+}
