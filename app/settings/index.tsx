@@ -14,42 +14,23 @@ import SwitchTheme from "@/components/SwitchTheme";
 import DefaultSwitchComponent from "@/components/DefaultSwitch";
 import NotificationModal from "@/components/modals/NotificationModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { VerticalSpacer } from "@/components/Spacers";
+import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
 import NotificationButton from "@/components/NotificationButton";
 import { NotificationType } from "@/constants/Notifications";
+import NotificationSwitchComponent from "@/components/NotificationSwitch";
+import NotificationSettingsComponent from "@/components/NotificationSettings";
 
 const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-  const bottomSheetAddHiveModalRef = useRef<BottomSheetModal>(null);
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
-  const [selectedNotificationType, setSelectedNotificationType] =
-    useState<NotificationType>();
-  const [AddHiveModalVisible, setAddHiveModalVisible] = useState(false);
 
   useEffect(() => {
     userViewModel.fetchUserParametersFromDatabase();
     userViewModel.updateLocaleSettings();
   }, [userViewModel]);
-
-  const handleOpenModal = (notificationType: NotificationType) => {
-    setSelectedNotificationType(notificationType);
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      bottomSheetAddHiveModalRef.current?.present();
-    } else {
-      setAddHiveModalVisible(true);
-    }
-  };
-
-  const handleCloseModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      bottomSheetAddHiveModalRef.current?.dismiss();
-    } else {
-      setAddHiveModalVisible(false);
-    }
-  };
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -161,73 +142,9 @@ const SettingsScreen = () => {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity>
-            <Text
-              style={theme.fonts.bodyLarge}
-              onPress={() => handleOpenModal(NotificationType.Weather)}
-            >
-              {userViewModel.i18n.t("weather")}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text
-              style={theme.fonts.bodyLarge}
-              onPress={() => handleOpenModal(NotificationType.PossibleSwarm)}
-            >
-              {userViewModel.i18n.t("potential swarm")}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text
-              style={theme.fonts.bodyLarge}
-              onPress={() => handleOpenModal(NotificationType.ConsiderFeeding)}
-            >
-              {userViewModel.i18n.t("consider feeding")}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text
-              style={theme.fonts.bodyLarge}
-              onPress={() => handleOpenModal(NotificationType.HoneyHarvest)}
-            >
-              {userViewModel.i18n.t("honey harvest")}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text
-              style={theme.fonts.bodyLarge}
-              onPress={() => handleOpenModal(NotificationType.Maintenance)}
-            >
-              {userViewModel.i18n.t("maintenance")}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text
-              style={theme.fonts.bodyLarge}
-              onPress={() =>
-                handleOpenModal(NotificationType.ConsiderExpanding)
-              }
-            >
-              {userViewModel.i18n.t("expand hive")}
-            </Text>
-          </TouchableOpacity>
 
-          <TouchableOpacity>
-            <Text
-              style={theme.fonts.bodyLarge}
-              onPress={() => handleOpenModal(NotificationType.CheckHive)}
-            >
-              {userViewModel.i18n.t("check hive")}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text
-              style={theme.fonts.bodyLarge}
-              onPress={() => handleOpenModal(NotificationType.CustomReminder)}
-            >
-              {userViewModel.i18n.t("reminder")}
-            </Text>
-          </TouchableOpacity>
+          <NotificationSettingsComponent />
+
           <VerticalSpacer size={12} />
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -292,22 +209,6 @@ const SettingsScreen = () => {
           </View>
         </View>
       </ScrollView>
-      <NotificationModal
-        isOverlayModalVisible={AddHiveModalVisible}
-        bottomSheetModalRef={bottomSheetAddHiveModalRef}
-        onClose={() => handleCloseModal()}
-        onSave={(newValue) => {
-          // TODO: Add functionality for saving values to database
-          console.log(
-            "New value for",
-            selectedNotificationType,
-            " saved to database:",
-            newValue
-          );
-          handleCloseModal();
-        }}
-        parameterName={selectedNotificationType}
-      />
     </SafeAreaView>
   );
 };

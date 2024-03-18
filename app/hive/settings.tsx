@@ -4,7 +4,7 @@ import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useRef, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useTheme, Text, Button, TextInput } from "react-native-paper";
+import { useTheme, Text, Button, TextInput, Divider } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,6 +16,7 @@ import RepositionHiveModal from "@/components/modals/RepositionHiveModal";
 import { VerticalSpacer } from "@/components/Spacers";
 import RegisterSensorModal from "@/components/modals/RegisterSensorModal";
 import DialogDeleteHive from "@/components/modals/DialogDeleteHive";
+import NotificationSettingsComponent from "@/components/NotificationSettings";
 
 type RootStackParamList = {
   hive: {
@@ -175,7 +176,17 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
               {userViewModel.i18n.t("rename")}
             </Button>
           </View>
-          <VerticalSpacer size={8} />
+
+          <VerticalSpacer size={12} />
+          <Divider style={{ backgroundColor: theme.colors.outline }} />
+          <VerticalSpacer size={12} />
+
+          <NotificationSettingsComponent hiveId={hiveId} />
+
+          <VerticalSpacer size={12} />
+          <Divider style={{ backgroundColor: theme.colors.outline }} />
+          <VerticalSpacer size={12} />
+
           <Button
             icon="pencil"
             mode="contained"

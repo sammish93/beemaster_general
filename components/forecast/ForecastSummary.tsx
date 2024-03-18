@@ -193,7 +193,11 @@ const DailyForecastSummary = (props: DailyForecastSummaryProps) => {
         has align items set to "center" */}
         <Divider
           horizontalInset={true}
-          style={{ alignSelf: "stretch", marginVertical: 4 }}
+          style={{
+            backgroundColor: theme.colors.outline,
+            alignSelf: "stretch",
+            marginVertical: 4,
+          }}
         />
         <Text
           style={theme.fonts.bodyMedium}
