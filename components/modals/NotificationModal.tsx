@@ -10,10 +10,14 @@ interface NotificationModalProps {
   bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
   onClose: () => void;
   onSave: (newValue: string) => void;
-  parameterName: NotificationType;
+  parameterName?: NotificationType;
 }
 
 const NotificationModal = (props: NotificationModalProps) => {
+  if (props.parameterName === null) {
+    return null;
+  }
+
   return (
     <>
       {Platform.OS === "android" || Platform.OS === "ios" ? (
