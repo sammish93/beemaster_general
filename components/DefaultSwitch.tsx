@@ -1,48 +1,81 @@
-import * as React from 'react';
-import { Switch, useTheme } from 'react-native-paper';
-import { Text, View } from 'react-native';
+import * as React from "react";
+import { Switch, useTheme } from "react-native-paper";
+import { Text, View } from "react-native";
 import { MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { VerticalSpacer } from "./Spacers";
 
-type Type = 'mobile' | 'sms' | 'email';
+type Type = "mobile" | "sms" | "email";
 interface PermissionSwitchProps {
-    type: Type;
-
+  type: Type;
 }
 const DefaultSwitchComponent = ({ type }: PermissionSwitchProps) => {
-    const [isSwitchOn, setIsSwitchOn] = React.useState(false);
-    const { userViewModel } = useContext(MobXProviderContext);
-    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
-    const paperTheme = useTheme();
+  const { userViewModel } = useContext(MobXProviderContext);
+  const paperTheme = useTheme();
 
-    const translateType = (type: Type): string => {
-        switch (type) {
+  const getState = () => {
+    switch (type) {
+      case "mobile":
+        return userViewModel.mobileNotifications;
+      case "sms":
+        return userViewModel.smsNotifications;
+      case "email":
+        return userViewModel.emailNotifications;
+      default:
+        return false;
+    }
+  };
 
-            case 'mobile':
-                return userViewModel.i18n.t('mobile');
-            case 'sms':
-                return userViewModel.i18n.t('SMS');
-            case 'email':
-                return userViewModel.i18n.t('email');
-            default:
-                return type;
-        }
-    };
+  const [isSwitchOn, setIsSwitchOn] = React.useState(getState());
 
-    return (
-        <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+  const updateState = () => {
+    switch (type) {
+      case "mobile":
+        return userViewModel.toggleMobileNotifications();
+      case "sms":
+        return userViewModel.toggleSmsNotifications();
+      case "email":
+        return userViewModel.toggleEmailNotifications();
+      default:
+        return false;
+    }
+  };
 
-                <Text style={[paperTheme.fonts.bodyLarge, { marginRight: 10, color: paperTheme.colors.onSurface }]}>
-                    {translateType(type)}
-                </Text>
-                <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+  const translateType = (type: Type): string => {
+    switch (type) {
+      case "mobile":
+        return userViewModel.i18n.t("mobile");
+      case "sms":
+        return userViewModel.i18n.t("SMS");
+      case "email":
+        return userViewModel.i18n.t("email");
+      default:
+        return type;
+    }
+  };
 
-            </View>
-            <VerticalSpacer size={6} />
-
-        </View >)
+  return (
+    <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text
+          style={[
+            paperTheme.fonts.bodyLarge,
+            { marginRight: 10, color: paperTheme.colors.onSurface },
+          ]}
+        >
+          {translateType(type)}
+        </Text>
+        <Switch
+          value={getState()}
+          onValueChange={() => {
+            setIsSwitchOn(!isSwitchOn);
+            updateState();
+          }}
+        />
+      </View>
+      <VerticalSpacer size={6} />
+    </View>
+  );
 };
 
 export default DefaultSwitchComponent;

@@ -161,7 +161,8 @@ const SettingsScreen = () => {
               style={styles(theme).settingsButton}
               mode="contained"
               onPress={() => {
-                //TODO: do someting
+                //TODO DB - Add functionality to register an anonymous account.
+                //Only show if user is anonymous.
               }}
             >
               {userViewModel.i18n.t("register email")}
@@ -171,7 +172,7 @@ const SettingsScreen = () => {
               style={styles(theme).settingsButton}
               mode="contained"
               onPress={() => {
-                //TODO: do someting
+                //TODO: Add functionality to provide all data stored about a user and their hives.
               }}
             >
               {userViewModel.i18n.t("request data")}
@@ -194,7 +195,7 @@ const SettingsScreen = () => {
               ]}
               mode="contained"
               onPress={() => {
-                //TODO: do someting
+                //TODO: DB - Add functionality to delete a user account
               }}
             >
               <Text

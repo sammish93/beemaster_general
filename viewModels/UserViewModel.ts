@@ -57,6 +57,9 @@ class UserViewModel {
     @observable weightPreference: WeightMeasurement = WeightMeasurement.Grams;
     // Allows the user to customise which notifications can trigger by a background tasker operation.
     @observable notificationPreferences: NotificationPreference = notificationPreferences;
+    @observable mobileNotifications: boolean = true;
+    @observable smsNotifications: boolean = true;
+    @observable emailNotifications: boolean = true;
     // NOTE: These params aren't fully defined yet. Need to find exactly what we need based on 
     // academic research first.
     @observable maxTempParamTooWarm?: number;
@@ -118,6 +121,21 @@ class UserViewModel {
         // You should update only the type that's given as a parameter and make it the opposite of the 
         // existing value.
         this.notificationPreferences[type] = !this.notificationPreferences[type];
+    }
+
+    @action toggleMobileNotifications(): void {
+        // TODO DB - Update user's notification method in DB.
+        this.mobileNotifications = !this.mobileNotifications;
+    }
+
+    @action toggleSmsNotifications(): void {
+        // TODO DB - Update user's notification method in DB.
+        this.smsNotifications = !this.smsNotifications;
+    }
+
+    @action toggleEmailNotifications(): void {
+        // TODO DB - Update user's notification method in DB.
+        this.emailNotifications = !this.emailNotifications;
     }
 
     @action signInWithGoogleWeb = async () => {
