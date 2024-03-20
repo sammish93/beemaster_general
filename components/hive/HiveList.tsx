@@ -12,12 +12,12 @@ import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import UserViewModel from "@/viewModels/UserViewModel";
 
 export interface HiveListProps {
-  isListView: boolean;
+  isDetailedView: boolean;
   navigation: NavigationProp<ReactNavigation.RootParamList>;
   hives: HiveModel[];
 }
 
-const HiveList = ({ isListView, navigation, hives }: HiveListProps) => {
+const HiveList = ({ isDetailedView, navigation, hives }: HiveListProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
   const [parentWidth, setParentWidth] = useState(0);
@@ -28,7 +28,7 @@ const HiveList = ({ isListView, navigation, hives }: HiveListProps) => {
     // Ensure we don't divide by zero
     if (parentWidth === 0) return 1;
 
-    return Math.floor(parentWidth / (isListView ? 250 : 125));
+    return Math.floor(parentWidth / (isDetailedView ? 250 : 125));
   }, [parentWidth]);
 
   // Returns the amount of items in the last row
@@ -43,7 +43,7 @@ const HiveList = ({ isListView, navigation, hives }: HiveListProps) => {
   const renderItem = ({ item }: { item: HiveModel }) => (
     <HiveCard
       item={item}
-      isDetailedView={isListView}
+      isDetailedView={isDetailedView}
       onPress={() => {
         hiveViewModel.addSelectedHive(item);
         navigation.navigate("/hive/index", { hiveId: item.id });

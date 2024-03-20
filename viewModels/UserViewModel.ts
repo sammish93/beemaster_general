@@ -14,7 +14,6 @@ import { notificationPreferences } from "@/data/notificationData";
 class UserViewModel {
 
     constructor() {
-
         // Makes all the class properties observable. Can change if desired.
         makeAutoObservable(this)
 
@@ -28,13 +27,10 @@ class UserViewModel {
 
         // Manually change the language:
         //this.i18n.locale = "no";
-
-
     }
 
     @observable currentLanguage: string | null = null;
     @observable currentCountry: string | null = null;
-
     @observable authInitialized = false;
 
     initializeAuthListener() {
@@ -50,7 +46,6 @@ class UserViewModel {
         });
     }
 
-
     // Localisation
     @observable i18n;
     @observable userId = "";
@@ -60,9 +55,10 @@ class UserViewModel {
     @observable precipitationPreference: PrecipitationMeasurement = PrecipitationMeasurement.Millimeters;
     @observable windSpeedPreference: WindSpeedMeasurement = WindSpeedMeasurement.MetersPerSecond;
     @observable weightPreference: WeightMeasurement = WeightMeasurement.Grams;
-
-
-
+    // Allows the user to customise which notifications can trigger by a background tasker operation.
+    @observable notificationPreferences: NotificationPreference = notificationPreferences;
+    // NOTE: These params aren't fully defined yet. Need to find exactly what we need based on 
+    // academic research first.
     @observable maxTempParamTooWarm?: number;
     @observable thresholdWeightDecreaseInAutumn: number = 0;
     @observable thresholdWeightDecreaseEarlySpring: number = 0;
@@ -76,7 +72,6 @@ class UserViewModel {
     @observable thresholdMaxTempChange: number = 0;
     @observable thresholdMaxHumidityChange: number = 0;
     @observable humidityThreshold: number = 0;
-
     @observable autumnMonths: number[] = [];
     @observable summerStartMonth: number = 0;
     @observable earlyWinterMonths: number[] = [];
@@ -89,33 +84,39 @@ class UserViewModel {
     @observable autumnStartMonth: number = 0;
     @observable autumnEndMonth: number = 0;
 
-    @observable notificationPreferences: NotificationPreference = notificationPreferences;
-
     @action public setUserId = (val: string): void => {
         this.userId = val;
     }
 
     @action public setTheme = (theme: string): void => {
+        // TODO DB - Update user's theme preference in DB.
         this.theme = theme;
     }
     // Functions to allow the user to set their measurement preferences.
     @action public setTemperaturePreference = (prefence: TemperatureMeasurement): void => {
+        // TODO DB - Update user's temperature preference in DB.
         this.temperaturePreference = prefence;
     }
 
     @action public setPrecipitationPreference = (prefence: PrecipitationMeasurement): void => {
+        // TODO DB - Update user's precipitation preference in DB.
         this.precipitationPreference = prefence;
     }
 
     @action public setWindSpeedPreference = (prefence: WindSpeedMeasurement): void => {
+        // TODO DB - Update user's wind speed preference in DB.
         this.windSpeedPreference = prefence;
     }
 
     @action public setWeightPreference = (prefence: WeightMeasurement): void => {
+        // TODO DB - Update user's weight preference in DB.
         this.weightPreference = prefence;
     }
 
     @action toggleNotificationPreference(type: NotificationType): void {
+        // TODO DB - Update user's notification preference in DB. There are several notification types.
+        // You should update only the type that's given as a parameter and make it the opposite of the 
+        // existing value.
         this.notificationPreferences[type] = !this.notificationPreferences[type];
     }
 
@@ -132,6 +133,9 @@ class UserViewModel {
         }
     }
 
+    // TODO DB - These will all have to be in the DB eventually, but I'm not sure that we're fully finished 
+    // defining exactly what type of parameters should be included. See discord pinned message where 
+    // I asked Ash and Lorena to define exactly what parameters should be used based on academic research.
     @action public setMaxTempParamTooWarm = (value: number): void => {
         this.maxTempParamTooWarm = value;
     }
@@ -160,7 +164,6 @@ class UserViewModel {
     @action public setAutumnEndMonth = (month: number): void => {
         this.autumnEndMonth = month;
     }
-
 
     @action public setThresholdExitCountHigh = (value: number): void => {
         this.thresholdExitCountHigh = value;
@@ -209,7 +212,6 @@ class UserViewModel {
         this.thresholdMaxHumidityChange = value;
     }
 
-
     @action public setLateSpringStartMonth = (value: number): void => {
         this.lateSpringStartMonth = value;
     }
@@ -238,9 +240,6 @@ class UserViewModel {
             }
         }
     };
-
-
-
 
     @action signInWithEmail = async (email: string, password: string) => {
         try {
@@ -287,13 +286,9 @@ class UserViewModel {
                 runInAction(() => {
                     this.signUpError = "An error occurred during sign up";
                 });
-
-
             }
         }
     }
-
-
 
     @action signInAnonymously = async () => {
         try {
@@ -305,10 +300,8 @@ class UserViewModel {
     }
 
     //TODO logout and auth connect
-
     @action logout = async () => {
         try {
-
             await signOut(auth);
             console.log("user signed out")
 
@@ -318,7 +311,6 @@ class UserViewModel {
         }
     }
 
-
     // Clears all the data in this view model.
     // Useful for when a user logs out.
     @action public clear = (): void => {
@@ -327,6 +319,12 @@ class UserViewModel {
     }
 
     @action public updateLocaleSettings = () => {
+        // TODO Consider splitting up this function to only language and country. The user's language should 
+        // decide the localisation. The user's country should decide the default value for parameters.
+        // example - Sam and Ash want the app country set to Norway because they have their hives there.
+        // They want to use the app in English though. Ash wants dates to appear in MM/DD format and Sam 
+        // wants dates to appear in DD/MM. British English vs American English localisation.
+        // TODO DB - Update user's country and language.
         let regionCode: string;
         if (Platform.OS === 'web') {
             regionCode = Localization.locale;
@@ -346,10 +344,7 @@ class UserViewModel {
 
         this.currentLanguage = languageOption ? languageOption.name : null;
         this.currentCountry = countryOption ? countryOption.name : null;
-
     };
-
-
 
     /**
      * Fetches user parameters from the database.
@@ -362,6 +357,8 @@ class UserViewModel {
      */
 
     @action fetchUserParametersFromDatabase() {
+        // TODO Define parameters first.
+        // TODO DB - Read from DB. Note that parameters should be fully defined before we work on this.
         // Dummy data for now
         const userDataFromDatabase = {
             userId: "3536",
@@ -438,12 +435,7 @@ class UserViewModel {
         this.setEarlySummerEndMonth(userDataFromDatabase.earlySummerEndMonth);
         this.setSummerStartMonth(userDataFromDatabase.summerStartMonth);
         this.setEarlyWinterMonths(userDataFromDatabase.earlyWinterMonths);
-
-
-
     }
-
-
 }
 
 export default new UserViewModel()

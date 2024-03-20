@@ -15,9 +15,12 @@ class NotificationViewModel {
 
     constructor() {
         makeAutoObservable(this)
+        // TODO DB - Get unread notifications from DB.
+        // Right now the notifications are displayed using dummy data.
     }
 
     addNotification(notification: HiveNotification) {
+        // TODO DB - Write to DB.
         this.notifications = [...this.notifications, notification];
     }
 
@@ -26,13 +29,16 @@ class NotificationViewModel {
     }
 
     modifyNotification(notification: HiveNotification) {
+        // TODO DB - Update notification in DB based on its id. If isRead value = true then potentially 
+        // delete the notification from the DB. Storage is cheap though.. might not be important to 
+        // actually delete.
         const noteIndex = this.notifications.findIndex(notificationObject => notificationObject.id === notification.id);
         if (noteIndex !== -1) {
             this.notifications[noteIndex] = notification;
         }
     }
 
-    removeNote(notificationId: string) {
+    removeNotification(notificationId: string) {
         this.notifications = this.notifications.filter(notificationObject => notificationObject.id !== notificationId);
     }
 };

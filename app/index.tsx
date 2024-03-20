@@ -27,7 +27,8 @@ const HomeScreen = () => {
   const bottomSheetAddFilterModalRef = useRef<BottomSheetModal>(null);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const { hiveViewModel } = useContext(MobXProviderContext);
-  const [isListView, setIsListView] = useState(false);
+  // TODO DB - Read user's isDetailedView Value from DB.
+  const [isDetailedView, setIsDetailedView] = useState(false);
   const [filterList, setFilterList] = useState<string[]>([]);
   const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(
     hiveViewModel.hives
@@ -35,10 +36,8 @@ const HomeScreen = () => {
 
   const handleAddHive = (hiveName: string) => {
     /*
-    TODO DB - Write to DB.
-    This was a temporary solution by Stian. The hiveID could possibly be created by firebase?
-    Coordinates of hive should use current GPS location. If not available then default to oslo.
-    
+    TODO Add validation, possibly change ID. Coordinates of hive should use current 
+    GPS location. If not available then default to oslo. Add toast on success or failure.
     */
 
     const newHiveId = `hive-${Date.now()}`;
@@ -79,6 +78,7 @@ const HomeScreen = () => {
   };
 
   const handleAddFilter = (filterName: string) => {
+    // TODO Add validation. Add toast behaviour.
     hiveViewModel.addFilter(filterName);
     handleCloseAddFilterModal();
   };
@@ -147,6 +147,7 @@ const HomeScreen = () => {
       hiveViewModel.fetchFilters();
     }
   }, [userViewModel.authInitialized]);
+
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />
@@ -172,12 +173,13 @@ const HomeScreen = () => {
             }}
           >
             <Switch
-              value={isListView}
-              onValueChange={() => setIsListView(!isListView)}
+              value={isDetailedView}
+              // TODO DB - Update user's isDetailedView value in DB.
+              onValueChange={() => setIsDetailedView(!isDetailedView)}
             />
             <HorizontalSpacer size={8} />
             <Text style={theme.fonts.bodyLarge}>
-              {isListView
+              {isDetailedView
                 ? userViewModel.i18n.t("detailed view")
                 : userViewModel.i18n.t("simplified view")}
             </Text>
@@ -235,7 +237,7 @@ const HomeScreen = () => {
           </View>
           <VerticalSpacer size={8} />
           <HiveList
-            isListView={isListView}
+            isDetailedView={isDetailedView}
             navigation={navigation}
             hives={filteredHiveList}
           />
