@@ -66,7 +66,6 @@ const ModalContent = (props: ModalContentProps) => {
   );
 
   const handleDeleteNote = () => {
-    //TODO Db writing and modify ID
     const note: HiveNote = hiveViewModel.selectedNote;
 
     hiveViewModel.removeNote(note.id);
@@ -76,7 +75,6 @@ const ModalContent = (props: ModalContentProps) => {
   };
 
   const handleModifyNote = () => {
-    //TODO Db writing and modify ID
     const existingNote: HiveNote = hiveViewModel.selectedNote;
     const newNote: HiveNote = {
       id: existingNote.id,

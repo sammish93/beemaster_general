@@ -39,7 +39,6 @@ const HiveList = ({ isDetailedView, navigation, hives }: HiveListProps) => {
     return remainder === 0 ? 0 : remainder;
   }, [hives.length, numColumns]);
 
-  //TODO Modify onPress
   const renderItem = ({ item }: { item: HiveModel }) => (
     <HiveCard
       item={item}

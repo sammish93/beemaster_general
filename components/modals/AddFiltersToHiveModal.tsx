@@ -51,8 +51,8 @@ const ModalContent = (props: ModalContentProps) => {
   const [filterList, setFilterList] = useState<string[]>(selectedHive.filters);
 
   const handleAddNewFilters = () => {
-    //TODO Db writing
     selectedHive.filters = filterList;
+    hiveViewModel.updateHive(selectedHive);
     props.onClose();
   };
 

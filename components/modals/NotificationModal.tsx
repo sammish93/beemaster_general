@@ -10,7 +10,7 @@ interface NotificationModalProps {
   bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
   onClose: () => void;
   onSave: (newValue: string) => void;
-  parameterName?: NotificationType;
+  parameterName: NotificationType;
 }
 
 const NotificationModal = (props: NotificationModalProps) => {

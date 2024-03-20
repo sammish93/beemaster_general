@@ -51,7 +51,7 @@ const ModalContent = (props: ModalContentProps) => {
   const [newHiveName, setNewHiveName] = useState("");
 
   const handleAddNewHive = () => {
-    //TODO Validation
+    //TODO Validation and toast.
     props.onAddHive(newHiveName);
     resetHiveName();
   };

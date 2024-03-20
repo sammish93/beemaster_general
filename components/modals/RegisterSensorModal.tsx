@@ -49,8 +49,10 @@ const ModalContent = (props: ModalContentProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const selectedHive = hiveViewModel.getSelectedHive();
 
-  const handleRepositionHive = () => {
-    //TODO Db writing and insert map component
+  const handleRegisterSensor = () => {
+    // TODO - Implement registration of a hive. Remember validating that the hive ID is the correct
+    // sensor type as what's trying to be added, and that it isn't registered to an existing hive.
+    // TODO DB - Write this to the DB.
     props.onClose();
   };
 
@@ -75,14 +77,14 @@ const ModalContent = (props: ModalContentProps) => {
       <View>
         {/* TODO Modify code to show only 'add sensor' if sensor doesn't currently exist, otherwise 
         show a delete sensor button. Swap out onPress function */}
-        <Button icon="weight" mode="contained" onPress={handleRepositionHive}>
+        <Button icon="weight" mode="contained" onPress={handleRegisterSensor}>
           {userViewModel.i18n.t("add weight sensor")}
         </Button>
         <VerticalSpacer size={8} />
         <Button
           icon="home-thermometer"
           mode="contained"
-          onPress={handleRepositionHive}
+          onPress={handleRegisterSensor}
         >
           {userViewModel.i18n.t("add temperature sensor")}
         </Button>
@@ -90,12 +92,12 @@ const ModalContent = (props: ModalContentProps) => {
         <Button
           icon="air-humidifier"
           mode="contained"
-          onPress={handleRepositionHive}
+          onPress={handleRegisterSensor}
         >
           {userViewModel.i18n.t("add humidity sensor")}
         </Button>
         <VerticalSpacer size={8} />
-        <Button icon="bee" mode="contained" onPress={handleRepositionHive}>
+        <Button icon="bee" mode="contained" onPress={handleRegisterSensor}>
           {userViewModel.i18n.t("add bee count sensor")}
         </Button>
       </View>

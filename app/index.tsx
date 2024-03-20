@@ -36,11 +36,11 @@ const HomeScreen = () => {
 
   const handleAddHive = (hiveName: string) => {
     /*
-    TODO Add validation, possibly change ID. Coordinates of hive should use current 
+    TODO Add validation. Coordinates of hive should use current 
     GPS location. If not available then default to oslo. Add toast on success or failure.
     */
 
-    const newHiveId = `hive-${Date.now()}`;
+    const newHiveId = `${userViewModel.userId}-hive-${Date.now()}`;
 
     hiveViewModel.addHive({
       id: newHiveId,

@@ -50,7 +50,8 @@ const ModalContent = (props: ModalContentProps) => {
   const selectedHive = hiveViewModel.getSelectedHive();
 
   const handleRepositionHive = () => {
-    //TODO Db writing and insert map component
+    // TODO - Implement map and allow relocation.
+    // TODO DB - Write these changes to the DB.
     props.onClose();
   };
 

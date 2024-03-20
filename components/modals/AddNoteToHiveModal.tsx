@@ -56,10 +56,11 @@ const ModalContent = (props: ModalContentProps) => {
   const [note, setNote] = useState<string>("");
 
   const handleAddNewNote = () => {
-    //TODO Db writing and modify ID
+    //TODO DB - ID might be better generated in firebase? Might be hard to refresh in the app if the
+    // ID needs to be generated in firebase though.
     const hive: HiveModel = hiveViewModel.selectedHive;
     const newNote: HiveNote = {
-      id: "test-abc-123",
+      id: `${userViewModel.userId}-note-${Date.now()}`,
       note: note,
       isSticky: sticky,
       timestamp: new Date(Date.now()),
@@ -67,8 +68,9 @@ const ModalContent = (props: ModalContentProps) => {
 
     hive.notes.push(newNote);
 
-    hiveViewModel.addSelectedHive(hive);
+    hiveViewModel.updateHive(hive);
 
+    // Sorts notes
     props.onAddNote(hiveViewModel.selectedHive.notes);
     props.onClose();
   };
