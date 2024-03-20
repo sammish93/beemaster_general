@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Text,
   Button,
@@ -18,7 +18,7 @@ import { NotificationType } from "@/constants/Notifications";
 interface ModalContentProps {
   onClose: () => void;
   onSave: (newValue: string) => void;
-  parameterName?: NotificationType;
+  parameterName: NotificationType;
 }
 
 const ModalContent = (props: ModalContentProps) => {
@@ -104,19 +104,9 @@ const ModalContent = (props: ModalContentProps) => {
     `${userViewModel.earlySummerEndMonth}`
   );
 
-  const getSaveAction = (parameterName: any) => {
-    const translations = {
-      weather: userViewModel.i18n.t("weather"),
-      potentialSwarm: userViewModel.i18n.t("potential swarm"),
-      considerFeeding: userViewModel.i18n.t("consider feeding"),
-      honeyHarvest: userViewModel.i18n.t("honey harvest"),
-      maintenance: userViewModel.i18n.t("maintenance"),
-      expandHive: userViewModel.i18n.t("expand hive"),
-      checkHive: userViewModel.i18n.t("check hive"),
-      reminder: userViewModel.i18n.t("reminder"),
-    };
+  const getSaveAction = (parameterName: NotificationType) => {
     const actions = {
-      [translations.weather]: () => {
+      [NotificationType.Weather]: () => {
         userViewModel.setThresholdWindSpeedStrong(
           parseInt(thresholdWindSpeedStrong)
         );
@@ -124,7 +114,7 @@ const ModalContent = (props: ModalContentProps) => {
         userViewModel.setEarlyWinterMonths(parseInt(earlyWinterMonths));
         userViewModel.setEarlySpringMonths(parseInt(earlySpringMonths));
       },
-      [translations.potentialSwarm]: () => {
+      [NotificationType.PossibleSwarm]: () => {
         userViewModel.setThresholdWeightDecreaseSwarm(
           parseInt(thresholdWeightDecreaseSwarm)
         );
@@ -132,7 +122,7 @@ const ModalContent = (props: ModalContentProps) => {
           parseInt(thresholdExitCountHigh)
         );
       },
-      [translations.considerFeeding]: () => {
+      [NotificationType.ConsiderFeeding]: () => {
         userViewModel.setThresholdWeightDecreaseEarlySpring(
           parseFloat(thresholdWeightDecreaseEarlySpring)
         );
@@ -144,14 +134,14 @@ const ModalContent = (props: ModalContentProps) => {
         userViewModel.setAutumnEndMonth(parseInt(autumnEndMonth, 10));
         userViewModel.setThresholdExitCountLow(parseInt(thresholdExitCountLow));
       },
-      [translations.honeyHarvest]: () => {
+      [NotificationType.HoneyHarvest]: () => {
         userViewModel.setHumidityThreshold(parseInt(humidityThreshold));
         userViewModel.setThresholdTempWarm(parseInt(thresholdTempWarm));
         userViewModel.setThresholdWindSpeedLow(parseInt(thresholdWindSpeedLow));
         userViewModel.setSummerStartMonth(parseInt(summerStartMonth));
         userViewModel.setEarlyAutumnMonth(parseInt(earlyAutumnMonth));
       },
-      [translations.maintenance]: () => {
+      [NotificationType.Maintenance]: () => {
         userViewModel.setEarlySpringStartMonth(
           parseInt(earlySpringStartMonth, 10)
         );
@@ -160,12 +150,12 @@ const ModalContent = (props: ModalContentProps) => {
         userViewModel.setThresholdTempWarm(parseInt(thresholdTempWarm));
         userViewModel.setHumidityThreshold(parseInt(humidityThreshold));
       },
-      [translations.expandHive]: () => {
+      [NotificationType.ConsiderExpanding]: () => {
         userViewModel.setThresholdWeightIncrease(
           parseInt(thresholdWeightIncrease)
         );
       },
-      [translations.checkHive]: () => {
+      [NotificationType.CheckHive]: () => {
         userViewModel.setThresholdMaxTempChange(
           parseInt(thresholdMaxTempChange)
         );
@@ -175,7 +165,7 @@ const ModalContent = (props: ModalContentProps) => {
         userViewModel.setLateSpringStartMonth(parseInt(lateSpringStartMonth));
         userViewModel.setEarlySummerEndMonth(parseInt(earlySummerEndMonth));
       },
-      [translations.reminder]: () => {},
+      [NotificationType.CustomReminder]: () => {},
     };
     return actions[parameterName];
   };

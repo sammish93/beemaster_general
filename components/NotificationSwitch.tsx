@@ -25,11 +25,9 @@ const NotificationSwitchComponent = ({
 
   const onToggleSwitch = () => {
     if (hiveId) {
-      // TODO DB
       console.log(hiveId);
       hiveViewModel.toggleNotificationPreference(type);
     } else {
-      // TODO DB
       userViewModel.toggleNotificationPreference(type);
       console.log("hello");
     }
