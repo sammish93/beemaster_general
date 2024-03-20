@@ -49,10 +49,15 @@ class HiveViewModel {
                 name: data.hiveName,
                 filters: data.hiveFilter,
                 latLng: data.latLng,
-                // Notes is just dummy data right now.
-                // TODO Write dummy data to DB.
+                // TODO DB - read notes, preferences, queen, and the latest sensor reading from DB.
+                // Right now they are all dummy data.
                 notes: notes,
-                preferences: notificationPreferences
+                preferences: notificationPreferences,
+                temperature: 4,
+                weight: 5,
+                humidity: 78,
+                beeCount: 48,
+                queen: {id: "abc123queenbee", dateOfBirth: new Date(Date.now())}
             } as HiveModel; 
             });
             

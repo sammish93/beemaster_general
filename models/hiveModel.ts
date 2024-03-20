@@ -6,13 +6,16 @@ export interface HiveModel {
     name: string
     filters: string[],
     latLng: { lat: number, lng: number },
-    weather?: string
-    wind?: string
     temperature?: number
     weight?: number
     humidity?: number
-    precipitation?: number
-    currentTemp: number
+    beeCount?: number
     notes: HiveNote[]
     preferences: NotificationPreference
+    queen?: QueenBee
+}
+
+export interface QueenBee {
+    id: string,
+    dateOfBirth: Date
 }

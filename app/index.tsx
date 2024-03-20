@@ -34,7 +34,15 @@ const HomeScreen = () => {
   );
 
   const handleAddHive = (hiveName: string) => {
-    const newHiveId = `hive-${Date.now()}`; // TODO Temporarly solution.
+    /*
+    TODO DB - Write to DB.
+    This was a temporary solution by Stian. The hiveID could possibly be created by firebase?
+    Coordinates of hive should use current GPS location. If not available then default to oslo.
+    
+    */
+
+    const newHiveId = `hive-${Date.now()}`;
+
     hiveViewModel.addHive({
       id: newHiveId,
       name: hiveName,
@@ -42,6 +50,7 @@ const HomeScreen = () => {
       filters: [],
       notes: [],
     });
+
     handleCloseAddHiveModal();
   };
 
@@ -120,7 +129,7 @@ const HomeScreen = () => {
       );
       setFilteredHiveList(filtered);
     }
-  }, [ hiveViewModel.hives, filterList]);
+  }, [hiveViewModel.hives, filterList]);
 
   // In the case that a hive is deleted then the GUI is refreshed and all filters are cleared.
   useEffect(() => {
@@ -130,15 +139,14 @@ const HomeScreen = () => {
     }
   }, [hiveViewModel.hives]);
 
-
   useEffect(() => {
     if (userViewModel.authInitialized) {
-      console.log(userViewModel.authInitialized)
-      
+      console.log(userViewModel.authInitialized);
+
       hiveViewModel.fetchHives();
       hiveViewModel.fetchFilters();
     }
-  }, [userViewModel.authInitialized]); 
+  }, [userViewModel.authInitialized]);
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />

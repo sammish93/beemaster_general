@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { HiveModel } from "@/models/hiveModel";
 import { View, Image } from "react-native";
 import { useTheme, Text, Card, Icon } from "react-native-paper";
@@ -6,6 +6,11 @@ import { sensorData } from "@/data/hiveData";
 import getWeatherTypeIconFromString from "@/domain/weatherIconMapper";
 import { MobXProviderContext } from "mobx-react";
 import { HorizontalSpacer } from "../Spacers";
+import { CurrentForecast } from "@/models/forecast";
+import { fetchWeatherForecast } from "@/data/api/weatherApi";
+import { deserialiseCurrentForecast } from "@/domain/weatherForecastDeserialiser";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "../ToastCustom";
 
 // Assures that only the string "100%" can be passed.
 type maxWidthString = "100%";
@@ -25,38 +30,50 @@ const HiveCard = ({
 }: HiveCardProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
+  const [forecast, setForecast] = useState<CurrentForecast>();
 
-  const filterOnLabel = (
-    ...list: string[]
-  ): {
-    label: string;
-    icon?: string;
-    weatherIcon?: string;
-    value: string;
-  }[] => {
-    return sensorData.filter(({ label }) => list.includes(label));
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchWeatherForecast(item.latLng);
 
-  //TODO Swap out with real data. Add temp/weight/precipitation/wind preference to <Text>
-  const filteredData = isDetailedView
-    ? sensorData
-    : filterOnLabel("Weather", "Temperature", "Wind", "Rain");
-  const mid = Math.ceil(sensorData.length / 2);
-  const firstHalf = filteredData.slice(0, mid);
-  const secondHalf = filteredData.slice(mid);
+        const currentForecast = deserialiseCurrentForecast(
+          data,
+          userViewModel.temperaturePreference,
+          userViewModel.precipitationPreference,
+          userViewModel.windSpeedPreference
+        );
+
+        setForecast(currentForecast);
+      } catch (error) {
+        Toast.show(
+          toastCrossPlatform({
+            title: "Error",
+            text: "Could not retrieve the latest weather forecast.",
+            type: "error",
+          })
+        );
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <Card onPress={onPress} style={{ margin: 4, flex: 1, maxWidth: maxWidth }}>
       <Card.Title title={item.name} titleStyle={{ alignSelf: "center" }} />
-      <Card.Content
-        style={{
-          flexDirection: "row",
-        }}
-      >
-        <View style={{ flex: 1, alignItems: "center" }}>
-          {firstHalf.map(({ label, icon, weatherIcon, value }) => (
+      <Card.Content style={{ flexDirection: "row" }}>
+        <View
+          style={{
+            flexDirection: "column",
+            flex: 1,
+            alignItems: "center",
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          {forecast?.currentForecast.weatherType && (
             <View
-              key={label}
               style={{
                 flexDirection: "row",
                 flex: 1,
@@ -65,92 +82,209 @@ const HiveCard = ({
                 justifyContent: "center",
               }}
             >
-              {icon && (
-                <>
-                  <Icon
-                    source={icon}
-                    size={18}
-                    color={theme.colors.onSurfaceVariant}
-                  />
-                  <HorizontalSpacer size={4} />
-                </>
-              )}
-              {weatherIcon && (
-                <>
-                  <Image
-                    source={getWeatherTypeIconFromString(weatherIcon)}
-                    style={{ width: 18, height: 18 }}
-                  />
-                  <HorizontalSpacer size={4} />
-                  <Text
-                    style={theme.fonts.bodyMedium}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {userViewModel.i18n.t(weatherIcon)}
-                  </Text>
-                </>
-              )}
+              <Image
+                source={getWeatherTypeIconFromString(
+                  forecast.currentForecast.weatherType
+                )}
+                style={{ width: 18, height: 18 }}
+              />
+              <HorizontalSpacer size={4} />
               <Text
                 style={theme.fonts.bodyMedium}
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {value}
+                {userViewModel.i18n.t(forecast.currentForecast.weatherType)}
               </Text>
             </View>
-          ))}
-        </View>
-        {secondHalf.length !== 0 && (
-          <View style={{ flex: 1, alignItems: "center" }}>
-            {secondHalf.map(({ label, icon, weatherIcon, value }) => (
-              <View
-                key={label}
-                style={{
-                  flexDirection: "row",
-                  flex: 1,
-                  alignItems: "center",
-                  width: "100%",
-                  justifyContent: "center",
-                }}
-              >
-                {icon && (
-                  <>
-                    <Icon
-                      source={icon}
-                      size={18}
-                      color={theme.colors.onSurfaceVariant}
-                    />
-                    <HorizontalSpacer size={4} />
-                  </>
-                )}
-                {weatherIcon && (
-                  <>
-                    <Image
-                      source={getWeatherTypeIconFromString(weatherIcon)}
-                      style={{ width: 18, height: 18 }}
-                    />
-                    <HorizontalSpacer size={4} />
-                    <Text
-                      style={theme.fonts.bodyMedium}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      {userViewModel.i18n.t(weatherIcon)}
-                    </Text>
-                  </>
-                )}
-                <Text
-                  style={theme.fonts.bodyMedium}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {value}
-                </Text>
-              </View>
-            ))}
+          )}
+
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 1,
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "center",
+            }}
+          >
+            <Icon
+              source="weather-windy"
+              size={18}
+              color={theme.colors.onSurfaceVariant}
+            />
+            <HorizontalSpacer size={4} />
+            <Text
+              style={theme.fonts.bodyMedium}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {forecast?.currentForecast.windSpeed}{" "}
+              {userViewModel.windSpeedPreference}
+            </Text>
           </View>
-        )}
+
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 1,
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "center",
+            }}
+          >
+            <Icon
+              source="thermometer"
+              size={18}
+              color={theme.colors.onSurfaceVariant}
+            />
+            <HorizontalSpacer size={4} />
+            <Text
+              style={theme.fonts.bodyMedium}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {forecast?.currentForecast.temperature}{" "}
+              {userViewModel.temperaturePreference}
+            </Text>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 1,
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "center",
+            }}
+          >
+            <Icon
+              source="water-outline"
+              size={18}
+              color={theme.colors.onSurfaceVariant}
+            />
+            <HorizontalSpacer size={4} />
+            <Text
+              style={theme.fonts.bodyMedium}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {forecast?.currentForecast.precipitation}{" "}
+              {userViewModel.precipitationPreference}
+            </Text>
+          </View>
+        </View>
+        {isDetailedView ? (
+          <View
+            style={{
+              flexDirection: "column",
+              flex: 1,
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "center",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                flex: 1,
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <Icon
+                source="weight"
+                size={18}
+                color={theme.colors.onSurfaceVariant}
+              />
+              <HorizontalSpacer size={4} />
+              <Text
+                style={theme.fonts.bodyMedium}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {item.weight
+                  ? `${item.weight} ${userViewModel.weightPreference}`
+                  : "N/A"}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                flex: 1,
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <Icon
+                source="home-thermometer"
+                size={18}
+                color={theme.colors.onSurfaceVariant}
+              />
+              <HorizontalSpacer size={4} />
+              <Text
+                style={theme.fonts.bodyMedium}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {item.temperature
+                  ? `${item.temperature} ${userViewModel.temperaturePreference}`
+                  : "N/A"}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                flex: 1,
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <Icon
+                source="air-humidifier"
+                size={18}
+                color={theme.colors.onSurfaceVariant}
+              />
+              <HorizontalSpacer size={4} />
+              <Text
+                style={theme.fonts.bodyMedium}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {item.humidity ? `${item.humidity} %` : "N/A"}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                flex: 1,
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <Icon
+                source="bee"
+                size={18}
+                color={theme.colors.onSurfaceVariant}
+              />
+              <HorizontalSpacer size={4} />
+              <Text
+                style={theme.fonts.bodyMedium}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {item.beeCount ? `${item.beeCount} p/m` : "N/A"}
+              </Text>
+            </View>
+          </View>
+        ) : null}
       </Card.Content>
     </Card>
   );
