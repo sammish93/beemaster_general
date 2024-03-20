@@ -29,6 +29,7 @@ type HiveScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, "hive">;
 };
 
+// TODO Add queen bee customisation.
 const HiveSettingsScreen = (params: HiveScreenProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
@@ -129,7 +130,6 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   };
 
   const handleDeleteHive = () => {
-    // TODO Db writes
     hideDeleteDialog();
     hiveViewModel.removeHive(selectedHive.id);
     navigation.navigate("../index");
@@ -137,6 +137,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
 
   const handleUpdateName = (name: string) => {
     selectedHive.name = name;
+    hiveViewModel.updateHive(selectedHive);
   };
 
   return (

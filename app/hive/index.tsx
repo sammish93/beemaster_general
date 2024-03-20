@@ -63,6 +63,7 @@ type HiveScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, "hive">;
 };
 
+// TODO Add queen bee display.
 const HiveScreen = (params: HiveScreenProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
@@ -167,6 +168,7 @@ const HiveScreen = (params: HiveScreenProps) => {
     fetchData();
   }, []);
 
+  // TODO Test. Consider refactoring to domain layer.
   // Sorting the notes so that the stickied notes appear on the top. Additionally, sorts based on timestamp
   // from newest first.
   const sortNotes = (notes: HiveNote[]) => {
@@ -241,7 +243,11 @@ const HiveScreen = (params: HiveScreenProps) => {
                       />
                     </>
                   ) : null}
-                  {/* TODO Fetch sensor data from db and if tests render components if hive sensor exists */}
+                  {/* 
+                  TODO DB - Fetch sensor data from DB. Possibly the last 12 readings. Note that there's a 
+                  chart for each individual sensor.
+                  Add (if sensor exists) sections for showing charts.
+                  */}
                   <VerticalSpacer size={8} />
                   <Text style={theme.fonts.titleLarge}>
                     {userViewModel.i18n.t("weight")}
@@ -383,6 +389,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                   {userViewModel.i18n.t("location")}
                 </Text>
                 <VerticalSpacer size={8} />
+                {/* TODO - Implement map component. */}
                 <View
                   style={{
                     height: 100,

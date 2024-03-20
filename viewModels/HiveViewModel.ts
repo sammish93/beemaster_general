@@ -78,6 +78,16 @@ class HiveViewModel {
         this.hives.push(hive);
     }
 
+    updateHive(hiveToUpdate: HiveModel) {
+        // TODO DB - Update DB for specific hive ID.
+        if (hiveToUpdate) {
+            const hiveIndex = this.hives.findIndex(hive => hive.id === hiveToUpdate.id);
+            if (hiveIndex !== -1) {
+                this.hives[hiveIndex] = hiveToUpdate;
+            }
+        }
+    }
+
     removeHive(hiveId: string) {
         // TODO DB - Delete this hive from the DB.
         this.hives = this.hives.filter(item => item.id !== hiveId);
@@ -146,6 +156,24 @@ class HiveViewModel {
         // inactive hive weatherNotification values to false to avoid excess alerts.
         if (this.selectedHive && this.selectedHive.preferences) {
             this.selectedHive.preferences[type] = !this.selectedHive.preferences[type];
+        } else {
+            // TODO Error handling
+        }
+    }
+
+    toggleNotificationPreferenceForSpecificHive(type: NotificationType, hiveId: string): void {
+        // TODO DB - Write notification type modification to DB. Note that this is for a specific hive, and 
+        // not notifications for all hives (user preferences).
+        const hiveToModify = this.hives.find(hive => hive.id === hiveId)
+
+        if (hiveToModify && hiveToModify.preferences) {
+            hiveToModify.preferences[type] = !hiveToModify.preferences[type];
+
+            const hiveIndex = this.hives.findIndex(hive => hive.id === hiveId);
+
+            if (hiveIndex !== -1) {
+                this.hives[hiveIndex] = hiveToModify;
+            }
         } else {
             // TODO Error handling
         }

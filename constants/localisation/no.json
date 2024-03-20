@@ -173,5 +173,7 @@
   "check hive": "Sjekk bikube",
   "possible swarm": "Mulig sverm",
   "custom reminder": "Tilpasset påminnelse",
-  "mute_notifications": "Ønsker du å dempe '%{notificationType}' notifikasjoner for '%{hiveName}'?"
+  "mute_notifications": "Ønsker du å dempe '%{notificationType}' notifikasjoner for '%{hiveName}'?",
+  "mute": "Demp",
+  "read": "Lest"
 }

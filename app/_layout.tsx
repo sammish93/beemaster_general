@@ -143,6 +143,7 @@ export type LayoutProps = {
   width: number;
 };
 
+// TODO Modify navigation (Sam). Fix bugs present.
 const DrawerLayout = (props: LayoutProps) => {
   return (
     <>

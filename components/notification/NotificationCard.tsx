@@ -34,12 +34,19 @@ const NotificationCard = ({ item, navigation }: NotificationProps) => {
   };
 
   const handleMuteHive = () => {
-    //TODO Integrate functionality.
+    //TODO Toast feedback on success.
+    hiveViewModel.toggleNotificationPreferenceForSpecificHive(
+      item.notificationType,
+      item.hiveId
+    );
+
+    // Also hides the notification.
+    handleModifyNotification();
+
     setShowDialog(false);
   };
 
   const handleModifyNotification = () => {
-    //TODO Db writing
     const existingNotification: HiveNotification =
       notificationViewModel.getNotificationFromId(item.id);
     const newNotification: HiveNotification = {
@@ -58,7 +65,6 @@ const NotificationCard = ({ item, navigation }: NotificationProps) => {
   };
 
   const handleCardPress = () => {
-    // TODO DB integration and error handling when hive doesn't exist
     const hive: HiveModel = hiveViewModel.getHiveFromId(item.hiveId);
 
     hiveViewModel.addSelectedHive(hive);
@@ -133,7 +139,7 @@ const NotificationCard = ({ item, navigation }: NotificationProps) => {
                     alignSelf: "flex-end",
                   }}
                 >
-                  Mute
+                  {userViewModel.i18n.t("mute")}
                 </Button>
                 <HorizontalSpacer size={4} />
                 <Button
@@ -144,7 +150,7 @@ const NotificationCard = ({ item, navigation }: NotificationProps) => {
                     alignSelf: "flex-end",
                   }}
                 >
-                  Read
+                  {userViewModel.i18n.t("read")}
                 </Button>
               </View>
             </View>
