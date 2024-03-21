@@ -3,6 +3,23 @@ import * as admin from "firebase-admin";
 
 admin.initializeApp();
 
+/**
+ * Firebase Cloud Function for registering sensor weight data.
+ * 
+ * The function is exlusively designed to handle POST requests to add new weight 
+ * readings from sensors to our Firestore database. It expects 'userId', 'hiveId'
+ * and 'weight' fields in the request body. 
+ * 
+ * The function adds the weight data to the 'weightReading' subcollection under the
+ * specific user´s hive document.
+ * 
+ * POST Request body format:
+ * {
+ *  "userId": "user´s unique identifier",
+ *  "hiveId": "hive´s unique identifier within the user´s collection",
+ *  "weight": numeric weight value from the sensor
+ * }
+ */
 export const addWeightData = onRequest(async (request, response) => {
 
   if (request.method !== "POST") {
@@ -10,12 +27,10 @@ export const addWeightData = onRequest(async (request, response) => {
     return;
   }
 
-  // Extract user and hived IDs, and weight data from the request body.
   const userId = request.body.userId;
   const hiveId = request.body.hiveId;
   const weightData = request.body.weight;
 
-  // Validate presence of all required fields.
   if (!userId || !hiveId || !weightData) {
     response.status(400).send("Missing fields in request - userId, hiveId, weight.");
     return;
