@@ -75,13 +75,14 @@ const ModalContent = (props: ModalContentProps) => {
         {hiveViewModel.filters.map((filter: string) => (
           <>
             <View
-              key={`${filter}-checkbox`}
+              key={`${filter}-view`}
               style={{
                 flexDirection: "row",
                 alignItems: "center",
               }}
             >
               <Button
+                key={`${filter}-button`}
                 mode="contained"
                 onPress={() => handleRemoveFilter(filter)}
                 textColor={theme.colors.onError}
@@ -95,7 +96,7 @@ const ModalContent = (props: ModalContentProps) => {
                 })}
               </Button>
             </View>
-            <VerticalSpacer size={8} />
+            <VerticalSpacer key={`${filter}-spacer`} size={8} />
           </>
         ))}
       </View>

@@ -137,32 +137,15 @@ const HiveScreen = (params: HiveScreenProps) => {
     }
   };
 
-  const handleHistoricalSensorModalSheetPressOpen = useCallback(() => {
-    bottomSheetHistoricalSensorModalRef.current?.present();
-  }, []);
-
-  const handleHistoricalSensorModalSheetPressClose = useCallback(() => {
-    bottomSheetHistoricalSensorModalRef.current?.dismiss();
-  }, []);
-
   const handleOpenHistoricalSensorModal = () => {
     // TODO DB - Swap out dummy data with full sensor history. Might be worth adding a parameter here
     // to specify which sensor ID to retrieve from.
     setHistoricalSensorData(weightSensorDataExpanded);
-
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleHistoricalSensorModalSheetPressOpen();
-    } else {
-      setHistoricalSensorModalVisible(true);
-    }
+    setHistoricalSensorModalVisible(true);
   };
 
   const handleCloseHistoricalSensorModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleHistoricalSensorModalSheetPressClose();
-    } else {
-      setHistoricalSensorModalVisible(false);
-    }
+    setHistoricalSensorModalVisible(false);
   };
 
   useEffect(() => {

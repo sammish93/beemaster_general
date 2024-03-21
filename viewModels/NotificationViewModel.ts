@@ -11,7 +11,7 @@ import { HiveNotification } from "@/models/notification";
 
 class NotificationViewModel {
 
-    notifications = notifications
+    @observable notifications = notifications
 
     constructor() {
         makeAutoObservable(this)
@@ -19,16 +19,20 @@ class NotificationViewModel {
         // Right now the notifications are displayed using dummy data.
     }
 
-    addNotification(notification: HiveNotification) {
+    @action setNotifications(notifications: HiveNotification[]) {
+        this.notifications = notifications;
+    }
+
+    @action addNotification(notification: HiveNotification) {
         // TODO DB - Write to DB.
         this.notifications = [...this.notifications, notification];
     }
 
-    getNotificationFromId(notificationId: string): HiveNotification | undefined {
+    @action getNotificationFromId(notificationId: string): HiveNotification | undefined {
         return this.notifications.find(item => item.id === notificationId);
     }
 
-    modifyNotification(notification: HiveNotification) {
+    @action modifyNotification(notification: HiveNotification) {
         // TODO DB - Update notification in DB based on its id. If isRead value = true then potentially 
         // delete the notification from the DB. Storage is cheap though.. might not be important to 
         // actually delete.
@@ -38,7 +42,7 @@ class NotificationViewModel {
         }
     }
 
-    removeNotification(notificationId: string) {
+    @action removeNotification(notificationId: string) {
         this.notifications = this.notifications.filter(notificationObject => notificationObject.id !== notificationId);
     }
 };
