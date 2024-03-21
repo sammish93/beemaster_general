@@ -6,7 +6,7 @@ admin.initializeApp();
 /**
  * Firebase Cloud Function for registering sensor weight data.
  * 
- * The function is exlusively designed to handle POST requests to add new weight 
+ * The function is exclusively designed to handle POST requests to add new weight 
  * readings from sensors to our Firestore database. It expects 'userId', 'hiveId'
  * and 'weight' fields in the request body. 
  * 
