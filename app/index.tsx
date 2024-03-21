@@ -16,14 +16,18 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
+import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
 
 const HomeScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-  const [AddHiveModalVisible, setAddHiveModalVisible] = useState(false);
+  const [removeFilterModalVisible, setRemoveFilterModalVisible] =
+    useState(false);
+  const bottomSheetRemoveFilterModalRef = useRef<BottomSheetModal>(null);
+  const [addHiveModalVisible, setAddHiveModalVisible] = useState(false);
   const bottomSheetAddHiveModalRef = useRef<BottomSheetModal>(null);
-  const [AddFilterModalVisible, setAddFilterModalVisible] = useState(false);
+  const [addFilterModalVisible, setAddFilterModalVisible] = useState(false);
   const bottomSheetAddFilterModalRef = useRef<BottomSheetModal>(null);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const { hiveViewModel } = useContext(MobXProviderContext);
@@ -104,6 +108,30 @@ const HomeScreen = () => {
       handleAddFilterModalSheetPressClose();
     } else {
       setAddFilterModalVisible(false);
+    }
+  };
+
+  const handleRemoveFilterModalSheetPressOpen = useCallback(() => {
+    bottomSheetRemoveFilterModalRef.current?.present();
+  }, []);
+
+  const handleRemoveFilterModalSheetPressClose = useCallback(() => {
+    bottomSheetRemoveFilterModalRef.current?.dismiss();
+  }, []);
+
+  const handleOpenRemoveFilterModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleRemoveFilterModalSheetPressOpen();
+    } else {
+      setRemoveFilterModalVisible(true);
+    }
+  };
+
+  const handleCloseRemoveFilterModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleRemoveFilterModalSheetPressClose();
+    } else {
+      setRemoveFilterModalVisible(false);
     }
   };
 
@@ -234,6 +262,16 @@ const HomeScreen = () => {
             >
               {userViewModel.i18n.t("unselect filters")}
             </Chip>
+            <HorizontalSpacer size={8} />
+            {hiveViewModel.filters.length > 0 ? (
+              <Chip
+                icon="delete"
+                onPress={handleOpenRemoveFilterModal}
+                style={{ marginVertical: 4 }}
+              >
+                {userViewModel.i18n.t("delete filter")}
+              </Chip>
+            ) : null}
           </View>
           <VerticalSpacer size={8} />
           <HiveList
@@ -252,13 +290,13 @@ const HomeScreen = () => {
         {userViewModel.i18n.t("add new hive")}
       </Button>
       <AddHiveModal
-        isOverlayModalVisible={AddHiveModalVisible}
+        isOverlayModalVisible={addHiveModalVisible}
         bottomSheetModalRef={bottomSheetAddHiveModalRef}
         onClose={() => handleCloseAddHiveModal()}
         onAddHive={handleAddHive}
       />
       <AddFilterModal
-        isOverlayModalVisible={AddFilterModalVisible}
+        isOverlayModalVisible={addFilterModalVisible}
         bottomSheetModalRef={bottomSheetAddFilterModalRef}
         onClose={() => handleCloseAddFilterModal()}
         onAddFilter={handleAddFilter}
@@ -266,6 +304,11 @@ const HomeScreen = () => {
       <HomeInfoModal
         isOverlayModalVisible={infoModalVisible}
         onClose={() => setInfoModalVisible(false)}
+      />
+      <RemoveFilterModal
+        isOverlayModalVisible={removeFilterModalVisible}
+        onClose={() => handleCloseRemoveFilterModal()}
+        bottomSheetModalRef={bottomSheetRemoveFilterModalRef}
       />
     </SafeAreaView>
   );

@@ -165,15 +165,13 @@
   "delete note": "Delete note",
   "confirm": "Confirm",
   "mute notification": "Mute notification",
-  "consider feeding": "Consider feeding",
   "consider expanding": "Consider expanding",
-  "honey harvest": "Honey harvest",
-  "maintenance": "Maintenance",
-  "weather": "Weather",
-  "check hive": "Check hive",
   "possible swarm": "Possible Swarm",
   "custom reminder": "Custom Reminder",
   "mute_notifications": "Do you wish to mute '%{notificationType}' notifications for '%{hiveName}'?",
   "mute": "Mute",
-  "read": "Read"
+  "read": "Read",
+  "delete filter": "Delete filter",
+  "delete hive filters": "Delete hive filters",
+  "delete_filter": "Remove '%{filter}' filter"
 }
