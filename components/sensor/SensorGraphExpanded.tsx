@@ -21,6 +21,16 @@ const SensorGraphExpanded = (props: SensorGraphExpandedProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
 
+  const [parentDims, setParentDims] = useState({ width: 0, height: 0 });
+
+  // Used to resize the chart dynamically. The chart can't take percentage values (e.g. "100%").
+  const onParentLayout = (event: {
+    nativeEvent: { layout: { width: any; height: any } };
+  }) => {
+    const { width, height } = event.nativeEvent.layout;
+    setParentDims({ width, height });
+  };
+
   // Makes a list for the vertical labels (x axis) based on the timestamp of each sensorData value.
   const labelList = props.sensorDataList.sensorData.map((dataPoint) => {
     return dateTimeFormatter(dataPoint.timestamp, userViewModel.locale);
@@ -65,6 +75,7 @@ const SensorGraphExpanded = (props: SensorGraphExpandedProps) => {
 
   return (
     <View
+      onLayout={onParentLayout}
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
@@ -80,7 +91,11 @@ const SensorGraphExpanded = (props: SensorGraphExpandedProps) => {
               },
             ],
           }}
-          width={dataList.length * 100}
+          width={
+            parentDims.width > dataList.length * 100
+              ? parentDims.width
+              : dataList.length * 100
+          }
           height={200}
           yAxisLabel=""
           yAxisSuffix={` ${props.sensorDataList.measurement}`}
