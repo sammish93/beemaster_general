@@ -76,3 +76,46 @@ export const beeCountSensorData: SensorDataList = {
     ],
     measurement: BeeCountMeasurement.PerHour
 };
+
+export const weightSensorDataExpanded: SensorDataList = {
+    sensorData: [
+        { timestamp: "2024-02-26T06:00:00Z", value: 55 },
+        { timestamp: "2024-02-26T12:00:00Z", value: 55.5 },
+        { timestamp: "2024-02-26T18:00:00Z", value: 56.1 },
+        { timestamp: "2024-02-26T24:00:00Z", value: 56.8 },
+        { timestamp: "2024-02-27T06:00:00Z", value: 55 },
+        { timestamp: "2024-02-27T12:00:00Z", value: 55.5 },
+        { timestamp: "2024-02-27T18:00:00Z", value: 56.1 },
+        { timestamp: "2024-02-27T24:00:00Z", value: 56.8 },
+        { timestamp: "2024-02-28T06:00:00Z", value: 55 },
+        { timestamp: "2024-02-28T12:00:00Z", value: 55.5 },
+        { timestamp: "2024-02-28T18:00:00Z", value: 56.1 },
+        { timestamp: "2024-02-28T24:00:00Z", value: 56.8 },
+        { timestamp: "2024-02-29T06:00:00Z", value: 55 },
+        { timestamp: "2024-02-29T12:00:00Z", value: 55.5 },
+        { timestamp: "2024-02-29T18:00:00Z", value: 56.1 },
+        { timestamp: "2024-02-29T24:00:00Z", value: 56.8 },
+        { timestamp: "2024-03-01T06:00:00Z", value: 55 },
+        { timestamp: "2024-03-01T12:00:00Z", value: 55.5 },
+        { timestamp: "2024-03-01T18:00:00Z", value: 56.1 },
+        { timestamp: "2024-03-01T24:00:00Z", value: 56.8 },
+        { timestamp: "2024-02-03T06:00:00Z", value: 55 },
+        { timestamp: "2024-02-03T12:00:00Z", value: 55.5 },
+        { timestamp: "2024-02-03T18:00:00Z", value: 56.1 },
+        { timestamp: "2024-02-03T24:00:00Z", value: 56.8 },
+        { timestamp: "2024-03-03T06:00:00Z", value: 55 },
+        { timestamp: "2024-03-03T12:00:00Z", value: 55.5 },
+        { timestamp: "2024-03-03T18:00:00Z", value: 56.1 },
+        { timestamp: "2024-03-03T24:00:00Z", value: 56.8 },
+        { timestamp: "2024-03-04T06:00:00Z", value: 58.4 },
+        { timestamp: "2024-03-04T12:00:00Z", value: 59.6 },
+        { timestamp: "2024-03-04T18:00:00Z", value: 60.9 },
+        { timestamp: "2024-03-04T24:00:00Z", value: 61.2 },
+        { timestamp: "2024-03-05T06:00:00Z", value: 59.4 },
+        { timestamp: "2024-03-05T12:00:00Z", value: 56.2 },
+        { timestamp: "2024-03-05T18:00:00Z", value: 54.1 },
+        { timestamp: "2024-03-05T24:00:00Z", value: 55.4 },
+  
+    ],
+    measurement: WeightMeasurement.Kilograms
+};

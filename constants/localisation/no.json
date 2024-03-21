@@ -173,5 +173,6 @@
   "read": "Lest",
   "delete filter": "Slett filter",
   "delete hive filters": "Slett bikubefiltre",
-  "delete_filter": "Slett '%{filter}' filter"
+  "delete_filter": "Slett '%{filter}' filter",
+  "historical sensor data": "Historiske sensordata"
 }

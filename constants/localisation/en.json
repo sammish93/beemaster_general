@@ -173,5 +173,6 @@
   "read": "Read",
   "delete filter": "Delete filter",
   "delete hive filters": "Delete hive filters",
-  "delete_filter": "Remove '%{filter}' filter"
+  "delete_filter": "Remove '%{filter}' filter",
+  "historical sensor data": "Historical sensor data"
 }

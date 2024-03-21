@@ -44,6 +44,7 @@ import {
   humiditySensorData,
   temperatureSensorData,
   weightSensorData,
+  weightSensorDataExpanded,
 } from "@/data/sensorData";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import AddNoteToHiveModal from "@/components/modals/AddNoteToHiveModal";
@@ -51,6 +52,8 @@ import HiveNotes from "@/components/hive/HiveNotes";
 import { HiveNote } from "@/models/note";
 import ModifyNoteModal from "@/components/modals/ModifyNoteModal";
 import { ScreenWidth } from "@/constants/Dimensions";
+import HistoricalSensorModal from "@/components/modals/HistoricalSensorModal";
+import { SensorDataList } from "@/models/sensor";
 
 type RootStackParamList = {
   hive: {
@@ -75,11 +78,16 @@ const HiveScreen = (params: HiveScreenProps) => {
   const [data, setData] = useState("");
   const [forecast, setForecast] = useState<WeeklySimpleForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
+  const [historicalSensorData, setHistoricalSensorData] =
+    useState<SensorDataList>();
   const [addNoteToHiveModalVisible, setAddNoteToHiveModalVisible] =
     useState(false);
   const bottomSheetAddNoteToHiveModalRef = useRef<BottomSheetModal>(null);
   const [modifyNoteModalVisible, setModifyNoteModalVisible] = useState(false);
   const bottomSheetModifyNoteModalRef = useRef<BottomSheetModal>(null);
+  const [historicalSensorModalVisible, setHistoricalSensorModalVisible] =
+    useState(false);
+  const bottomSheetHistoricalSensorModalRef = useRef<BottomSheetModal>(null);
 
   const handleAddNoteToHiveModalSheetPressOpen = useCallback(() => {
     bottomSheetAddNoteToHiveModalRef.current?.present();
@@ -126,6 +134,34 @@ const HiveScreen = (params: HiveScreenProps) => {
       handleModifyNoteModalSheetPressClose();
     } else {
       setModifyNoteModalVisible(false);
+    }
+  };
+
+  const handleHistoricalSensorModalSheetPressOpen = useCallback(() => {
+    bottomSheetHistoricalSensorModalRef.current?.present();
+  }, []);
+
+  const handleHistoricalSensorModalSheetPressClose = useCallback(() => {
+    bottomSheetHistoricalSensorModalRef.current?.dismiss();
+  }, []);
+
+  const handleOpenHistoricalSensorModal = () => {
+    // TODO DB - Swap out dummy data with full sensor history. Might be worth adding a parameter here
+    // to specify which sensor ID to retrieve from.
+    setHistoricalSensorData(weightSensorDataExpanded);
+
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleHistoricalSensorModalSheetPressOpen();
+    } else {
+      setHistoricalSensorModalVisible(true);
+    }
+  };
+
+  const handleCloseHistoricalSensorModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleHistoricalSensorModalSheetPressClose();
+    } else {
+      setHistoricalSensorModalVisible(false);
     }
   };
 
@@ -257,6 +293,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                     sensorDataList={weightSensorData}
                     isDecimal={true}
                     colourScheme="blue"
+                    onClick={handleOpenHistoricalSensorModal}
                   />
                   <VerticalSpacer size={8} />
                   <Text style={theme.fonts.titleLarge}>
@@ -267,6 +304,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                     sensorDataList={temperatureSensorData}
                     isDecimal={true}
                     colourScheme="orange"
+                    onClick={handleOpenHistoricalSensorModal}
                   />
                   <VerticalSpacer size={8} />
                   <Text style={theme.fonts.titleLarge}>
@@ -277,6 +315,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                     sensorDataList={humiditySensorData}
                     isDecimal={true}
                     colourScheme="green"
+                    onClick={handleOpenHistoricalSensorModal}
                   />
                   <VerticalSpacer size={8} />
                   <Text style={theme.fonts.titleLarge}>
@@ -286,6 +325,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                   <SensorGraph
                     sensorDataList={beeCountSensorData}
                     colourScheme="violet"
+                    onClick={handleOpenHistoricalSensorModal}
                   />
                 </View>
                 <HorizontalSpacer size={20} />
@@ -344,7 +384,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                     />
                   </>
                 ) : null}
-                {/* TODO Fetch sensor data from db and if tests render components if hive sensor exists */}
+                {/* TODO DB - Fetch sensor data from db and if tests render components if hive sensor exists */}
                 <VerticalSpacer size={8} />
                 <Text style={theme.fonts.titleLarge}>
                   {userViewModel.i18n.t("weight")}
@@ -354,6 +394,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                   sensorDataList={weightSensorData}
                   isDecimal={true}
                   colourScheme="blue"
+                  onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
                 <Text style={theme.fonts.titleLarge}>
@@ -364,6 +405,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                   sensorDataList={temperatureSensorData}
                   isDecimal={true}
                   colourScheme="orange"
+                  onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
                 <Text style={theme.fonts.titleLarge}>
@@ -374,6 +416,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                   sensorDataList={humiditySensorData}
                   isDecimal={true}
                   colourScheme="green"
+                  onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
                 <Text style={theme.fonts.titleLarge}>
@@ -383,6 +426,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                 <SensorGraph
                   sensorDataList={beeCountSensorData}
                   colourScheme="violet"
+                  onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
                 <Text style={theme.fonts.titleLarge}>
@@ -431,6 +475,12 @@ const HiveScreen = (params: HiveScreenProps) => {
         bottomSheetModalRef={bottomSheetModifyNoteModalRef}
         onClose={() => handleCloseModifyNoteModal()}
         onModifyNote={sortNotes}
+      />
+      <HistoricalSensorModal
+        isOverlayModalVisible={historicalSensorModalVisible}
+        bottomSheetModalRef={bottomSheetHistoricalSensorModalRef}
+        onClose={() => handleCloseHistoricalSensorModal()}
+        sensorData={historicalSensorData}
       />
     </SafeAreaView>
   );
