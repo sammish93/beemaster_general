@@ -254,23 +254,25 @@ const HomeScreen = () => {
                 <HorizontalSpacer size={8} />
               </View>
             ))}
-            <Chip
-              icon="close"
-              disabled={filterList.length === 0}
-              onPress={handleClearFilterList}
-              style={{ marginVertical: 4 }}
-            >
-              {userViewModel.i18n.t("unselect filters")}
-            </Chip>
-            <HorizontalSpacer size={8} />
             {hiveViewModel.filters.length > 0 ? (
-              <Chip
-                icon="delete"
-                onPress={handleOpenRemoveFilterModal}
-                style={{ marginVertical: 4 }}
-              >
-                {userViewModel.i18n.t("delete filter")}
-              </Chip>
+              <>
+                <Chip
+                  icon="close"
+                  disabled={filterList.length === 0}
+                  onPress={handleClearFilterList}
+                  style={{ marginVertical: 4 }}
+                >
+                  {userViewModel.i18n.t("unselect filters")}
+                </Chip>
+                <HorizontalSpacer size={8} />
+                <Chip
+                  icon="delete"
+                  onPress={handleOpenRemoveFilterModal}
+                  style={{ marginVertical: 4 }}
+                >
+                  {userViewModel.i18n.t("delete filter")}
+                </Chip>
+              </>
             ) : null}
           </View>
           <VerticalSpacer size={8} />
