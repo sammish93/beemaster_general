@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { NavigationProp } from "@react-navigation/native";
 import { Button, useTheme, Text, MD3Theme } from "react-native-paper";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
@@ -15,7 +15,7 @@ import { HiveNote } from "@/models/note";
 
 export interface HiveNotesProps {
   notes: HiveNote[];
-  sortNotes: (notes: HiveNote[]) => void;
+  sortNotes: () => void;
   onPress: () => void;
 }
 
@@ -24,10 +24,6 @@ const HiveNotes = ({ notes, sortNotes, onPress }: HiveNotesProps) => {
   const theme = useTheme();
   const [parentWidth, setParentWidth] = useState(0);
   const screenWidth = Dimensions.get("window").width;
-
-  const sortedNotes = useMemo(() => {
-    sortNotes(hiveViewModel.selectedHive.notes);
-  }, [hiveViewModel.selectedHive.notes]);
 
   const renderItem = ({ item }: { item: HiveNote }) => (
     <HiveNoteCard item={item} onAddNote={sortNotes} onPress={() => onPress()} />
@@ -46,9 +42,6 @@ const HiveNotes = ({ notes, sortNotes, onPress }: HiveNotesProps) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         key={`flatList-${notes}-row`}
-        style={{
-          paddingRight: 12,
-        }}
         ListEmptyComponent={
           <Text style={theme.fonts.bodyLarge}>
             No notes have been registered

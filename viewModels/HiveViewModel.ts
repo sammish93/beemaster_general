@@ -129,6 +129,10 @@ class HiveViewModel {
         return this.hives.find(item => item.id === hiveId);
     }
 
+    @action getSelectedNotes() {
+        return this.selectedHive?.notes;
+    }
+
     @action addSelectedNote(note: HiveNote) {
         this.selectedNote = note;
     }
@@ -145,6 +149,21 @@ class HiveViewModel {
                 this.selectedHive.notes[noteIndex] = noteObject;
             }
         }
+    }
+
+    @action toggleNoteSticky(note: HiveNote): void {
+        note.isSticky = !note.isSticky;
+        this.modifyNote(note)
+    }
+
+    @action
+    sortNotes() {
+      this.selectedHive?.notes.sort((a: HiveNote, b: HiveNote) => {
+        if (Number(b.isSticky) - Number(a.isSticky) !== 0) {
+          return Number(b.isSticky) - Number(a.isSticky);
+        }
+        return b.timestamp.getTime() - a.timestamp.getTime();
+      });
     }
 
     @action removeNote(noteId: string) {

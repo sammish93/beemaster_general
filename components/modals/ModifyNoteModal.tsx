@@ -13,12 +13,12 @@ interface ModifyNoteModalProps {
   isOverlayModalVisible: boolean;
   bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
   onClose: () => void;
-  onModifyNote: (notes: HiveNote[]) => void;
+  onModifyNote: () => void;
 }
 
 interface ModalContentProps {
   onClose: () => void;
-  onModifyNote: (notes: HiveNote[]) => void;
+  onModifyNote: () => void;
 }
 
 const ModifyNoteModal = (props: ModifyNoteModalProps) => {
@@ -66,16 +66,16 @@ const ModalContent = (props: ModalContentProps) => {
   );
 
   const handleDeleteNote = () => {
-    const note: HiveNote = hiveViewModel.selectedNote;
+    const note: HiveNote = hiveViewModel.getSelectedNote();
 
     hiveViewModel.removeNote(note.id);
 
-    props.onModifyNote(hiveViewModel.selectedHive.notes);
+    props.onModifyNote();
     props.onClose();
   };
 
   const handleModifyNote = () => {
-    const existingNote: HiveNote = hiveViewModel.selectedNote;
+    const existingNote: HiveNote = hiveViewModel.getSelectedNote();
     const newNote: HiveNote = {
       id: existingNote.id,
       note: note,
@@ -85,7 +85,7 @@ const ModalContent = (props: ModalContentProps) => {
 
     hiveViewModel.modifyNote(newNote);
 
-    props.onModifyNote(hiveViewModel.selectedHive.notes);
+    props.onModifyNote();
     props.onClose();
   };
 

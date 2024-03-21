@@ -12,7 +12,7 @@ import { dateTimeFormatter } from "@/domain/dateTimeFormatter";
 
 interface HiveNoteCardProps {
   item: HiveNote;
-  onAddNote: (notes: HiveNote[]) => void;
+  onAddNote: () => void;
   onPress: () => void;
 }
 
@@ -27,10 +27,9 @@ const HiveNoteCard = ({ item, onAddNote, onPress }: HiveNoteCardProps) => {
   };
 
   const handleOnPressSticky = () => {
-    item.isSticky = !item.isSticky;
-    hiveViewModel.selectedHive.notes = onAddNote([
-      ...hiveViewModel.selectedHive.notes,
-    ]);
+    hiveViewModel.toggleNoteSticky(item);
+
+    onAddNote();
   };
 
   //TODO Swap out with real data.
@@ -82,7 +81,7 @@ const HiveNoteCard = ({ item, onAddNote, onPress }: HiveNoteCardProps) => {
             icon={item.isSticky ? "pin-off" : "pin"}
             onPress={handleOnPressSticky}
             size="small"
-            style={{ position: "relative", left: 25 }}
+            style={{ position: "relative", left: 0 }}
           />
         </View>
       </Card.Content>

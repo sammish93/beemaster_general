@@ -76,6 +76,7 @@ const HiveScreen = (params: HiveScreenProps) => {
   const selectedHive = hiveViewModel.getSelectedHive();
 
   const [data, setData] = useState("");
+  const [notes, setNotes] = useState<HiveNote[]>([]);
   const [forecast, setForecast] = useState<WeeklySimpleForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
   const [historicalSensorData, setHistoricalSensorData] =
@@ -190,14 +191,15 @@ const HiveScreen = (params: HiveScreenProps) => {
   // TODO Test. Consider refactoring to domain layer.
   // Sorting the notes so that the stickied notes appear on the top. Additionally, sorts based on timestamp
   // from newest first.
-  const sortNotes = (notes: HiveNote[]) => {
-    return notes?.sort((a: HiveNote, b: HiveNote) => {
-      if (Number(b.isSticky) - Number(a.isSticky) !== 0) {
-        return Number(b.isSticky) - Number(a.isSticky);
-      }
-      return b.timestamp.getTime() - a.timestamp.getTime();
-    });
+  const sortNotes = () => {
+    hiveViewModel.sortNotes();
+
+    setNotes(hiveViewModel.getSelectedHive().notes);
   };
+
+  useEffect(() => {
+    sortNotes();
+  }, []);
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -339,11 +341,13 @@ const HiveScreen = (params: HiveScreenProps) => {
                     {userViewModel.i18n.t("notes")}
                   </Text>
                   <VerticalSpacer size={8} />
-                  <HiveNotes
-                    notes={hiveViewModel.selectedHive.notes}
-                    sortNotes={sortNotes}
-                    onPress={() => handleOpenModifyNoteModal()}
-                  />
+                  {notes.length > 0 ? (
+                    <HiveNotes
+                      notes={notes}
+                      sortNotes={sortNotes}
+                      onPress={() => handleOpenModifyNoteModal()}
+                    />
+                  ) : null}
                 </View>
               </View>
             ) : (
@@ -437,11 +441,13 @@ const HiveScreen = (params: HiveScreenProps) => {
                   {userViewModel.i18n.t("notes")}
                 </Text>
                 <VerticalSpacer size={8} />
-                <HiveNotes
-                  notes={hiveViewModel.selectedHive.notes}
-                  sortNotes={sortNotes}
-                  onPress={() => handleOpenModifyNoteModal()}
-                />
+                {notes.length > 0 ? (
+                  <HiveNotes
+                    notes={notes}
+                    sortNotes={sortNotes}
+                    onPress={() => handleOpenModifyNoteModal()}
+                  />
+                ) : null}
               </View>
             )}
           </View>
