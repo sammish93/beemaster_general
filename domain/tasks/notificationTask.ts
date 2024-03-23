@@ -6,12 +6,16 @@ const BG_TASK_NAME = 'notification-task';
 
 // Definition of the task, params are the name we want to give the task and a function to be executed.
 TaskManager.defineTask(BG_TASK_NAME, async () => {
+    try {
+        // TODO: Implement the background task here.
+        console.log(`BackgroundTask: ${BG_TASK_NAME} is running!`);
 
-    // TODO: Implement the background task here.
-    console.log(`BackgroundTask: ${BG_TASK_NAME} is running!`);
-
-    // Return a result to indicate completion.
-    return BackgroundFetch.BackgroundFetchResult.NewData;
+        // Return a result to indicate completion.
+        return BackgroundFetch.BackgroundFetchResult.NewData;
+    } catch (error) {
+        console.error(`Error in background task: ${BG_TASK_NAME}: ${error}`);
+        return BackgroundFetch.BackgroundFetchResult.Failed;
+    }
 });
 
 export const startBackgroundTask = async () => {
@@ -35,7 +39,6 @@ export const startBackgroundTask = async () => {
             } catch (error) {
                 console.error(`Error while registering background task: ${error}`);
             }
-           
         }
     }
 }
