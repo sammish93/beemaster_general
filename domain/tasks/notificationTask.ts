@@ -1,5 +1,6 @@
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
+import * as SecureStore from 'expo-secure-store';
 
 // Unique identification for the background task, used in TaskManager and startBackgroundTask.
 const BG_TASK_NAME = 'notification-task';
@@ -19,29 +20,22 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
 });
 
 export const startBackgroundTask = async () => {
+    try {
+        await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
+            minimumInterval: 5, 
+            stopOnTerminate: false, 
+            startOnBoot: true, 
+        });
 
-    // Check status for background updates.
-    const status = await BackgroundFetch.getStatusAsync();
-    switch (status) {
-        case BackgroundFetch.BackgroundFetchStatus.Restricted:
-        case BackgroundFetch.BackgroundFetchStatus.Denied:
-            console.log("BackgroundTask: Background update is disabled.");
-            return;
-        default: {
-            try {
-                console.log("Starting background task.");
-                const result = await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
-                    minimumInterval: 60, // 1 hour.
-                    stopOnTerminate: false, // For android, continue running after the app exits.
-                    startOnBoot: true, // For android, start after the device reboots.
-                });
-                console.log(`Result of background promise: ${result}`);
-            } catch (error) {
-                console.error(`Error while registering background task: ${error}`);
-            }
-        }
+        // Hent antallet registrerte oppgaver og logg dette
+        const tasks = await TaskManager.getRegisteredTasksAsync();
+        tasks.forEach(task => {
+            console.log(`Oppgavens navn: ${task.taskName}, oppgave type: ${task.taskType}`);
+        })
+    } catch (error) {
+        console.error(`Feil ved registrering av bakgrunnsoppgave: ${error}`);
     }
-}
+};
 
 // Function used to stop future background task calls.
 export const stopBackgroundTask = async () => BackgroundFetch.unregisterTaskAsync(BG_TASK_NAME);

@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffd669"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "no.hiof.beemastergeneral.ios",
@@ -23,7 +25,11 @@
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos.",
         "NSFileProviderDomainUsageDescription": "Allow this app needs access to the file system to store and manage files?",
         "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos.",
-        "UIBackgroundModes": ["fetch"]
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "remote-notification"
+        ]
       },
       "googleServicesFile": "./GoogleService-Info.plist"
     },
@@ -68,7 +74,8 @@
             "useFrameworks": "static"
           }
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true

@@ -19,6 +19,9 @@ import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
 import { startBackgroundTask } from "@/domain/tasks/notificationTask";
 
+console.log("Starting backgroundtask...");
+startBackgroundTask();
+
 const HomeScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
@@ -171,10 +174,6 @@ const HomeScreen = () => {
   useEffect(() => {
     if (userViewModel.authInitialized) {
       console.log(userViewModel.authInitialized);
-      console.log("Starting backgroundtask...");
-
-      // Testing backgroundtask.
-      startBackgroundTask();
 
       hiveViewModel.fetchHives();
       hiveViewModel.fetchFilters();
