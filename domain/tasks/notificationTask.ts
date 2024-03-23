@@ -24,12 +24,18 @@ export const startBackgroundTask = async () => {
             console.log("BackgroundTask: Background update is disabled.");
             return;
         default: {
-            console.log("Starting background task.");
-            await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
-                minimumInterval: 60 * 1, // 1 hour.
-                stopOnTerminate: false, // For android, continue running after the app exits.
-                startOnBoot: true, // For android, start after the device reboots.
-            });
+            try {
+                console.log("Starting background task.");
+                const result = await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
+                    minimumInterval: 60, // 1 hour.
+                    stopOnTerminate: false, // For android, continue running after the app exits.
+                    startOnBoot: true, // For android, start after the device reboots.
+                });
+                console.log(`Result of background promise: ${result}`);
+            } catch (error) {
+                console.error(`Error while registering background task: ${error}`);
+            }
+           
         }
     }
 }
