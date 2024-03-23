@@ -78,7 +78,9 @@
     "stream": "^0.0.2",
     "react-native-svg": "14.1.0",
     "expo-notifications": "~0.27.6",
-    "expo-device": "~5.9.3"
+    "expo-device": "~5.9.3",
+    "expo-task-manager": "~11.7.2",
+    "expo-background-fetch": "~11.8.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
