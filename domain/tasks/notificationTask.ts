@@ -8,6 +8,7 @@ const BG_TASK_NAME = 'notification-task';
 TaskManager.defineTask(BG_TASK_NAME, async () => {
 
     // TODO: Implement the background task here.
+    console.log(`BackgroundTask: ${BG_TASK_NAME} is running!`);
 
     // Return a result to indicate completion.
     return BackgroundFetch.BackgroundFetchResult.NewData;
@@ -23,9 +24,9 @@ export const startBackgroundTask = async () => {
             console.log("BackgroundTask: Background update is disabled.");
             return;
         default: {
-            console.log("Register background task.");
+            console.log("Starting background task.");
             await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
-                minimumInterval: 60 * 60, // 1 hour.
+                minimumInterval: 60 * 1, // 1 hour.
                 stopOnTerminate: false, // For android, continue running after the app exits.
                 startOnBoot: true, // For android, start after the device reboots.
             });
