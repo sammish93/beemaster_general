@@ -2,10 +2,10 @@ import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 
 // Unique identification for the background task, used in TaskManager and startBackgroundTask.
-const BACKGROUND_TASK_NAME = 'background-fetch-task';
+const BG_TASK_NAME = 'notification-task';
 
 // Definition of the task, params are the name we want to give the task and a function to be executed.
-TaskManager.defineTask(BACKGROUND_TASK_NAME, async () => {
+TaskManager.defineTask(BG_TASK_NAME, async () => {
 
     // TODO: Implement the background task here.
 
@@ -24,7 +24,7 @@ export const startBackgroundTask = async () => {
             return;
         default: {
             console.log("Register background task.");
-            await BackgroundFetch.registerTaskAsync(BACKGROUND_TASK_NAME, {
+            await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
                 minimumInterval: 60 * 60, // 1 hour.
                 stopOnTerminate: false, // For android, continue running after the app exits.
                 startOnBoot: true, // For android, start after the device reboots.
@@ -34,4 +34,4 @@ export const startBackgroundTask = async () => {
 }
 
 // Function used to stop future background task calls.
-export const stopBackgroundTask = async () => BackgroundFetch.unregisterTaskAsync(BACKGROUND_TASK_NAME);
+export const stopBackgroundTask = async () => BackgroundFetch.unregisterTaskAsync(BG_TASK_NAME);
