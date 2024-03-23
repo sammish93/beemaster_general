@@ -1,7 +1,7 @@
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 
-// Unique identification for the background task defined in TaskManager and BackgroundFetch.
+// Unique identification for the background task, used in TaskManager and startBackgroundTask.
 const BACKGROUND_TASK_NAME = 'background-fetch-task';
 
 // Definition of the task, params are the name we want to give the task and a function to be executed.
@@ -13,7 +13,7 @@ TaskManager.defineTask(BACKGROUND_TASK_NAME, async () => {
     return BackgroundFetch.BackgroundFetchResult.NewData;
 });
 
-export const registerBackgroundTask = async () => {
+export const startBackgroundTask = async () => {
 
     // Check status for background updates.
     const status = await BackgroundFetch.getStatusAsync();
@@ -32,3 +32,6 @@ export const registerBackgroundTask = async () => {
         }
     }
 }
+
+// Function used to stop future background task calls.
+export const stopBackgroundTask = async () => BackgroundFetch.unregisterTaskAsync(BACKGROUND_TASK_NAME);
