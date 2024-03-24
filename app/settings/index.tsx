@@ -179,6 +179,7 @@ const SettingsScreen = () => {
             </Button>
 
             <Button
+              icon="logout-variant"
               style={styles(theme).settingsButton}
               mode="contained"
               onPress={() => {
@@ -189,6 +190,7 @@ const SettingsScreen = () => {
             </Button>
 
             <Button
+              icon="account-remove-outline"
               style={[
                 styles(theme).settingsButton,
                 { backgroundColor: theme.colors.error },
