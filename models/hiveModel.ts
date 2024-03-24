@@ -2,6 +2,7 @@ import { NotificationPreference, NotificationType } from "@/constants/Notificati
 import { HiveNote } from "./note"
 
 export interface HiveModel {
+    currentTemp: number
     id: string
     name: string
     filters: string[],
