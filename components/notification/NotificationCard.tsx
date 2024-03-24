@@ -59,9 +59,10 @@ const NotificationCard = ({ item, navigation }: NotificationProps) => {
     };
 
     notificationViewModel.modifyNotification(newNotification);
-    notificationViewModel.notifications = [
+
+    notificationViewModel.setNotifications([
       ...notificationViewModel.notifications,
-    ];
+    ]);
   };
 
   const handleCardPress = () => {

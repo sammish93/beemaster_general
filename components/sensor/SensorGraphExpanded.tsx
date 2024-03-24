@@ -4,17 +4,20 @@ import { FAB, useTheme } from "react-native-paper";
 import { MobXProviderContext } from "mobx-react";
 import { LineChart } from "react-native-chart-kit";
 import { SensorDataList } from "@/models/sensor";
-import { dateTimeToTimeFormatter } from "@/domain/dateTimeFormatter";
+import {
+  dateTimeFormatter,
+  dateTimeToTimeFormatter,
+} from "@/domain/dateTimeFormatter";
+import { ScrollView } from "react-native-virtualized-view";
+import { BeeCountMeasurement } from "@/constants/Measurements";
+import { VerticalSpacer } from "../Spacers";
 
-interface SensorGraphProps {
+interface SensorGraphExpandedProps {
   sensorDataList: SensorDataList;
-  // Enables a single decimal place for the horizontal labels (y axis).
-  isDecimal?: boolean;
   colourScheme?: string;
-  onClick: () => void;
 }
 
-const SensorGraph = (props: SensorGraphProps) => {
+const SensorGraphExpanded = (props: SensorGraphExpandedProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
 
@@ -30,7 +33,7 @@ const SensorGraph = (props: SensorGraphProps) => {
 
   // Makes a list for the vertical labels (x axis) based on the timestamp of each sensorData value.
   const labelList = props.sensorDataList.sensorData.map((dataPoint) => {
-    return dateTimeToTimeFormatter(dataPoint.timestamp, userViewModel.locale);
+    return dateTimeFormatter(dataPoint.timestamp, userViewModel.locale);
   });
 
   // Makes a list for the chart values based on the value of each sensorData value.
@@ -78,7 +81,7 @@ const SensorGraph = (props: SensorGraphProps) => {
         justifyContent: "space-between",
       }}
     >
-      <View>
+      <ScrollView horizontal={true}>
         <LineChart
           data={{
             labels: labelList,
@@ -88,7 +91,11 @@ const SensorGraph = (props: SensorGraphProps) => {
               },
             ],
           }}
-          width={parentDims.width}
+          width={
+            parentDims.width > dataList.length * 100
+              ? parentDims.width
+              : dataList.length * 100
+          }
           height={200}
           yAxisLabel=""
           yAxisSuffix={` ${props.sensorDataList.measurement}`}
@@ -97,7 +104,14 @@ const SensorGraph = (props: SensorGraphProps) => {
             backgroundColor: theme.colors.background,
             backgroundGradientFrom: getGradientFromForColourScheme(),
             backgroundGradientTo: getGradientToForColourScheme(),
-            decimalPlaces: props.isDecimal ? 1 : 0,
+            decimalPlaces:
+              props.sensorDataList.measurement ===
+                BeeCountMeasurement.PerHour ||
+              props.sensorDataList.measurement ===
+                BeeCountMeasurement.PerMinute ||
+              props.sensorDataList.measurement === BeeCountMeasurement.PerSecond
+                ? 0
+                : 1,
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             propsForDots: {
@@ -113,30 +127,17 @@ const SensorGraph = (props: SensorGraphProps) => {
               dx: -5,
             },
           }}
-          verticalLabelRotation={25}
+          verticalLabelRotation={8}
           bezier
           style={{
             ...theme.fonts.bodySmall,
             borderRadius: 16,
           }}
         />
-      </View>
-      <View
-        style={{
-          alignItems: "flex-end",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          flex: 1,
-        }}
-      >
-        <FAB
-          icon="history"
-          onPress={props.onClick}
-          style={{ position: "relative", left: 10, top: 20, opacity: 0.7 }}
-        />
-      </View>
+        <VerticalSpacer size={8} />
+      </ScrollView>
     </View>
   );
 };
 
-export default SensorGraph;
+export default SensorGraphExpanded;

@@ -70,7 +70,7 @@ class HiveViewModel {
         }
     }
 
-    addHive(hive: HiveModel) {
+    @action addHive(hive: HiveModel) {
         /*
         TODO DB - Write this hive to DB. Not sure exactly about the hiveId field. Should firebase 
         generate it?
@@ -78,7 +78,7 @@ class HiveViewModel {
         this.hives.push(hive);
     }
 
-    updateHive(hiveToUpdate: HiveModel) {
+    @action updateHive(hiveToUpdate: HiveModel) {
         // TODO DB - Update DB for specific hive ID.
         if (hiveToUpdate) {
             const hiveIndex = this.hives.findIndex(hive => hive.id === hiveToUpdate.id);
@@ -88,52 +88,60 @@ class HiveViewModel {
         }
     }
 
-    removeHive(hiveId: string) {
+    @action removeHive(hiveId: string) {
         // TODO DB - Delete this hive from the DB.
         this.hives = this.hives.filter(item => item.id !== hiveId);
     }
 
-    numberOfHives() {
+    @action numberOfHives() {
         return this.hives.length;
     }
 
-    addFilter(filter: string) {
+    @action addFilter(filter: string) {
         // TODO DB - Write this filter to the DB under the currently selected hive.
         this.filters.push(filter);
     }
 
-    removeFilter(filter: string) {
-        // TODO DB - Delete this filter from the currently selected hive.
+    @action removeFilter(filter: string) {
+        // TODO DB - Delete this filter from the user, as well as all hives that have the filter.
         this.filters = this.filters.filter(item => item !== filter);
+
+        this.hives.forEach(hive => {
+            hive.filters = hive.filters.filter(hiveFilter => hiveFilter !== filter);
+        });
     }
 
-    numberOfFilters() {
+    @action numberOfFilters() {
         return this.filters.length;
     }
 
     // This function is just used for when a hive card or notification is clicked on to navigate the 
     // user to the specific hive.
-    addSelectedHive(hive: HiveModel) {
+    @action addSelectedHive(hive: HiveModel) {
         this.selectedHive = hive;
     }
 
-    getSelectedHive() {
+    @action getSelectedHive() {
         return this.selectedHive;
     }
 
-    getHiveFromId(hiveId: string): HiveModel | undefined {
+    @action getHiveFromId(hiveId: string): HiveModel | undefined {
         return this.hives.find(item => item.id === hiveId);
     }
 
-    addSelectedNote(note: HiveNote) {
+    @action getSelectedNotes() {
+        return this.selectedHive?.notes;
+    }
+
+    @action addSelectedNote(note: HiveNote) {
         this.selectedNote = note;
     }
 
-    getSelectedNote() {
+    @action getSelectedNote() {
         return this.selectedNote;
     }
 
-    modifyNote(noteObject: HiveNote) {
+    @action modifyNote(noteObject: HiveNote) {
         // TODO DB - Update DB for specific note ID under selected hive ID.
         if (this.selectedHive) {
             const noteIndex = this.selectedHive.notes.findIndex(note => note.id === noteObject.id);
@@ -143,14 +151,29 @@ class HiveViewModel {
         }
     }
 
-    removeNote(noteId: string) {
+    @action toggleNoteSticky(note: HiveNote): void {
+        note.isSticky = !note.isSticky;
+        this.modifyNote(note)
+    }
+
+    @action
+    sortNotes() {
+      this.selectedHive?.notes.sort((a: HiveNote, b: HiveNote) => {
+        if (Number(b.isSticky) - Number(a.isSticky) !== 0) {
+          return Number(b.isSticky) - Number(a.isSticky);
+        }
+        return b.timestamp.getTime() - a.timestamp.getTime();
+      });
+    }
+
+    @action removeNote(noteId: string) {
         // TODO DB - Delete from DB.
         if (this.selectedHive) {
             this.selectedHive.notes = this.selectedHive.notes.filter(note => note.id !== noteId);
         }
     }
 
-    toggleNotificationPreference(type: NotificationType): void {
+    @action toggleNotificationPreference(type: NotificationType): void {
         // TODO DB - Update DB. Note that this preference boolean isn't the global toggle for a user.
         // It's for a specific hive. E.g. user weatherNotification = true, but they might want to set 
         // inactive hive weatherNotification values to false to avoid excess alerts.
@@ -161,7 +184,7 @@ class HiveViewModel {
         }
     }
 
-    toggleNotificationPreferenceForSpecificHive(type: NotificationType, hiveId: string): void {
+    @action toggleNotificationPreferenceForSpecificHive(type: NotificationType, hiveId: string): void {
         // TODO DB - Write notification type modification to DB. Note that this is for a specific hive, and 
         // not notifications for all hives (user preferences).
         const hiveToModify = this.hives.find(hive => hive.id === hiveId)

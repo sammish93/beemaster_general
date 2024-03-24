@@ -165,15 +165,14 @@
   "delete note": "Slett notat",
   "confirm": "Bekreft",
   "mute notification": "Demp notifikasjonen",
-  "consider feeding": "Vurder å mate",
   "consider expanding": "Vurder å utvide",
-  "honey harvest": "Honninghøst",
-  "maintenance": "Vedlikehold",
-  "weather": "Vær",
-  "check hive": "Sjekk bikube",
   "possible swarm": "Mulig sverm",
   "custom reminder": "Tilpasset påminnelse",
   "mute_notifications": "Ønsker du å dempe '%{notificationType}' notifikasjoner for '%{hiveName}'?",
   "mute": "Demp",
-  "read": "Lest"
+  "read": "Lest",
+  "delete filter": "Slett filter",
+  "delete hive filters": "Slett bikubefiltre",
+  "delete_filter": "Slett '%{filter}' filter",
+  "historical sensor data": "Historiske sensordata"
 }
