@@ -17,10 +17,6 @@ import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
-import { startBackgroundTask } from "@/domain/tasks/notificationTask";
-
-console.log("Starting backgroundtask...");
-startBackgroundTask();
 
 const HomeScreen = () => {
   const theme = useTheme();
