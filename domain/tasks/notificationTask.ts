@@ -27,13 +27,12 @@ export const startBackgroundTask = async () => {
             startOnBoot: true, 
         });
 
-        // Hent antallet registrerte oppgaver og logg dette
         const tasks = await TaskManager.getRegisteredTasksAsync();
         tasks.forEach(task => {
-            console.log(`Oppgavens navn: ${task.taskName}, oppgave type: ${task.taskType}`);
+            console.log(`Task name: ${task.taskName}, task type: ${task.taskType}`);
         })
     } catch (error) {
-        console.error(`Feil ved registrering av bakgrunnsoppgave: ${error}`);
+        console.error(`Error in registering background task: ${error}`);
     }
 };
 
