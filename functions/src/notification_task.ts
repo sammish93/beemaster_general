@@ -16,9 +16,13 @@ export const recurringBackgroundTask = onSchedule('every 60 min', async () => {
 
     // Retrieve userId.
     for (const user of userSnapshot.docs) {
+
         const userId = user.id;
+        logger.log(`Retrieved userId: ${userId} from firestore database.`);
 
         // TODO: Retrieve preferences.
+        const userPreferences = user.data().notificationPreferences;
+        logger.log(`User preferences: ${userPreferences}`);
     }
 
 });
