@@ -2,6 +2,8 @@ import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 import * as SecureStore from 'expo-secure-store';
 
+// ======= NB! This code is currently not used in the project! ========
+
 // Unique identification for the background task, used in TaskManager and startBackgroundTask.
 const BG_TASK_NAME = 'notification-task';
 
