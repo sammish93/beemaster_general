@@ -75,7 +75,7 @@ export const isSnowForecast = (forecast: string[]): boolean => {
  */
 export const isHiveTooWarm = (hives: HiveModel[]): boolean => {
     for (const hive of hives) {
-        if (hive.currentTemp > (userViewModel.maxTempParamTooWarm ?? 0)) {
+        if (hive.temperature && hive.temperature > (userViewModel.maxTempParamTooWarm ?? 0)) {
             return true;
         }
     }
