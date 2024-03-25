@@ -1,7 +1,7 @@
 import { useNavigation } from "expo-router";
-import { TouchableOpacity, View, ScrollView, Platform } from "react-native";
+import { TouchableOpacity, View, ScrollView } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Button, useTheme, Divider, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
@@ -12,18 +12,15 @@ import React from "react";
 import PermissionSwitch from "@/components/PermissionSwitch";
 import SwitchTheme from "@/components/SwitchTheme";
 import DefaultSwitchComponent from "@/components/DefaultSwitch";
-import NotificationModal from "@/components/modals/NotificationModal";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
+import { VerticalSpacer } from "@/components/Spacers";
 import NotificationButton from "@/components/NotificationButton";
-import { NotificationType } from "@/constants/Notifications";
-import NotificationSwitchComponent from "@/components/NotificationSwitch";
 import NotificationSettingsComponent from "@/components/NotificationSettings";
 
 const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
+
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
 

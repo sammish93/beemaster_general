@@ -1,8 +1,9 @@
 import { View } from "react-native";
-import { MobXProviderContext } from "mobx-react";
-import { useContext } from "react";
+import { observer, MobXProviderContext } from "mobx-react";
+
 import React from "react";
 import { useTheme, Text, Switch } from "react-native-paper";
+import { useContext, useEffect, useState } from "react";
 
 
 
@@ -17,29 +18,28 @@ import { useTheme, Text, Switch } from "react-native-paper";
  * 
  * 
 */
-const SwitchTheme = () => {
-    const paperTheme = useTheme();
-
+const SwitchTheme = observer(() => {
+    const theme = useTheme();
     const { userViewModel } = useContext(MobXProviderContext);
 
+
     const toggleTheme = () => {
-        const newTheme = paperTheme.dark ? "light" : "dark";
+        const newTheme = theme.dark ? "light" : "dark";
         userViewModel.setTheme(newTheme);
     };
 
     return (
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={[paperTheme.fonts.bodyLarge, { marginRight: 10 }]}>{userViewModel.i18n.t("switch light/dark mode")}: </Text>
-            <Text style={paperTheme.fonts.bodyLarge}>{paperTheme.dark ? 'Dark' : 'Light'}</Text>
+            <Text style={[theme.fonts.bodyLarge, { marginRight: 10 }]}>{userViewModel.i18n.t("switch light/dark mode")}: </Text>
+            <Text style={theme.fonts.bodyLarge}>{theme.dark ? 'Dark' : 'Light'}</Text>
             <Switch
-                value={paperTheme.dark}
+                value={theme.dark}
                 onValueChange={toggleTheme}
             />
         </View>
 
 
     );
-};
-
+});
 export default SwitchTheme;
