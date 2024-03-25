@@ -37,7 +37,7 @@ export const recurringBackgroundTask = onSchedule("every 60 min", async () => {
             logger.log(`Hive ID: ${hive.id}, Hive Data: ${hive.data()}`);
 
             // TODO: Get specific data from each hive document - notificationTypePreferences.
-        })
+        });
     }
   }
 });
