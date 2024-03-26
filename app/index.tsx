@@ -17,11 +17,15 @@ import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "@/components/ToastCustom";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 const HomeScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
+  const isConnected = useNetInfo();
   const [removeFilterModalVisible, setRemoveFilterModalVisible] =
     useState(false);
   const bottomSheetRemoveFilterModalRef = useRef<BottomSheetModal>(null);
@@ -173,8 +177,28 @@ const HomeScreen = () => {
 
       hiveViewModel.fetchHives();
       hiveViewModel.fetchFilters();
+    } else {
+      Toast.show(
+        toastCrossPlatform({
+          title: "Error",
+          text: "Failed to receive hive data from database.",
+          type: "error",
+        })
+      );
     }
   }, [userViewModel.authInitialized]);
+
+  useEffect(() => {
+    if (isConnected.isConnected?.valueOf() === false) {
+      Toast.show(
+        toastCrossPlatform({
+          title: "No connection",
+          text: "Some features will be unavailable in offline mode.",
+          type: "info",
+        })
+      );
+    }
+  }, [isConnected]);
 
   return (
     <SafeAreaView style={styles(theme).container}>
