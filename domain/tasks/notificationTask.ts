@@ -16,7 +16,7 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
         users.forEach(user => {
             const preferences = getActivatedPreferences(user.notificationPreference);
             Object.keys(preferences).forEach(item => {
-
+                
                 const preference = item as keyof typeof notificationHandlers;
                 const notifyUser = notificationHandlers[preference];
                 if (notifyUser) {

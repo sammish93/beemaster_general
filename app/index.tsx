@@ -17,8 +17,9 @@ import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
-import { getAllUsers } from "@/domain/db/operations";
+import { getActivatedPreferences, getAllUsers } from "@/domain/db/operations";
 import { User } from "@/models/user";
+import { notificationHandlers } from "@/domain/notificationHandlers";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -43,7 +44,16 @@ const HomeScreen = () => {
   useEffect(() => {
     const getUsers = async () => {
       const users = await getAllUsers() as User[];
-      console.log(`User preferences: ${users[0].notificationPreference.mobile}`);
+      users.forEach(user => {
+        const preference = getActivatedPreferences(user.notificationPreference);
+        Object.keys(preference).forEach(item => {
+          const preference = item as keyof typeof notificationHandlers;
+          const notifyUser = notificationHandlers[preference];
+          if (notifyUser) {
+            notifyUser(user);
+          }
+        });
+      });
     }
     getUsers();
   }, []);

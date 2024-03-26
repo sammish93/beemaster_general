@@ -1,4 +1,5 @@
 import { User } from "@/models/user";
+import { getUserHives } from "./db/operations";
 
 /**
  * 'notificationHandlers' define a collection of handling functions for sending
@@ -11,10 +12,16 @@ import { User } from "@/models/user";
  * @param {User} user - User object that contains information about the recepient.
  */
 export const notificationHandlers = {
-    mobile: (user: User) => {
+    mobile: async (user: User) => {
         console.log(`Sending mobile notification to ${user.email}`);
 
-        // TODO: Implement logic for retrieving hives.
+        try {
+            const hives = await getUserHives(user.id);
+            console.log(`User: ${user.email} - hives: ${JSON.stringify(hives)}`);
+
+        } catch (error) {
+            console.error(`Failed to retrieve user hives: ${error}`);
+        }
     },
     email: (user: User) => {
         console.log(`Sending email notification to ${user.email}`);
