@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import { View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { Button, useTheme, Text } from "react-native-paper";
@@ -7,6 +7,10 @@ import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
+import ToolboxCard from "@/components/toolbox/ToolboxCard";
+import { ScrollView } from "react-native-virtualized-view";
+import { ScreenWidth } from "@/constants/Dimensions";
+import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
 
 const ToolboxScreen = () => {
   const theme = useTheme();
@@ -21,41 +25,92 @@ const ToolboxScreen = () => {
         canOpenDrawer={!!navigation.openDrawer}
         title={userViewModel.i18n.t("toolbox")}
       />
-      <View style={styles(theme).main}>
-        <Text style={theme.fonts.titleLarge}>Toolbox</Text>
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate("/toolbox/community");
-          }}
-        >
-          Community
-        </Button>
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate("/toolbox/checklist");
-          }}
-        >
-          Checklist
-        </Button>
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate("/toolbox/calendar");
-          }}
-        >
-          Calendar
-        </Button>
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate("/toolbox/hiveScan");
-          }}
-        >
-          Hive Scan
-        </Button>
-      </View>
+      <ScrollView>
+        <View style={{ ...styles(theme).main }}>
+          {Dimensions.get("window").width < ScreenWidth.Medium ? (
+            <View style={{ flex: 1 }}>
+              <ToolboxCard
+                title={userViewModel.i18n.t("community")}
+                description={userViewModel.i18n.t("community description")}
+                image={require("@/assets/images/toolbox/community.jpg")}
+                onClick={() => {
+                  navigation.navigate("/toolbox/community");
+                }}
+              />
+              <VerticalSpacer size={12} />
+              <ToolboxCard
+                title={userViewModel.i18n.t("checklist")}
+                description={userViewModel.i18n.t("checklist description")}
+                image={require("@/assets/images/toolbox/checklist.jpg")}
+                onClick={() => {
+                  navigation.navigate("/toolbox/checklist");
+                }}
+              />
+              <VerticalSpacer size={12} />
+              <ToolboxCard
+                title={userViewModel.i18n.t("calendar")}
+                description={userViewModel.i18n.t("calendar description")}
+                image={require("@/assets/images/toolbox/calendar.jpg")}
+                onClick={() => {
+                  navigation.navigate("/toolbox/calendar");
+                }}
+              />
+              <VerticalSpacer size={12} />
+              <ToolboxCard
+                title={userViewModel.i18n.t("hive scan")}
+                description={userViewModel.i18n.t("hive scan description")}
+                image={require("@/assets/images/toolbox/hiveScan.jpg")}
+                onClick={() => {
+                  navigation.navigate("/toolbox/hiveScan");
+                }}
+              />
+            </View>
+          ) : (
+            <View>
+              <View style={{ flexDirection: "row" }}>
+                <ToolboxCard
+                  title={userViewModel.i18n.t("community")}
+                  description={userViewModel.i18n.t("community description")}
+                  image={require("@/assets/images/toolbox/community.jpg")}
+                  onClick={() => {
+                    navigation.navigate("/toolbox/community");
+                  }}
+                />
+                <HorizontalSpacer size={12} />
+                <ToolboxCard
+                  title={userViewModel.i18n.t("checklist")}
+                  description={userViewModel.i18n.t("checklist description")}
+                  image={require("@/assets/images/toolbox/checklist.jpg")}
+                  onClick={() => {
+                    navigation.navigate("/toolbox/checklist");
+                  }}
+                />
+              </View>
+              <VerticalSpacer size={12} />
+              <View style={{ flexDirection: "row" }}>
+                <ToolboxCard
+                  title={userViewModel.i18n.t("calendar")}
+                  description={userViewModel.i18n.t("calendar description")}
+                  image={require("@/assets/images/toolbox/calendar.jpg")}
+                  onClick={() => {
+                    navigation.navigate("/toolbox/calendar");
+                  }}
+                />
+
+                <HorizontalSpacer size={12} />
+                <ToolboxCard
+                  title={userViewModel.i18n.t("hive scan")}
+                  description={userViewModel.i18n.t("hive scan description")}
+                  image={require("@/assets/images/toolbox/hiveScan.jpg")}
+                  onClick={() => {
+                    navigation.navigate("/toolbox/hiveScan");
+                  }}
+                />
+              </View>
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

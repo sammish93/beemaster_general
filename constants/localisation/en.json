@@ -174,5 +174,9 @@
   "delete filter": "Delete filter",
   "delete hive filters": "Delete hive filters",
   "delete_filter": "Remove '%{filter}' filter",
-  "historical sensor data": "Historical sensor data"
+  "historical sensor data": "Historical sensor data",
+  "community description": "Post messages on the bulletin board, as well as view messages by other users nearby.",
+  "checklist description": "Organise your apiary to-do list by setting checklist items and reminders.",
+  "calendar description": "Keep track of upcoming reminders and alerts, as well as previous ones.",
+  "hive scan description": "Send a photo of your hive to our AI assistant to help diagnose potential signs of disease."
 }
