@@ -1,5 +1,3 @@
-import { fetchWeatherForecast } from "../../data/api/weatherApi";
-import { deserialiseCurrentForecast } from '../../domain/weatherForecastDeserialiser';
 import { onSchedule } from "firebase-functions/v2/scheduler";
 import { logger } from "firebase-functions";
 import * as admin from "firebase-admin";
@@ -45,8 +43,8 @@ export const recurringBackgroundTask = onSchedule("every 60 min", async () => {
             // Check if weather forecast preference is on for this hive.
             if (hiveNotificationPreference && hiveNotificationPreference.weather) {
               try {
-                const weatherData = await fetchWeatherForecast(hiveData.latLng);
-                const currentForecast = deserialiseCurrentForecast(weatherData);
+                // const weatherData = await fetchWeatherForecast(hiveData.latLng);
+                // const currentForecast = deserialiseCurrentForecast(weatherData);
 
                 // TODO: Use Lorena´s functions to decide if we need to send out a notification.
               } 

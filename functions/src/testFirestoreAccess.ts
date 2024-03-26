@@ -5,7 +5,7 @@ import serviceAccount from '../../firebase-admin-key.json';
 
 admin.initializeApp({
     projectId: "beemastergeneral",
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
 });
 
 // Only used to test that the database is queried correctly in 'notification_task.ts'.

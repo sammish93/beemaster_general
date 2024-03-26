@@ -1,15 +1,23 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
     "strict": false,
-    "target": "esnext",
-    "skipLibCheck": true, // Needed to ignore type conflicts in node_modules.
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "baseUrl": "..",
+    "paths": {
+      "@/*": ["./*"],
+      "@/data/*": ["../data/*"],
+      "@/domain/*": ["../domain/*"],
+    }
   },
   "compileOnSave": true,
   "include": [
