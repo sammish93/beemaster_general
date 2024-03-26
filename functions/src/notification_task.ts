@@ -1,6 +1,8 @@
+import { fetchWeatherForecast } from "../../data/api/weatherApi";
 import { onSchedule } from "firebase-functions/v2/scheduler";
 import { logger } from "firebase-functions";
 import * as admin from "firebase-admin";
+
 
 export const recurringBackgroundTask = onSchedule("every 60 min", async () => {
   logger.log("Recurring background task started.");
@@ -35,12 +37,10 @@ export const recurringBackgroundTask = onSchedule("every 60 min", async () => {
     else {
         hivesSnapshot.forEach(hive => {
             logger.log(`Hive ID: ${hive.id}, \nHive Data: ${JSON.stringify(hive.data())}`);
-
-            // TODO: Get specific data from each hive document - notificationTypePreferences.
             const hiveNotificationPreference = hive.data().notificationTypePreference;
-            for (const [keys, values] of Object.entries(hiveNotificationPreference)) {
-              continue;
-            }
+
+            // TODO: Run forecast on every hive.
+
         });
     }
   }
