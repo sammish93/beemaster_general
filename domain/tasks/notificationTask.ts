@@ -1,5 +1,6 @@
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
+import { getAllUsers } from '../db/operations';
 
 const BG_TASK_NAME = 'notification-task';
 
@@ -7,6 +8,8 @@ const BG_TASK_NAME = 'notification-task';
 TaskManager.defineTask(BG_TASK_NAME, async () => {
     try {
         console.log(`BackgroundTask: ${BG_TASK_NAME} is running!`);
+
+        const users = await getAllUsers();
 
 
         // Return a result to indicate completion.

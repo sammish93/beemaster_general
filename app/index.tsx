@@ -17,6 +17,7 @@ import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
+import { getAllUsers } from "@/domain/db/operations";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -37,6 +38,15 @@ const HomeScreen = () => {
   const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(
     hiveViewModel.hives
   );
+
+  useEffect(() => {
+    getAllUsers().then(user => {
+      console.log(`Fetched users:`);
+      console.log(user);
+    }).catch(error => {
+      console.error(error);
+    });
+  }, []);
 
   const handleAddHive = (hiveName: string) => {
     /*
