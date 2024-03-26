@@ -26,21 +26,41 @@ async function retrieveAndLogUserData() {
     // Log the entire document.
     console.log(user.data());
 
-    const notificationPreference = user.data().notificationPrefrence;
-    console.log(`User notification preference: ${JSON.stringify(notificationPreference)}`);
+    const notificationPreference = user.data().notificationPreference;
+    console.log(`User notification preference:`);
+    for (const [key, value] of Object.entries(notificationPreference)) {
+      console.log(`${key}: ${value}`);
+    }
+    console.log('\n');
 
-    const notificationTypePrefrence = user.data().notificationTypePrefrence;
-    console.log(`User notification type preference: ${JSON.stringify(notificationTypePrefrence)}`);
+    const notificationTypePreference = user.data().notificationTypePreference;
+    console.log(`User notification type preference`);
+    for (const [key, value] of Object.entries(notificationTypePreference)) {
+      console.log(`${key}: ${value}`);
+    }
+    console.log('\n');
 
     const hives = admin.firestore().collection('users').doc(userId).collection('hives');
     const hivesSnapshot = await hives.get();
 
     if (hivesSnapshot.empty) {
       console.log(`User: ${userId} has currently no hives.`);
-    }
+    } 
     else {
       hivesSnapshot.forEach(hive => {
-        console.log(`HiveId: ${hive.id}, Data: ${hive}`);
+        // console.log(`HiveId: ${hive.id}, \nData: ${JSON.stringify(hive.data())}`);
+
+        const hiveNotificationPreference = hive.data().notificationTypePreference;
+        console.log("Hive notification type preference");
+        if (hiveNotificationPreference) {
+          for (const [keys, values] of Object.entries(hiveNotificationPreference)) {
+            console.log(`${keys}: ${values}`);
+          }
+        }
+        else {
+          console.log("No notification type preference for this hive.");
+        }
+        console.log("\n");
       });
     }
   }

@@ -18,11 +18,11 @@ export const recurringBackgroundTask = onSchedule("every 60 min", async () => {
     logger.log(`Retrieved userId: ${userId} from firestore database.`);
 
     // Retrieve user preferences.
-    const userPreferences = user.data().notificationPrefrence;
+    const userPreferences = user.data().notificationPreference;
     logger.log(`User notification preferences: ${JSON.stringify(userPreferences)}`);
 
     // Retrieve user notification type preference.
-    const userNotificationTypePreference = user.data().notificationTypePrefrence;
+    const userNotificationTypePreference = user.data().notificationTypePreference;
     logger.log(`User notification type preference: ${JSON.stringify(userNotificationTypePreference)}`);
 
     // Retrieve subcollection 'hives' for this user.
@@ -34,9 +34,13 @@ export const recurringBackgroundTask = onSchedule("every 60 min", async () => {
     } 
     else {
         hivesSnapshot.forEach(hive => {
-            logger.log(`Hive ID: ${hive.id}, Hive Data: ${hive.data()}`);
+            logger.log(`Hive ID: ${hive.id}, \nHive Data: ${JSON.stringify(hive.data())}`);
 
             // TODO: Get specific data from each hive document - notificationTypePreferences.
+            const hiveNotificationPreference = hive.data().notificationTypePreference;
+            for (const [keys, values] of Object.entries(hiveNotificationPreference)) {
+              continue;
+            }
         });
     }
   }
