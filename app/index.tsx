@@ -20,12 +20,14 @@ import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import { useNetInfo } from "@react-native-community/netinfo";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const HomeScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const isConnected = useNetInfo();
+  const [isLoadingScreen, setLoadingScreen] = useState(false);
   const [removeFilterModalVisible, setRemoveFilterModalVisible] =
     useState(false);
   const bottomSheetRemoveFilterModalRef = useRef<BottomSheetModal>(null);
@@ -88,6 +90,15 @@ const HomeScreen = () => {
   const handleAddFilter = (filterName: string) => {
     // TODO Add validation. Add toast behaviour.
     hiveViewModel.addFilter(filterName);
+
+    Toast.show(
+      toastCrossPlatform({
+        title: "Success",
+        text: `Added '${filterName} as a new filter.'`,
+        type: "success",
+      })
+    );
+
     handleCloseAddFilterModal();
   };
 
@@ -172,6 +183,8 @@ const HomeScreen = () => {
   }, [hiveViewModel.hives]);
 
   useEffect(() => {
+    setLoadingScreen(true);
+
     if (userViewModel.authInitialized) {
       console.log(userViewModel.authInitialized);
 
@@ -186,6 +199,8 @@ const HomeScreen = () => {
         })
       );
     }
+
+    setLoadingScreen(false);
   }, [userViewModel.authInitialized]);
 
   useEffect(() => {
@@ -216,105 +231,111 @@ const HomeScreen = () => {
           </TouchableOpacity>,
         ]}
       />
-      <ScrollView>
-        <View style={styles(theme).main}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Switch
-              value={isDetailedView}
-              // TODO DB - Update user's isDetailedView value in DB.
-              onValueChange={() => setIsDetailedView(!isDetailedView)}
-            />
-            <HorizontalSpacer size={8} />
-            <Text style={theme.fonts.bodyLarge}>
-              {isDetailedView
-                ? userViewModel.i18n.t("detailed view")
-                : userViewModel.i18n.t("simplified view")}
-            </Text>
-          </View>
-          <VerticalSpacer size={8} />
-          <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >
-            <Chip
-              mode="outlined"
-              icon="plus"
-              elevated={true}
-              onPress={handleOpenAddFilterModal}
-              style={{ marginVertical: 4 }}
-            >
-              {userViewModel.i18n.t("add new filter")}
-            </Chip>
-            <HorizontalSpacer size={8} />
-            {hiveViewModel.filters.map((filter: string) => (
+      {isLoadingScreen ? (
+        <LoadingScreen />
+      ) : (
+        <>
+          <View style={{ ...styles(theme).main, paddingBottom: 0 }}>
+            <ScrollView>
               <View
-                key={`${filter}-chip`}
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
                 }}
               >
-                <Chip
-                  selected={filterList.includes(filter)}
-                  showSelectedOverlay={true}
-                  disabled={
-                    !filteredHiveList.some((hive) =>
-                      hive.filters.includes(filter)
-                    )
-                  }
-                  onPress={() => handleFilterChipPress(filter)}
-                  style={{ marginVertical: 4 }}
-                >
-                  {filter}
-                </Chip>
+                <Switch
+                  value={isDetailedView}
+                  // TODO DB - Update user's isDetailedView value in DB.
+                  onValueChange={() => setIsDetailedView(!isDetailedView)}
+                />
                 <HorizontalSpacer size={8} />
+                <Text style={theme.fonts.bodyLarge}>
+                  {isDetailedView
+                    ? userViewModel.i18n.t("detailed view")
+                    : userViewModel.i18n.t("simplified view")}
+                </Text>
               </View>
-            ))}
-            {hiveViewModel.filters.length > 0 ? (
-              <>
+              <VerticalSpacer size={8} />
+              <View
+                style={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                }}
+              >
                 <Chip
-                  icon="close"
-                  disabled={filterList.length === 0}
-                  onPress={handleClearFilterList}
+                  mode="outlined"
+                  icon="plus"
+                  elevated={true}
+                  onPress={handleOpenAddFilterModal}
                   style={{ marginVertical: 4 }}
                 >
-                  {userViewModel.i18n.t("unselect filters")}
+                  {userViewModel.i18n.t("add new filter")}
                 </Chip>
                 <HorizontalSpacer size={8} />
-                <Chip
-                  icon="delete"
-                  onPress={handleOpenRemoveFilterModal}
-                  style={{ marginVertical: 4 }}
-                >
-                  {userViewModel.i18n.t("delete filter")}
-                </Chip>
-              </>
-            ) : null}
+                {hiveViewModel.filters.map((filter: string) => (
+                  <View
+                    key={`${filter}-chip`}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Chip
+                      selected={filterList.includes(filter)}
+                      showSelectedOverlay={true}
+                      disabled={
+                        !filteredHiveList.some((hive) =>
+                          hive.filters.includes(filter)
+                        )
+                      }
+                      onPress={() => handleFilterChipPress(filter)}
+                      style={{ marginVertical: 4 }}
+                    >
+                      {filter}
+                    </Chip>
+                    <HorizontalSpacer size={8} />
+                  </View>
+                ))}
+                {hiveViewModel.filters.length > 0 ? (
+                  <>
+                    <Chip
+                      icon="close"
+                      disabled={filterList.length === 0}
+                      onPress={handleClearFilterList}
+                      style={{ marginVertical: 4 }}
+                    >
+                      {userViewModel.i18n.t("unselect filters")}
+                    </Chip>
+                    <HorizontalSpacer size={8} />
+                    <Chip
+                      icon="delete"
+                      onPress={handleOpenRemoveFilterModal}
+                      style={{ marginVertical: 4 }}
+                    >
+                      {userViewModel.i18n.t("delete filter")}
+                    </Chip>
+                  </>
+                ) : null}
+              </View>
+              <VerticalSpacer size={8} />
+              <HiveList
+                isDetailedView={isDetailedView}
+                navigation={navigation}
+                hives={filteredHiveList}
+              />
+            </ScrollView>
+            <Button
+              icon="plus"
+              mode="contained"
+              onPress={handleOpenAddHiveModal}
+              style={{ margin: 4 }}
+            >
+              {userViewModel.i18n.t("add new hive")}
+            </Button>
           </View>
-          <VerticalSpacer size={8} />
-          <HiveList
-            isDetailedView={isDetailedView}
-            navigation={navigation}
-            hives={filteredHiveList}
-          />
-        </View>
-      </ScrollView>
-      <Button
-        icon="plus"
-        mode="contained"
-        onPress={handleOpenAddHiveModal}
-        style={{ margin: 4 }}
-      >
-        {userViewModel.i18n.t("add new hive")}
-      </Button>
+        </>
+      )}
       <AddHiveModal
         isOverlayModalVisible={addHiveModalVisible}
         bottomSheetModalRef={bottomSheetAddHiveModalRef}

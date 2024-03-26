@@ -178,5 +178,6 @@
   "community description": "Post messages on the bulletin board, as well as view messages by other users nearby.",
   "checklist description": "Organise your apiary to-do list by setting checklist items and reminders.",
   "calendar description": "Keep track of upcoming reminders and alerts, as well as previous ones.",
-  "hive scan description": "Send a photo of your hive to our AI assistant to help diagnose potential signs of disease."
+  "hive scan description": "Send a photo of your hive to our AI assistant to help diagnose potential signs of disease.",
+  "to create a new note": "To create a new note, click on the pen icon in the top bar."
 }

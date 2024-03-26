@@ -178,5 +178,6 @@
   "community description": "Legg ut meldinger på oppslagstavlen, samt se meldinger fra andre brukere i nærheten.",
   "checklist description": "Organiser oppgavelisten for bigården din ved å sette opp sjekklistepunkter og påminnelser.",
   "calendar description": "Hold oversikt over kommende påminnelser og varsler, samt tidligere.",
-  "hive scan description": "Send et bilde av bikuben din til vår AI-assistent for å hjelpe med å diagnostisere potensielle tegn på sykdom."
+  "hive scan description": "Send et bilde av bikuben din til vår AI-assistent for å hjelpe med å diagnostisere potensielle tegn på sykdom.",
+  "to create a new note": "For å opprette en ny notat, klikk på pennikonet i toppfeltet."
 }

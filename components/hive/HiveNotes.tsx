@@ -42,12 +42,6 @@ const HiveNotes = ({ notes, sortNotes, onPress }: HiveNotesProps) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         key={`flatList-${notes}-row`}
-        ListEmptyComponent={
-          <Text style={theme.fonts.bodyLarge}>
-            No notes have been registered
-            {/*TODO Refresh Button */}
-          </Text>
-        }
       />
     </GestureHandlerRootView>
   );
