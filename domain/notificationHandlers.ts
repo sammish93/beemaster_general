@@ -13,6 +13,8 @@ import { User } from "@/models/user";
 export const notificationHandlers = {
     mobile: (user: User) => {
         console.log(`Sending mobile notification to ${user.email}`);
+
+        // TODO: Implement logic for retrieving hives.
     },
     email: (user: User) => {
         console.log(`Sending email notification to ${user.email}`);
