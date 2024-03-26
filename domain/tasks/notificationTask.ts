@@ -3,6 +3,7 @@ import * as TaskManager from 'expo-task-manager';
 import { getAllUsers } from '../db/operations';
 import { User } from '@/models/user';
 import { getActivatedPreferences } from '../db/operations';
+import { notificationHandlers } from '../notificationHandlers';
 
 const BG_TASK_NAME = 'notification-task';
 
@@ -11,15 +12,18 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
     try {
         console.log(`BackgroundTask: ${BG_TASK_NAME} is running!`);
         const users = await getAllUsers() as User[];
+
         users.forEach(user => {
-
             const preferences = getActivatedPreferences(user.notificationPreference);
-            if (Object.keys(preferences).length > 0) {
+            Object.keys(preferences).forEach(item => {
 
-            }
-            else {
-                console.log(`No notification preference turned on for user: ${user.email}`);
-            }
+                const preference = item as keyof typeof notificationHandlers;
+                const notifyUser = notificationHandlers[preference];
+                if (notifyUser) {
+                    notifyUser(user);
+                }
+            });
+            
         });
 
         // Return a result to indicate completion.
