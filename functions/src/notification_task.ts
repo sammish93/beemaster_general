@@ -1,4 +1,5 @@
 import { fetchWeatherForecast } from "../../data/api/weatherApi";
+import { deserialiseCurrentForecast } from '../../domain/weatherForecastDeserialiser';
 import { onSchedule } from "firebase-functions/v2/scheduler";
 import { logger } from "firebase-functions";
 import * as admin from "firebase-admin";
@@ -35,11 +36,22 @@ export const recurringBackgroundTask = onSchedule("every 60 min", async () => {
         logger.log(`No hives found for user: ${userId}.`);
     } 
     else {
-        hivesSnapshot.forEach(hive => {
+        hivesSnapshot.forEach(async hive => {
             logger.log(`Hive ID: ${hive.id}, \nHive Data: ${JSON.stringify(hive.data())}`);
-            const hiveNotificationPreference = hive.data().notificationTypePreference;
+            const hiveData = hive.data();
+            const hiveNotificationPreference = hiveData.notificationTypePreference;
 
             // TODO: Run forecast on every hive.
+            // Check if weather forecast preference is on for this hive.
+            if (hiveNotificationPreference && hiveNotificationPreference.weather) {
+              try {
+                const weatherData = await fetchWeatherForecast(hiveData.latLng);
+                const currentForecast = deserialiseCurrentForecast(weatherData);
+              } 
+              catch (error) {
+                logger.error(`Could not retrieve the latest weather forecast for hive ID: ${hive.id}`)
+              }
+            }
 
         });
     }
