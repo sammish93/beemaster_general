@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
@@ -8,6 +8,8 @@
     "strict": true,
     "target": "es2017",
     "skipLibCheck": true, // Needed to ignore type conflicts in node_modules.
+    "esModuleInterop": true,
+    "moduleResolution": "node"
   },
   "compileOnSave": true,
   "include": [

@@ -1,3 +1,4 @@
+const { HiveModel } = require("../../models/hiveModel");
 const admin = require('firebase-admin');
 const serviceAccount = require('../../firebase-admin-key.json');
 
@@ -31,6 +32,18 @@ async function retrieveAndLogUserData() {
 
     const notificationTypePrefrence = user.data().notificationTypePrefrence;
     console.log(`User notification type preference: ${JSON.stringify(notificationTypePrefrence)}`);
+
+    const hives = admin.firestore().collection('users').doc(userId).collection('hives');
+    const hivesSnapshot = await hives.get();
+
+    if (hivesSnapshot.empty) {
+      console.log(`User: ${userId} has currently no hives.`);
+    }
+    else {
+      hivesSnapshot.forEach((hive: HiveModel) => {
+        console.log(`HiveId: ${hive.id}, Data: ${hive}`);
+      });
+    }
   }
 }
 
