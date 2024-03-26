@@ -2,6 +2,7 @@ import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 import { getAllUsers } from '../db/operations';
 import { User } from '@/models/user';
+import { getActivatedPreferences } from '../db/operations';
 
 const BG_TASK_NAME = 'notification-task';
 
@@ -13,14 +14,13 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
         const users = await getAllUsers() as User[];
         users.forEach(user => {
 
-            const preferences = user.notificationPreference;
-            if (preferences.mobile) {
+            const preferences = getActivatedPreferences(user.notificationPreference);
+            if (preferences) {
                 // TODO: Check notificationTypePreferences.
             }
             else {
                 console.log(`Notification for mobile is turned off for user: ${user.email}`);
             }
-
         });
 
         // Return a result to indicate completion.
