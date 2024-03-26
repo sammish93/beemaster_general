@@ -170,7 +170,7 @@
   "custom reminder": "Custom Reminder",
   "mute_notifications": "Do you wish to mute '%{notificationType}' notifications for '%{hiveName}'?",
   "mute": "Mute",
-  "read": "Read",
+  "read": "Seen",
   "delete filter": "Delete filter",
   "delete hive filters": "Delete hive filters",
   "delete_filter": "Remove '%{filter}' filter",
@@ -179,5 +179,7 @@
   "checklist description": "Organise your apiary to-do list by setting checklist items and reminders.",
   "calendar description": "Keep track of upcoming reminders and alerts, as well as previous ones.",
   "hive scan description": "Send a photo of your hive to our AI assistant to help diagnose potential signs of disease.",
-  "to create a new note": "To create a new note, click on the pen icon in the top bar."
+  "to create a new note": "To create a new note, click on the pen icon in the top bar.",
+  "download hive data": "Download hive data",
+  "customise": "Customise"
 }

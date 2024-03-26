@@ -59,7 +59,7 @@ const ModalContent = (props: ModalContentProps) => {
     Toast.show(
       toastCrossPlatform({
         title: "Success",
-        text: `Added '${newHiveName} as a new hive.'`,
+        text: `Added '${newHiveName}' as a new hive.`,
         type: "success",
       })
     );

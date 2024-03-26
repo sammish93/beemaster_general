@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, useTheme } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 import { Platform, TouchableOpacity, View } from "react-native";
 import { MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
@@ -40,126 +40,166 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
 
   return (
     <>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={{ flex: 1 }}>
-          <Text
-            style={theme.fonts.bodyLarge}
-            onPress={() => handleOpenModal(NotificationType.Weather)}
-          >
-            {userViewModel.i18n.t("weather")}
-          </Text>
-        </TouchableOpacity>
-        <HorizontalSpacer size={4} />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+          {userViewModel.i18n.t("weather")}
+        </Text>
+        <HorizontalSpacer size={8} />
+        <Button
+          icon={"archive-edit"}
+          contentStyle={{ height: 24 }}
+          mode="contained"
+          onPress={() => handleOpenModal(NotificationType.Weather)}
+        >
+          {userViewModel.i18n.t("customise")}
+        </Button>
+        <HorizontalSpacer size={8} />
         <NotificationSwitchComponent
           type={NotificationType.Weather}
           hiveId={props.hiveId}
         />
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={{ flex: 1 }}>
-          <Text
-            style={theme.fonts.bodyLarge}
-            onPress={() => handleOpenModal(NotificationType.PossibleSwarm)}
-          >
-            {userViewModel.i18n.t("possible swarm")}
-          </Text>
-        </TouchableOpacity>
-        <HorizontalSpacer size={4} />
+      <VerticalSpacer size={2} />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+          {userViewModel.i18n.t("possible swarm")}
+        </Text>
+        <HorizontalSpacer size={8} />
+        <Button
+          icon={"archive-edit"}
+          contentStyle={{ height: 24 }}
+          mode="contained"
+          onPress={() => handleOpenModal(NotificationType.PossibleSwarm)}
+        >
+          {userViewModel.i18n.t("customise")}
+        </Button>
+        <HorizontalSpacer size={8} />
         <NotificationSwitchComponent
           type={NotificationType.PossibleSwarm}
           hiveId={props.hiveId}
         />
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={{ flex: 1 }}>
-          <Text
-            style={theme.fonts.bodyLarge}
-            onPress={() => handleOpenModal(NotificationType.ConsiderFeeding)}
-          >
-            {userViewModel.i18n.t("consider feeding")}
-          </Text>
-        </TouchableOpacity>
-        <HorizontalSpacer size={4} />
+      <VerticalSpacer size={2} />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+          {userViewModel.i18n.t("consider feeding")}
+        </Text>
+        <HorizontalSpacer size={8} />
+        <Button
+          icon={"archive-edit"}
+          contentStyle={{ height: 24 }}
+          mode="contained"
+          onPress={() => handleOpenModal(NotificationType.ConsiderFeeding)}
+        >
+          {userViewModel.i18n.t("customise")}
+        </Button>
+        <HorizontalSpacer size={8} />
         <NotificationSwitchComponent
           type={NotificationType.ConsiderFeeding}
           hiveId={props.hiveId}
         />
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={{ flex: 1 }}>
-          <Text
-            style={theme.fonts.bodyLarge}
-            onPress={() => handleOpenModal(NotificationType.HoneyHarvest)}
-          >
-            {userViewModel.i18n.t("honey harvest")}
-          </Text>
-        </TouchableOpacity>
-        <HorizontalSpacer size={4} />
+      <VerticalSpacer size={2} />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+          {userViewModel.i18n.t("honey harvest")}
+        </Text>
+        <HorizontalSpacer size={8} />
+        <Button
+          icon={"archive-edit"}
+          contentStyle={{ height: 24 }}
+          mode="contained"
+          onPress={() => handleOpenModal(NotificationType.HoneyHarvest)}
+        >
+          {userViewModel.i18n.t("customise")}
+        </Button>
+        <HorizontalSpacer size={8} />
         <NotificationSwitchComponent
           type={NotificationType.HoneyHarvest}
           hiveId={props.hiveId}
         />
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={{ flex: 1 }}>
-          <Text
-            style={theme.fonts.bodyLarge}
-            onPress={() => handleOpenModal(NotificationType.Maintenance)}
-          >
-            {userViewModel.i18n.t("maintenance")}
-          </Text>
-        </TouchableOpacity>
-        <HorizontalSpacer size={4} />
+      <VerticalSpacer size={2} />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+          {userViewModel.i18n.t("maintenance")}
+        </Text>
+        <HorizontalSpacer size={8} />
+        <Button
+          icon={"archive-edit"}
+          contentStyle={{ height: 24 }}
+          mode="contained"
+          onPress={() => handleOpenModal(NotificationType.Maintenance)}
+        >
+          {userViewModel.i18n.t("customise")}
+        </Button>
+        <HorizontalSpacer size={8} />
         <NotificationSwitchComponent
           type={NotificationType.Maintenance}
           hiveId={props.hiveId}
         />
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={{ flex: 1 }}>
-          <Text
-            style={theme.fonts.bodyLarge}
-            onPress={() => handleOpenModal(NotificationType.ConsiderExpanding)}
-          >
-            {userViewModel.i18n.t("expand hive")}
-          </Text>
-        </TouchableOpacity>
-        <HorizontalSpacer size={4} />
+      <VerticalSpacer size={2} />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+          {userViewModel.i18n.t("expand hive")}
+        </Text>
+        <HorizontalSpacer size={8} />
+        <Button
+          icon={"archive-edit"}
+          contentStyle={{ height: 24 }}
+          mode="contained"
+          onPress={() => handleOpenModal(NotificationType.ConsiderExpanding)}
+        >
+          {userViewModel.i18n.t("customise")}
+        </Button>
+        <HorizontalSpacer size={8} />
         <NotificationSwitchComponent
           type={NotificationType.ConsiderExpanding}
           hiveId={props.hiveId}
         />
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={{ flex: 1 }}>
-          <Text
-            style={theme.fonts.bodyLarge}
-            onPress={() => handleOpenModal(NotificationType.CheckHive)}
-          >
-            {userViewModel.i18n.t("check hive")}
-          </Text>
-        </TouchableOpacity>
-        <HorizontalSpacer size={4} />
+      <VerticalSpacer size={2} />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+          {userViewModel.i18n.t("check hive")}
+        </Text>
+        <HorizontalSpacer size={8} />
+        <Button
+          icon={"archive-edit"}
+          contentStyle={{ height: 24 }}
+          mode="contained"
+          onPress={() => handleOpenModal(NotificationType.CheckHive)}
+        >
+          {userViewModel.i18n.t("customise")}
+        </Button>
+        <HorizontalSpacer size={8} />
         <NotificationSwitchComponent
           type={NotificationType.CheckHive}
           hiveId={props.hiveId}
         />
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={{ flex: 1 }}>
-          <Text
-            style={theme.fonts.bodyLarge}
-            onPress={() => handleOpenModal(NotificationType.CustomReminder)}
-          >
-            {userViewModel.i18n.t("reminder")}
-          </Text>
-        </TouchableOpacity>
-        <HorizontalSpacer size={4} />
+      <VerticalSpacer size={2} />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+          {userViewModel.i18n.t("reminder")}
+        </Text>
+        <HorizontalSpacer size={8} />
+        <Button
+          icon={"archive-edit"}
+          contentStyle={{ height: 24 }}
+          mode="contained"
+          onPress={() => handleOpenModal(NotificationType.CustomReminder)}
+        >
+          {userViewModel.i18n.t("customise")}
+        </Button>
+        <HorizontalSpacer size={8} />
         <NotificationSwitchComponent
           type={NotificationType.CustomReminder}
           hiveId={props.hiveId}
         />
       </View>
+      <VerticalSpacer size={2} />
       <NotificationModal
         isOverlayModalVisible={AddHiveModalVisible}
         bottomSheetModalRef={bottomSheetAddHiveModalRef}

@@ -75,7 +75,6 @@ const HiveScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
   const selectedHive = hiveViewModel.getSelectedHive();
 
-  const [data, setData] = useState("");
   const [notes, setNotes] = useState<HiveNote[]>([]);
   const [forecast, setForecast] = useState<WeeklySimpleForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
@@ -162,17 +161,8 @@ const HiveScreen = (params: HiveScreenProps) => {
           userViewModel.windSpeedPreference,
           true
         );
-
-        const rainfall = calculateDailyRainfall(data, getForecastDateFormat(2));
-
-        //setData(
-        //  `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
-        //);
-
-        setData("Retrieved forecast!");
         setForecast(weeklySimplyForecast);
       } catch (error) {
-        setData("Error retrieving data");
         Toast.show(
           toastCrossPlatform({
             title: "Error",
@@ -207,7 +197,7 @@ const HiveScreen = (params: HiveScreenProps) => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title={`${userViewModel.i18n.t("hive")} ${hiveId}`}
+        title={selectedHive.name}
         trailingIcons={[
           <TouchableOpacity onPress={handleOpenAddNoteToHiveModal}>
             <MaterialCommunityIcons
@@ -239,13 +229,6 @@ const HiveScreen = (params: HiveScreenProps) => {
                     <>
                       <Text style={theme.fonts.titleLarge}>
                         {userViewModel.i18n.t("forecast")}
-                      </Text>
-                      <Text style={theme.fonts.bodyLarge}>
-                        Hive ID: {hiveId}
-                      </Text>
-                      <Text style={theme.fonts.bodySmall}>{data}</Text>
-                      <Text style={theme.fonts.bodySmall}>
-                        {selectedHive.name}
                       </Text>
                       <VerticalSpacer size={8} />
                       <ForecastSummary
@@ -358,6 +341,9 @@ const HiveScreen = (params: HiveScreenProps) => {
               <View>
                 {forecast ? (
                   <>
+                    <Text style={theme.fonts.titleLarge}>
+                      {userViewModel.i18n.t("forecast")}
+                    </Text>
                     <VerticalSpacer size={8} />
                     <ForecastSummary
                       forecast={forecast}

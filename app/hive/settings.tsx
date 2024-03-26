@@ -13,10 +13,13 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import AddHiveModal from "@/components/modals/AddHiveModal";
 import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
 import RepositionHiveModal from "@/components/modals/RepositionHiveModal";
-import { VerticalSpacer } from "@/components/Spacers";
+import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
 import RegisterSensorModal from "@/components/modals/RegisterSensorModal";
 import DialogDeleteHive from "@/components/modals/DialogDeleteHive";
 import NotificationSettingsComponent from "@/components/NotificationSettings";
+import LoadingScreen from "@/components/LoadingScreen";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "@/components/ToastCustom";
 
 type RootStackParamList = {
   hive: {
@@ -37,6 +40,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
   const selectedHive = hiveViewModel.getSelectedHive();
+  const [isLoadingScreen, setLoadingScreen] = useState(false);
   const [addFiltersToHiveModalVisible, setAddFiltersToHiveModalVisible] =
     useState(false);
   const bottomSheetAddFiltersToHiveModalRef = useRef<BottomSheetModal>(null);
@@ -130,14 +134,31 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   };
 
   const handleDeleteHive = () => {
+    const deletedHiveName: string = selectedHive.name;
     hideDeleteDialog();
     hiveViewModel.removeHive(selectedHive.id);
     navigation.navigate("../index");
+
+    Toast.show(
+      toastCrossPlatform({
+        title: "Success",
+        text: `Deleted hive '${deletedHiveName}'.`,
+        type: "success",
+      })
+    );
   };
 
   const handleUpdateName = (name: string) => {
     selectedHive.name = name;
     hiveViewModel.updateHive(selectedHive);
+
+    Toast.show(
+      toastCrossPlatform({
+        title: "Success",
+        text: `Renamed hive to '${name}'.`,
+        type: "success",
+      })
+    );
   };
 
   return (
@@ -148,83 +169,88 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
         canOpenDrawer={!!navigation.openDrawer}
         title={userViewModel.i18n.t("settings")}
       />
-      <ScrollView>
-        <View style={styles(theme).main}>
-          <Text>{hiveId}</Text>
-          <Text>Hive name: {selectedHive.name}</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <TextInput
-              label={userViewModel.i18n.t("rename hive")}
-              value={newHiveName}
-              onChangeText={setNewHiveName}
-              mode="outlined"
+      {isLoadingScreen ? (
+        <LoadingScreen />
+      ) : (
+        <ScrollView>
+          <View style={styles(theme).main}>
+            <View
               style={{
-                flex: 3,
-                backgroundColor: theme.colors.primaryContainer,
+                flexDirection: "row",
+                alignItems: "center",
               }}
-            />
+            >
+              <TextInput
+                label={userViewModel.i18n.t("rename hive")}
+                value={newHiveName}
+                onChangeText={setNewHiveName}
+                mode="outlined"
+                style={{
+                  flex: 3,
+                  backgroundColor: theme.colors.primaryContainer,
+                }}
+              />
+              <HorizontalSpacer size={12} />
+              <Button
+                icon="pencil"
+                mode="contained"
+                onPress={() => handleUpdateName(newHiveName)}
+                style={{ flex: 1 }}
+              >
+                {userViewModel.i18n.t("rename")}
+              </Button>
+            </View>
+
+            <VerticalSpacer size={12} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={12} />
+
+            <NotificationSettingsComponent hiveId={hiveId} />
+
+            <VerticalSpacer size={12} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={12} />
+
             <Button
               icon="pencil"
               mode="contained"
-              onPress={() => handleUpdateName(newHiveName)}
-              style={{ margin: 4, flex: 1 }}
+              onPress={handleOpenAddFiltersToHiveModal}
             >
-              {userViewModel.i18n.t("rename")}
+              {userViewModel.i18n.t("modify hive filters")}
+            </Button>
+            <VerticalSpacer size={8} />
+            <Button
+              icon="map-marker"
+              mode="contained"
+              onPress={handleOpenRepositionHiveModal}
+            >
+              {userViewModel.i18n.t("reposition hive")}
+            </Button>
+            <VerticalSpacer size={8} />
+            <Button
+              icon="remote"
+              mode="contained"
+              onPress={handleOpenRegisterSensorModal}
+            >
+              {userViewModel.i18n.t("manage sensors")}
+            </Button>
+            <VerticalSpacer size={8} />
+            {/* TODO Add functionality to download hive data, e.g. in CSV. */}
+            <Button icon="download" mode="contained" onPress={() => null}>
+              {userViewModel.i18n.t("download hive data")}
+            </Button>
+            <VerticalSpacer size={20} />
+            <Button
+              icon="delete"
+              mode="contained"
+              onPress={handleDeleteButtonPress}
+              style={{ backgroundColor: theme.colors.error }}
+            >
+              {userViewModel.i18n.t("delete hive")}
             </Button>
           </View>
-
-          <VerticalSpacer size={12} />
-          <Divider style={{ backgroundColor: theme.colors.outline }} />
-          <VerticalSpacer size={12} />
-
-          <NotificationSettingsComponent hiveId={hiveId} />
-
-          <VerticalSpacer size={12} />
-          <Divider style={{ backgroundColor: theme.colors.outline }} />
-          <VerticalSpacer size={12} />
-
-          <Button
-            icon="pencil"
-            mode="contained"
-            onPress={handleOpenAddFiltersToHiveModal}
-            style={{ margin: 4 }}
-          >
-            {userViewModel.i18n.t("modify hive filters")}
-          </Button>
-          <VerticalSpacer size={8} />
-          <Button
-            icon="map-marker"
-            mode="contained"
-            onPress={handleOpenRepositionHiveModal}
-            style={{ margin: 4 }}
-          >
-            {userViewModel.i18n.t("reposition hive")}
-          </Button>
-          <VerticalSpacer size={8} />
-          <Button
-            icon="remote"
-            mode="contained"
-            onPress={handleOpenRegisterSensorModal}
-            style={{ margin: 4 }}
-          >
-            {userViewModel.i18n.t("manage sensors")}
-          </Button>
-          <VerticalSpacer size={8} />
-          <Button
-            icon="delete"
-            mode="contained"
-            onPress={handleDeleteButtonPress}
-            style={{ margin: 4, backgroundColor: theme.colors.error }}
-          >
-            {userViewModel.i18n.t("delete hive")}
-          </Button>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
       <AddFiltersToHiveModal
         isOverlayModalVisible={addFiltersToHiveModalVisible}
         bottomSheetModalRef={bottomSheetAddFiltersToHiveModalRef}

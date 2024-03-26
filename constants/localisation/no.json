@@ -170,7 +170,7 @@
   "custom reminder": "Tilpasset påminnelse",
   "mute_notifications": "Ønsker du å dempe '%{notificationType}' notifikasjoner for '%{hiveName}'?",
   "mute": "Demp",
-  "read": "Lest",
+  "read": "Sett",
   "delete filter": "Slett filter",
   "delete hive filters": "Slett bikubefiltre",
   "delete_filter": "Slett '%{filter}' filter",
@@ -179,5 +179,7 @@
   "checklist description": "Organiser oppgavelisten for bigården din ved å sette opp sjekklistepunkter og påminnelser.",
   "calendar description": "Hold oversikt over kommende påminnelser og varsler, samt tidligere.",
   "hive scan description": "Send et bilde av bikuben din til vår AI-assistent for å hjelpe med å diagnostisere potensielle tegn på sykdom.",
-  "to create a new note": "For å opprette en ny notat, klikk på pennikonet i toppfeltet."
+  "to create a new note": "For å opprette en ny notat, klikk på pennikonet i toppfeltet.",
+  "download hive data": "Last ned bikubedata",
+  "customise": "Tilpass"
 }

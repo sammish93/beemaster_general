@@ -94,7 +94,7 @@ const HomeScreen = () => {
     Toast.show(
       toastCrossPlatform({
         title: "Success",
-        text: `Added '${filterName} as a new filter.'`,
+        text: `Added '${filterName}' as a new filter.`,
         type: "success",
       })
     );

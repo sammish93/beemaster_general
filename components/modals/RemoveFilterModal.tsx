@@ -56,7 +56,7 @@ const ModalContent = (props: ModalContentProps) => {
     Toast.show(
       toastCrossPlatform({
         title: "Success",
-        text: `Removed '${filter} from your filters.'`,
+        text: `Removed '${filter}' from your filters.`,
         type: "success",
       })
     );
