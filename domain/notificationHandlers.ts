@@ -15,6 +15,7 @@ export const notificationHandlers = {
     mobile: async (user: User) => {
         console.log(`Sending mobile notification to ${user.email}`);
 
+        // TODO: Continue here!
         try {
             const hives = await getUserHives(user.id);
             console.log(`User: ${user.email} - hives: ${JSON.stringify(hives)}`);
