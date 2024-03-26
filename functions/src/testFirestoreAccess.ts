@@ -1,4 +1,3 @@
-import { HiveModel } from "../../models/hiveModel";
 const admin = require('firebase-admin');
 const serviceAccount = require('../../firebase-admin-key.json');
 
@@ -40,7 +39,7 @@ async function retrieveAndLogUserData() {
       console.log(`User: ${userId} has currently no hives.`);
     }
     else {
-      hivesSnapshot.forEach((hive: HiveModel) => {
+      hivesSnapshot.forEach(hive => {
         console.log(`HiveId: ${hive.id}, Data: ${hive}`);
       });
     }
