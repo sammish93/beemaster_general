@@ -1,6 +1,6 @@
 import { fetchWeatherForecast } from "../../data/api/weatherApi";
 import { deserialiseCurrentForecast } from '../../domain/weatherForecastDeserialiser';
-import admin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 import serviceAccount from '../../firebase-admin-key.json';
 
 admin.initializeApp({
