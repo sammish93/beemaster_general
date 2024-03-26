@@ -47,12 +47,16 @@ export const recurringBackgroundTask = onSchedule("every 60 min", async () => {
               try {
                 const weatherData = await fetchWeatherForecast(hiveData.latLng);
                 const currentForecast = deserialiseCurrentForecast(weatherData);
+
+                // TODO: Use Lorena´s functions to decide if we need to send out a notification.
               } 
               catch (error) {
                 logger.error(`Could not retrieve the latest weather forecast for hive ID: ${hive.id}`)
               }
             }
-
+            else {
+              logger.log(`Weather notifications are turned off for hive ID: ${hive.id}`);
+            }
         });
     }
   }

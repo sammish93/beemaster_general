@@ -1,5 +1,7 @@
-const admin = require('firebase-admin');
-const serviceAccount = require('../../firebase-admin-key.json');
+import { fetchWeatherForecast } from "../../data/api/weatherApi";
+import { deserialiseCurrentForecast } from '../../domain/weatherForecastDeserialiser';
+import admin from 'firebase-admin';
+import serviceAccount from '../../firebase-admin-key.json';
 
 admin.initializeApp({
     projectId: "beemastergeneral",
@@ -47,20 +49,26 @@ async function retrieveAndLogUserData() {
       console.log(`User: ${userId} has currently no hives.`);
     } 
     else {
-      hivesSnapshot.forEach(hive => {
-        // console.log(`HiveId: ${hive.id}, \nData: ${JSON.stringify(hive.data())}`);
+      hivesSnapshot.forEach(async hive => {
 
-        const hiveNotificationPreference = hive.data().notificationTypePreference;
-        console.log("Hive notification type preference");
-        if (hiveNotificationPreference) {
-          for (const [keys, values] of Object.entries(hiveNotificationPreference)) {
-            console.log(`${keys}: ${values}`);
+        const hiveData = hive.data();
+        const hiveNotificationPreference = hiveData.notificationTypePreference;
+
+        if (hiveNotificationPreference && hiveNotificationPreference.weather) {
+          try {
+            const weatherData = await fetchWeatherForecast(hiveData.latLng); 
+            const currentForecast = deserialiseCurrentForecast(weatherData);
+
+            console.log(`Current forecast: ${currentForecast}`);
+          }
+          catch (error) {
+            console.error(`Could not retrieve the latest weather forecast for hive ID: ${hive.id}`)
           }
         }
         else {
-          console.log("No notification type preference for this hive.");
+          console.log(`Weather notifications are turned off for hive ID: ${hive.id}`);
         }
-        console.log("\n");
+
       });
     }
   }

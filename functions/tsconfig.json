@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "esnext",
+    "moduleResolution": "node",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
     "strict": false,
-    "target": "es2017",
+    "target": "esnext",
     "skipLibCheck": true, // Needed to ignore type conflicts in node_modules.
   },
   "compileOnSave": true,
