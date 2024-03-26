@@ -1,4 +1,4 @@
-const { HiveModel } = require("../../models/hiveModel");
+import { HiveModel } from "../../models/hiveModel";
 const admin = require('firebase-admin');
 const serviceAccount = require('../../firebase-admin-key.json');
 
