@@ -27,7 +27,7 @@ const ToolboxScreen = () => {
       />
       <ScrollView>
         <View style={{ ...styles(theme).main }}>
-          {Dimensions.get("window").width < ScreenWidth.Medium ? (
+          {Dimensions.get("window").width <= ScreenWidth.Compact ? (
             <View style={{ flex: 1 }}>
               <ToolboxCard
                 title={userViewModel.i18n.t("community")}
