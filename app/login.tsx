@@ -10,6 +10,8 @@ import * as React from "react";
 import DialogGDPR from "@/components/modals/DialogGDPR";
 //import React from "react";
 import { Platform } from "react-native";
+import { VerticalSpacer } from "@/components/Spacers";
+import { ScreenWidth } from "@/constants/Dimensions";
 
 //TODO add the GDPR and cleanup code
 // The login loop should be show GDPR agreement, if agree then they can click login buttons.
@@ -94,8 +96,19 @@ const LoginScreen = () => {
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />
-      <ScrollView contentContainerStyle={styles(theme).main}>
-        <Text style={{ textAlign: "center", padding: 5, marginBottom: 5 }}>
+      <ScrollView
+        contentContainerStyle={{
+          ...styles(theme).main,
+          maxWidth: ScreenWidth.Compact,
+        }}
+      >
+        <Text
+          style={{
+            ...theme.fonts.headlineLarge,
+            textAlign: "center",
+            padding: 5,
+          }}
+        >
           {isSignUp ? "Sign Up" : "Login"}
         </Text>
         <TextInput
@@ -103,16 +116,14 @@ const LoginScreen = () => {
           placeholder="Enter your email"
           value={email}
           onChangeText={handleEmailChange}
+          mode="outlined"
           style={{
-            borderWidth: 1,
-            borderColor: "gray",
-            padding: 5,
-            borderRadius: 5,
-            marginBottom: 5,
+            backgroundColor: theme.colors.primaryContainer,
           }}
         />
+        <VerticalSpacer size={4} />
         {emailError ? (
-          <Text style={{ color: "red", textAlign: "center" }}>
+          <Text style={{ color: theme.colors.error, textAlign: "center" }}>
             {emailError}
           </Text>
         ) : null}
@@ -122,21 +133,31 @@ const LoginScreen = () => {
           value={password}
           secureTextEntry
           onChangeText={handlePasswordChange}
+          mode="outlined"
           style={{
-            borderWidth: 1,
-            borderColor: "gray",
-            padding: 5,
-            borderRadius: 5,
-            marginBottom: 5,
+            backgroundColor: theme.colors.primaryContainer,
           }}
         />
+        <VerticalSpacer size={12} />
         {passwordError ? (
-          <Text style={{ color: "red", textAlign: "center" }}>
+          <Text
+            style={{
+              ...theme.fonts.bodyLarge,
+              color: theme.colors.error,
+              textAlign: "center",
+            }}
+          >
             {passwordError}
           </Text>
         ) : null}
         {signUpError && (
-          <Text style={{ color: "red", textAlign: "center" }}>
+          <Text
+            style={{
+              ...theme.fonts.bodyLarge,
+              color: theme.colors.error,
+              textAlign: "center",
+            }}
+          >
             {signUpError}
           </Text>
         )}
@@ -148,36 +169,37 @@ const LoginScreen = () => {
           </>
         ) : (
           <>
-            <Button
-              icon="email"
-              mode="contained"
-              style={{ marginBottom: 10 }}
-              onPress={handleEmailSignIn}
-            >
+            <Button icon="email" mode="contained" onPress={handleEmailSignIn}>
               Login with Email
             </Button>
-            <Text style={{ textAlign: "center" }}>{"OR"}</Text>
-            <Button
-              icon="google"
-              mode="contained"
-              style={{ marginBottom: 10 }}
-              onPress={handleGoogleSignIn}
+            <VerticalSpacer size={4} />
+            <Text
+              style={{
+                ...theme.fonts.bodyLarge,
+                textAlign: "center",
+              }}
             >
+              OR
+            </Text>
+            <VerticalSpacer size={4} />
+            <Button icon="google" mode="contained" onPress={handleGoogleSignIn}>
               Login with Google
             </Button>
+            <VerticalSpacer size={8} />
             <Button
               icon="incognito"
               mode="contained"
-              style={{ marginBottom: 10 }}
               onPress={handleAnonymousSignIn}
             >
               Login Anonymously
             </Button>
           </>
         )}
+        <VerticalSpacer size={8} />
         <Pressable onPress={() => setIsSignUp(!isSignUp)}>
           <Text
             style={{
+              ...theme.fonts.bodyLarge,
               textDecorationLine: "underline",
               color: theme.colors.primary,
               textAlign: "center",
