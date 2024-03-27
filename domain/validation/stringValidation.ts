@@ -6,17 +6,18 @@
  * @param minLength The minimum amount of characters allowed.
  * @param maxLength The maximum amount of characters allowed.
  * @param isSymbolsAllowed Whether or not symbols are allowed.
+ * @param isSpaceAllowed Whether not not space characters are allowed.
  * @returns A boolean value whether or not the string is valid.
  */
-export const isValidString = (input: string, minLength: number = 1, maxLength: number = 64, isSymbolsAllowed: boolean = false): boolean => {
+export const isValidString = (input: string, minLength: number = 1, maxLength: number = 64, isSymbolsAllowed: boolean = false, isSpaceAllowed: boolean = true): boolean => {
     // Allows all letters and numbers from unicode-supported languages.
     // If isSymbolsAllowed is set to false then the presence of even a single symbol results in an invalid string.
     let regexPattern = ""
 
     if (isSymbolsAllowed) {
-        regexPattern = `^[\\p{L}\\p{N}\\p{P}\\p{S}\\p{Z}]{${minLength},${maxLength}}$`
+        regexPattern = `^[\\p{L}\\p{N}\\p{P}\\p{S}${isSpaceAllowed ? '\\p{Z}' : ''}]{${minLength},${maxLength}}$`;
     } else {
-        regexPattern = `^[\\p{L}\\p{N}]{${minLength},${maxLength}}$`
+        regexPattern = `^[\\p{L}\\p{N}${isSpaceAllowed ? ' ' : ''}]{${minLength},${maxLength}}$`;
     }
     
     // 'u' for unicode.
