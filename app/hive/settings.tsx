@@ -20,6 +20,7 @@ import NotificationSettingsComponent from "@/components/NotificationSettings";
 import LoadingScreen from "@/components/LoadingScreen";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
+import { isValidString } from "@/domain/validation/stringValidation";
 
 type RootStackParamList = {
   hive: {
@@ -51,6 +52,8 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
     useState(false);
   const bottomSheetRegisterSensorModalRef = useRef<BottomSheetModal>(null);
   const [newHiveName, setNewHiveName] = useState(selectedHive.name);
+  const [isNameValid, setIsNameValid] = useState<boolean>();
+  const [nameErrorMessage, setNameErrorMessage] = useState<string>("");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleRepositionHiveModalSheetPressOpen = useCallback(() => {
@@ -148,17 +151,31 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
     );
   };
 
-  const handleUpdateName = (name: string) => {
-    selectedHive.name = name;
-    hiveViewModel.updateHive(selectedHive);
+  const handleModifyName = (input: string) => {
+    setNewHiveName(input);
 
-    Toast.show(
-      toastCrossPlatform({
-        title: "Success",
-        text: `Renamed hive to '${name}'.`,
-        type: "success",
-      })
-    );
+    if (isValidString(input, 1, 64)) {
+      setIsNameValid(true);
+    } else {
+      setIsNameValid(false);
+    }
+  };
+
+  const handleUpdateName = (name: string) => {
+    if (isNameValid) {
+      selectedHive.name = name;
+      hiveViewModel.updateHive(selectedHive);
+
+      Toast.show(
+        toastCrossPlatform({
+          title: "Success",
+          text: `Renamed hive to '${name}'.`,
+          type: "success",
+        })
+      );
+    } else {
+      setNameErrorMessage(userViewModel.i18n.t("invalid name"));
+    }
   };
 
   return (
@@ -183,8 +200,9 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
               <TextInput
                 label={userViewModel.i18n.t("rename hive")}
                 value={newHiveName}
-                onChangeText={setNewHiveName}
+                onChangeText={(value) => handleModifyName(value)}
                 mode="outlined"
+                error={!isNameValid}
                 style={{
                   flex: 3,
                   backgroundColor: theme.colors.primaryContainer,
@@ -200,6 +218,22 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
                 {userViewModel.i18n.t("rename")}
               </Button>
             </View>
+
+            {nameErrorMessage ? (
+              <>
+                <VerticalSpacer size={12} />
+                <Text
+                  style={{
+                    ...theme.fonts.bodyLarge,
+                    flex: 1,
+                    textAlign: "center",
+                    color: theme.colors.error,
+                  }}
+                >
+                  {nameErrorMessage}
+                </Text>
+              </>
+            ) : null}
 
             <VerticalSpacer size={12} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />

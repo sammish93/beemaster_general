@@ -183,5 +183,6 @@
   "download hive data": "Download hive data",
   "customise": "Customise",
   "filter_already_exists": "A filter named '%{filterName}' already exists.",
-  "invalid filter name": "Invalid filter name. The filter must contain only letters and numbers, and be between 1 and 64 characters long."
+  "invalid filter name": "Invalid filter name. The filter must contain only letters and numbers, and be between 1 and 64 characters long.",
+  "invalid hive name": "Invalid hive name. The hive name must contain only letters and numbers, and be between 1 and 64 characters long."
 }

@@ -61,8 +61,6 @@ const ModalContent = (props: ModalContentProps) => {
   const [filterErrorMessage, setFilterErrorMessage] = useState<string>("");
 
   const handleModifyFilter = (input: string) => {
-    //TODO Validation
-
     setNewFilterName(input);
 
     if (isValidString(input, 1, 64)) {
@@ -116,6 +114,7 @@ const ModalContent = (props: ModalContentProps) => {
         <TextInput
           label="Filter Name"
           value={newFilterName}
+          error={!isFilterValid}
           onChangeText={(input) => handleModifyFilter(input)}
         />
         <VerticalSpacer size={8} />
