@@ -52,7 +52,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
     useState(false);
   const bottomSheetRegisterSensorModalRef = useRef<BottomSheetModal>(null);
   const [newHiveName, setNewHiveName] = useState(selectedHive.name);
-  const [isNameValid, setIsNameValid] = useState<boolean>();
+  const [isNameValid, setIsNameValid] = useState<boolean>(true);
   const [nameErrorMessage, setNameErrorMessage] = useState<string>("");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
