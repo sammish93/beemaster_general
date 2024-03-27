@@ -227,7 +227,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                 <View style={{ flex: 1 }}>
                   {forecast ? (
                     <>
-                      <Text style={theme.fonts.titleLarge}>
+                      <Text
+                        style={{
+                          ...theme.fonts.headlineSmall,
+                          textAlign: "center",
+                        }}
+                      >
                         {userViewModel.i18n.t("forecast")}
                       </Text>
                       <VerticalSpacer size={8} />
@@ -253,7 +258,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                   Add (if sensor exists) sections for showing charts.
                   */}
                   <VerticalSpacer size={8} />
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("weight")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -264,7 +274,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                     onClick={handleOpenHistoricalSensorModal}
                   />
                   <VerticalSpacer size={8} />
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("temperature")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -275,7 +290,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                     onClick={handleOpenHistoricalSensorModal}
                   />
                   <VerticalSpacer size={8} />
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("humidity")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -286,7 +306,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                     onClick={handleOpenHistoricalSensorModal}
                   />
                   <VerticalSpacer size={8} />
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("bee count")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -298,7 +323,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                 </View>
                 <HorizontalSpacer size={20} />
                 <View style={{ flex: 1 }}>
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("location")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -320,7 +350,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                     </Text>
                   </View>
                   <VerticalSpacer size={8} />
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("notes")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -341,7 +376,12 @@ const HiveScreen = (params: HiveScreenProps) => {
               <View>
                 {forecast ? (
                   <>
-                    <Text style={theme.fonts.titleLarge}>
+                    <Text
+                      style={{
+                        ...theme.fonts.headlineSmall,
+                        textAlign: "center",
+                      }}
+                    >
                       {userViewModel.i18n.t("forecast")}
                     </Text>
                     <VerticalSpacer size={8} />
@@ -363,7 +403,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                 ) : null}
                 {/* TODO DB - Fetch sensor data from db and if tests render components if hive sensor exists */}
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
+                >
                   {userViewModel.i18n.t("weight")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -374,7 +416,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                   onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
+                >
                   {userViewModel.i18n.t("temperature")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -385,7 +429,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                   onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
+                >
                   {userViewModel.i18n.t("humidity")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -396,7 +442,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                   onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
+                >
                   {userViewModel.i18n.t("bee count")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -406,7 +454,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                   onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
+                >
                   {userViewModel.i18n.t("location")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -427,7 +477,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                   </Text>
                 </View>
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{
+                    ...theme.fonts.headlineSmall,
+                    textAlign: "center",
+                  }}
+                >
                   {userViewModel.i18n.t("notes")}
                 </Text>
                 <VerticalSpacer size={8} />

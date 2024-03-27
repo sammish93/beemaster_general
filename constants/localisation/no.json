@@ -188,5 +188,6 @@
   "invalid note": "Ugyldig notat. Notatet må være mellom 1 og 256 tegn langt.",
   "too many characters": "For mange tegn",
   "characters_remaining": " - %{character} tegn gjenstår.",
-  "filter name": "Filternavn"
+  "filter name": "Filternavn",
+  "additional functionality": "Tilleggsfunksjonalitet"
 }

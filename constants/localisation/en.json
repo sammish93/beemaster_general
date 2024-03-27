@@ -188,5 +188,6 @@
   "invalid note": "Invalid note. The note must be between 1 and 256 characters long.",
   "too many characters": "Too many characters",
   "characters_remaining": " - %{character} character(s) remaining.",
-  "filter name": "Filter name"
+  "filter name": "Filter name",
+  "additional functionality": "Additional functionality"
 }

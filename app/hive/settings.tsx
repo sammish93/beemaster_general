@@ -191,6 +191,16 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
       ) : (
         <ScrollView>
           <View style={styles(theme).main}>
+            <Text
+              style={{
+                ...theme.fonts.headlineSmall,
+                textAlign: "center",
+                padding: 1,
+              }}
+            >
+              {userViewModel.i18n.t("hive name")}
+            </Text>
+
             <View
               style={{
                 flexDirection: "row",
@@ -246,13 +256,34 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
 
             <VerticalSpacer size={12} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Text
+              style={{
+                ...theme.fonts.headlineSmall,
+                textAlign: "center",
+                padding: 1,
+              }}
+            >
+              {userViewModel.i18n.t("notifications")}
+            </Text>
+            <VerticalSpacer size={8} />
 
             <NotificationSettingsComponent hiveId={hiveId} />
 
             <VerticalSpacer size={12} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+
+            <Text
+              style={{
+                ...theme.fonts.headlineSmall,
+                textAlign: "center",
+                padding: 1,
+              }}
+            >
+              {userViewModel.i18n.t("additional functionality")}
+            </Text>
+            <VerticalSpacer size={8} />
 
             <Button
               icon="pencil"
