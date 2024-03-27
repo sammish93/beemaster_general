@@ -112,23 +112,35 @@ const ModalContent = (props: ModalContentProps) => {
       </View>
       <View>
         <TextInput
-          label="Filter Name"
+          label={
+            newFilterName.length > 64
+              ? userViewModel.i18n.t("too many characters")
+              : userViewModel.i18n.t("filter name") +
+                (newFilterName.length >= 32
+                  ? userViewModel.i18n.t("characters_remaining", {
+                      character: 64 - newFilterName.length,
+                    })
+                  : "")
+          }
           value={newFilterName}
           error={!isFilterValid}
           onChangeText={(input) => handleModifyFilter(input)}
         />
-        <VerticalSpacer size={8} />
+
         {filterErrorMessage ? (
-          <Text
-            style={{
-              ...theme.fonts.bodyLarge,
-              flex: 1,
-              textAlign: "center",
-              color: theme.colors.error,
-            }}
-          >
-            {filterErrorMessage}
-          </Text>
+          <>
+            <VerticalSpacer size={8} />
+            <Text
+              style={{
+                ...theme.fonts.bodyLarge,
+                flex: 1,
+                textAlign: "center",
+                color: theme.colors.error,
+              }}
+            >
+              {filterErrorMessage}
+            </Text>
+          </>
         ) : null}
         <VerticalSpacer size={12} />
         <Button mode="contained" onPress={handleAddNewFilter}>

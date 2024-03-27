@@ -184,5 +184,9 @@
   "customise": "Customise",
   "filter_already_exists": "A filter named '%{filterName}' already exists.",
   "invalid filter name": "Invalid filter name. The filter must contain only letters and numbers, and be between 1 and 64 characters long.",
-  "invalid hive name": "Invalid hive name. The hive name must contain only letters and numbers, and be between 1 and 64 characters long."
+  "invalid hive name": "Invalid hive name. The hive name must contain only letters and numbers, and be between 1 and 64 characters long.",
+  "invalid note": "Invalid note. The note must be between 1 and 256 characters long.",
+  "too many characters": "Too many characters",
+  "characters_remaining": " - %{character} character(s) remaining.",
+  "filter name": "Filter name"
 }

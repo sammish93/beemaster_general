@@ -198,7 +198,16 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
               }}
             >
               <TextInput
-                label={userViewModel.i18n.t("rename hive")}
+                label={
+                  newHiveName.length > 64
+                    ? userViewModel.i18n.t("too many characters")
+                    : userViewModel.i18n.t("rename hive") +
+                      (newHiveName.length >= 32
+                        ? userViewModel.i18n.t("characters_remaining", {
+                            character: 64 - newHiveName.length,
+                          })
+                        : "")
+                }
                 value={newHiveName}
                 onChangeText={(value) => handleModifyName(value)}
                 mode="outlined"
