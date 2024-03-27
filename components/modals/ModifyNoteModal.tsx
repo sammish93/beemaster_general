@@ -8,6 +8,9 @@ import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
 import { HiveModel } from "@/models/hiveModel";
 import { HiveNote } from "@/models/note";
+import { isValidString } from "@/domain/validation/stringValidation";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "../ToastCustom";
 
 interface ModifyNoteModalProps {
   isOverlayModalVisible: boolean;
@@ -64,29 +67,53 @@ const ModalContent = (props: ModalContentProps) => {
   const [note, setNote] = useState<string>(
     hiveViewModel.getSelectedNote().note
   );
+  const [isNoteValid, setIsNoteValid] = useState<boolean>(true);
+  const [noteErrorMessage, setNoteErrorMessage] = useState<string>("");
 
   const handleDeleteNote = () => {
     const note: HiveNote = hiveViewModel.getSelectedNote();
 
     hiveViewModel.removeNote(note.id);
-
     props.onModifyNote();
+
+    Toast.show(
+      toastCrossPlatform({
+        title: "Success",
+        text: `Deleted note.`,
+        type: "success",
+      })
+    );
+
     props.onClose();
   };
 
-  const handleModifyNote = () => {
-    const existingNote: HiveNote = hiveViewModel.getSelectedNote();
-    const newNote: HiveNote = {
-      id: existingNote.id,
-      note: note,
-      isSticky: sticky,
-      timestamp: existingNote.timestamp,
-    };
+  const handleModifyNote = (input: string) => {
+    setNote(input);
 
-    hiveViewModel.modifyNote(newNote);
+    if (isValidString(input, 1, 256, true, true)) {
+      setIsNoteValid(true);
+    } else {
+      setIsNoteValid(false);
+    }
+  };
 
-    props.onModifyNote();
-    props.onClose();
+  const handleUpdateNote = () => {
+    if (isNoteValid) {
+      const existingNote: HiveNote = hiveViewModel.getSelectedNote();
+      const newNote: HiveNote = {
+        id: existingNote.id,
+        note: note,
+        isSticky: sticky,
+        timestamp: existingNote.timestamp,
+      };
+
+      hiveViewModel.modifyNote(newNote);
+
+      props.onModifyNote();
+      props.onClose();
+    } else {
+      setNoteErrorMessage(userViewModel.i18n.t("invalid note"));
+    }
   };
 
   const handleStickyCheckboxPress = (isSticky: boolean) => {
@@ -129,10 +156,35 @@ const ModalContent = (props: ModalContentProps) => {
         </View>
         <VerticalSpacer size={8} />
         <TextInput
-          label={userViewModel.i18n.t("note text")}
+          label={
+            note.length > 256
+              ? userViewModel.i18n.t("too many characters")
+              : userViewModel.i18n.t("note text") +
+                (note.length >= 224
+                  ? userViewModel.i18n.t("characters_remaining", {
+                      character: 256 - note.length,
+                    })
+                  : "")
+          }
+          error={!isNoteValid}
           value={note}
-          onChangeText={setNote}
+          onChangeText={(input) => handleModifyNote(input)}
         />
+        {noteErrorMessage ? (
+          <>
+            <VerticalSpacer size={8} />
+            <Text
+              style={{
+                ...theme.fonts.bodyLarge,
+                flex: 1,
+                textAlign: "center",
+                color: theme.colors.error,
+              }}
+            >
+              {noteErrorMessage}
+            </Text>
+          </>
+        ) : null}
         <VerticalSpacer size={8} />
         <View style={{ flexDirection: "row" }}>
           <Button
@@ -147,7 +199,7 @@ const ModalContent = (props: ModalContentProps) => {
           <Button
             mode="contained"
             style={{ flex: 1 }}
-            onPress={handleModifyNote}
+            onPress={handleUpdateNote}
           >
             {userViewModel.i18n.t("modify note")}
           </Button>
