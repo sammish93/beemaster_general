@@ -181,5 +181,7 @@
   "hive scan description": "Send et bilde av bikuben din til vår AI-assistent for å hjelpe med å diagnostisere potensielle tegn på sykdom.",
   "to create a new note": "For å opprette en ny notat, klikk på pennikonet i toppfeltet.",
   "download hive data": "Last ned bikubedata",
-  "customise": "Tilpass"
+  "customise": "Tilpass",
+  "filter_already_exists": "Et filter med navnet '%{filterName}' finnes allerede.",
+  "invalid filter name": "Ugyldig filternavn. Filteret må kun inneholde bokstaver og tall, og være mellom 1 og 64 tegn langt."
 }
