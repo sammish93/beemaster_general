@@ -13,7 +13,8 @@ import { Platform } from "react-native";
 import { VerticalSpacer } from "@/components/Spacers";
 import { ScreenWidth } from "@/constants/Dimensions";
 
-//TODO add the GDPR and cleanup code
+// TODO add the GDPR and cleanup code
+// TODO add strings to localisation
 // The login loop should be show GDPR agreement, if agree then they can click login buttons.
 // authenticate username and password, if new account then allow them to select a country.
 // Write default params based on country. Write default language based on device language.
@@ -118,12 +119,19 @@ const LoginScreen = () => {
           onChangeText={handleEmailChange}
           mode="outlined"
           style={{
+            ...theme.fonts.bodyLarge,
             backgroundColor: theme.colors.primaryContainer,
           }}
         />
         <VerticalSpacer size={4} />
         {emailError ? (
-          <Text style={{ color: theme.colors.error, textAlign: "center" }}>
+          <Text
+            style={{
+              ...theme.fonts.bodyLarge,
+              color: theme.colors.error,
+              textAlign: "center",
+            }}
+          >
             {emailError}
           </Text>
         ) : null}
@@ -135,6 +143,7 @@ const LoginScreen = () => {
           onChangeText={handlePasswordChange}
           mode="outlined"
           style={{
+            ...theme.fonts.bodyLarge,
             backgroundColor: theme.colors.primaryContainer,
           }}
         />
