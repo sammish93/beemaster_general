@@ -1,5 +1,7 @@
 import { auth, db } from '@/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
+import { Hive } from '@/models/hive'; 
+import { fetchWeatherForecast } from '@/data/api/weatherApi';
 
 /**
  * Retrieves all users from 'users' collection in Firestore.
@@ -33,4 +35,8 @@ interface NotificationPreference {
 export const getActivatedPreferences = (preferences: NotificationPreference) => {
     const activated = Object.entries(preferences).filter(([key, value]) => value === true);
     return Object.fromEntries(activated);
+}
+
+export const fetchWeatherForHive = async (hive: Hive) => {
+    return await fetchWeatherForecast(hive.latLng);
 }

@@ -15,14 +15,7 @@ export const notificationHandlers = {
     mobile: async (user: User) => {
         console.log(`Sending mobile notification to ${user.email}`);
 
-        // TODO: Continue here!
-        try {
-            const hives = await getUserHives(user.id);
-            console.log(`User: ${user.email} - hives: ${JSON.stringify(hives)}`);
-
-        } catch (error) {
-            console.error(`Failed to retrieve user hives: ${error}`);
-        }
+        // TODO: Implement logic for sending mobile notification.
     },
     email: (user: User) => {
         console.log(`Sending email notification to ${user.email}`);
