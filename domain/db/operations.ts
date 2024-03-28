@@ -27,17 +27,6 @@ export const getUserHives = async (userId: string): Promise<Array<object>> => {
     return hives.docs.map(doc => ({ id: doc.id, ...doc.data()}));
 }
 
-interface NotificationPreference {
-    email: boolean,
-    mobile: boolean,
-    sms: boolean
-}
-
-export const getActivatedPreferences = (preferences: NotificationPreference) => {
-    const activated = Object.entries(preferences).filter(([key, value]) => value === true);
-    return Object.fromEntries(activated);
-}
-
 export const fetchWeatherForHive = async (hive: Hive) => {
     return await fetchWeatherForecast(hive.latLng);
 }
@@ -49,7 +38,7 @@ export const processUserHives = async (user: User) => {
 
         const weatherDataForHive = await Promise.all(hives.map(hive => fetchWeatherForHive(hive)));
 
-        // TODO: Use Lorena´s functions here with the weather data to decide if notifications should be sent.
+        // TODO: Check which notificationTypePreference is turned on for both user and hive.
 
     } catch (error) {
         console.error(`Failed to fetch hives for user: ${user.email} - error: ${error}`);
