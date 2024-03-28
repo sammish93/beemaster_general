@@ -17,9 +17,10 @@ import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
-import { getActivatedPreferences, getAllUsers } from "@/domain/db/operations";
 import { User } from "@/models/user";
-import { notificationHandlers } from "@/domain/notificationHandlers";
+import { notificationHandlers } from "@/domain/tasks/notification/notificationHandlers";
+import { getActivatedPreferences } from "@/domain/tasks/notification/notificationLogic";
+import { getAllUsers } from "@/domain/db/operations";
 
 const HomeScreen = () => {
   const theme = useTheme();

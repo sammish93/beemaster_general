@@ -1,5 +1,4 @@
 import { User } from "@/models/user";
-import { getUserHives } from "./db/operations";
 
 /**
  * 'notificationHandlers' define a collection of handling functions for sending

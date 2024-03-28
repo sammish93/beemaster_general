@@ -1,4 +1,4 @@
-import { auth, db } from '@/firebaseConfig';
+import { db } from '@/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { Hive } from '@/models/hive'; 
 import { fetchWeatherForecast } from '@/data/api/weatherApi';
