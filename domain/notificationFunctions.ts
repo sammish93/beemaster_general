@@ -59,7 +59,7 @@ export const isWarmerEachDayInSpring = (temperatures: number[]): boolean => {
 
 /**
  * Evaluates weather forecasts to determine if snow is expected based on user's location.
- * 
+ * @notification Weather - This function can trigger a 'Weather' notification to alert users about the possibility of significant snowfall, allowing for timely preparations and adjustments.
  * @param forecast An array of string weather forecasts.
  * @returns True if the forecast includes significant snow keywords based on the user's current country in userViewModel, otherwise false.
  */
@@ -72,8 +72,8 @@ export const isSnowForecast = (forecast: string[]): boolean => {
 
 /**
  * Checks if the temperature in any of the provided hives exceeds a user-specified maximum temperature.
- * 
- * @notification Weather - This function can trigger a 'Weather' notification to alert users about the possibility of significant snowfall, allowing for timely preparations and adjustments.
+ * @notification Weather - Indicates when external temperature conditions may adversely affect hive conditions.
+ * @notification CheckHive - Suggests an internal hive check might be necessary to prevent overheating.
  * @param hives An array of hive objects, each containing information about a single hive's conditions.
  * @param userViewModel An instance of IUserViewModel containing user-defined temperature preferences, including a maximum temperature parameter.
  * @returns True if any hive's temperature exceeds the maximum temperature parameter defined in the userViewModel, otherwise false.
