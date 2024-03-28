@@ -1,8 +1,13 @@
-import forecast from "@/app/hive/forecast";
-import { areTemperaturesConsistentlyWarm, isHumidityChangeDrastic, isSnowForecast, isTemperatureChangeDrastic, isWarmerEachDayInSpring } from "@/domain/notificationFunctions";
 import { CurrentForecast, DailyForecast, WeeklySimpleForecast } from "@/models/forecast";
 import { Hive } from "@/models/hive";
 import { User } from "@/models/user";
+import { 
+    areTemperaturesConsistentlyWarm, 
+    doesHiveWeightIncreaseSignificantly, 
+    isHumidityChangeDrastic, isSnowForecast, 
+    isTemperatureChangeDrastic, 
+    isWarmerEachDayInSpring 
+} from "@/domain/notificationFunctions";
 
 interface WeatherData {
     currentForecast: CurrentForecast,
@@ -25,32 +30,46 @@ export const notificationStrategies = {
         if (isTemperatureChangeDrastic(dailyTemperatures) || isHumidityChangeDrastic(dailyHumidities)) {
             logMessage('checkHive', user, hive);
 
-            // TODO: Send 'CheckHive' notification.
+            // TODO: Send notification.
         }
     },
 
-    considerExpanding: ({ user, hive, weatherData}: Props) => {
-        logMessage('considerExpanding', user, hive);
+    considerExpanding: ({ user, hive, weatherData }: Props) => {
+
+        // Gonna add 'doesHiveWeightIncreaseSignificantly' 
+        // and 'areTemperaturesConsistentlyWarm' here.
     },
 
     considerFeeding: ({ user, hive, weatherData}: Props) => {
-        logMessage('considerFeeding', user, hive);
+        
+        // Gonna add 'doesHiveWeightDecreaseInEarlySpring' 
+        // and 'doesHiveWeightDecreaseInAutumn' here.
     },
 
     customReminder: ({ user, hive, weatherData}: Props) => {
         logMessage('customReminder', user, hive);
+
+        // Gonna add 'createBeekeepingReminder' here.
     },
 
     honeyHarvest: ({ user, hive, weatherData}: Props) => {
         logMessage('honeyHarvest', user, hive);
+
+        // Gonna add 'isWarmDryLowWindDayBetweenSummerAndEarlyAutumn' here.
     },
 
     maintenance: ({ user, hive, weatherData}: Props) => {
         logMessage('maintenance', user, hive);
+
+        // Gonna add 'isWarmDryLowWindDay'
+        // and 'isWarmDryLowWindDayBetweenSummerAndEarlyAutumn' here.
     },
 
     possibleSwarm: ({ user, hive, weatherData}: Props) => {
         logMessage('possibleSwarm', user, hive);
+
+        // Gonna add 'haveFewBeesExited', 'isSwarmingRiskBasedOnUserDefinedSeason'
+        // and 'doesHiveWeightDecreaseSignificantly' here.
     },
 
     weather: ({ user, hive, weatherData}: Props) => {
@@ -106,10 +125,12 @@ const getWeatherConditions = (weeklyForecast: WeeklySimpleForecast) => {
     ];
 }
 
+// Helper function.
 const getDailyTemperatureData = (dailyForecast: DailyForecast) => {
     return Object.values(dailyForecast).map(forecast => forecast.temperature);
 }
 
+// Helper function.
 const getDailyHumidityData = (dailyForecast: DailyForecast) => {
     return Object.values(dailyForecast).map(forecast => forecast.humidity);
 }
