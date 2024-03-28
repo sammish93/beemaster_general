@@ -17,27 +17,30 @@ export const getActivatedPreferences = (preferences: NotificationPreference) => 
 
 export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => {
     for (const hive of hives) {
+        try {
+            // Get weather data for hive and process it.
+            const weatherData = await fetchWeatherForHive(hive);
+            const processedData = await processWeatherDataForHive(weatherData);
 
-        // Get weather data for hive and process it.
-        const weatherData = await fetchWeatherForHive(hive);
-        const processedData = await processWeatherDataForHive(weatherData);
+            const userPreference = user.notificationTypePreference;
+            const hivePreference = hive.notificationTypePreference
 
-        const userPreference = user.notificationTypePreference;
-        const hivePreference = hive.notificationTypePreference
-
-        // Iterate over the strategies.
-        Object.keys(notificationStrategies).forEach(strategy => {
-            const notificationType = strategy as keyof typeof hive.notificationTypePreference;
+            // Iterate over the strategies.
+            Object.keys(notificationStrategies).forEach(strategy => {
+                const notificationType = strategy as keyof typeof hive.notificationTypePreference;
             
-            // Check the user and hive preferences.
-            if (userPreference[notificationType] && hivePreference[notificationType]) {
+                // Check the user and hive preferences.
+                if (userPreference[notificationType] && hivePreference[notificationType]) {
 
-                const currentForecast = processedData.currentForecast;
-                const params = {user, hive, currentForecast}
+                    const currentForecast = processedData.currentForecast;
+                    const params = {user, hive, currentForecast}
 
-                // Execute strategy.
-                notificationStrategies[notificationType](params);
-            }
-        });
+                    // Execute strategy.
+                    notificationStrategies[notificationType](params);
+                }
+            });
+        } catch (error) {
+            console.error(`Error in processing hive ${hive.id} for user ${user.email}: ${error}`);
+        }
     };
 }
