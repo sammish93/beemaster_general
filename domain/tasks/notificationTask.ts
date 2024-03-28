@@ -2,8 +2,7 @@ import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 import { getAllUsers, getUserHives } from '../db/operations';
 import { User } from '@/models/user';
-import { getActivatedPreferences } from '../db/operations';
-import { notificationHandlers } from '../notificationHandlers';
+import { processUserHives } from '../db/operations';
 
 const BG_TASK_NAME = 'notification-task';
 
@@ -13,15 +12,9 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
         console.log(`BackgroundTask: ${BG_TASK_NAME} is running!`);
         const users = await getAllUsers() as User[];
 
-        users.forEach(async user => {
-            try {
-                const hives = await getUserHives(user.id);
-                console.log(`User: ${user.email} - hives: ${JSON.stringify(hives)}`);
-    
-            } catch (error) {
-                console.error(`Failed to retrieve user hives: ${error}`);
-            }
-        });
+        const processedHives = users.map(user => processUserHives(user));
+        const results = await Promise.all(processedHives);
+
         // Return a result to indicate completion.
         return BackgroundFetch.BackgroundFetchResult.NewData;
     } catch (error) {

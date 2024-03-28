@@ -54,5 +54,4 @@ export const processUserHives = async (user: User) => {
     } catch (error) {
         console.error(`Failed to fetch hives for user: ${user.email} - error: ${error}`);
     }
-
 }
