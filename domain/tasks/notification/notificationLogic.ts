@@ -2,6 +2,7 @@ import { Hive } from "@/models/hive";
 import { User } from "@/models/user";
 import { fetchWeatherForHive } from "../weather/weatherDataFetch";
 import { processWeatherDataForHive } from "../weather/weatherDataProcessor";
+import { notificationStrategies } from "./notificationStrategies"; 
 
 interface NotificationPreference {
     email: boolean,
@@ -17,9 +18,23 @@ export const getActivatedPreferences = (preferences: NotificationPreference) => 
 export const evaluateAndSendNotification = (user: User, hives: Hive[]) => {
     hives.forEach(async hive => {
 
+        // Get weather data for hive and process it.
         const weatherData = await fetchWeatherForHive(hive);
         const processedData = await processWeatherDataForHive(weatherData);
 
-    });
+        const userPreference = user.notificationTypePreference;
+        const hivePreference = hive.notificationTypePreference
 
+        // Iterate over the strategies.
+        Object.keys(notificationStrategies).forEach(strategy => {
+            const notificationType = strategy as keyof typeof hive.notificationTypePreference;
+            
+            // Check the user and hive preferences.
+            if (userPreference[notificationType] && hivePreference[notificationType]) {
+
+                // Execute strategy.
+                notificationStrategies[notificationType](user, hive);
+            }
+        });
+    });
 }
