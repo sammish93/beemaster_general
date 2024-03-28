@@ -1,45 +1,50 @@
-import { CurrentForecast } from "@/models/forecast";
+import { areTemperaturesConsistentlyWarm, isSnowForecast, isWarmerEachDayInSpring } from "@/domain/notificationFunctions";
+import { CurrentForecast, DailyForecast, WeeklySimpleForecast } from "@/models/forecast";
 import { Hive } from "@/models/hive";
 import { User } from "@/models/user";
 
 interface Props {
     user: User,
     hive: Hive,
-    currentForecast: CurrentForecast
+    weatherData: {
+        currentForecast: CurrentForecast,
+        dailyForecast: DailyForecast,
+        weeklyForecast: WeeklySimpleForecast
+    }
 }
 
 export const notificationStrategies = {
 
-    checkHive: (prop: Props) => {
-        logMessage('checkHive', prop.user, prop.hive);
+    checkHive: ({ user, hive, weatherData}: Props) => {
+        logMessage('checkHive', user, hive);
     },
 
-    considerExpanding: (prop: Props) => {
-        logMessage('considerExpanding', prop.user, prop.hive);
+    considerExpanding: ({ user, hive, weatherData}: Props) => {
+        logMessage('considerExpanding', user, hive);
     },
 
-    considerFeeding: (prop: Props) => {
-        logMessage('considerFeeding', prop.user, prop.hive);
+    considerFeeding: ({ user, hive, weatherData}: Props) => {
+        logMessage('considerFeeding', user, hive);
     },
 
-    customReminder: (prop: Props) => {
-        logMessage('customReminder', prop.user, prop.hive);
+    customReminder: ({ user, hive, weatherData}: Props) => {
+        logMessage('customReminder', user, hive);
     },
 
-    honeyHarvest: (prop: Props) => {
-        logMessage('honeyHarvest', prop.user, prop.hive);
+    honeyHarvest: ({ user, hive, weatherData}: Props) => {
+        logMessage('honeyHarvest', user, hive);
     },
 
-    maintenance: (prop: Props) => {
-        logMessage('maintenance', prop.user, prop.hive);
+    maintenance: ({ user, hive, weatherData}: Props) => {
+        logMessage('maintenance', user, hive);
     },
 
-    possibleSwarm: (prop: Props) => {
-        logMessage('possibleSwarm', prop.user, prop.hive);
+    possibleSwarm: ({ user, hive, weatherData}: Props) => {
+        logMessage('possibleSwarm', user, hive);
     },
 
-    weather: (prop: Props) => {
-        logMessage('weather', prop.user, prop.hive);
+    weather: ({ user, hive, weatherData}: Props) => {
+        logMessage('weather', user, hive);
     }
 }
 

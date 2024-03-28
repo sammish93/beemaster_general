@@ -13,10 +13,10 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
         console.log(`BackgroundTask: ${BG_TASK_NAME} is running!`);
         const users = await getAllUsers() as User[];
 
-        users.forEach(async user => {
+        for (const user of users) {
             const hives = await getUserHives(user.id) as Hive[];
             const result = evaluateAndSendNotification(user, hives);
-        })
+        }
 
         // Return a result to indicate completion.
         return BackgroundFetch.BackgroundFetchResult.NewData;

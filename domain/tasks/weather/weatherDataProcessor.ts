@@ -7,5 +7,8 @@ from "@/domain/weatherForecastDeserialiser";
 
 export const processWeatherDataForHive = async (hiveWeatherData: any) => {
     const currentForecast = deserialiseCurrentForecast(hiveWeatherData);
-    return { currentForecast };
+    const dailyForecast = deserialiseDailyForecast(hiveWeatherData);
+    const weeklyForecast = deserialiseWeeklySimpleForecast(hiveWeatherData);
+
+    return { currentForecast, dailyForecast, weeklyForecast };
 }
