@@ -21,7 +21,8 @@ export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => 
             // Get weather data for hive and process it.
             const weatherData = await fetchWeatherForHive(hive);
             const processedData = await processWeatherDataForHive(weatherData);
-
+            
+            // Get user and hive preferences.
             const userPreference = user.notificationTypePreference;
             const hivePreference = hive.notificationTypePreference
 
