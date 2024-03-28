@@ -26,8 +26,12 @@ export const notificationHandlers = {
     },
     email: (user: User) => {
         console.log(`Sending email notification to ${user.email}`);
+
+        // TODO: Implement logic for email notification.
     },
     sms: (user: User) => {
         console.log(`Sending sms notification to ${user.email}`);
+
+        // TODO: Implement logic for sms notification.
     }
 }
