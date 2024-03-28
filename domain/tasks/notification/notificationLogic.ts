@@ -33,16 +33,8 @@ export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => 
                 // Check the user and hive preferences.
                 if (userPreference[notificationType] && hivePreference[notificationType]) {
 
-                    const params = {
-                        user, 
-                        hive, 
-                        weatherData: {
-                            currentForecast: processedData.currentForecast,
-                            dailyForecast: processedData.dailyForecast,
-                            weeklyForecast: processedData.weeklyForecast
-                        }
-                    }
-
+                    const params = { user, hive, weatherData: processedData }
+                    
                     // Execute strategy.
                     notificationStrategies[notificationType](params);
                 }
