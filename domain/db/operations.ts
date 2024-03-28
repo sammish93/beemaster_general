@@ -2,6 +2,7 @@ import { auth, db } from '@/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { Hive } from '@/models/hive'; 
 import { fetchWeatherForecast } from '@/data/api/weatherApi';
+import { User } from '@/models/user';
 
 /**
  * Retrieves all users from 'users' collection in Firestore.
@@ -39,4 +40,19 @@ export const getActivatedPreferences = (preferences: NotificationPreference) => 
 
 export const fetchWeatherForHive = async (hive: Hive) => {
     return await fetchWeatherForecast(hive.latLng);
+}
+
+export const processUserHives = async (user: User) => {
+    try {
+        const hives = await getUserHives(user.id) as Hive[];
+        console.log(`User: ${user.email} - hives: ${JSON.stringify(hives)}`);
+
+        const weatherDataForHive = await Promise.all(hives.map(hive => fetchWeatherForHive(hive)));
+
+        // TODO: Use Lorena´s functions here with the weather data to decide if notifications should be sent.
+
+    } catch (error) {
+        console.error(`Failed to fetch hives for user: ${user.email} - error: ${error}`);
+    }
+
 }
