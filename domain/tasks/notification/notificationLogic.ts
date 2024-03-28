@@ -15,8 +15,8 @@ export const getActivatedPreferences = (preferences: NotificationPreference) => 
     return Object.fromEntries(activated);
 }
 
-export const evaluateAndSendNotification = (user: User, hives: Hive[]) => {
-    hives.forEach(async hive => {
+export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => {
+    for (const hive of hives) {
 
         // Get weather data for hive and process it.
         const weatherData = await fetchWeatherForHive(hive);
@@ -32,9 +32,12 @@ export const evaluateAndSendNotification = (user: User, hives: Hive[]) => {
             // Check the user and hive preferences.
             if (userPreference[notificationType] && hivePreference[notificationType]) {
 
+                const currentForecast = processedData.currentForecast;
+                const params = {user, hive, currentForecast}
+
                 // Execute strategy.
-                notificationStrategies[notificationType](user, hive);
+                notificationStrategies[notificationType](params);
             }
         });
-    });
+    };
 }

@@ -1,38 +1,45 @@
+import { CurrentForecast } from "@/models/forecast";
 import { Hive } from "@/models/hive";
 import { User } from "@/models/user";
 
+interface Props {
+    user: User,
+    hive: Hive,
+    currentForecast: CurrentForecast
+}
+
 export const notificationStrategies = {
 
-    checkHive: (user: User, hive: Hive) => {
-        logMessage('checkHive', user, hive);
+    checkHive: (prop: Props) => {
+        logMessage('checkHive', prop.user, prop.hive);
     },
 
-    considerExpanding: (user: User, hive: Hive) => {
-        logMessage('considerExpanding', user, hive);
+    considerExpanding: (prop: Props) => {
+        logMessage('considerExpanding', prop.user, prop.hive);
     },
 
-    considerFeeding: (user: User, hive: Hive) => {
-        logMessage('considerFeeding', user, hive);
+    considerFeeding: (prop: Props) => {
+        logMessage('considerFeeding', prop.user, prop.hive);
     },
 
-    customReminder: (user: User, hive: Hive) => {
-        logMessage('customReminder', user, hive);
+    customReminder: (prop: Props) => {
+        logMessage('customReminder', prop.user, prop.hive);
     },
 
-    honeyHarvest: (user: User, hive: Hive) => {
-        logMessage('honeyHarvest', user, hive);
+    honeyHarvest: (prop: Props) => {
+        logMessage('honeyHarvest', prop.user, prop.hive);
     },
 
-    maintenance: (user: User, hive: Hive) => {
-        logMessage('maintenance', user, hive);
+    maintenance: (prop: Props) => {
+        logMessage('maintenance', prop.user, prop.hive);
     },
 
-    possibleSwarm: (user: User, hive: Hive) => {
-        logMessage('possibleSwarm', user, hive);
+    possibleSwarm: (prop: Props) => {
+        logMessage('possibleSwarm', prop.user, prop.hive);
     },
 
-    weather: (user: User, hive: Hive) => {
-        logMessage('weather', user, hive);
+    weather: (prop: Props) => {
+        logMessage('weather', prop.user, prop.hive);
     }
 }
 
