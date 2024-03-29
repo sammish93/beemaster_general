@@ -15,7 +15,7 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
 
         for (const user of users) {
             const hives = await getUserHives(user.id) as Hive[];
-            const result = evaluateAndSendNotification(user, hives);
+            await evaluateAndSendNotification(user, hives);
         }
 
         // Return a result to indicate completion.
@@ -29,7 +29,7 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
 export const startBackgroundTask = async () => {
     try {
         await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
-            minimumInterval: 60 * 60, 
+            minimumInterval: 60 * 15, 
             stopOnTerminate: false, 
             startOnBoot: true, 
         });

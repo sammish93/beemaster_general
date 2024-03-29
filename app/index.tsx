@@ -17,6 +17,7 @@ import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
+import { startBackgroundTask } from "@/domain/tasks/notificationTask";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -37,6 +38,16 @@ const HomeScreen = () => {
   const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(
     hiveViewModel.hives
   );
+
+  // Starts background task on the startup of the app.
+  useEffect(() => {
+    startBackgroundTask().then(() => {
+      console.log('Background task registered in HomeScreen!');
+    }).catch((error) => {
+      console.error(`Error registering background task: ${error}`);
+    });
+
+  }, []);
 
   const handleAddHive = (hiveName: string) => {
     /*

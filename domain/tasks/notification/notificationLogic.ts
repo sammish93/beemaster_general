@@ -3,7 +3,6 @@ import { User } from "@/models/user";
 import { fetchWeatherForHive } from "../weather/weatherDataFetch";
 import { processWeatherDataForHive } from "../weather/weatherDataProcessor";
 import { notificationStrategies } from "./notificationStrategies"; 
-import * as Notification from "expo-notifications";
 
 interface NotificationPreference {
     email: boolean,
@@ -17,7 +16,8 @@ export const getActivatedPreferences = (preferences: NotificationPreference) => 
 }
 
 export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => {
-    for (const hive of hives) {
+    const filteredHive = hives.filter(hive => hive.id === 'Es2njxWBdXky6zhu9UBZ');
+    for (const hive of filteredHive) {
         try {
             // Get weather data for hive and process it.
             const weatherData = await fetchWeatherForHive(hive);
@@ -39,33 +39,12 @@ export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => 
                     // Execute strategy.
                     notificationStrategies[notificationType](params);
                 }
+                else {
+                    console.log(`Notification is turned of for both user and hive`);
+                }
             });
         } catch (error) {
             console.error(`Error in processing hive ${hive.id} for user ${user.email}: ${error}`);
         }
     };
-}
-
-interface NotificationProps {
-    title: string,
-    body: string
-}
-
-export const sendNotification = async ({ title, body }: NotificationProps) => {
-    const token = (await Notification.getExpoPushTokenAsync()).data;
-
-    const message = { 
-        to: token, 
-        title: title, 
-        body: body
-    };
-
-    await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(message)
-    });
 }

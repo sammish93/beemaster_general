@@ -1,7 +1,7 @@
 import { CurrentForecast, DailyForecast, WeeklySimpleForecast } from "@/models/forecast";
 import { Hive } from "@/models/hive";
 import { User } from "@/models/user";
-import { sendNotification } from "./notificationLogic";
+import { sendNotification } from "./sendNotification";
 import { 
     areTemperaturesConsistentlyWarm, 
     doesHiveWeightIncreaseSignificantly, 
@@ -73,12 +73,16 @@ export const notificationStrategies = {
         // and 'doesHiveWeightDecreaseSignificantly' here.
     },
 
-    weather: ({ user, hive, weatherData}: Props) => {
+    weather: async ({ user, hive, weatherData}: Props) => {
         const weeklyTemperatures = getWeeklyTemperatureData(weatherData.weeklyForecast);
         if (areTemperaturesConsistentlyWarm(weeklyTemperatures, weeklyTemperatures.length)) {
             logMessage('warm trend', user, hive);
-
+            
             // TODO: Send notification.
+            await sendNotification({
+                title: 'Warm Trend Detected',
+                body: `Its getting warm around ${hive.hiveName}. Consider checking it out.`
+            });
         }
         
         const weatherConditions = getWeatherConditions(weatherData.weeklyForecast);
@@ -86,12 +90,20 @@ export const notificationStrategies = {
             logMessage('snow forecast', user, hive);
 
             // TODO: Send notification.
+            await sendNotification({
+                title: 'Snow Forecast',
+                body: `Snow is forecasted around hive ${hive.hiveName}.`
+            });
         }
 
-        if (isWarmerEachDayInSpring(weeklyTemperatures)) {
+        if (true) {
             logMessage('warming trend in spring', user, hive);
 
             // TODO: Send notification.
+            await sendNotification({
+                title: 'Warming Trend in Spring',
+                body: `A warming trend in spring is detected for hive ${hive.hiveName}`
+            })
         }
     }
 }
