@@ -17,10 +17,6 @@ import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
-import { User } from "@/models/user";
-import { notificationHandlers } from "@/domain/tasks/notification/notificationHandlers";
-import { getActivatedPreferences } from "@/domain/tasks/notification/notificationLogic";
-import { getAllUsers } from "@/domain/db/operations";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -41,23 +37,6 @@ const HomeScreen = () => {
   const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(
     hiveViewModel.hives
   );
-
-  useEffect(() => {
-    const getUsers = async () => {
-      const users = await getAllUsers() as User[];
-      users.forEach(user => {
-        const preference = getActivatedPreferences(user.notificationPreference);
-        Object.keys(preference).forEach(item => {
-          const preference = item as keyof typeof notificationHandlers;
-          const notifyUser = notificationHandlers[preference];
-          if (notifyUser) {
-            notifyUser(user);
-          }
-        });
-      });
-    }
-    getUsers();
-  }, []);
 
   const handleAddHive = (hiveName: string) => {
     /*
