@@ -15,6 +15,8 @@ import DefaultSwitchComponent from "@/components/DefaultSwitch";
 import { VerticalSpacer } from "@/components/Spacers";
 import NotificationButton from "@/components/NotificationButton";
 import NotificationSettingsComponent from "@/components/NotificationSettings";
+import { Picker } from '@react-native-picker/picker';
+import { CountryEnum, CountryOption, LanguageEnum, LanguageOption, availableCountries, availableLanguages } from "@/constants/LocaleEnums";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -23,6 +25,37 @@ const SettingsScreen = () => {
 
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
+  // Filtrer språkalternativer for å eliminere duplikater basert på navn.
+  const uniqueLanguageOptions = availableLanguages.reduce<LanguageOption[]>((unique, option) => {
+    const exists = unique.some(u => u.name === option.name);
+    if (!exists) {
+      // Prioriter ikke-web kode hvis mulig
+      const preferredCode = option.code === LanguageEnum.NorwegianBokmal ? LanguageEnum.Norwegian : option.code;
+      unique.push({ ...option, code: preferredCode });
+    }
+    return unique;
+  }, []);
+
+  // Filtrer landalternativer for å eliminere duplikater basert på navn.
+  const uniqueCountryOptions = availableCountries.reduce<CountryOption[]>((unique, option) => {
+    const exists = unique.some(u => u.name === option.name);
+    if (!exists) {
+      // Prioriter ikke-web kode hvis mulig
+      const preferredCode = option.code === CountryEnum.WebNorway ? CountryEnum.Norway :
+        option.code === CountryEnum.WebEngland ? CountryEnum.England : option.code;
+      unique.push({ ...option, code: preferredCode });
+    }
+    return unique;
+  }, []);
+
+
+  const handleLanguageChange = (langCode: LanguageEnum) => {
+    userViewModel.setLanguage(langCode);
+  };
+
+  const handleCountryChange = (countryCode: CountryEnum) => {
+    userViewModel.setCountry(countryCode);
+  };
 
   useEffect(() => {
     userViewModel.fetchUserParametersFromDatabase();
@@ -63,16 +96,33 @@ const SettingsScreen = () => {
 
           <SwitchTheme />
 
-          {currentLanguage && (
-            <Text style={theme.fonts.bodyLarge}>
-              {userViewModel.i18n.t("language")}: {currentLanguage}
-            </Text>
-          )}
-          {currentCountry && (
-            <Text style={theme.fonts.bodyLarge}>
-              {userViewModel.i18n.t("country")}: {currentCountry}
-            </Text>
-          )}
+
+          <Text style={theme.fonts.bodyLarge}>
+            {userViewModel.i18n.t("language")}: {currentLanguage}
+          </Text>
+          <Picker
+            selectedValue={currentLanguage}
+            onValueChange={(itemValue) => handleLanguageChange(itemValue)}
+          >
+            {uniqueLanguageOptions.map((language) => (
+              <Picker.Item label={language.name} value={language.code} key={language.code} />
+            ))}
+          </Picker>
+
+
+          <Text style={theme.fonts.bodyLarge}>
+            {userViewModel.i18n.t("country")}: {currentCountry}
+          </Text>
+
+          <Picker
+            selectedValue={currentCountry}
+            onValueChange={(itemValue) => handleCountryChange(itemValue)}
+          >
+            {uniqueCountryOptions.map((country) => (
+              <Picker.Item label={country.name} value={country.code} key={country.code} />
+            ))}
+          </Picker>
+
           <VerticalSpacer size={12} />
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />

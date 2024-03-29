@@ -4,7 +4,7 @@ import { I18n } from "i18n-js";
 import en from '@/constants/localisation/en.json';
 import no from '@/constants/localisation/no.json';
 import { PrecipitationMeasurement, TemperatureMeasurement, WeightMeasurement, WindSpeedMeasurement } from "@/constants/Measurements";
-import { availableLanguages, availableCountries } from '@/constants/LocaleEnums';
+import { availableLanguages, availableCountries, LanguageEnum, CountryEnum } from '@/constants/LocaleEnums';
 import { Platform } from "react-native";
 import { auth, db } from "@/firebaseConfig";
 import { signOut, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithCredential, onAuthStateChanged } from "firebase/auth";
@@ -45,6 +45,40 @@ class UserViewModel {
             });
         });
     }
+    @action setLanguage = (langCode: string): void => {
+        this.currentLanguage = langCode;
+        // Oppdaterer i18n.locale basert på brukerens valg
+        switch (langCode) {
+            case LanguageEnum.English:
+                this.i18n.locale = 'en';
+                break;
+            case LanguageEnum.Norwegian:
+            case LanguageEnum.NorwegianBokmal:
+                this.i18n.locale = 'no';
+                break;
+            // Legg til flere cases her for andre språk
+            default:
+                this.i18n.locale = 'en'; // Standardfall
+        }
+    };
+
+    @action setCountry = (countryCode: string): void => {
+        this.currentCountry = countryCode;
+        switch (countryCode) {
+            case CountryEnum.Norway:
+                // Sett appinnstillinger spesifikke for Norge
+                break;
+            case CountryEnum.England:
+                // Sett appinnstillinger spesifikke for England
+                break;
+            case CountryEnum.USA:
+                // Sett appinnstillinger spesifikke for USA
+                break;
+            // Legg til flere cases her for andre land
+            default:
+            // Standardfall eller standard landinnstillinger
+        }
+    };
 
     // Localisation
     @observable i18n;
