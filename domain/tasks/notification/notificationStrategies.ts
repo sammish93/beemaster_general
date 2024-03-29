@@ -1,6 +1,7 @@
 import { CurrentForecast, DailyForecast, WeeklySimpleForecast } from "@/models/forecast";
 import { Hive } from "@/models/hive";
 import { User } from "@/models/user";
+import { sendNotification } from "./notificationLogic";
 import { 
     areTemperaturesConsistentlyWarm, 
     doesHiveWeightIncreaseSignificantly, 

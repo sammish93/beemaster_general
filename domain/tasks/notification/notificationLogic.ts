@@ -3,6 +3,7 @@ import { User } from "@/models/user";
 import { fetchWeatherForHive } from "../weather/weatherDataFetch";
 import { processWeatherDataForHive } from "../weather/weatherDataProcessor";
 import { notificationStrategies } from "./notificationStrategies"; 
+import * as Notification from "expo-notifications";
 
 interface NotificationPreference {
     email: boolean,
@@ -43,4 +44,28 @@ export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => 
             console.error(`Error in processing hive ${hive.id} for user ${user.email}: ${error}`);
         }
     };
+}
+
+interface NotificationProps {
+    title: string,
+    body: string
+}
+
+export const sendNotification = async ({ title, body }: NotificationProps) => {
+    const token = (await Notification.getExpoPushTokenAsync()).data;
+
+    const message = { 
+        to: token, 
+        title: title, 
+        body: body
+    };
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(message)
+    });
 }
