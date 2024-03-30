@@ -101,10 +101,14 @@ const SettingsScreen = () => {
           </Text>
           <List.Accordion
             title="Velg Språk"
+            titleStyle={theme.fonts.bodyLarge}
+            left={props => <List.Icon {...props} icon="translate" />}
+
           >
             {uniqueLanguageOptions.map((language) => (
               <List.Item
                 title={language.name}
+                titleStyle={theme.fonts.bodyLarge}
                 key={language.code}
                 onPress={() => handleLanguageChange(language.code)}
               />
@@ -116,10 +120,14 @@ const SettingsScreen = () => {
           </Text>
           <List.Accordion
             title="Velg Land"
+            titleStyle={theme.fonts.bodyLarge}
+            left={props => <List.Icon {...props} icon="earth" />}
+
           >
             {uniqueCountryOptions.map((country) => (
               <List.Item
                 title={country.name}
+                titleStyle={theme.fonts.bodyLarge}
                 key={country.code}
                 onPress={() => handleCountryChange(country.code)}
               />
@@ -131,13 +139,19 @@ const SettingsScreen = () => {
           </Text>
           <List.Accordion
             title="Velg Temperatur Enhet"
+            titleStyle={theme.fonts.bodyLarge}
+            left={props => <List.Icon {...props} icon="thermometer" />}
+
+
           >
             <List.Item
               title="Celsius (°C)"
+              titleStyle={theme.fonts.bodyLarge}
               onPress={() => userViewModel.setTemperaturePreference(TemperatureMeasurement.Celsius)}
             />
             <List.Item
               title="Fahrenheit (°F)"
+              titleStyle={theme.fonts.bodyLarge}
               onPress={() => userViewModel.setTemperaturePreference(TemperatureMeasurement.Fahrenheit)}
             />
           </List.Accordion>
@@ -145,13 +159,18 @@ const SettingsScreen = () => {
 
           <List.Accordion
             title="Velg Vekt Enhet"
+            titleStyle={theme.fonts.bodyLarge}
+            left={props => <List.Icon {...props} icon="scale" />}
+
           >
             <List.Item
               title="Kilogram (kg)"
+              titleStyle={theme.fonts.bodyLarge}
               onPress={() => userViewModel.setWeightPreference(WeightMeasurement.Kilograms)}
             />
             <List.Item
               title="Pounds (lb)"
+              titleStyle={theme.fonts.bodyLarge}
               onPress={() => userViewModel.setWeightPreference(WeightMeasurement.Pounds)}
             />
           </List.Accordion>
