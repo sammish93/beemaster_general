@@ -2,20 +2,18 @@ import { useNavigation } from "expo-router";
 import { TouchableOpacity, View, ScrollView } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext, useEffect } from "react";
-import { Button, useTheme, Divider, Text } from "react-native-paper";
+import { Button, useTheme, Divider, Text, List } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
-import React from "react";
 import PermissionSwitch from "@/components/PermissionSwitch";
 import SwitchTheme from "@/components/SwitchTheme";
 import DefaultSwitchComponent from "@/components/DefaultSwitch";
 import { VerticalSpacer } from "@/components/Spacers";
 import NotificationButton from "@/components/NotificationButton";
 import NotificationSettingsComponent from "@/components/NotificationSettings";
-import { Picker } from '@react-native-picker/picker';
 import { CountryEnum, CountryOption, LanguageEnum, LanguageOption, availableCountries, availableLanguages } from "@/constants/LocaleEnums";
 
 const SettingsScreen = () => {
@@ -96,32 +94,38 @@ const SettingsScreen = () => {
 
           <SwitchTheme />
 
-
           <Text style={theme.fonts.bodyLarge}>
             {userViewModel.i18n.t("language")}: {currentLanguage}
           </Text>
-          <Picker
-            selectedValue={currentLanguage}
-            onValueChange={(itemValue) => handleLanguageChange(itemValue)}
+          <List.Accordion
+            title="Velg Språk"
           >
             {uniqueLanguageOptions.map((language) => (
-              <Picker.Item label={language.name} value={language.code} key={language.code} />
+              <List.Item
+                title={language.name}
+                key={language.code}
+                onPress={() => handleLanguageChange(language.code)}
+              />
             ))}
-          </Picker>
-
+          </List.Accordion>
 
           <Text style={theme.fonts.bodyLarge}>
             {userViewModel.i18n.t("country")}: {currentCountry}
           </Text>
-
-          <Picker
-            selectedValue={currentCountry}
-            onValueChange={(itemValue) => handleCountryChange(itemValue)}
+          <List.Accordion
+            title="Velg Land"
           >
             {uniqueCountryOptions.map((country) => (
-              <Picker.Item label={country.name} value={country.code} key={country.code} />
+              <List.Item
+                title={country.name}
+                key={country.code}
+                onPress={() => handleCountryChange(country.code)}
+              />
             ))}
-          </Picker>
+          </List.Accordion>
+
+          <Text style={theme.fonts.bodyLarge}>Measurement Preferences:</Text>
+
 
           <VerticalSpacer size={12} />
 

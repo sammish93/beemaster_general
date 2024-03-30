@@ -32,6 +32,8 @@ class UserViewModel {
     @observable currentLanguage: string | null = null;
     @observable currentCountry: string | null = null;
     @observable authInitialized = false;
+    @observable dateFormat: string = "DD/MM/YYYY";
+
 
     initializeAuthListener() {
         onAuthStateChanged(auth, (user) => {
@@ -47,7 +49,7 @@ class UserViewModel {
     }
     @action setLanguage = (langCode: string): void => {
         this.currentLanguage = langCode;
-        // Oppdaterer i18n.locale basert på brukerens valg
+
         switch (langCode) {
             case LanguageEnum.English:
                 this.i18n.locale = 'en';
@@ -56,7 +58,7 @@ class UserViewModel {
             case LanguageEnum.NorwegianBokmal:
                 this.i18n.locale = 'no';
                 break;
-            // Legg til flere cases her for andre språk
+
             default:
                 this.i18n.locale = 'en'; // Standardfall
         }
@@ -65,20 +67,32 @@ class UserViewModel {
     @action setCountry = (countryCode: string): void => {
         this.currentCountry = countryCode;
         switch (countryCode) {
+
             case CountryEnum.Norway:
-                // Sett appinnstillinger spesifikke for Norge
+                this.temperaturePreference = TemperatureMeasurement.Celsius;
+                this.weightPreference = WeightMeasurement.Kilograms;
+                this.dateFormat = "DD/MM/YYYY";
+
                 break;
             case CountryEnum.England:
-                // Sett appinnstillinger spesifikke for England
+                this.temperaturePreference = TemperatureMeasurement.Celsius;
+                this.weightPreference = WeightMeasurement.Kilograms;
+                this.dateFormat = "DD/MM/YYYY";
                 break;
             case CountryEnum.USA:
-                // Sett appinnstillinger spesifikke for USA
+                this.temperaturePreference = TemperatureMeasurement.Fahrenheit;
+                this.weightPreference = WeightMeasurement.Pounds;
+                this.dateFormat = "MM/DD/YYYY";
                 break;
-            // Legg til flere cases her for andre land
+
             default:
-            // Standardfall eller standard landinnstillinger
+                this.temperaturePreference = TemperatureMeasurement.Celsius;
+                this.weightPreference = WeightMeasurement.Kilograms;
+                this.dateFormat = "DD/MM/YYYY";
         }
     };
+
+
 
     // Localisation
     @observable i18n;
