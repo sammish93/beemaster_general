@@ -15,6 +15,7 @@ import { VerticalSpacer } from "@/components/Spacers";
 import NotificationButton from "@/components/NotificationButton";
 import NotificationSettingsComponent from "@/components/NotificationSettings";
 import { CountryEnum, CountryOption, LanguageEnum, LanguageOption, availableCountries, availableLanguages } from "@/constants/LocaleEnums";
+import { TemperatureMeasurement, WeightMeasurement } from "@/constants/Measurements";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -23,7 +24,7 @@ const SettingsScreen = () => {
 
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
-  // Filtrer språkalternativer for å eliminere duplikater basert på navn.
+
   const uniqueLanguageOptions = availableLanguages.reduce<LanguageOption[]>((unique, option) => {
     const exists = unique.some(u => u.name === option.name);
     if (!exists) {
@@ -34,7 +35,6 @@ const SettingsScreen = () => {
     return unique;
   }, []);
 
-  // Filtrer landalternativer for å eliminere duplikater basert på navn.
   const uniqueCountryOptions = availableCountries.reduce<CountryOption[]>((unique, option) => {
     const exists = unique.some(u => u.name === option.name);
     if (!exists) {
@@ -54,6 +54,8 @@ const SettingsScreen = () => {
   const handleCountryChange = (countryCode: CountryEnum) => {
     userViewModel.setCountry(countryCode);
   };
+
+  const currentMeasurements = `${userViewModel.temperaturePreference} og ${userViewModel.weightPreference}`;
 
   useEffect(() => {
     userViewModel.fetchUserParametersFromDatabase();
@@ -124,7 +126,35 @@ const SettingsScreen = () => {
             ))}
           </List.Accordion>
 
-          <Text style={theme.fonts.bodyLarge}>Measurement Preferences:</Text>
+          <Text style={theme.fonts.bodyLarge}>
+            Measurement Preferences: {currentMeasurements}
+          </Text>
+          <List.Accordion
+            title="Velg Temperatur Enhet"
+          >
+            <List.Item
+              title="Celsius (°C)"
+              onPress={() => userViewModel.setTemperaturePreference(TemperatureMeasurement.Celsius)}
+            />
+            <List.Item
+              title="Fahrenheit (°F)"
+              onPress={() => userViewModel.setTemperaturePreference(TemperatureMeasurement.Fahrenheit)}
+            />
+          </List.Accordion>
+
+
+          <List.Accordion
+            title="Velg Vekt Enhet"
+          >
+            <List.Item
+              title="Kilogram (kg)"
+              onPress={() => userViewModel.setWeightPreference(WeightMeasurement.Kilograms)}
+            />
+            <List.Item
+              title="Pounds (lb)"
+              onPress={() => userViewModel.setWeightPreference(WeightMeasurement.Pounds)}
+            />
+          </List.Accordion>
 
 
           <VerticalSpacer size={12} />
