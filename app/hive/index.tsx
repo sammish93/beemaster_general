@@ -54,6 +54,7 @@ import ModifyNoteModal from "@/components/modals/ModifyNoteModal";
 import { ScreenWidth } from "@/constants/Dimensions";
 import HistoricalSensorModal from "@/components/modals/HistoricalSensorModal";
 import { SensorDataList } from "@/models/sensor";
+import Map from "@/components/Map";
 
 type RootStackParamList = {
   hive: {
@@ -332,23 +333,23 @@ const HiveScreen = (params: HiveScreenProps) => {
                     {userViewModel.i18n.t("location")}
                   </Text>
                   <VerticalSpacer size={8} />
-                  <View
-                    style={{
-                      height: 100,
-                      backgroundColor: "red",
-                      borderRadius: 16,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text style={theme.fonts.bodyLarge}>
-                      Map component here
+                  {selectedHive.latLng.lat != null &&
+                  selectedHive.latLng.lng != null ? (
+                    <Map
+                      lat={selectedHive.latLng.lat}
+                      lng={selectedHive.latLng.lng}
+                      height={200}
+                    />
+                  ) : (
+                    <Text
+                      style={{
+                        ...theme.fonts.bodyLarge,
+                        textAlign: "center",
+                      }}
+                    >
+                      No location set
                     </Text>
-                    <Text style={theme.fonts.bodyLarge}>
-                      Lat: {selectedHive.latLng.lat}, Lng:{" "}
-                      {selectedHive.latLng.lng}
-                    </Text>
-                  </View>
+                  )}
                   <VerticalSpacer size={8} />
                   <Text
                     style={{
@@ -461,21 +462,11 @@ const HiveScreen = (params: HiveScreenProps) => {
                 </Text>
                 <VerticalSpacer size={8} />
                 {/* TODO - Implement map component. */}
-                <View
-                  style={{
-                    height: 100,
-                    backgroundColor: "red",
-                    borderRadius: 16,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={theme.fonts.bodyLarge}>Map component here</Text>
-                  <Text style={theme.fonts.bodyLarge}>
-                    Lat: {selectedHive.latLng.lat}, Lng:{" "}
-                    {selectedHive.latLng.lng}
-                  </Text>
-                </View>
+                <Map
+                  lat={selectedHive.latLng.lat}
+                  lng={selectedHive.latLng.lng}
+                  height={200}
+                />
                 <VerticalSpacer size={8} />
                 <Text
                   style={{

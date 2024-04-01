@@ -21,7 +21,6 @@ import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import { useNetInfo } from "@react-native-community/netinfo";
 import LoadingScreen from "@/components/LoadingScreen";
-import Map from "@/components/Map";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -238,7 +237,6 @@ const HomeScreen = () => {
         <>
           <View style={{ ...styles(theme).main, paddingBottom: 0 }}>
             <ScrollView>
-              <Map />
               <View
                 style={{
                   flexDirection: "row",

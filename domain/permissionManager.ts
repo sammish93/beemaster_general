@@ -11,14 +11,23 @@ type PermissionType = 'location permission' | 'camera permission' | 'media permi
 type LocationState = null | LocationObject['coords'];
 
 export const usePermissionManager = (type: PermissionType) => {
-    const [status, setStatus] = useState<PermissionStatus | 'denied' | 'granted' | 'limited' | 'unavailable' | 'blocked' | 'undetermined' | undefined>(undefined);
-    const [isEnabled, setIsEnabled] = useState(false);
-    const [location, setLocation] = useState<LocationState>(null);
     const { userViewModel } = useContext(MobXProviderContext);
+    const [status, setStatus] = useState<PermissionStatus | 'denied' | 'granted' | 'limited' | 'unavailable' | 'blocked' | 'undetermined' | undefined>(undefined);
+    const [isEnabled, setIsEnabled] = useState( type === "location permission"
+    ? userViewModel.getLocationPermission()
+    : type === "camera permission"
+    ? userViewModel.getCameraPermission()
+    : type === "media permission"
+    ? userViewModel.getMediaPermission()
+    : null);
+    const [location, setLocation] = useState<LocationState>(null);
+    
 
+    /*
     useEffect(() => {
         checkPermissionStatus();
     }, []);
+    */
 
     const checkPermissionStatus = async () => {
         if (Platform.OS === 'web' && type === 'media permission') {
@@ -30,7 +39,7 @@ export const usePermissionManager = (type: PermissionType) => {
                 if (Platform.OS === 'ios' || Platform.OS === 'android' || Platform.OS === 'web') {
                     const locationStatus = await requestForegroundPermissionsAsync();
                     setStatus(locationStatus.status);
-                    setIsEnabled(locationStatus.status === PermissionStatus.GRANTED);
+                    userViewModel.setLocationPermission(locationStatus.status === PermissionStatus.GRANTED)
                     if (locationStatus.status === PermissionStatus.GRANTED) {
                         const { coords } = await getCurrentPositionAsync({});
                         setLocation(coords);
@@ -42,13 +51,13 @@ export const usePermissionManager = (type: PermissionType) => {
                     navigator.permissions.query({ name: 'camera' as PermissionName }).then(result => {
                         if (result.state === 'granted') {
                             setStatus('granted');
-                            setIsEnabled(true);
+                            userViewModel.setCameraPermission(true)
                         } else if (result.state === 'denied') {
                             setStatus('denied');
-                            setIsEnabled(false);
+                            userViewModel.setCameraPermission(false)
                         } else {
                             setStatus('undetermined');
-                            setIsEnabled(false);
+                            userViewModel.setCameraPermission(false)
                         }
                     });
                 } else {
@@ -56,7 +65,7 @@ export const usePermissionManager = (type: PermissionType) => {
 
                         const cameraStatus = await Camera.requestCameraPermissionsAsync();
                         setStatus(cameraStatus.status);
-                        setIsEnabled(cameraStatus.status === 'granted');
+                        userViewModel.setCameraPermission(cameraStatus.status === 'granted');
                         break;
                     }
                 }
@@ -66,7 +75,7 @@ export const usePermissionManager = (type: PermissionType) => {
                 if (Platform.OS !== 'web') {
                     const mediaStatus = await MediaLibrary.requestPermissionsAsync();
                     setStatus(mediaStatus.status);
-                    setIsEnabled(mediaStatus.status === 'granted');
+                    userViewModel.setMediaPermission(mediaStatus.status === 'granted');
                 }
                 break;
             default:
@@ -81,7 +90,7 @@ export const usePermissionManager = (type: PermissionType) => {
                 case 'location permission':
                     const locationStatus = await requestForegroundPermissionsAsync();
                     setStatus(locationStatus.status);
-                    setIsEnabled(locationStatus.status === PermissionStatus.GRANTED);
+                    userViewModel.setLocationPermission(locationStatus.status === PermissionStatus.GRANTED);
                     if (locationStatus.status === PermissionStatus.GRANTED) {
                         const { coords } = await getCurrentPositionAsync({});
                         setLocation(coords);
@@ -92,17 +101,17 @@ export const usePermissionManager = (type: PermissionType) => {
                         try {
                             await navigator.mediaDevices.getUserMedia({ video: true });
                             setStatus('granted');
-                            setIsEnabled(true);
+                            userViewModel.setCameraPermission(true);
                         } catch (error) {
                             setStatus('denied');
-                            setIsEnabled(false);
+                            userViewModel.setCameraPermission(false);
                         }
                     } else {
                         if (Platform.OS === 'ios' || Platform.OS === 'android') {
 
                             const cameraStatus = await Camera.requestCameraPermissionsAsync();
                             setStatus(cameraStatus.status);
-                            setIsEnabled(cameraStatus.status === 'granted');
+                            userViewModel.setCameraPermission(cameraStatus.status === 'granted');
                             break;
                         }
                     }
@@ -112,7 +121,7 @@ export const usePermissionManager = (type: PermissionType) => {
                     if (Platform.OS !== 'web') {
                         const mediaStatus = await MediaLibrary.requestPermissionsAsync();
                         setStatus(mediaStatus.status);
-                        setIsEnabled(mediaStatus.status === 'granted');
+                        userViewModel.setMediaPermission(mediaStatus.status === 'granted');
                     }
 
                     break;
@@ -127,5 +136,5 @@ export const usePermissionManager = (type: PermissionType) => {
         }
     };
 
-    return { status, isEnabled, location, toggleSwitch };
+    return { status, isEnabled, location, toggleSwitch, checkPermissionStatus };
 };

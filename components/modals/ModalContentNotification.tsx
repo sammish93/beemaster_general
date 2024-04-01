@@ -18,7 +18,7 @@ import { NotificationType } from "@/constants/Notifications";
 interface ModalContentProps {
   onClose: () => void;
   onSave: (newValue: string) => void;
-  parameterName: NotificationType;
+  parameterName: NotificationType | undefined;
 }
 
 const ModalContent = (props: ModalContentProps) => {

@@ -50,6 +50,10 @@ class UserViewModel {
     @observable i18n;
     @observable userId = "";
     @observable theme = "light";
+    // Permissions.
+    @observable isLocationEnabled = false;
+    @observable isCameraEnabled = false;
+    @observable isMediaEnabled = false;
     // Allows the user to customise the display of measurements based on their preference.
     @observable temperaturePreference: TemperatureMeasurement = TemperatureMeasurement.Celsius;
     @observable precipitationPreference: PrecipitationMeasurement = PrecipitationMeasurement.Millimeters;
@@ -94,6 +98,30 @@ class UserViewModel {
     @action public setTheme = (theme: string): void => {
         // TODO DB - Update user's theme preference in DB.
         this.theme = theme;
+    }
+
+    @action public setLocationPermission = (val: boolean): void => {
+        this.isLocationEnabled = val;
+    }
+
+    @action public getLocationPermission = (): boolean => {
+        return this.isLocationEnabled;
+    }
+
+    @action public setCameraPermission = (val: boolean): void => {
+        this.isCameraEnabled = val;
+    }
+
+    @action public getCameraPermission = (): boolean => {
+        return this.isCameraEnabled;
+    }
+
+    @action public setMediaPermission = (val: boolean): void => {
+        this.isMediaEnabled = val;
+    }
+
+    @action public getMediaPermission = (): boolean => {
+        return this.isMediaEnabled;
     }
 
     // Functions to allow the user to set their measurement preferences.
