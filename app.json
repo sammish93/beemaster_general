@@ -15,6 +15,9 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": ""
+      },
       "bundleIdentifier": "no.hiof.beemastergeneral.ios",
       "infoPlist": {
         "NSBluetoothAlwaysUsageDescription": "Allow app to run Bluetooth?",
@@ -31,6 +34,11 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "monochromeImage": "./assets/images/adaptive-icon-monochrome.png",
         "backgroundColor": "#ffd669"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDzmD3Dx4ZW8axAX-uzlwfFpEOEJzvVLDQ"
+        }
       },
       "googleServicesFile": "./google-services.json",
       "package": "no.hiof.beemastergeneral",
