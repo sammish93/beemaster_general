@@ -6,6 +6,8 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { BottomModal, OverlayModal } from "./Modals";
 import { VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
+import { isValidString } from "@/domain/validation/stringValidation";
+import { hiveViewModel } from "@/viewModels/HiveViewModel";
 
 interface AddFilterModalProps {
   isOverlayModalVisible: boolean;
@@ -55,11 +57,37 @@ const ModalContent = (props: ModalContentProps) => {
   const theme = useTheme();
   const { userViewModel } = useContext(MobXProviderContext);
   const [newFilterName, setNewFilterName] = useState("");
+  const [isFilterValid, setIsFilterValid] = useState<boolean>();
+  const [filterErrorMessage, setFilterErrorMessage] = useState<string>("");
+
+  const handleModifyFilter = (input: string) => {
+    setNewFilterName(input);
+
+    if (isValidString(input, 1, 64)) {
+      setIsFilterValid(true);
+    } else {
+      setIsFilterValid(false);
+    }
+  };
 
   const handleAddNewFilter = () => {
-    //TODO Validation
-    props.onAddFilter(newFilterName);
-    resetFilterName();
+    if (isFilterValid) {
+      const isFilterExist = hiveViewModel.isFilterExists(newFilterName);
+
+      if (!isFilterExist) {
+        setFilterErrorMessage("");
+        props.onAddFilter(newFilterName);
+        resetFilterName();
+      } else {
+        setFilterErrorMessage(
+          userViewModel.i18n.t("filter_already_exists", {
+            filterName: newFilterName,
+          })
+        );
+      }
+    } else {
+      setFilterErrorMessage(userViewModel.i18n.t("invalid filter name"));
+    }
   };
 
   const resetFilterName = () => setNewFilterName("");
@@ -84,12 +112,37 @@ const ModalContent = (props: ModalContentProps) => {
       </View>
       <View>
         <TextInput
-          label="Filter Name"
+          label={
+            newFilterName.length > 64
+              ? userViewModel.i18n.t("too many characters")
+              : userViewModel.i18n.t("filter name") +
+                (newFilterName.length >= 32
+                  ? userViewModel.i18n.t("characters_remaining", {
+                      character: 64 - newFilterName.length,
+                    })
+                  : "")
+          }
           value={newFilterName}
-          onChangeText={setNewFilterName}
+          error={!isFilterValid}
+          onChangeText={(input) => handleModifyFilter(input)}
         />
+
+        {filterErrorMessage ? (
+          <>
+            <VerticalSpacer size={8} />
+            <Text
+              style={{
+                ...theme.fonts.bodyLarge,
+                flex: 1,
+                textAlign: "center",
+                color: theme.colors.error,
+              }}
+            >
+              {filterErrorMessage}
+            </Text>
+          </>
+        ) : null}
         <VerticalSpacer size={12} />
-        {/*//TODO Add more functionality to add filter. */}
         <Button mode="contained" onPress={handleAddNewFilter}>
           {userViewModel.i18n.t("add filter")}
         </Button>

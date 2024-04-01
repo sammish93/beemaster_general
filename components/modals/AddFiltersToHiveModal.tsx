@@ -6,6 +6,8 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { BottomModal, OverlayModal } from "./Modals";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
+import { toastCrossPlatform } from "../ToastCustom";
+import Toast from "react-native-toast-message";
 
 interface AddFiltersToHiveModalProps {
   isOverlayModalVisible: boolean;
@@ -53,6 +55,15 @@ const ModalContent = (props: ModalContentProps) => {
   const handleAddNewFilters = () => {
     selectedHive.filters = filterList;
     hiveViewModel.updateHive(selectedHive);
+
+    Toast.show(
+      toastCrossPlatform({
+        title: "Success",
+        text: `Modified the filters of the hive '${selectedHive.name}'.`,
+        type: "success",
+      })
+    );
+
     props.onClose();
   };
 

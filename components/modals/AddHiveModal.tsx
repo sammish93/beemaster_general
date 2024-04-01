@@ -6,6 +6,8 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { BottomModal, OverlayModal } from "./Modals";
 import { VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "../ToastCustom";
 
 interface AddHiveModalProps {
   isOverlayModalVisible: boolean;
@@ -53,6 +55,15 @@ const ModalContent = (props: ModalContentProps) => {
   const handleAddNewHive = () => {
     //TODO Validation and toast.
     props.onAddHive(newHiveName);
+
+    Toast.show(
+      toastCrossPlatform({
+        title: "Success",
+        text: `Added '${newHiveName}' as a new hive.`,
+        type: "success",
+      })
+    );
+
     resetHiveName();
   };
 

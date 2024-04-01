@@ -17,6 +17,7 @@ import Toast from "react-native-toast-message";
 import { toastConfig } from "@/components/ToastCustom";
 import { Portal } from "react-native-paper";
 import notificationViewModel from "@/viewModels/NotificationViewModel";
+import NetInfo from "@react-native-community/netinfo";
 
 export {
   // Catch any errors thrown by the Layout component.

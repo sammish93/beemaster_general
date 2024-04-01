@@ -75,7 +75,6 @@ const HiveScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
   const selectedHive = hiveViewModel.getSelectedHive();
 
-  const [data, setData] = useState("");
   const [notes, setNotes] = useState<HiveNote[]>([]);
   const [forecast, setForecast] = useState<WeeklySimpleForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
@@ -162,17 +161,8 @@ const HiveScreen = (params: HiveScreenProps) => {
           userViewModel.windSpeedPreference,
           true
         );
-
-        const rainfall = calculateDailyRainfall(data, getForecastDateFormat(2));
-
-        //setData(
-        //  `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
-        //);
-
-        setData("Retrieved forecast!");
         setForecast(weeklySimplyForecast);
       } catch (error) {
-        setData("Error retrieving data");
         Toast.show(
           toastCrossPlatform({
             title: "Error",
@@ -207,7 +197,7 @@ const HiveScreen = (params: HiveScreenProps) => {
       <TopBar
         navigation={navigation}
         canOpenDrawer={!!navigation.openDrawer}
-        title={`${userViewModel.i18n.t("hive")} ${hiveId}`}
+        title={selectedHive.name}
         trailingIcons={[
           <TouchableOpacity onPress={handleOpenAddNoteToHiveModal}>
             <MaterialCommunityIcons
@@ -237,15 +227,13 @@ const HiveScreen = (params: HiveScreenProps) => {
                 <View style={{ flex: 1 }}>
                   {forecast ? (
                     <>
-                      <Text style={theme.fonts.titleLarge}>
+                      <Text
+                        style={{
+                          ...theme.fonts.headlineSmall,
+                          textAlign: "center",
+                        }}
+                      >
                         {userViewModel.i18n.t("forecast")}
-                      </Text>
-                      <Text style={theme.fonts.bodyLarge}>
-                        Hive ID: {hiveId}
-                      </Text>
-                      <Text style={theme.fonts.bodySmall}>{data}</Text>
-                      <Text style={theme.fonts.bodySmall}>
-                        {selectedHive.name}
                       </Text>
                       <VerticalSpacer size={8} />
                       <ForecastSummary
@@ -270,7 +258,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                   Add (if sensor exists) sections for showing charts.
                   */}
                   <VerticalSpacer size={8} />
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("weight")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -281,7 +274,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                     onClick={handleOpenHistoricalSensorModal}
                   />
                   <VerticalSpacer size={8} />
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("temperature")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -292,7 +290,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                     onClick={handleOpenHistoricalSensorModal}
                   />
                   <VerticalSpacer size={8} />
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("humidity")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -303,7 +306,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                     onClick={handleOpenHistoricalSensorModal}
                   />
                   <VerticalSpacer size={8} />
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("bee count")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -315,7 +323,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                 </View>
                 <HorizontalSpacer size={20} />
                 <View style={{ flex: 1 }}>
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("location")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -337,7 +350,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                     </Text>
                   </View>
                   <VerticalSpacer size={8} />
-                  <Text style={theme.fonts.titleLarge}>
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
                     {userViewModel.i18n.t("notes")}
                   </Text>
                   <VerticalSpacer size={8} />
@@ -347,13 +365,25 @@ const HiveScreen = (params: HiveScreenProps) => {
                       sortNotes={sortNotes}
                       onPress={() => handleOpenModifyNoteModal()}
                     />
-                  ) : null}
+                  ) : (
+                    <Text style={theme.fonts.bodyLarge}>
+                      {userViewModel.i18n.t("to create a new note")}
+                    </Text>
+                  )}
                 </View>
               </View>
             ) : (
               <View>
                 {forecast ? (
                   <>
+                    <Text
+                      style={{
+                        ...theme.fonts.headlineSmall,
+                        textAlign: "center",
+                      }}
+                    >
+                      {userViewModel.i18n.t("forecast")}
+                    </Text>
                     <VerticalSpacer size={8} />
                     <ForecastSummary
                       forecast={forecast}
@@ -373,7 +403,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                 ) : null}
                 {/* TODO DB - Fetch sensor data from db and if tests render components if hive sensor exists */}
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
+                >
                   {userViewModel.i18n.t("weight")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -384,7 +416,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                   onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
+                >
                   {userViewModel.i18n.t("temperature")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -395,7 +429,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                   onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
+                >
                   {userViewModel.i18n.t("humidity")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -406,7 +442,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                   onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
+                >
                   {userViewModel.i18n.t("bee count")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -416,7 +454,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                   onClick={handleOpenHistoricalSensorModal}
                 />
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
+                >
                   {userViewModel.i18n.t("location")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -437,7 +477,12 @@ const HiveScreen = (params: HiveScreenProps) => {
                   </Text>
                 </View>
                 <VerticalSpacer size={8} />
-                <Text style={theme.fonts.titleLarge}>
+                <Text
+                  style={{
+                    ...theme.fonts.headlineSmall,
+                    textAlign: "center",
+                  }}
+                >
                   {userViewModel.i18n.t("notes")}
                 </Text>
                 <VerticalSpacer size={8} />
@@ -447,7 +492,11 @@ const HiveScreen = (params: HiveScreenProps) => {
                     sortNotes={sortNotes}
                     onPress={() => handleOpenModifyNoteModal()}
                   />
-                ) : null}
+                ) : (
+                  <Text style={theme.fonts.bodyLarge}>
+                    {userViewModel.i18n.t("to create a new note")}
+                  </Text>
+                )}
               </View>
             )}
           </View>

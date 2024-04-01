@@ -115,6 +115,10 @@ class HiveViewModel {
         return this.filters.length;
     }
 
+    @action isFilterExists(filter: string) {
+        return this.filters.includes(filter);
+    }
+
     // This function is just used for when a hive card or notification is clicked on to navigate the 
     // user to the specific hive.
     @action addSelectedHive(hive: HiveModel) {
