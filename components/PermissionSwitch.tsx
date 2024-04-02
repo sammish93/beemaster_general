@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View, Platform } from "react-native";
 import { Switch, useTheme } from "react-native-paper";
 import { MobXProviderContext } from "mobx-react";
@@ -16,8 +16,26 @@ interface PermissionSwitchProps {
 
 const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
   const paperTheme = useTheme();
-  const { status, location, toggleSwitch } = usePermissionManager(type);
+  const { status, isEnabled, location, toggleSwitch } =
+    usePermissionManager(type);
   const { userViewModel } = useContext(MobXProviderContext);
+  const [permissionValue, setPermissionValue] = useState<boolean>(false);
+
+  useEffect(() => {
+    switch (type) {
+      case "location permission":
+        setPermissionValue(userViewModel.getLocationPermission());
+        break;
+      case "camera permission":
+        setPermissionValue(userViewModel.getCameraPermission());
+        break;
+      case "media permission":
+        setPermissionValue(userViewModel.getMediaPermission());
+        break;
+      default:
+        setPermissionValue(false);
+    }
+  }, [userViewModel]);
 
   const translateType = (type: PermissionType): string => {
     switch (type) {
@@ -48,18 +66,7 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
         >
           {translateType(type)}
         </Text>
-        <Switch
-          value={
-            type === "location permission"
-              ? userViewModel.getLocationPermission()
-              : type === "camera permission"
-              ? userViewModel.getCameraPermission()
-              : type === "media permission"
-              ? userViewModel.getMediaPermission()
-              : null
-          }
-          onValueChange={toggleSwitch}
-        />
+        <Switch value={isEnabled} onValueChange={toggleSwitch} />
       </View>
       <VerticalSpacer size={6} />
       {type === "location permission" && location && (

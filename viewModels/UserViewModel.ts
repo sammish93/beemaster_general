@@ -11,6 +11,7 @@ import { signOut, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPasswor
 import { WEB_CLIENT_ID } from '@env';
 import { NotificationPreference, NotificationType } from "@/constants/Notifications";
 import { notificationPreferences } from "@/data/notificationData";
+import { LocationObject, LocationObjectCoords } from "expo-location";
 class UserViewModel {
 
     constructor() {

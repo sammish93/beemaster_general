@@ -1,10 +1,12 @@
 // PermissionManager.js
 import { useState, useEffect, useContext } from 'react';
 import { Platform } from 'react-native';
-import { requestForegroundPermissionsAsync, PermissionStatus, getCurrentPositionAsync, LocationObject } from 'expo-location';
+import { requestForegroundPermissionsAsync, PermissionStatus, getCurrentPositionAsync, LocationObject, getForegroundPermissionsAsync } from 'expo-location';
 import * as MediaLibrary from 'expo-media-library';
 import * as Camera from 'expo-camera';
 import { MobXProviderContext } from "mobx-react";
+import Toast from 'react-native-toast-message';
+import { toastCrossPlatform } from '@/components/ToastCustom';
 
 type PermissionType = 'location permission' | 'camera permission' | 'media permission';
 
@@ -19,9 +21,8 @@ export const usePermissionManager = (type: PermissionType) => {
     ? userViewModel.getCameraPermission()
     : type === "media permission"
     ? userViewModel.getMediaPermission()
-    : null);
+    : false);
     const [location, setLocation] = useState<LocationState>(null);
-    
 
     /*
     useEffect(() => {
@@ -37,27 +38,37 @@ export const usePermissionManager = (type: PermissionType) => {
         switch (type) {
             case 'location permission':
                 if (Platform.OS === 'ios' || Platform.OS === 'android' || Platform.OS === 'web') {
-                    const locationStatus = await requestForegroundPermissionsAsync();
+                    let locationStatus = await getForegroundPermissionsAsync();
                     setStatus(locationStatus.status);
-                    userViewModel.setLocationPermission(locationStatus.status === PermissionStatus.GRANTED)
-                    if (locationStatus.status === PermissionStatus.GRANTED) {
+                    if (locationStatus.status != PermissionStatus.GRANTED) {
+                        locationStatus = await requestForegroundPermissionsAsync();
+                        setStatus(locationStatus.status);
+                        userViewModel.setLocationPermission(locationStatus.status === PermissionStatus.GRANTED)
+                        setIsEnabled(locationStatus.status === PermissionStatus.GRANTED)
+                    }
+
+                    if (locationStatus.status === PermissionStatus.GRANTED && userViewModel.getLocationPermission() === true) {
                         const { coords } = await getCurrentPositionAsync({});
-                        setLocation(coords);
+                        setLocation(coords)
                     }
                 }
                 break;
             case 'camera permission':
+                // TODO Maybe adjust it to be similar to location permissions. I haven't manually tested this block.
                 if (Platform.OS === 'web') {
                     navigator.permissions.query({ name: 'camera' as PermissionName }).then(result => {
                         if (result.state === 'granted') {
                             setStatus('granted');
                             userViewModel.setCameraPermission(true)
+                            setIsEnabled(true)
                         } else if (result.state === 'denied') {
                             setStatus('denied');
                             userViewModel.setCameraPermission(false)
+                            setIsEnabled(false)
                         } else {
                             setStatus('undetermined');
                             userViewModel.setCameraPermission(false)
+                            setIsEnabled(false)
                         }
                     });
                 } else {
@@ -66,16 +77,19 @@ export const usePermissionManager = (type: PermissionType) => {
                         const cameraStatus = await Camera.requestCameraPermissionsAsync();
                         setStatus(cameraStatus.status);
                         userViewModel.setCameraPermission(cameraStatus.status === 'granted');
+                        setIsEnabled(cameraStatus.status === 'granted')
                         break;
                     }
                 }
 
 
             case 'media permission':   //Not compatible with web
+                // TODO Maybe adjust it to be similar to location permissions. I haven't manually tested this block.
                 if (Platform.OS !== 'web') {
                     const mediaStatus = await MediaLibrary.requestPermissionsAsync();
                     setStatus(mediaStatus.status);
                     userViewModel.setMediaPermission(mediaStatus.status === 'granted');
+                    setIsEnabled(mediaStatus.status === 'granted')
                 }
                 break;
             default:
@@ -83,15 +97,31 @@ export const usePermissionManager = (type: PermissionType) => {
         }
     };
 
-
     const toggleSwitch = async () => {
         if (!isEnabled) {
             switch (type) {
                 case 'location permission':
-                    const locationStatus = await requestForegroundPermissionsAsync();
+                    let locationStatus = await getForegroundPermissionsAsync();
                     setStatus(locationStatus.status);
+                    if (locationStatus.status != PermissionStatus.GRANTED) {
+                        locationStatus = await requestForegroundPermissionsAsync();
+                        setStatus(locationStatus.status);
+                    } 
+                    
+                    if (locationStatus.canAskAgain === false) {
+                        Toast.show(
+                            toastCrossPlatform({
+                              title: "Oops!",
+                              text: `You need to manually change permissions in your settings.`,
+                              type: "info",
+                            })
+                          );
+                    }
+                    
                     userViewModel.setLocationPermission(locationStatus.status === PermissionStatus.GRANTED);
-                    if (locationStatus.status === PermissionStatus.GRANTED) {
+                    setIsEnabled(locationStatus.status === PermissionStatus.GRANTED)
+
+                    if (locationStatus.status === PermissionStatus.GRANTED  && userViewModel.getLocationPermission() === true) {
                         const { coords } = await getCurrentPositionAsync({});
                         setLocation(coords);
                     }
@@ -102,16 +132,34 @@ export const usePermissionManager = (type: PermissionType) => {
                             await navigator.mediaDevices.getUserMedia({ video: true });
                             setStatus('granted');
                             userViewModel.setCameraPermission(true);
+                            setIsEnabled(true)
                         } catch (error) {
                             setStatus('denied');
                             userViewModel.setCameraPermission(false);
+                            setIsEnabled(false)
                         }
                     } else {
                         if (Platform.OS === 'ios' || Platform.OS === 'android') {
-
-                            const cameraStatus = await Camera.requestCameraPermissionsAsync();
+                            let cameraStatus = await Camera.getCameraPermissionsAsync();
                             setStatus(cameraStatus.status);
+
+                            if (cameraStatus.status != PermissionStatus.GRANTED) {
+                                cameraStatus = await Camera.requestCameraPermissionsAsync();
+                            setStatus(cameraStatus.status);
+                            } 
+                            
+                            if (cameraStatus.canAskAgain === false) {
+                                Toast.show(
+                                    toastCrossPlatform({
+                                      title: "Oops!",
+                                      text: `You need to manually change permissions in your settings.`,
+                                      type: "info",
+                                    })
+                                  );
+                            }
+
                             userViewModel.setCameraPermission(cameraStatus.status === 'granted');
+                            setIsEnabled(cameraStatus.status === 'granted')
                             break;
                         }
                     }
@@ -119,9 +167,27 @@ export const usePermissionManager = (type: PermissionType) => {
                     break;
                 case 'media permission':
                     if (Platform.OS !== 'web') {
-                        const mediaStatus = await MediaLibrary.requestPermissionsAsync();
+                        let mediaStatus = await MediaLibrary.getPermissionsAsync();
                         setStatus(mediaStatus.status);
-                        userViewModel.setMediaPermission(mediaStatus.status === 'granted');
+
+                        if (mediaStatus.status != PermissionStatus.GRANTED) {
+                            mediaStatus = await MediaLibrary.requestPermissionsAsync();
+                        setStatus(mediaStatus.status);
+                        } 
+                        
+                        if (mediaStatus.canAskAgain === false) {
+                            Toast.show(
+                                toastCrossPlatform({
+                                    title: "Oops!",
+                                    text: `You need to manually change permissions in your settings.`,
+                                    type: "info",
+                                })
+                                );
+                        }
+
+                        userViewModel.setCameraPermission(mediaStatus.status === 'granted');
+                        setIsEnabled(mediaStatus.status === 'granted')
+                        break;
                     }
 
                     break;
@@ -131,6 +197,13 @@ export const usePermissionManager = (type: PermissionType) => {
         } else {
             //setStatus('denied');
             setStatus(undefined);
+            if (type === 'location permission') {
+                userViewModel.setLocationPermission(false)
+            } else if (type === 'media permission') {
+                userViewModel.setMediaPermission(false)
+            } else if (type === 'camera permission') {
+                userViewModel.setCameraPermission(false)
+            }
             setIsEnabled(false);
             setLocation(null);
         }

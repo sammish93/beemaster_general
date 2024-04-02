@@ -1,6 +1,6 @@
 import { Text, useTheme } from "react-native-paper";
 
-const Map = () => {
+const MapRelocate = () => {
   const theme = useTheme();
 
   return (
@@ -15,4 +15,4 @@ const Map = () => {
   );
 };
 
-export default Map;
+export default MapRelocate;

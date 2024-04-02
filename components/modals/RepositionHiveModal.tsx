@@ -50,16 +50,22 @@ const ModalContent = (props: ModalContentProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const selectedHive = hiveViewModel.getSelectedHive();
-
-  const { status, location, checkPermissionStatus } = usePermissionManager(
-    "location permission"
+  const [isLocation, setLocation] = useState(
+    userViewModel.getLocationPermission()
   );
 
+  const { status, location, isEnabled, checkPermissionStatus } =
+    usePermissionManager("location permission");
+
   useEffect(() => {
-    if (!userViewModel.getLocationPermission()) {
-      checkPermissionStatus();
-    }
-  });
+    checkPermissionStatus();
+
+    console.log(
+      "permission - " + userViewModel.getLocationPermission().toString()
+    );
+    console.log("enabled - " + isEnabled.toString());
+    console.log("coords - " + location?.longitude);
+  }, [userViewModel.getLocationPermission()]);
 
   const handleRepositionHive = () => {
     // TODO - Implement map and allow relocation.
@@ -89,19 +95,13 @@ const ModalContent = (props: ModalContentProps) => {
         {!userViewModel.getLocationPermission() ? (
           <MapRelocate lat={59.9139} lng={10.7522} height={200} />
         ) : null}
-        {userViewModel.getLocationPermission() &&
-        location?.latitude &&
-        location?.longitude ? (
+        {userViewModel.getLocationPermission() && location != null ? (
           <MapRelocate
-            lat={location?.latitude}
-            lng={location?.longitude}
+            lat={location.latitude}
+            lng={location.longitude}
             height={200}
           />
         ) : null}
-        <Text>
-          {location?.latitude} {location?.longitude}
-        </Text>
-
         <VerticalSpacer size={8} />
         <Button mode="contained" onPress={handleRepositionHive}>
           {userViewModel.i18n.t("update location")}
