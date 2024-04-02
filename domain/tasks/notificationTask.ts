@@ -21,25 +21,27 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
         // Return a result to indicate completion.
         return BackgroundFetch.BackgroundFetchResult.NewData;
     } catch (error) {
-        console.error(`Error in background task: ${BG_TASK_NAME}: ${error}`);
+        console.log(`Error in background task: ${BG_TASK_NAME}: ${error}`);
         return BackgroundFetch.BackgroundFetchResult.Failed;
     }
 });
 
 export const startBackgroundTask = async () => {
     try {
-        await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
-            minimumInterval: 60 * 15, 
+        const result = await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
+            minimumInterval: 5, 
             stopOnTerminate: false, 
             startOnBoot: true, 
         });
+
+        console.log(`Task was registered: ${result}`);
 
         const tasks = await TaskManager.getRegisteredTasksAsync();
         tasks.forEach(task => {
             console.log(`Task name: ${task.taskName}, task type: ${task.taskType}`);
         })
     } catch (error) {
-        console.error(`Error in registering background task: ${error}`);
+        console.log(`Error in registering background task: ${error}`);
     }
 };
 
