@@ -225,7 +225,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
                 style={{
                   flex:
                     Dimensions.get("window").width <= ScreenWidth.Compact
-                      ? 1
+                      ? undefined
                       : 3,
                   backgroundColor: theme.colors.primaryContainer,
                   width: "100%",
@@ -240,7 +240,14 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
                 icon="pencil"
                 mode="contained"
                 onPress={() => handleUpdateName(newHiveName)}
-                style={{ flex: 1, width: "100%", justifyContent: "center" }}
+                style={{
+                  flex:
+                    Dimensions.get("window").width <= ScreenWidth.Compact
+                      ? undefined
+                      : 1,
+                  width: "100%",
+                  justifyContent: "center",
+                }}
               >
                 {userViewModel.i18n.t("rename")}
               </Button>
