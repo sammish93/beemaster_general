@@ -21,6 +21,7 @@ import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import { useNetInfo } from "@react-native-community/netinfo";
 import LoadingScreen from "@/components/LoadingScreen";
+import { NotificationType } from "@/constants/Notifications";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -53,6 +54,16 @@ const HomeScreen = () => {
       latLng: { lat: lat, lng: lng },
       filters: [],
       notes: [],
+      preferences: {
+        [NotificationType.ConsiderFeeding]: true,
+        [NotificationType.ConsiderExpanding]: true,
+        [NotificationType.HoneyHarvest]: true,
+        [NotificationType.Maintenance]: true,
+        [NotificationType.Weather]: true,
+        [NotificationType.CheckHive]: true,
+        [NotificationType.PossibleSwarm]: true,
+        [NotificationType.CustomReminder]: true,
+      },
     });
 
     handleCloseAddHiveModal();
