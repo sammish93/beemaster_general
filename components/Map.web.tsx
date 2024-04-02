@@ -1,9 +1,10 @@
-import { Platform } from "react-native";
-import MapView from "@preflower/react-native-web-maps";
+import { MobXProviderContext } from "mobx-react";
+import { useContext } from "react";
 import { Text, useTheme } from "react-native-paper";
 
 const Map = () => {
   const theme = useTheme();
+  const { userViewModel } = useContext(MobXProviderContext);
 
   return (
     <Text
@@ -12,7 +13,7 @@ const Map = () => {
         textAlign: "center",
       }}
     >
-      Maps only available on mobile devices.
+      {userViewModel.i18n.t("maps are only available")}
     </Text>
   );
 };

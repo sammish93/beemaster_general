@@ -189,5 +189,12 @@
   "too many characters": "For mange tegn",
   "characters_remaining": " - %{character} tegn gjenstår.",
   "filter name": "Filternavn",
-  "additional functionality": "Tilleggsfunksjonalitet"
+  "additional functionality": "Tilleggsfunksjonalitet",
+  "reset hive position": "Nullstill bikubeposisjon",
+  "hive location": "Kube plassering",
+  "your hive is located here": "Bikuben din er plassert her.",
+  "your hive will be positioned here": "Bikuben din vil bli plassert her.",
+  "maps are only available": "Kartet er bare tilgjengelig på mobile enheter.",
+  "use current location": "Bruk nåværende lokasjon",
+  "use default location": "Bruk standardlokasjon"
 }

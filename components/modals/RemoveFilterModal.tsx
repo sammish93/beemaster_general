@@ -84,9 +84,9 @@ const ModalContent = (props: ModalContentProps) => {
       </View>
       <View>
         {hiveViewModel.filters.map((filter: string) => (
-          <>
+          <View key={`${filter}-view-1`}>
             <View
-              key={`${filter}-view`}
+              key={`${filter}-view-2`}
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -108,7 +108,7 @@ const ModalContent = (props: ModalContentProps) => {
               </Button>
             </View>
             <VerticalSpacer key={`${filter}-spacer`} size={8} />
-          </>
+          </View>
         ))}
       </View>
     </>
