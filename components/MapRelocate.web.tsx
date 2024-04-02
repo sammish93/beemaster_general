@@ -63,8 +63,8 @@ const MapRelocate = ({
         style={{
           flexDirection:
             Dimensions.get("window").width <= ScreenWidth.Compact
-              ? "row"
-              : "column",
+              ? "column"
+              : "row",
         }}
       >
         {location?.latitude != null && location?.longitude != null ? (
@@ -73,9 +73,9 @@ const MapRelocate = ({
               {userViewModel.i18n.t("use current location")}
             </Button>
             {Dimensions.get("window").width <= ScreenWidth.Compact ? (
-              <HorizontalSpacer size={8} />
-            ) : (
               <VerticalSpacer size={8} />
+            ) : (
+              <HorizontalSpacer size={8} />
             )}
           </>
         ) : null}
