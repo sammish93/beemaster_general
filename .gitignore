@@ -104,3 +104,6 @@ metro-config.js
 
 ios/beemastergeneral/GoogleService-Info.plist
 ./GoogleService-Info.plist
+
+/android/
+/ios/

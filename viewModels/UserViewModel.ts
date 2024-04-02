@@ -143,6 +143,7 @@ class UserViewModel {
         // TODO DB - Update user's theme preference in DB.
         this.theme = theme;
     }
+
     // Functions to allow the user to set their measurement preferences.
     @action public setTemperaturePreference = (prefence: TemperatureMeasurement): void => {
         // TODO DB - Update user's temperature preference in DB.

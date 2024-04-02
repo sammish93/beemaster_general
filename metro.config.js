@@ -7,4 +7,9 @@ const config = getDefaultConfig(__dirname, {
 });
 config.resolver.sourceExts.push("cjs");
 
+config.resolver.extraNodeModules = {
+  ...config.resolver.extraNodeModules,
+  "react-native-maps": "@teovilla/react-native-web-maps",
+};
+
 module.exports = config;
