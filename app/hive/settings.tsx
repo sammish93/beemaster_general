@@ -171,7 +171,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
         })
       );
     } else {
-      setNameErrorMessage(userViewModel.i18n.t("invalid name"));
+      setNameErrorMessage(userViewModel.i18n.t("invalid hive name"));
     }
   };
 
