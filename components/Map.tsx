@@ -30,6 +30,8 @@ const Map = ({ lat, lng, height = "100%", width = "100%" }: MapProps) => {
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
+        showsMyLocationButton={true}
+        showsUserLocation={true}
       >
         <Marker
           coordinate={{ latitude: lat, longitude: lng }}

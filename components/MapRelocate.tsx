@@ -46,6 +46,8 @@ const MapRelocate = ({
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
+        showsMyLocationButton={true}
+        showsUserLocation={true}
         onPress={handlePress}
       >
         {newLocation?.latitude != null && newLocation?.longitude != null ? (
