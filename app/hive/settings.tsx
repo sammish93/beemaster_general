@@ -65,19 +65,11 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   }, []);
 
   const handleOpenRepositionHiveModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleRepositionHiveModalSheetPressOpen();
-    } else {
-      setRepositionHiveModalVisible(true);
-    }
+    setRepositionHiveModalVisible(true);
   };
 
   const handleCloseRepositionHiveModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleRepositionHiveModalSheetPressClose();
-    } else {
-      setRepositionHiveModalVisible(false);
-    }
+    setRepositionHiveModalVisible(false);
   };
 
   const handleAddFiltersToHiveModalSheetPressOpen = useCallback(() => {

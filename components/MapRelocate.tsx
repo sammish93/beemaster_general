@@ -1,12 +1,14 @@
 import { usePermissionManager } from "@/domain/permissionManager";
 import { MobXProviderContext } from "mobx-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DimensionValue, Platform, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { LatLng, Marker } from "react-native-maps";
 
 interface MapRelocateProps {
   lat: number;
   lng: number;
+  onMapPress: (coordinate: LatLng) => void;
+  newLocation: LatLng | undefined;
   height?: DimensionValue;
   width?: DimensionValue;
 }
@@ -15,9 +17,15 @@ interface MapRelocateProps {
 const MapRelocate = ({
   lat,
   lng,
+  onMapPress,
+  newLocation,
   height = "100%",
   width = "100%",
 }: MapRelocateProps) => {
+  const handlePress = (e) => {
+    onMapPress(e.nativeEvent.coordinate);
+  };
+
   return (
     <View
       style={{
@@ -38,7 +46,19 @@ const MapRelocate = ({
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
-      ></MapView>
+        onPress={handlePress}
+      >
+        {newLocation?.latitude != null && newLocation?.longitude != null ? (
+          <Marker
+            coordinate={{
+              latitude: newLocation?.latitude,
+              longitude: newLocation?.longitude,
+            }}
+            title={"Hive Location"}
+            description={"Your hive will be positioned here."}
+          />
+        ) : null}
+      </MapView>
     </View>
   );
 };

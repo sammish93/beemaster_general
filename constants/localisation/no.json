@@ -189,5 +189,6 @@
   "too many characters": "For mange tegn",
   "characters_remaining": " - %{character} tegn gjenstår.",
   "filter name": "Filternavn",
-  "additional functionality": "Tilleggsfunksjonalitet"
+  "additional functionality": "Tilleggsfunksjonalitet",
+  "reset hive position": "Nullstill bikubeposisjon"
 }

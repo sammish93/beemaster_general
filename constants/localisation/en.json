@@ -189,5 +189,6 @@
   "too many characters": "Too many characters",
   "characters_remaining": " - %{character} character(s) remaining.",
   "filter name": "Filter name",
-  "additional functionality": "Additional functionality"
+  "additional functionality": "Additional functionality",
+  "reset hive position": "Reset hive position"
 }
