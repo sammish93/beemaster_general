@@ -189,5 +189,12 @@
   "too many characters": "Too many characters",
   "characters_remaining": " - %{character} character(s) remaining.",
   "filter name": "Filter name",
-  "additional functionality": "Additional functionality"
+  "additional functionality": "Additional functionality",
+  "reset hive position": "Reset hive position",
+  "hive location": "Hive location",
+  "your hive is located here": "Your hive is located here.",
+  "your hive will be positioned here": "Your hive will be positioned here.",
+  "maps are only available": "Maps are only available on mobile devices.",
+  "use current location": "Use current location",
+  "use default location": "Use default location"
 }

@@ -10,7 +10,7 @@ interface NotificationModalProps {
   bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
   onClose: () => void;
   onSave: (newValue: string) => void;
-  parameterName: NotificationType;
+  parameterName: NotificationType | undefined;
 }
 
 const NotificationModal = (props: NotificationModalProps) => {
@@ -20,23 +20,13 @@ const NotificationModal = (props: NotificationModalProps) => {
 
   return (
     <>
-      {Platform.OS === "android" || Platform.OS === "ios" ? (
-        <BottomModal
-          isOverlayModalVisible={props.isOverlayModalVisible}
-          bottomSheetModalRef={props.bottomSheetModalRef}
-          onClose={props.onClose}
-        >
-          <ModalContent {...props} />
-        </BottomModal>
-      ) : (
-        <OverlayModal
-          isOverlayModalVisible={props.isOverlayModalVisible}
-          bottomSheetModalRef={props.bottomSheetModalRef}
-          onClose={props.onClose}
-        >
-          <ModalContent {...props} />
-        </OverlayModal>
-      )}
+      <OverlayModal
+        isOverlayModalVisible={props.isOverlayModalVisible}
+        bottomSheetModalRef={props.bottomSheetModalRef}
+        onClose={props.onClose}
+      >
+        <ModalContent {...props} />
+      </OverlayModal>
     </>
   );
 };

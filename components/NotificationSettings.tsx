@@ -23,19 +23,12 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
 
   const handleOpenModal = (notificationType: NotificationType) => {
     setSelectedNotificationType(notificationType);
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      bottomSheetAddHiveModalRef.current?.present();
-    } else {
-      setAddHiveModalVisible(true);
-    }
+
+    setAddHiveModalVisible(true);
   };
 
   const handleCloseModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      bottomSheetAddHiveModalRef.current?.dismiss();
-    } else {
-      setAddHiveModalVisible(false);
-    }
+    setAddHiveModalVisible(false);
   };
 
   return (
@@ -47,7 +40,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
         <HorizontalSpacer size={8} />
         <Button
           icon={"archive-edit"}
-          contentStyle={{ height: 24 }}
+          //contentStyle={{ height: 24 }}
           mode="contained"
           onPress={() => handleOpenModal(NotificationType.Weather)}
         >
@@ -67,7 +60,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
         <HorizontalSpacer size={8} />
         <Button
           icon={"archive-edit"}
-          contentStyle={{ height: 24 }}
+          //contentStyle={{ height: 24 }}
           mode="contained"
           onPress={() => handleOpenModal(NotificationType.PossibleSwarm)}
         >
@@ -87,7 +80,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
         <HorizontalSpacer size={8} />
         <Button
           icon={"archive-edit"}
-          contentStyle={{ height: 24 }}
+          //contentStyle={{ height: 24 }}
           mode="contained"
           onPress={() => handleOpenModal(NotificationType.ConsiderFeeding)}
         >
@@ -107,7 +100,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
         <HorizontalSpacer size={8} />
         <Button
           icon={"archive-edit"}
-          contentStyle={{ height: 24 }}
+          //contentStyle={{ height: 24 }}
           mode="contained"
           onPress={() => handleOpenModal(NotificationType.HoneyHarvest)}
         >
@@ -127,7 +120,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
         <HorizontalSpacer size={8} />
         <Button
           icon={"archive-edit"}
-          contentStyle={{ height: 24 }}
+          //contentStyle={{ height: 24 }}
           mode="contained"
           onPress={() => handleOpenModal(NotificationType.Maintenance)}
         >
@@ -147,7 +140,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
         <HorizontalSpacer size={8} />
         <Button
           icon={"archive-edit"}
-          contentStyle={{ height: 24 }}
+          //contentStyle={{ height: 24 }}
           mode="contained"
           onPress={() => handleOpenModal(NotificationType.ConsiderExpanding)}
         >
@@ -167,7 +160,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
         <HorizontalSpacer size={8} />
         <Button
           icon={"archive-edit"}
-          contentStyle={{ height: 24 }}
+          //contentStyle={{ height: 24 }}
           mode="contained"
           onPress={() => handleOpenModal(NotificationType.CheckHive)}
         >
@@ -187,7 +180,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
         <HorizontalSpacer size={8} />
         <Button
           icon={"archive-edit"}
-          contentStyle={{ height: 24 }}
+          //contentStyle={{ height: 24 }}
           mode="contained"
           onPress={() => handleOpenModal(NotificationType.CustomReminder)}
         >

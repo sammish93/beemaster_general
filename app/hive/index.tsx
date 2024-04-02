@@ -4,7 +4,7 @@ import { ScrollView } from "react-native-virtualized-view";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "@/assets/styles";
 import { useTheme, Text, Button, Divider } from "react-native-paper";
@@ -54,6 +54,8 @@ import ModifyNoteModal from "@/components/modals/ModifyNoteModal";
 import { ScreenWidth } from "@/constants/Dimensions";
 import HistoricalSensorModal from "@/components/modals/HistoricalSensorModal";
 import { SensorDataList } from "@/models/sensor";
+import Map from "@/components/Map";
+import { HiveModel } from "@/models/hiveModel";
 
 type RootStackParamList = {
   hive: {
@@ -70,11 +72,13 @@ type HiveScreenProps = {
 const HiveScreen = (params: HiveScreenProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
-  const selectedHive = hiveViewModel.getSelectedHive();
-
+  const [selectedHive, setSelectedHive] = useState<HiveModel>(
+    hiveViewModel.getSelectedHive()
+  );
   const [notes, setNotes] = useState<HiveNote[]>([]);
   const [forecast, setForecast] = useState<WeeklySimpleForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
@@ -177,6 +181,10 @@ const HiveScreen = (params: HiveScreenProps) => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setSelectedHive(hiveViewModel.getSelectedHive());
+  }, [isFocused]);
 
   // TODO Test. Consider refactoring to domain layer.
   // Sorting the notes so that the stickied notes appear on the top. Additionally, sorts based on timestamp
@@ -332,23 +340,23 @@ const HiveScreen = (params: HiveScreenProps) => {
                     {userViewModel.i18n.t("location")}
                   </Text>
                   <VerticalSpacer size={8} />
-                  <View
-                    style={{
-                      height: 100,
-                      backgroundColor: "red",
-                      borderRadius: 16,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text style={theme.fonts.bodyLarge}>
-                      Map component here
+                  {selectedHive.latLng.lat != null &&
+                  selectedHive.latLng.lng != null ? (
+                    <Map
+                      lat={hiveViewModel.getSelectedHive().latLng.lat}
+                      lng={hiveViewModel.getSelectedHive().latLng.lng}
+                      height={200}
+                    />
+                  ) : (
+                    <Text
+                      style={{
+                        ...theme.fonts.bodyLarge,
+                        textAlign: "center",
+                      }}
+                    >
+                      No location set
                     </Text>
-                    <Text style={theme.fonts.bodyLarge}>
-                      Lat: {selectedHive.latLng.lat}, Lng:{" "}
-                      {selectedHive.latLng.lng}
-                    </Text>
-                  </View>
+                  )}
                   <VerticalSpacer size={8} />
                   <Text
                     style={{
@@ -366,7 +374,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                       onPress={() => handleOpenModifyNoteModal()}
                     />
                   ) : (
-                    <Text style={theme.fonts.bodyLarge}>
+                    <Text
+                      style={{ ...theme.fonts.bodyLarge, textAlign: "center" }}
+                    >
                       {userViewModel.i18n.t("to create a new note")}
                     </Text>
                   )}
@@ -461,21 +471,11 @@ const HiveScreen = (params: HiveScreenProps) => {
                 </Text>
                 <VerticalSpacer size={8} />
                 {/* TODO - Implement map component. */}
-                <View
-                  style={{
-                    height: 100,
-                    backgroundColor: "red",
-                    borderRadius: 16,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={theme.fonts.bodyLarge}>Map component here</Text>
-                  <Text style={theme.fonts.bodyLarge}>
-                    Lat: {selectedHive.latLng.lat}, Lng:{" "}
-                    {selectedHive.latLng.lng}
-                  </Text>
-                </View>
+                <Map
+                  lat={hiveViewModel.getSelectedHive().latLng.lat}
+                  lng={hiveViewModel.getSelectedHive().latLng.lng}
+                  height={200}
+                />
                 <VerticalSpacer size={8} />
                 <Text
                   style={{
@@ -493,7 +493,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                     onPress={() => handleOpenModifyNoteModal()}
                   />
                 ) : (
-                  <Text style={theme.fonts.bodyLarge}>
+                  <Text
+                    style={{ ...theme.fonts.bodyLarge, textAlign: "center" }}
+                  >
                     {userViewModel.i18n.t("to create a new note")}
                   </Text>
                 )}

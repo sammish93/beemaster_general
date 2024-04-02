@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Checkbox, useTheme } from "react-native-paper";
 import { Button, TextInput, IconButton, Text } from "react-native-paper";
 import { Platform, View } from "react-native";
@@ -6,6 +6,11 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { BottomModal, OverlayModal } from "./Modals";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
+import MapRelocate from "../MapRelocate";
+import { usePermissionManager } from "@/domain/permissionManager";
+import { LatLng } from "react-native-maps";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "../ToastCustom";
 
 interface RepositionHiveModalProps {
   isOverlayModalVisible: boolean;
@@ -19,27 +24,15 @@ interface ModalContentProps {
 
 const RepositionHiveModal = (props: RepositionHiveModalProps) => {
   return (() => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      return (
-        <BottomModal
-          isOverlayModalVisible={props.isOverlayModalVisible}
-          bottomSheetModalRef={props.bottomSheetModalRef}
-          onClose={props.onClose}
-        >
-          <ModalContent onClose={props.onClose} />
-        </BottomModal>
-      );
-    } else {
-      return (
-        <OverlayModal
-          isOverlayModalVisible={props.isOverlayModalVisible}
-          bottomSheetModalRef={props.bottomSheetModalRef}
-          onClose={props.onClose}
-        >
-          <ModalContent onClose={props.onClose} />
-        </OverlayModal>
-      );
-    }
+    return (
+      <OverlayModal
+        isOverlayModalVisible={props.isOverlayModalVisible}
+        bottomSheetModalRef={props.bottomSheetModalRef}
+        onClose={props.onClose}
+      >
+        <ModalContent onClose={props.onClose} />
+      </OverlayModal>
+    );
   })();
 };
 
@@ -48,10 +41,37 @@ const ModalContent = (props: ModalContentProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const selectedHive = hiveViewModel.getSelectedHive();
+  const [isLocation, setLocation] = useState(
+    userViewModel.getLocationPermission()
+  );
+  const [newLocation, setNewLocation] = useState<LatLng>();
+  const { status, location, isEnabled, checkPermissionStatus } =
+    usePermissionManager("location permission");
+
+  useEffect(() => {
+    checkPermissionStatus();
+  }, [userViewModel.getLocationPermission()]);
 
   const handleRepositionHive = () => {
-    // TODO - Implement map and allow relocation.
-    // TODO DB - Write these changes to the DB.
+    const updatedHive = { ...selectedHive };
+
+    updatedHive.latLng = {
+      lat: newLocation?.latitude,
+      lng: newLocation?.longitude,
+    };
+
+    hiveViewModel.updateHive(updatedHive);
+
+    hiveViewModel.addSelectedHive(updatedHive);
+
+    Toast.show(
+      toastCrossPlatform({
+        title: "Success",
+        text: `blah'.`,
+        type: "success",
+      })
+    );
+
     props.onClose();
   };
 
@@ -74,22 +94,38 @@ const ModalContent = (props: ModalContentProps) => {
         />
       </View>
       <View>
-        <View
-          style={{
-            height: 100,
-            backgroundColor: "red",
-            borderRadius: 16,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+        {!userViewModel.getLocationPermission() ? (
+          <MapRelocate
+            lat={59.9139}
+            lng={10.7522}
+            height={300}
+            onMapPress={(coords) => setNewLocation(coords)}
+            newLocation={newLocation}
+          />
+        ) : null}
+        {userViewModel.getLocationPermission() && location != null ? (
+          <MapRelocate
+            lat={location.latitude}
+            lng={location.longitude}
+            height={300}
+            onMapPress={(coords) => setNewLocation(coords)}
+            newLocation={newLocation}
+          />
+        ) : null}
+        <VerticalSpacer size={12} />
+        {newLocation != undefined ? (
+          <>
+            <Button mode="contained" onPress={() => setNewLocation(undefined)}>
+              {userViewModel.i18n.t("reset hive position")}
+            </Button>
+            <VerticalSpacer size={8} />
+          </>
+        ) : null}
+        <Button
+          mode="contained"
+          onPress={handleRepositionHive}
+          disabled={newLocation === undefined}
         >
-          <Text style={theme.fonts.bodyLarge}>Map component here</Text>
-          <Text style={theme.fonts.bodyLarge}>
-            Lat: {selectedHive.latLng.lat}, Lng: {selectedHive.latLng.lng}
-          </Text>
-        </View>
-        <VerticalSpacer size={8} />
-        <Button mode="contained" onPress={handleRepositionHive}>
           {userViewModel.i18n.t("update location")}
         </Button>
       </View>

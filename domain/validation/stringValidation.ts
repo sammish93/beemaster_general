@@ -9,19 +9,33 @@
  * @param isSpaceAllowed Whether not not space characters are allowed.
  * @returns A boolean value whether or not the string is valid.
  */
-export const isValidString = (input: string, minLength: number = 1, maxLength: number = 64, isSymbolsAllowed: boolean = false, isSpaceAllowed: boolean = true): boolean => {
-    // Allows all letters and numbers from unicode-supported languages.
-    // If isSymbolsAllowed is set to false then the presence of even a single symbol results in an invalid string.
-    let regexPattern = ""
-
-    if (isSymbolsAllowed) {
-        regexPattern = `^[\\p{L}\\p{N}\\p{P}\\p{S}${isSpaceAllowed ? '\\p{Z}' : ''}]{${minLength},${maxLength}}$`;
-    } else {
-        regexPattern = `^[\\p{L}\\p{N}${isSpaceAllowed ? ' ' : ''}]{${minLength},${maxLength}}$`;
+export const isValidString = (
+    input: string,
+    minLength: number = 1,
+    maxLength: number = 64,
+    isSymbolsAllowed: boolean = false,
+    isSpaceAllowed: boolean = true
+  ): boolean => {
+    // Check the string length first
+    if (input.length < minLength || input.length > maxLength) {
+      return false;
     }
-    
-    // 'u' for unicode.
-    const regex = new RegExp(regexPattern, 'u');
   
-    return regex.test(input);
-}
+    const basicPattern = /^[A-Za-z0-9\u00C0-\u00FF\u0100-\u017F]+$/;
+    const spacePattern = /\s/;
+    const symbolPattern = /[!@#$%^&*(),.?":{}|<>]/;
+  
+    for (let char of input) {
+      const isLetterOrDigit = basicPattern.test(char);
+      const isSpace = spacePattern.test(char);
+      const isSymbol = symbolPattern.test(char);
+  
+      if (!isLetterOrDigit) {
+        if (isSpace && !isSpaceAllowed) return false;
+        if (isSymbol && !isSymbolsAllowed) return false;
+        if (!isSpace && !isSymbol) return false;
+      }
+    }
+  
+    return true;
+  };
