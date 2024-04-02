@@ -374,7 +374,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                       onPress={() => handleOpenModifyNoteModal()}
                     />
                   ) : (
-                    <Text style={theme.fonts.bodyLarge}>
+                    <Text
+                      style={{ ...theme.fonts.bodyLarge, textAlign: "center" }}
+                    >
                       {userViewModel.i18n.t("to create a new note")}
                     </Text>
                   )}
@@ -491,7 +493,9 @@ const HiveScreen = (params: HiveScreenProps) => {
                     onPress={() => handleOpenModifyNoteModal()}
                   />
                 ) : (
-                  <Text style={theme.fonts.bodyLarge}>
+                  <Text
+                    style={{ ...theme.fonts.bodyLarge, textAlign: "center" }}
+                  >
                     {userViewModel.i18n.t("to create a new note")}
                   </Text>
                 )}

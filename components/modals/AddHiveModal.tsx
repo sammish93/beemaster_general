@@ -11,6 +11,7 @@ import { toastCrossPlatform } from "../ToastCustom";
 import MapRelocate from "../MapRelocate";
 import { usePermissionManager } from "@/domain/permissionManager";
 import { LatLng } from "react-native-maps";
+import { isValidString } from "@/domain/validation/stringValidation";
 
 interface AddHiveModalProps {
   isOverlayModalVisible: boolean;
@@ -40,6 +41,8 @@ const ModalContent = (props: ModalContentProps) => {
   const theme = useTheme();
   const { userViewModel } = useContext(MobXProviderContext);
   const [newHiveName, setNewHiveName] = useState("");
+  const [isNameValid, setIsNameValid] = useState<boolean>();
+  const [nameErrorMessage, setNameErrorMessage] = useState<string>("");
   const [newLocation, setNewLocation] = useState<LatLng>();
   const { status, location, isEnabled, checkPermissionStatus } =
     usePermissionManager("location permission");
@@ -48,24 +51,38 @@ const ModalContent = (props: ModalContentProps) => {
     checkPermissionStatus();
   }, [userViewModel.getLocationPermission()]);
 
+  const handleModifyName = (input: string) => {
+    setNewHiveName(input);
+
+    if (isValidString(input, 1, 64)) {
+      setIsNameValid(true);
+    } else {
+      setIsNameValid(false);
+    }
+  };
+
   const handleAddNewHive = () => {
     //TODO Validation and toast.
-    if (newLocation?.latitude != null && newLocation?.longitude != null) {
-      props.onAddHive(
-        newHiveName,
-        newLocation.latitude,
-        newLocation?.longitude
-      );
+    if (isNameValid) {
+      if (newLocation?.latitude != null && newLocation?.longitude != null) {
+        props.onAddHive(
+          newHiveName,
+          newLocation.latitude,
+          newLocation?.longitude
+        );
 
-      Toast.show(
-        toastCrossPlatform({
-          title: "Success",
-          text: `Added '${newHiveName}' as a new hive.`,
-          type: "success",
-        })
-      );
+        Toast.show(
+          toastCrossPlatform({
+            title: "Success",
+            text: `Added '${newHiveName}' as a new hive.`,
+            type: "success",
+          })
+        );
 
-      resetHiveName();
+        resetHiveName();
+      }
+    } else {
+      setNameErrorMessage(userViewModel.i18n.t("invalid hive name"));
     }
 
     // TODO Feedback for user
@@ -93,10 +110,35 @@ const ModalContent = (props: ModalContentProps) => {
       </View>
       <View>
         <TextInput
-          label={userViewModel.i18n.t("hive name")}
+          label={
+            newHiveName.length > 64
+              ? userViewModel.i18n.t("too many characters")
+              : userViewModel.i18n.t("hive name") +
+                (newHiveName.length >= 32
+                  ? userViewModel.i18n.t("characters_remaining", {
+                      character: 64 - newHiveName.length,
+                    })
+                  : "")
+          }
           value={newHiveName}
-          onChangeText={setNewHiveName}
+          error={!isNameValid}
+          onChangeText={(input) => handleModifyName(input)}
         />
+        {nameErrorMessage ? (
+          <>
+            <VerticalSpacer size={8} />
+            <Text
+              style={{
+                ...theme.fonts.bodyLarge,
+                flex: 1,
+                textAlign: "center",
+                color: theme.colors.error,
+              }}
+            >
+              {nameErrorMessage}
+            </Text>
+          </>
+        ) : null}
         <VerticalSpacer size={12} />
         {!userViewModel.getLocationPermission() ? (
           <MapRelocate
@@ -116,10 +158,6 @@ const ModalContent = (props: ModalContentProps) => {
             newLocation={newLocation}
           />
         ) : null}
-        <VerticalSpacer size={12} />
-        <Text style={theme.fonts.bodyLarge}>
-          This feature will include much more.
-        </Text>
         <VerticalSpacer size={12} />
         {newLocation != undefined ? (
           <>
