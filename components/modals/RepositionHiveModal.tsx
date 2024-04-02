@@ -9,6 +9,8 @@ import { MobXProviderContext } from "mobx-react";
 import MapRelocate from "../MapRelocate";
 import { usePermissionManager } from "@/domain/permissionManager";
 import { LatLng } from "react-native-maps";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "../ToastCustom";
 
 interface RepositionHiveModalProps {
   isOverlayModalVisible: boolean;
@@ -57,8 +59,25 @@ const ModalContent = (props: ModalContentProps) => {
   }, [userViewModel.getLocationPermission()]);
 
   const handleRepositionHive = () => {
-    // TODO - Implement map and allow relocation.
-    // TODO DB - Write these changes to the DB.
+    const updatedHive = { ...selectedHive };
+
+    updatedHive.latLng = {
+      lat: newLocation?.latitude,
+      lng: newLocation?.longitude,
+    };
+
+    hiveViewModel.updateHive(updatedHive);
+
+    hiveViewModel.addSelectedHive(updatedHive);
+
+    Toast.show(
+      toastCrossPlatform({
+        title: "Success",
+        text: `blah'.`,
+        type: "success",
+      })
+    );
+
     props.onClose();
   };
 

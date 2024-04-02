@@ -4,7 +4,7 @@ import { ScrollView } from "react-native-virtualized-view";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "@/assets/styles";
 import { useTheme, Text, Button, Divider } from "react-native-paper";
@@ -55,6 +55,7 @@ import { ScreenWidth } from "@/constants/Dimensions";
 import HistoricalSensorModal from "@/components/modals/HistoricalSensorModal";
 import { SensorDataList } from "@/models/sensor";
 import Map from "@/components/Map";
+import { HiveModel } from "@/models/hiveModel";
 
 type RootStackParamList = {
   hive: {
@@ -71,11 +72,13 @@ type HiveScreenProps = {
 const HiveScreen = (params: HiveScreenProps) => {
   const theme = useTheme();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const hiveId = params.route.params.hiveId;
-  const selectedHive = hiveViewModel.getSelectedHive();
-
+  const [selectedHive, setSelectedHive] = useState<HiveModel>(
+    hiveViewModel.getSelectedHive()
+  );
   const [notes, setNotes] = useState<HiveNote[]>([]);
   const [forecast, setForecast] = useState<WeeklySimpleForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
@@ -178,6 +181,10 @@ const HiveScreen = (params: HiveScreenProps) => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setSelectedHive(hiveViewModel.getSelectedHive());
+  }, [isFocused]);
 
   // TODO Test. Consider refactoring to domain layer.
   // Sorting the notes so that the stickied notes appear on the top. Additionally, sorts based on timestamp
@@ -336,8 +343,8 @@ const HiveScreen = (params: HiveScreenProps) => {
                   {selectedHive.latLng.lat != null &&
                   selectedHive.latLng.lng != null ? (
                     <Map
-                      lat={selectedHive.latLng.lat}
-                      lng={selectedHive.latLng.lng}
+                      lat={hiveViewModel.getSelectedHive().latLng.lat}
+                      lng={hiveViewModel.getSelectedHive().latLng.lng}
                       height={200}
                     />
                   ) : (
@@ -463,8 +470,8 @@ const HiveScreen = (params: HiveScreenProps) => {
                 <VerticalSpacer size={8} />
                 {/* TODO - Implement map component. */}
                 <Map
-                  lat={selectedHive.latLng.lat}
-                  lng={selectedHive.latLng.lng}
+                  lat={hiveViewModel.getSelectedHive().latLng.lat}
+                  lng={hiveViewModel.getSelectedHive().latLng.lng}
                   height={200}
                 />
                 <VerticalSpacer size={8} />
