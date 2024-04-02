@@ -25,20 +25,39 @@ const SettingsScreen = () => {
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
 
+
+  /**
+   * Turns a list of languages (`availableLanguages`) into a list without duplicates, making sure
+   * each language is listed only once. If a language's code is for Norwegian Bokmål, it changes
+   * that code to the standard Norwegian code. This makes the language list simpler and more consistent,
+   * especially by grouping different codes for Norwegian into one. It helps clean up the list by
+   * removing duplicates and making Norwegian Bokmaal just 'Norwegian'.
+   */
+
   const uniqueLanguageOptions = availableLanguages.reduce<LanguageOption[]>((unique, option) => {
     const exists = unique.some(u => u.name === option.name);
     if (!exists) {
-      // Prioriter ikke-web kode hvis mulig
+
       const preferredCode = option.code === LanguageEnum.NorwegianBokmal ? LanguageEnum.Norwegian : option.code;
       unique.push({ ...option, code: preferredCode });
     }
     return unique;
   }, []);
 
+
+  /**
+   * Turns a list of countries (`availableCountries`) into a list without duplicates, making sure
+   * each country appears only once. If a country's code is for a web version (like `WebNorway` or `WebEngland`),
+   * it changes those codes to their standard forms (`Norway` or `England`). This helps make sure
+   * the country codes are consistent, especially for countries listed differently for web use.
+   * It helps avoid having the same country listed more than once and makes the list of countries
+   * easier to manage and understand.
+   */
+
   const uniqueCountryOptions = availableCountries.reduce<CountryOption[]>((unique, option) => {
     const exists = unique.some(u => u.name === option.name);
     if (!exists) {
-      // Prioriter ikke-web kode hvis mulig
+
       const preferredCode = option.code === CountryEnum.WebNorway ? CountryEnum.Norway :
         option.code === CountryEnum.WebEngland ? CountryEnum.England : option.code;
       unique.push({ ...option, code: preferredCode });
@@ -55,7 +74,7 @@ const SettingsScreen = () => {
     userViewModel.setCountry(countryCode);
   };
 
-  const currentMeasurements = `${userViewModel.temperaturePreference} og ${userViewModel.weightPreference}`;
+  const currentMeasurements = `${userViewModel.temperaturePreference} & ${userViewModel.weightPreference}`;
 
   useEffect(() => {
     userViewModel.fetchUserParametersFromDatabase();
@@ -94,13 +113,13 @@ const SettingsScreen = () => {
             {userViewModel.i18n.t("accessibility")}
           </Text>
 
-          <SwitchTheme />
+          <SwitchTheme key={userViewModel.currentLanguage} />
 
           <Text style={theme.fonts.bodyLarge}>
             {userViewModel.i18n.t("language")}: {currentLanguage}
           </Text>
           <List.Accordion
-            title="Velg Språk"
+            title={userViewModel.i18n.t("choose your language")}
             titleStyle={theme.fonts.bodyLarge}
             left={props => <List.Icon {...props} icon="translate" />}
 
@@ -119,7 +138,7 @@ const SettingsScreen = () => {
             {userViewModel.i18n.t("country")}: {currentCountry}
           </Text>
           <List.Accordion
-            title="Velg Land"
+            title={userViewModel.i18n.t("choose your country")}
             titleStyle={theme.fonts.bodyLarge}
             left={props => <List.Icon {...props} icon="earth" />}
 
@@ -135,10 +154,10 @@ const SettingsScreen = () => {
           </List.Accordion>
 
           <Text style={theme.fonts.bodyLarge}>
-            Measurement Preferences: {currentMeasurements}
+            {userViewModel.i18n.t("measurement preferences")}: {currentMeasurements}
           </Text>
           <List.Accordion
-            title="Velg Temperatur Enhet"
+            title={userViewModel.i18n.t("select temperature unit")}
             titleStyle={theme.fonts.bodyLarge}
             left={props => <List.Icon {...props} icon="thermometer" />}
 
@@ -158,7 +177,7 @@ const SettingsScreen = () => {
 
 
           <List.Accordion
-            title="Velg Vekt Enhet"
+            title={userViewModel.i18n.t("select unit of weight")}
             titleStyle={theme.fonts.bodyLarge}
             left={props => <List.Icon {...props} icon="scale" />}
 
@@ -169,7 +188,7 @@ const SettingsScreen = () => {
               onPress={() => userViewModel.setWeightPreference(WeightMeasurement.Kilograms)}
             />
             <List.Item
-              title="Pounds (lb)"
+              title={userViewModel.i18n.t("pounds (lb)")}
               titleStyle={theme.fonts.bodyLarge}
               onPress={() => userViewModel.setWeightPreference(WeightMeasurement.Pounds)}
             />

@@ -3,7 +3,7 @@ import { observer, MobXProviderContext } from "mobx-react";
 
 import React from "react";
 import { useTheme, Text, Switch } from "react-native-paper";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 
 
@@ -31,7 +31,7 @@ const SwitchTheme = observer(() => {
     return (
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={[theme.fonts.bodyLarge, { marginRight: 10 }]}>{userViewModel.i18n.t("switch light/dark mode")}: </Text>
+            <Text style={theme.fonts.bodyLarge}>{userViewModel.i18n.t("switch between light or dark mode")} : </Text>
             <Text style={theme.fonts.bodyLarge}>{theme.dark ? 'Dark' : 'Light'}</Text>
             <Switch
                 value={theme.dark}

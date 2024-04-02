@@ -25,7 +25,7 @@
   "mobile": "Mobil",
   "potential swarm": "Potensiell sverm",
   "email": "E-post",
-  "switch light/dark mode": "Bytte lys/mørk modus",
+  "switch between light or dark mode": "Bytte mellom lys eller mørkt modus",
   "language": "Språk",
   "country": "Land",
   "location permission": "Stedstillatelse",
@@ -196,5 +196,11 @@
   "your hive will be positioned here": "Bikuben din vil bli plassert her.",
   "maps are only available": "Kartet er bare tilgjengelig på mobile enheter.",
   "use current location": "Bruk nåværende lokasjon",
-  "use default location": "Bruk standardlokasjon"
+  "use default location": "Bruk standardlokasjon",
+  "choose your country": "Velg ditt land",
+  "select temperature unit": "Velg temperaturenhet",
+  "select unit of weight": "Velg vektenhet",
+  "choose your language": "Velg ditt språk",
+  "pounds (lb)": "Pund (lb)",
+  "measurement preferences": "Måleenhetspreferanser"
 }

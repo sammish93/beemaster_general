@@ -25,7 +25,7 @@
   "mobile": "Mobile",
   "potential swarm": "Potential Swarm",
   "email": "Email",
-  "switch light/dark mode": "Switch light/dark mode",
+  "switch between light or dark mode": "Switch Between Light or Dark Mode",
   "language": "Language",
   "country": "Country",
   "location permission": "Location Permission",
@@ -196,5 +196,11 @@
   "your hive will be positioned here": "Your hive will be positioned here.",
   "maps are only available": "Maps are only available on mobile devices.",
   "use current location": "Use current location",
-  "use default location": "Use default location"
+  "use default location": "Use default location",
+  "choose your country": "Choose Your Country",
+  "select temperature unit": "Select Temperature Unit",
+  "select unit of weight": "Select Unit of Weight",
+  "choose your language": "Choose Your Language",
+  "pounds (lb)": "Pounds (lb)",
+  "measurement preferences": "Measurement Preferences"
 }

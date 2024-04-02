@@ -34,7 +34,7 @@ class UserViewModel {
     @observable currentCountry: string | null = null;
     @observable authInitialized = false;
     @observable dateFormat: string = "DD/MM/YYYY";
-
+    @observable locale = Localization.locale;
 
     initializeAuthListener() {
         onAuthStateChanged(auth, (user) => {
@@ -48,21 +48,26 @@ class UserViewModel {
             });
         });
     }
+
     @action setLanguage = (langCode: string): void => {
         this.currentLanguage = langCode;
 
+        let newLocale = 'en';
         switch (langCode) {
             case LanguageEnum.English:
-                this.i18n.locale = 'en';
+                newLocale = 'en';
                 break;
             case LanguageEnum.Norwegian:
             case LanguageEnum.NorwegianBokmal:
-                this.i18n.locale = 'no';
+                newLocale = 'no';
                 break;
 
-            default:
-                this.i18n.locale = 'en'; // Standardfall
         }
+
+        runInAction(() => {
+            this.locale = newLocale;
+            this.i18n.locale = newLocale;
+        });
     };
 
     @action setCountry = (countryCode: string): void => {
@@ -92,6 +97,7 @@ class UserViewModel {
                 this.dateFormat = "DD/MM/YYYY";
         }
     };
+
 
 
 
