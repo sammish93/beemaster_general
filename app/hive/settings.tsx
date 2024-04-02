@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import { Platform, ScrollView, View } from "react-native";
+import { Dimensions, Platform, ScrollView, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useRef, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
@@ -21,6 +21,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import { isValidString } from "@/domain/validation/stringValidation";
+import { ScreenWidth } from "@/constants/Dimensions";
 
 type RootStackParamList = {
   hive: {
@@ -199,7 +200,10 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
 
             <View
               style={{
-                flexDirection: "row",
+                flexDirection:
+                  Dimensions.get("window").width <= ScreenWidth.Compact
+                    ? "column"
+                    : "row",
                 alignItems: "center",
               }}
             >
@@ -219,16 +223,24 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
                 mode="outlined"
                 error={!isNameValid}
                 style={{
-                  flex: 3,
+                  flex:
+                    Dimensions.get("window").width <= ScreenWidth.Compact
+                      ? 1
+                      : 3,
                   backgroundColor: theme.colors.primaryContainer,
+                  width: "100%",
                 }}
               />
-              <HorizontalSpacer size={12} />
+              {Dimensions.get("window").width <= ScreenWidth.Compact ? (
+                <VerticalSpacer size={12} />
+              ) : (
+                <HorizontalSpacer size={12} />
+              )}
               <Button
                 icon="pencil"
                 mode="contained"
                 onPress={() => handleUpdateName(newHiveName)}
-                style={{ flex: 1 }}
+                style={{ flex: 1, width: "100%", justifyContent: "center" }}
               >
                 {userViewModel.i18n.t("rename")}
               </Button>

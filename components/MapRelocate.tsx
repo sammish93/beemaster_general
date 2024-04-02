@@ -13,7 +13,6 @@ interface MapRelocateProps {
   width?: DimensionValue;
 }
 
-// TODO Localisation
 const MapRelocate = ({
   lat,
   lng,
@@ -22,6 +21,8 @@ const MapRelocate = ({
   height = "100%",
   width = "100%",
 }: MapRelocateProps) => {
+  const { userViewModel } = useContext(MobXProviderContext);
+
   const handlePress = (e) => {
     onMapPress(e.nativeEvent.coordinate);
   };
@@ -56,8 +57,10 @@ const MapRelocate = ({
               latitude: newLocation?.latitude,
               longitude: newLocation?.longitude,
             }}
-            title={"Hive Location"}
-            description={"Your hive will be positioned here."}
+            title={userViewModel.i18n.t("hive location")}
+            description={userViewModel.i18n.t(
+              "your hive will be positioned here"
+            )}
           />
         ) : null}
       </MapView>

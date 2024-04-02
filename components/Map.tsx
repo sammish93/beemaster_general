@@ -1,3 +1,5 @@
+import { MobXProviderContext } from "mobx-react";
+import { useContext } from "react";
 import { DimensionValue, Platform, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
@@ -10,6 +12,8 @@ interface MapProps {
 
 // TODO Localisation
 const Map = ({ lat, lng, height = "100%", width = "100%" }: MapProps) => {
+  const { userViewModel } = useContext(MobXProviderContext);
+
   return (
     <View
       style={{
@@ -35,8 +39,8 @@ const Map = ({ lat, lng, height = "100%", width = "100%" }: MapProps) => {
       >
         <Marker
           coordinate={{ latitude: lat, longitude: lng }}
-          title={"Hive Location"}
-          description={"Your hive is located here."}
+          title={userViewModel.i18n.t("hive location")}
+          description={userViewModel.i18n.t("your hive is located here")}
         />
       </MapView>
     </View>

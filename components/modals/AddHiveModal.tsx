@@ -62,8 +62,8 @@ const ModalContent = (props: ModalContentProps) => {
   };
 
   const handleAddNewHive = () => {
-    //TODO Validation and toast.
     if (isNameValid) {
+      console.log(newLocation?.latitude);
       if (newLocation?.latitude != null && newLocation?.longitude != null) {
         props.onAddHive(
           newHiveName,

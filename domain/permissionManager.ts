@@ -40,16 +40,24 @@ export const usePermissionManager = (type: PermissionType) => {
                 if (Platform.OS === 'ios' || Platform.OS === 'android' || Platform.OS === 'web') {
                     let locationStatus = await getForegroundPermissionsAsync();
                     setStatus(locationStatus.status);
-                    if (locationStatus.status != PermissionStatus.GRANTED) {
+                    
+                    if (locationStatus.status != PermissionStatus.GRANTED && Platform.OS != 'web') {
                         locationStatus = await requestForegroundPermissionsAsync();
                         setStatus(locationStatus.status);
                         userViewModel.setLocationPermission(locationStatus.status === PermissionStatus.GRANTED)
                         setIsEnabled(locationStatus.status === PermissionStatus.GRANTED)
+                    } else {
+                        console.log("hi")
+                        userViewModel.setLocationPermission(locationStatus.status === PermissionStatus.GRANTED)
+                        setIsEnabled(locationStatus.status === PermissionStatus.GRANTED)
+                        console.log(userViewModel.getLocationPermission().toString())
+                        console.log(isEnabled.toString())
                     }
 
                     if (locationStatus.status === PermissionStatus.GRANTED && userViewModel.getLocationPermission() === true) {
                         const { coords } = await getCurrentPositionAsync({});
                         setLocation(coords)
+                        console.log("coords are retrievable")
                     }
                 }
                 break;
