@@ -44,18 +44,13 @@ const HomeScreen = () => {
     hiveViewModel.hives
   );
 
-  const handleAddHive = (hiveName: string) => {
-    /*
-    TODO Add validation. Coordinates of hive should use current 
-    GPS location. If not available then default to oslo. Add toast on success or failure.
-    */
-
+  const handleAddHive = (hiveName: string, lat: number, lng: number) => {
     const newHiveId = `${userViewModel.userId}-hive-${Date.now()}`;
 
     hiveViewModel.addHive({
       id: newHiveId,
       name: hiveName,
-      latLng: { lat: 53.483959, lng: -2.244644 },
+      latLng: { lat: lat, lng: lng },
       filters: [],
       notes: [],
     });
@@ -72,19 +67,11 @@ const HomeScreen = () => {
   }, []);
 
   const handleOpenAddHiveModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleAddHiveModalSheetPressOpen();
-    } else {
-      setAddHiveModalVisible(true);
-    }
+    setAddHiveModalVisible(true);
   };
 
   const handleCloseAddHiveModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleAddHiveModalSheetPressClose();
-    } else {
-      setAddHiveModalVisible(false);
-    }
+    setAddHiveModalVisible(false);
   };
 
   const handleAddFilter = (filterName: string) => {

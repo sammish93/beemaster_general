@@ -50,12 +50,6 @@ const ModalContent = (props: ModalContentProps) => {
 
   useEffect(() => {
     checkPermissionStatus();
-
-    console.log(
-      "permission - " + userViewModel.getLocationPermission().toString()
-    );
-    console.log("enabled - " + isEnabled.toString());
-    console.log("coords - " + location?.longitude);
   }, [userViewModel.getLocationPermission()]);
 
   const handleRepositionHive = () => {
@@ -127,7 +121,6 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
           </>
         ) : null}
-
         <Button
           mode="contained"
           onPress={handleRepositionHive}
