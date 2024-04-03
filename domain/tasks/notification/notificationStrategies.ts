@@ -1,23 +1,8 @@
-import { CurrentForecast, DailyForecast, WeeklySimpleForecast } from "@/models/forecast";
-import { Hive } from "@/models/hive";
-import { User } from "@/models/user";
-import { HiveNotification } from "@/models/notification";
+import { CurrentForecast, DailyForecast, WeeklySimpleForecast, Hive, User } from "@/models";
 import { NotificationType } from "@/constants/Notifications";
 import { sendNotification } from "./sendNotification";
-import { 
-    areTemperaturesConsistentlyWarm, 
-    doesHiveWeightIncreaseSignificantly, 
-    isHumidityChangeDrastic, isSnowForecast, 
-    isTemperatureChangeDrastic, isWarmerEachDayInSpring, 
-    doesHiveWeightDecreaseInEarlySpring, doesHiveWeightDecreaseInAutumn,
-    createBeekeepingReminder, isWarmDryLowWindDay,
-    isWarmDryLowWindDayBetweenSummerAndEarlyAutumn
-} from "@/domain/notificationFunctions";
-import { 
-    getDailyHumidityData, getDailyTemperatureData, 
-    getDailyWeatherConditionsFromHourly, getWeatherConditions, 
-    getWeeklyTemperatureData 
-} from "../weather/weatherDataProcessor";
+import { areTemperaturesConsistentlyWarm, doesHiveWeightIncreaseSignificantly, isHumidityChangeDrastic, isSnowForecast, isTemperatureChangeDrastic, isWarmerEachDayInSpring, doesHiveWeightDecreaseInEarlySpring, doesHiveWeightDecreaseInAutumn,createBeekeepingReminder, isWarmDryLowWindDay,isWarmDryLowWindDayBetweenSummerAndEarlyAutumn } from "@/domain/notificationFunctions";
+import { getDailyHumidityData, getDailyTemperatureData, getDailyWeatherConditionsFromHourly, getWeatherConditions, getWeeklyTemperatureData } from "../weather/weatherDataProcessor";
 
 interface WeatherData {
     currentForecast: CurrentForecast,
