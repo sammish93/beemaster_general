@@ -3,6 +3,7 @@ import { NotificationType } from "@/constants/Notifications";
 import { sendNotification } from "./sendNotification";
 import { areTemperaturesConsistentlyWarm, doesHiveWeightIncreaseSignificantly, isHumidityChangeDrastic, isSnowForecast, isTemperatureChangeDrastic, isWarmerEachDayInSpring, doesHiveWeightDecreaseInEarlySpring, doesHiveWeightDecreaseInAutumn,createBeekeepingReminder, isWarmDryLowWindDay,isWarmDryLowWindDayBetweenSummerAndEarlyAutumn } from "@/domain/notificationFunctions";
 import { getDailyHumidityData, getDailyTemperatureData, getDailyWeatherConditionsFromHourly, getWeatherConditions, getWeeklyTemperatureData } from "../weather/weatherDataProcessor";
+import { createNotificationObject, logMessage } from "./notificationHelpers";
 
 interface WeatherData {
     currentForecast: CurrentForecast,
@@ -222,20 +223,5 @@ export const notificationStrategies = {
 
             // TODO: Store in DB.
         }
-    }
-}
-
-const logMessage = (notificationType: string, user: User, hive: Hive) => {
-    console.log(`Sending '${notificationType}' notification to ${user.email} for hive ${hive.id}`);
-}
-
-// Helper function.
-const createNotificationObject = (hiveId: string, notificationType: NotificationType, message: string) => {
-    return {
-        hiveId: hiveId,
-        notificationType: notificationType,
-        timeStamp: new Date(Date.now()),
-        isRead: false,
-        message: message
     }
 }
