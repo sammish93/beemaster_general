@@ -1,15 +1,10 @@
-import { CurrentForecast, DailyForecast, WeeklySimpleForecast, Hive, User } from "@/models";
+import { Hive, User } from "@/models";
 import { NotificationType } from "@/constants/Notifications";
 import { sendNotification } from "./sendNotification";
 import { areTemperaturesConsistentlyWarm, doesHiveWeightIncreaseSignificantly, isHumidityChangeDrastic, isSnowForecast, isTemperatureChangeDrastic, isWarmerEachDayInSpring, doesHiveWeightDecreaseInEarlySpring, doesHiveWeightDecreaseInAutumn,createBeekeepingReminder, isWarmDryLowWindDay,isWarmDryLowWindDayBetweenSummerAndEarlyAutumn } from "@/domain/notificationFunctions";
 import { getDailyHumidityData, getDailyTemperatureData, getDailyWeatherConditionsFromHourly, getWeatherConditions, getWeeklyTemperatureData } from "../weather/weatherDataProcessor";
 import { createNotificationObject, logMessage } from "./notificationHelpers";
-
-interface WeatherData {
-    currentForecast: CurrentForecast,
-    dailyForecast: DailyForecast,
-    weeklyForecast: WeeklySimpleForecast
-}
+import { WeatherData } from "@/models/weatherModel";
 
 interface Props {
     user: User,
