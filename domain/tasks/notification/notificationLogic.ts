@@ -30,9 +30,11 @@ export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => 
             // Iterate over the strategies.
             Object.keys(notificationStrategies).forEach(strategy => {
                 const notificationType = strategy as keyof typeof hive.notificationTypePreference;
+                const userPref = userPreference[notificationType];
+                const hivePref = hivePreference[notificationType];
             
                 // Check the user and hive preferences.
-                if (userPreference[notificationType] && hivePreference[notificationType]) {
+                if (userPref && hivePref) {
 
                     const params = { user, hive, weatherData: processedData }
                     
@@ -40,7 +42,7 @@ export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => 
                     notificationStrategies[notificationType](params);
                 }
                 else {
-                    console.log(`Notification is turned of for both user and hive`);
+                    console.log(`Notification ${userPref} is turned of for both user and hive`);
                 }
             });
         } catch (error) {

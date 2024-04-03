@@ -96,7 +96,8 @@ export const notificationStrategies = {
             });
         }
 
-        if (true) {
+        const dailyTemperature = getDailyTemperatureData(weatherData.dailyForecast);
+        if (isWarmerEachDayInSpring(dailyTemperature)) {
             logMessage('warming trend in spring', user, hive);
 
             // TODO: Send notification.
