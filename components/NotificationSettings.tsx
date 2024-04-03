@@ -183,6 +183,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
           //contentStyle={{ height: 24 }}
           mode="contained"
           onPress={() => handleOpenModal(NotificationType.CustomReminder)}
+          disabled={true}
         >
           {userViewModel.i18n.t("customise")}
         </Button>
