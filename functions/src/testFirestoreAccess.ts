@@ -8,6 +8,7 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
 });
 
+// NOT IN USE AND WILL BE REMOVED LATER.
 // Only used to test that the database is queried correctly in 'notification_task.ts'.
 
 async function retrieveAndLogUserData() {

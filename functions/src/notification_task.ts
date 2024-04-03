@@ -2,7 +2,7 @@ import { onSchedule } from "firebase-functions/v2/scheduler";
 import { logger } from "firebase-functions";
 import * as admin from "firebase-admin";
 
-
+// NOT IN USE AND WILL BE REMOVED LATER.
 export const recurringBackgroundTask = onSchedule("every 60 min", async () => {
   logger.log("Recurring background task started.");
 

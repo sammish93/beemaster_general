@@ -44,7 +44,6 @@ export const notificationStrategies = {
 
         // TODO: Swap with real values from db.
         const dailyHiveWeights = [150, 152, 154, 155, 156];
-
         if (doesHiveWeightIncreaseSignificantly(dailyHiveWeights)) {
             logMessage('significant weight increase', user, hive);
 
@@ -65,7 +64,7 @@ export const notificationStrategies = {
         }
     },
 
-    considerFeeding: async ({ user, hive, weatherData}: Props) => {
+    considerFeeding: async ({ user, hive }: Props) => {
 
         // TODO: Swap with real values from db.
         const hiveWeights = [150, 156, 159, 180];
@@ -96,9 +95,16 @@ export const notificationStrategies = {
     },
 
     honeyHarvest: async ({ user, hive, weatherData}: Props) => {
-        logMessage('honeyHarvest', user, hive);
+    
+        const dailyWeatherConditions = getDailyWeatherConditionsFromHourly(weatherData.dailyForecast);
+        if (isWarmDryLowWindDayBetweenSummerAndEarlyAutumn(dailyWeatherConditions)) {
+            logMessage('honeyHarvest', user, hive);
 
-        // Gonna add 'isWarmDryLowWindDayBetweenSummerAndEarlyAutumn' here.
+            await sendNotification({
+                title: `Ideal Weather for Honey Harvest at ${hive.hiveName}`,
+                body: `Today's forecast promises perfect conditions for honey harvesting at ${hive.hiveName} with warm temperatures, low humidity, and gentle breezes.`
+            }).catch(error => console.log(`Error in sending notification: ${error}`));
+        }
     },
 
     maintenance: async ({ user, hive, weatherData}: Props) => {
@@ -178,6 +184,17 @@ const getWeatherConditions = (weeklyForecast: WeeklySimpleForecast) => {
     ];
 }
 
+const getDailyWeatherConditionsFromHourly = (dailyForecast: DailyForecast) => {
+    const hourlyForecasts = Object.values(dailyForecast.hourlyForecasts);
+    const transformedForecasts = hourlyForecasts.map(forecastPeriod => ({
+        temperature: forecastPeriod.temperature,
+        humidity: forecastPeriod.humidity,
+        windSpeed: forecastPeriod.windSpeed,
+    }));
+
+    return transformedForecasts;
+}
+ 
 // Helper function.
 const getDailyTemperatureData = (dailyForecast: DailyForecast) => {
     return Object.values(dailyForecast).map(forecast => forecast.temperature);
