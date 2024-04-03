@@ -16,6 +16,8 @@ export const getActivatedPreferences = (preferences: NotificationPreference) => 
 }
 
 export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => {
+
+    // Temporary solution - the other hives in the db is missing lots of fields.
     const filteredHive = hives.filter(hive => hive.id === 'Es2njxWBdXky6zhu9UBZ');
     for (const hive of filteredHive) {
         try {
