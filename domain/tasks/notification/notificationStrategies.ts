@@ -24,14 +24,17 @@ interface Props {
 
 export const notificationStrategies = {
 
-    checkHive: ({ user, hive, weatherData }: Props) => {
+    checkHive: async ({ user, hive, weatherData }: Props) => {
         const dailyTemperatures = getDailyTemperatureData(weatherData.dailyForecast);
         const dailyHumidities = getDailyHumidityData(weatherData.dailyForecast);
 
         if (isTemperatureChangeDrastic(dailyTemperatures) || isHumidityChangeDrastic(dailyHumidities)) {
             logMessage('checkHive', user, hive);
 
-            // TODO: Send notification.
+            await sendNotification({
+                title: `Check Your Hive: ${hive.hiveName}`,
+                body: `Drastic weather change detected near hive: ${hive.hiveName}. Consider checking the hive!`
+            }).catch(error => console.log(`Error sending notification: ${error}`));
         }
     },
 
@@ -89,7 +92,6 @@ export const notificationStrategies = {
         if (isSnowForecast(weatherConditions)) {
             logMessage('snow forecast', user, hive);
 
-            // TODO: Send notification.
             await sendNotification({
                 title: 'Snow Forecast',
                 body: `Snow is forecasted around hive ${hive.hiveName}.`
@@ -100,7 +102,6 @@ export const notificationStrategies = {
         if (isWarmerEachDayInSpring(dailyTemperature)) {
             logMessage('warming trend in spring', user, hive);
 
-            // TODO: Send notification.
             await sendNotification({
                 title: 'Warming Trend in Spring',
                 body: `A warming trend in spring is detected for hive ${hive.hiveName}`
