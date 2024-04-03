@@ -107,3 +107,5 @@ ios/beemastergeneral/GoogleService-Info.plist
 
 /android/
 /ios/
+
+firebase-admin-key.json
