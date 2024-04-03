@@ -81,11 +81,10 @@ export const notificationStrategies = {
         if (areTemperaturesConsistentlyWarm(weeklyTemperatures, weeklyTemperatures.length)) {
             logMessage('warm trend', user, hive);
             
-            // TODO: Send notification.
             await sendNotification({
                 title: 'Warm Trend Detected',
                 body: `Its getting warm around ${hive.hiveName}. Consider checking it out.`
-            });
+            }).catch(error => console.log(`Error sending notification: ${error}`));
         }
         
         const weatherConditions = getWeatherConditions(weatherData.weeklyForecast);
@@ -95,7 +94,7 @@ export const notificationStrategies = {
             await sendNotification({
                 title: 'Snow Forecast',
                 body: `Snow is forecasted around hive ${hive.hiveName}.`
-            });
+            }).catch(error => console.log(`Error sending notification: ${error}`));
         }
 
         const dailyTemperature = getDailyTemperatureData(weatherData.dailyForecast);
@@ -105,7 +104,7 @@ export const notificationStrategies = {
             await sendNotification({
                 title: 'Warming Trend in Spring',
                 body: `A warming trend in spring is detected for hive ${hive.hiveName}`
-            })
+            }).catch(error => console.log(`Error sending notification: ${error}`));
         }
     }
 }
