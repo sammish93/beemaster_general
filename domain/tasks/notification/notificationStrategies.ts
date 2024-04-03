@@ -38,10 +38,19 @@ export const notificationStrategies = {
         if (isTemperatureChangeDrastic(dailyTemperatures) || isHumidityChangeDrastic(dailyHumidities)) {
             logMessage('checkHive', user, hive);
 
+            const message = `Drastic weather change detected near hive: ${hive.hiveName}. Consider checking the hive!`
             await sendNotification({
                 title: `Check Your Hive: ${hive.hiveName}`,
-                body: `Drastic weather change detected near hive: ${hive.hiveName}. Consider checking the hive!`
+                body: message
             }).catch(error => console.log(`Error sending notification: ${error}`));
+
+            const notificationToStoreInDB = createNotificationObject(
+                hive.id,
+                NotificationType.CheckHive,
+                message
+            );
+
+            // TODO: Store in DB.
         }
     },
 
@@ -52,20 +61,36 @@ export const notificationStrategies = {
         if (doesHiveWeightIncreaseSignificantly(dailyHiveWeights)) {
             logMessage('significant weight increase', user, hive);
 
+            const message = `Weight of hive: ${hive.hiveName} has increased significantly, consider expanding!`;
             await sendNotification({
                 title: 'Significant Weight Increase Detected',
-                body: `Weight of hive: ${hive.hiveName} has increased significantly, consider expanding!`
+                body: message
             }).catch(error => console.log(`Error sending notification: ${error}`));
+
+            const notificationToStoreInDB = createNotificationObject(
+                hive.id,
+                NotificationType.ConsiderExpanding,
+                message
+            );
         }        
 
         const weeklyTemperatures = getWeeklyTemperatureData(weatherData.weeklyForecast);
         if (areTemperaturesConsistentlyWarm(weeklyTemperatures, weeklyTemperatures.length)) {
             logMessage('warm trend', user, hive);
             
+            const message = `Its getting warm around ${hive.hiveName}. Consider expanding the hive.`;
             await sendNotification({
                 title: 'Warm Trend Detected',
-                body: `Its getting warm around ${hive.hiveName}. Consider expanding the hive.`
+                body: message
             }).catch(error => console.log(`Error sending notification: ${error}`));
+
+            const notificationToStoreInDB = createNotificationObject(
+                hive.id,
+                NotificationType.ConsiderExpanding,
+                message
+            );
+
+            // TODO: Store in DB.
         }
     },
 
@@ -77,19 +102,37 @@ export const notificationStrategies = {
         if (doesHiveWeightDecreaseInEarlySpring(hiveWeights)) {
             logMessage('considerFeeding', user, hive);
 
+            const message = `Weight of hive: ${hive.hiveName} has decreased significantly this early spring. It might be a good time to consider feeding your bees.`;
             await sendNotification({
                 title: 'Hive Weight Decrease In Early Spring',
-                body: `Weight of hive: ${hive.hiveName} has decreased significantly this early spring. It might be a good time to consider feeding your bees.`
+                body: message
             }).catch(error => console.log(`Error in sending notification: ${error}`));
+
+            const notificationToStoreInDB = createNotificationObject(
+                hive.id,
+                NotificationType.ConsiderFeeding,
+                message
+            );
+
+            // TODO: Store in DB.
         }
 
         if (doesHiveWeightDecreaseInAutumn(hiveWeights)) {
             logMessage('considerFeeding', user, hive);
 
+            const message = `Weight of hive: ${hive.hiveName} has decreased significantly this autumn. It might be a good time to consider feeding your bees.`;
             await sendNotification({
                 title: 'Hive Weight Decrease In Autumn',
-                body: `Weight of hive: ${hive.hiveName} has decreased significantly this autumn. It might be a good time to consider feeding your bees.`
+                body: message
             }).catch(error => console.log(`Error in sending notification: ${error}`));
+
+            const notificationToStoreInDB = createNotificationObject(
+                hive.id,
+                NotificationType.ConsiderFeeding,
+                message
+            );
+
+            // TODO: Store in DB.
         }
     },
 
@@ -105,10 +148,19 @@ export const notificationStrategies = {
         if (isWarmDryLowWindDayBetweenSummerAndEarlyAutumn(dailyWeatherConditions)) {
             logMessage('honeyHarvest', user, hive);
 
+            const message = `Today's forecast promises perfect conditions for honey harvesting at ${hive.hiveName} with warm temperatures, low humidity, and gentle breezes.`;
             await sendNotification({
                 title: `Ideal Weather for Honey Harvest at ${hive.hiveName}`,
-                body: `Today's forecast promises perfect conditions for honey harvesting at ${hive.hiveName} with warm temperatures, low humidity, and gentle breezes.`
+                body: message
             }).catch(error => console.log(`Error in sending notification: ${error}`));
+
+            const notificationToStoreInDB = createNotificationObject(
+                hive.id, 
+                NotificationType.HoneyHarvest,
+                message
+            );
+
+            // TODO: Store in DB.
         }
     },
 
@@ -130,49 +182,58 @@ export const notificationStrategies = {
         const weeklyTemperatures = getWeeklyTemperatureData(weatherData.weeklyForecast);
         if (areTemperaturesConsistentlyWarm(weeklyTemperatures, weeklyTemperatures.length)) {
             logMessage('warm trend', user, hive);
-            
+
+            const message = `Its getting warm around ${hive.hiveName}. Consider checking it out.`;
             await sendNotification({
                 title: 'Warm Trend Detected',
-                body: `Its getting warm around ${hive.hiveName}. Consider checking it out.`
+                body: message
             }).catch(error => console.log(`Error sending notification: ${error}`));
 
             const notificationToStoreInDB = createNotificationObject(
                 hive.id,
                 NotificationType.Weather,
-                `Its getting warm around ${hive.hiveName}. Consider checking it out.`
+                message
             );
+
+            // TODO: Store in DB.
         }
         
         const weatherConditions = getWeatherConditions(weatherData.weeklyForecast);
         if (isSnowForecast(weatherConditions)) {
             logMessage('snow forecast', user, hive);
-
+            
+            const message = `Snow is forecasted around hive ${hive.hiveName}.`;
             await sendNotification({
                 title: 'Snow Forecast',
-                body: `Snow is forecasted around hive ${hive.hiveName}.`
+                body: message
             }).catch(error => console.log(`Error sending notification: ${error}`));
 
             const notificationToStoreInDB = createNotificationObject(
                 hive.id,
                 NotificationType.Weather,
-                `Snow is forecasted around hive ${hive.hiveName}.`
+                message
             );
+
+            // TODO: Store in DB.
         }
 
         const dailyTemperature = getDailyTemperatureData(weatherData.dailyForecast);
         if (isWarmerEachDayInSpring(dailyTemperature)) {
             logMessage('warming trend in spring', user, hive);
 
+            const message = `A warming trend in spring is detected for hive ${hive.hiveName}`;
             await sendNotification({
                 title: 'Warming Trend in Spring',
-                body: `A warming trend in spring is detected for hive ${hive.hiveName}`
+                body: message
             }).catch(error => console.log(`Error sending notification: ${error}`));
 
             const notificationToStoreInDB = createNotificationObject(
                 hive.id, 
                 NotificationType.Weather,
-                `A warming trend in spring is detected for hive ${hive.hiveName}`
+                message
             );
+
+            // TODO: Store in DB.
         }
     }
 }
