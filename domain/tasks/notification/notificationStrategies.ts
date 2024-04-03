@@ -1,6 +1,8 @@
 import { CurrentForecast, DailyForecast, WeeklySimpleForecast } from "@/models/forecast";
 import { Hive } from "@/models/hive";
 import { User } from "@/models/user";
+import { HiveNotification } from "@/models/notification";
+import { NotificationType } from "@/constants/Notifications";
 import { sendNotification } from "./sendNotification";
 import { 
     areTemperaturesConsistentlyWarm, 
@@ -23,6 +25,9 @@ interface Props {
     hive: Hive,
     weatherData: WeatherData
 }
+
+// TODO: When a hive notification is sent, a 'HiveNotification' object is to be
+// created and written to the DB.
 
 export const notificationStrategies = {
 
@@ -130,6 +135,12 @@ export const notificationStrategies = {
                 title: 'Warm Trend Detected',
                 body: `Its getting warm around ${hive.hiveName}. Consider checking it out.`
             }).catch(error => console.log(`Error sending notification: ${error}`));
+
+            const notificationToStoreInDB = createNotificationObject(
+                hive.id,
+                NotificationType.Weather,
+                `Its getting warm around ${hive.hiveName}. Consider checking it out.`
+            );
         }
         
         const weatherConditions = getWeatherConditions(weatherData.weeklyForecast);
@@ -140,6 +151,12 @@ export const notificationStrategies = {
                 title: 'Snow Forecast',
                 body: `Snow is forecasted around hive ${hive.hiveName}.`
             }).catch(error => console.log(`Error sending notification: ${error}`));
+
+            const notificationToStoreInDB = createNotificationObject(
+                hive.id,
+                NotificationType.Weather,
+                `Snow is forecasted around hive ${hive.hiveName}.`
+            );
         }
 
         const dailyTemperature = getDailyTemperatureData(weatherData.dailyForecast);
@@ -150,6 +167,12 @@ export const notificationStrategies = {
                 title: 'Warming Trend in Spring',
                 body: `A warming trend in spring is detected for hive ${hive.hiveName}`
             }).catch(error => console.log(`Error sending notification: ${error}`));
+
+            const notificationToStoreInDB = createNotificationObject(
+                hive.id, 
+                NotificationType.Weather,
+                `A warming trend in spring is detected for hive ${hive.hiveName}`
+            );
         }
     }
 }
@@ -203,4 +226,15 @@ const getDailyTemperatureData = (dailyForecast: DailyForecast) => {
 // Helper function.
 const getDailyHumidityData = (dailyForecast: DailyForecast) => {
     return Object.values(dailyForecast).map(forecast => forecast.humidity);
+}
+
+// Helper function.
+const createNotificationObject = (hiveId: string, notificationType: NotificationType, message: string) => {
+    return {
+        hiveId: hiveId,
+        notificationType: notificationType,
+        timeStamp: new Date(Date.now()),
+        isRead: false,
+        message: message
+    }
 }
