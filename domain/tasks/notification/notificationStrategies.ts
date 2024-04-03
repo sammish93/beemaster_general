@@ -13,6 +13,11 @@ import {
     createBeekeepingReminder, isWarmDryLowWindDay,
     isWarmDryLowWindDayBetweenSummerAndEarlyAutumn
 } from "@/domain/notificationFunctions";
+import { 
+    getDailyHumidityData, getDailyTemperatureData, 
+    getDailyWeatherConditionsFromHourly, getWeatherConditions, 
+    getWeeklyTemperatureData 
+} from "../weather/weatherDataProcessor";
 
 interface WeatherData {
     currentForecast: CurrentForecast,
@@ -25,9 +30,6 @@ interface Props {
     hive: Hive,
     weatherData: WeatherData
 }
-
-// TODO: When a hive notification is sent, a 'HiveNotification' object is to be
-// created and written to the DB.
 
 export const notificationStrategies = {
 
@@ -240,53 +242,6 @@ export const notificationStrategies = {
 
 const logMessage = (notificationType: string, user: User, hive: Hive) => {
     console.log(`Sending '${notificationType}' notification to ${user.email} for hive ${hive.id}`);
-}
-
-// Helper function.
-const getWeeklyTemperatureData = (weeklyForecast: WeeklySimpleForecast) => {
-    return [
-        weeklyForecast.currentForecast.temperature,
-        weeklyForecast.dayTwoForecast.temperature,
-        weeklyForecast.dayThreeForecast.temperature,
-        weeklyForecast.dayFourForecast.temperature,
-        weeklyForecast.dayFiveForecast.temperature,
-        weeklyForecast.daySixForecast.temperature,
-        weeklyForecast.daySevenForecast.temperature,
-    ];
-}
-
-// Helper function.
-const getWeatherConditions = (weeklyForecast: WeeklySimpleForecast) => {
-    return [
-        weeklyForecast.currentForecast.weatherType,
-        weeklyForecast.dayTwoForecast.weatherType,
-        weeklyForecast.dayThreeForecast.weatherType,
-        weeklyForecast.dayFourForecast.weatherType,
-        weeklyForecast.dayFiveForecast.weatherType,
-        weeklyForecast.daySixForecast.weatherType,
-        weeklyForecast.daySevenForecast.weatherType,
-    ];
-}
-
-const getDailyWeatherConditionsFromHourly = (dailyForecast: DailyForecast) => {
-    const hourlyForecasts = Object.values(dailyForecast.hourlyForecasts);
-    const transformedForecasts = hourlyForecasts.map(forecastPeriod => ({
-        temperature: forecastPeriod.temperature,
-        humidity: forecastPeriod.humidity,
-        windSpeed: forecastPeriod.windSpeed,
-    }));
-
-    return transformedForecasts;
-}
- 
-// Helper function.
-const getDailyTemperatureData = (dailyForecast: DailyForecast) => {
-    return Object.values(dailyForecast).map(forecast => forecast.temperature);
-}
-
-// Helper function.
-const getDailyHumidityData = (dailyForecast: DailyForecast) => {
-    return Object.values(dailyForecast).map(forecast => forecast.humidity);
 }
 
 // Helper function.
