@@ -12,6 +12,15 @@ interface Props {
     weatherData: WeatherData
 }
 
+/**
+ * Asynchronous strategies for analyzing weather and hive conditions to generate and send targeted 
+ * notifications to the user. Each strategy assesses different aspects such as temperature, humidity, 
+ * and hive weight changes, to decide on sending relevant notifications.
+ * 
+ * Notifications are created based on specific conditions like drastic weather changes, significant weight 
+ * changes of the hive, or optimal conditions for activities such as expanding the hive, feeding bees, or 
+ * honey harvesting.
+ */
 export const notificationStrategies = {
 
     checkHive: async ({ user, hive, weatherData }: Props) => {
