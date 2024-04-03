@@ -28,13 +28,11 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
 
 export const startBackgroundTask = async () => {
     try {
-        const result = await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
+        await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
             minimumInterval: 5, 
             stopOnTerminate: false, 
             startOnBoot: true, 
         });
-
-        console.log(`Task was registered: ${result}`);
 
         const tasks = await TaskManager.getRegisteredTasksAsync();
         tasks.forEach(task => {

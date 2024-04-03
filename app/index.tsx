@@ -39,7 +39,8 @@ const HomeScreen = () => {
     hiveViewModel.hives
   );
 
-  // Starts background task on the startup of the app.
+  // Register the background task on the startup of the app.
+  // To start the actualt task depends on the OS running the task.
   useEffect(() => {
     startBackgroundTask().then(() => {
       console.log('Background task registered in HomeScreen!');
