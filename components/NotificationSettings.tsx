@@ -185,7 +185,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
           onPress={() => handleOpenModal(NotificationType.CustomReminder)}
           disabled={true}
         >
-          {userViewModel.i18n.t("customise")}
+          {userViewModel.i18n.t("disabled")}
         </Button>
         <HorizontalSpacer size={8} />
         <NotificationSwitchComponent
