@@ -65,32 +65,50 @@ export const notificationStrategies = {
         }
     },
 
-    considerFeeding: ({ user, hive, weatherData}: Props) => {
-        
-        // Gonna add 'doesHiveWeightDecreaseInEarlySpring' 
-        // and 'doesHiveWeightDecreaseInAutumn' here.
+    considerFeeding: async ({ user, hive, weatherData}: Props) => {
+
+        // TODO: Swap with real values from db.
+        const hiveWeights = [150, 156, 159, 180];
+
+        if (doesHiveWeightDecreaseInEarlySpring(hiveWeights)) {
+            logMessage('considerFeeding', user, hive);
+
+            await sendNotification({
+                title: 'Hive Weight Decrease In Early Spring',
+                body: `Weight of hive: ${hive.hiveName} has decreased significantly this early spring. It might be a good time to consider feeding your bees.`
+            }).catch(error => console.log(`Error in sending notification: ${error}`));
+        }
+
+        if (doesHiveWeightDecreaseInAutumn(hiveWeights)) {
+            logMessage('considerFeeding', user, hive);
+
+            await sendNotification({
+                title: 'Hive Weight Decrease In Autumn',
+                body: `Weight of hive: ${hive.hiveName} has decreased significantly this autumn. It might be a good time to consider feeding your bees.`
+            }).catch(error => console.log(`Error in sending notification: ${error}`));
+        }
     },
 
-    customReminder: ({ user, hive, weatherData}: Props) => {
+    customReminder: async ({ user, hive, weatherData}: Props) => {
         logMessage('customReminder', user, hive);
 
         // Gonna add 'createBeekeepingReminder' here.
     },
 
-    honeyHarvest: ({ user, hive, weatherData}: Props) => {
+    honeyHarvest: async ({ user, hive, weatherData}: Props) => {
         logMessage('honeyHarvest', user, hive);
 
         // Gonna add 'isWarmDryLowWindDayBetweenSummerAndEarlyAutumn' here.
     },
 
-    maintenance: ({ user, hive, weatherData}: Props) => {
+    maintenance: async ({ user, hive, weatherData}: Props) => {
         logMessage('maintenance', user, hive);
 
         // Gonna add 'isWarmDryLowWindDay'
         // and 'isWarmDryLowWindDayBetweenSummerAndEarlyAutumn' here.
     },
 
-    possibleSwarm: ({ user, hive, weatherData}: Props) => {
+    possibleSwarm: async ({ user, hive, weatherData}: Props) => {
         logMessage('possibleSwarm', user, hive);
 
         // Gonna add 'haveFewBeesExited', 'isSwarmingRiskBasedOnUserDefinedSeason'
