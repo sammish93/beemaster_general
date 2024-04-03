@@ -6,8 +6,10 @@ import {
     areTemperaturesConsistentlyWarm, 
     doesHiveWeightIncreaseSignificantly, 
     isHumidityChangeDrastic, isSnowForecast, 
-    isTemperatureChangeDrastic, 
-    isWarmerEachDayInSpring 
+    isTemperatureChangeDrastic, isWarmerEachDayInSpring, 
+    doesHiveWeightDecreaseInEarlySpring, doesHiveWeightDecreaseInAutumn,
+    createBeekeepingReminder, isWarmDryLowWindDay,
+    isWarmDryLowWindDayBetweenSummerAndEarlyAutumn
 } from "@/domain/notificationFunctions";
 
 interface WeatherData {
@@ -38,10 +40,29 @@ export const notificationStrategies = {
         }
     },
 
-    considerExpanding: ({ user, hive, weatherData }: Props) => {
+    considerExpanding: async ({ user, hive, weatherData }: Props) => {
 
-        // Gonna add 'doesHiveWeightIncreaseSignificantly' 
-        // and 'areTemperaturesConsistentlyWarm' here.
+        // TODO: Swap with real values from db.
+        const dailyHiveWeights = [150, 152, 154, 155, 156];
+
+        if (doesHiveWeightIncreaseSignificantly(dailyHiveWeights)) {
+            logMessage('significant weight increase', user, hive);
+
+            await sendNotification({
+                title: 'Significant Weight Increase Detected',
+                body: `Weight of hive: ${hive.hiveName} has increased significantly, consider expanding!`
+            }).catch(error => console.log(`Error sending notification: ${error}`));
+        }        
+
+        const weeklyTemperatures = getWeeklyTemperatureData(weatherData.weeklyForecast);
+        if (areTemperaturesConsistentlyWarm(weeklyTemperatures, weeklyTemperatures.length)) {
+            logMessage('warm trend', user, hive);
+            
+            await sendNotification({
+                title: 'Warm Trend Detected',
+                body: `Its getting warm around ${hive.hiveName}. Consider expanding the hive.`
+            }).catch(error => console.log(`Error sending notification: ${error}`));
+        }
     },
 
     considerFeeding: ({ user, hive, weatherData}: Props) => {
