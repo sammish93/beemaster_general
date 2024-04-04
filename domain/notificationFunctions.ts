@@ -99,9 +99,11 @@ export const isHiveTooWarm = (hives: HiveModel[]): boolean => {
  */
 export const doesHiveWeightDecreaseInEarlySpring = (weights: number[]): boolean => {
     const { thresholdWeightDecreaseEarlySpring, earlySpringStartMonth, earlySpringEndMonth } = userViewModel;
-    const currentMonth = new Date().getMonth() + 1;
+    const currentMonth = new Date().getMonth();
+    const startMonth = earlySpringStartMonth.getMonth();
+    const endMonth = earlySpringEndMonth.getMonth();
 
-    if (currentMonth >= earlySpringStartMonth && currentMonth <= earlySpringEndMonth) {
+    if (currentMonth >= startMonth && currentMonth <= endMonth) {
         for (let i = 1; i < weights.length; i++) {
             const weightDecrease = weights[i - 1] - weights[i];
             if (weightDecrease >= thresholdWeightDecreaseEarlySpring) {
@@ -123,10 +125,12 @@ export const doesHiveWeightDecreaseInEarlySpring = (weights: number[]): boolean 
  */
 export const doesHiveWeightDecreaseInAutumn = (weights: number[]): boolean => {
     const thresholdWeightDecreaseInAutumn = userViewModel.thresholdWeightDecreaseInAutumn;
-    const autumnStartMonth = userViewModel.autumnStartMonth;
-    const autumnEndMonth = userViewModel.autumnEndMonth;
-    const currentMonth = new Date().getMonth() + 1;
-    if (currentMonth >= autumnStartMonth && currentMonth <= autumnEndMonth) {
+    const { autumnStartMonth, autumnEndMonth } = userViewModel;
+    const currentMonth = new Date().getMonth();
+    const startMonth = autumnStartMonth.getMonth();
+    const endMonth = autumnEndMonth.getMonth();
+
+    if (currentMonth >= startMonth && currentMonth <= endMonth) {
         for (let i = 1; i < weights.length; i++) {
             const weightDecrease = weights[i - 1] - weights[i];
             if (weightDecrease >= thresholdWeightDecreaseInAutumn) {
@@ -147,15 +151,15 @@ export const doesHiveWeightDecreaseInAutumn = (weights: number[]): boolean => {
  * @returns A boolean value indicating whether snow is forecasted during the autumn period.
  */
 export const isSnowForecastInAutumn = (weatherConditions: { date: Date; forecast: string }[]): boolean => {
-    const autumnStartMonth = userViewModel.autumnStartMonth;
-    const autumnEndMonth = userViewModel.autumnEndMonth;
-    const currentMonth = new Date().getMonth() + 1;
-
-    if (currentMonth >= autumnStartMonth && currentMonth <= autumnEndMonth) {
+    const { autumnStartMonth, autumnEndMonth } = userViewModel;
+    const currentMonth = new Date().getMonth();
+    const startMonth = autumnStartMonth.getMonth();
+    const endMonth = autumnEndMonth.getMonth();
+    if (currentMonth >= startMonth && currentMonth <= endMonth) {
         return weatherConditions.some(condition =>
             condition.forecast.includes('snow') &&
-            condition.date.getMonth() + 1 >= autumnStartMonth &&
-            condition.date.getMonth() + 1 <= autumnEndMonth
+            condition.date.getMonth() + 1 >= startMonth &&
+            condition.date.getMonth() + 1 <= endMonth
         );
     }
     return false;
@@ -196,17 +200,24 @@ export const areStrongWindsForecast = (forecast: number[]): boolean => {
  *  
  * @notification Weather - Triggers a 'Weather' notification when snow is forecasted during the specified seasons of autumn, early winter, or early spring.
  * @param weatherConditions An array of strings, each representing a forecast description.
- * @returns A boolean value indicating whether snow is forecasted during the specified seasons based on the current month.
+ * @returns True if the current date falls within the specified seasons (autumn, early winter, 
+ * or early spring) and 'snow' is included in the weather conditions. False otherwise.
  */
 export const isSnowForecastInSpecificSeasons = (weatherConditions: string[]): boolean => {
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
-    if (weatherConditions.includes('snow')) {
-        if (userViewModel.autumnMonths.includes(currentMonth) || userViewModel.earlyWinterMonths.includes(currentMonth) || userViewModel.earlySpringMonths.includes(currentMonth)) {
-            return true;
-        }
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    if (!weatherConditions.includes('snow')) {
+        return false;
     }
-    return false;
+
+    const isWithinSeason = (seasonMonths: Date[]) => seasonMonths.some(seasonDate =>
+        seasonDate.getMonth() === currentMonth && seasonDate.getFullYear() === currentYear
+    );
+    return isWithinSeason(userViewModel.autumnMonths) ||
+        isWithinSeason(userViewModel.earlyWinterMonths) ||
+        isWithinSeason(userViewModel.earlySpringMonths);
 };
 
 
@@ -246,10 +257,11 @@ export const isWarmDryLowWindDay = (
         windSpeed: number
     }[],
 ): boolean => {
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
-    const earlySpringStartMonth = userViewModel.earlySpringStartMonth;
-    const autumnEndMonth = userViewModel.autumnEndMonth;
+    const currentMonth = new Date().getMonth();
+
+    const earlySpringStartMonth = userViewModel.earlySpringStartMonth.getMonth();
+    const autumnEndMonth = userViewModel.autumnEndMonth.getMonth();
+
     const thresholdWindSpeedLow = userViewModel.thresholdWindSpeedLow;
     const thresholdTempWarm = userViewModel.thresholdTempWarm;
     const humidityThreshold = userViewModel.humidityThreshold;
@@ -278,12 +290,13 @@ export const isWarmDryLowWindDayBetweenSummerAndEarlyAutumn = (
     weatherConditions: { temperature: number; humidity: number; windSpeed: number }[],
 ): boolean => {
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
+    const currentMonth = currentDate.getMonth();
+
     const humidityThreshold = userViewModel.humidityThreshold;
     const thresholdTempWarm = userViewModel.thresholdTempWarm;
     const thresholdWindSpeedLow = userViewModel.thresholdWindSpeedLow;
-    const summerStartMonth = userViewModel.summerStartMonth;
-    const earlyAutumnMonth = userViewModel.earlyAutumnMonth;
+    const summerStartMonth = userViewModel.summerStartMonth.getMonth();
+    const earlyAutumnMonth = userViewModel.earlyAutumnMonth.getMonth();
 
     if (currentMonth >= summerStartMonth && currentMonth <= earlyAutumnMonth) {
         return weatherConditions.some(condition =>
@@ -342,7 +355,7 @@ export const isTemperatureChangeDrastic = (temperatures: number[]): boolean => {
 export const isHumidityChangeDrastic = (humidities: number[]): boolean => {
     for (let i = 1; i < humidities.length; i++) {
         const humidityChange = Math.abs(humidities[i] - humidities[i - 1]);
-        if (humidityChange > userViewModel.thresholdMaxHumidityChange) {
+        if (humidityChange > userViewModel.thresholdMaxHumidityChangeInHive) {
             return true;
         }
     }
@@ -364,10 +377,11 @@ export const isSwarmingRiskBasedOnUserDefinedSeason = (
     congregationAtEntranceDetected: boolean
 ): boolean => {
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
+    const currentMonth = currentDate.getMonth();
+
     if (
-        currentMonth >= userViewModel.lateSpringStartMonth &&
-        currentMonth <= userViewModel.earlySummerEndMonth &&
+        currentMonth >= userViewModel.lateSpringStartMonth.getMonth() &&
+        currentMonth <= userViewModel.earlySummerEndMonth.getMonth() &&
         (queenCuppingDetected || congregationAtEntranceDetected)
     ) {
         return true;

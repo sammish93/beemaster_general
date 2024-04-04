@@ -27,145 +27,138 @@ const ModalContent = (props: ModalContentProps) => {
   const userViewModel = useContext(MobXProviderContext).userViewModel;
 
   //Thresholds
-  const [thresholdWeightDecreaseInAutumn, setThresholdWeightDecreaseInAutumn] =
-    useState(`${userViewModel.thresholdWeightDecreaseInAutumn}`);
-  const [
-    thresholdWeightDecreaseEarlySpring,
-    setThresholdWeightDecreaseEarlySpring,
-  ] = useState(`${userViewModel.thresholdWeightDecreaseEarlySpring}`);
-  const [thresholdWeightDecreaseSwarm, setThresholdWeightDecreaseSwarm] =
-    useState(`${userViewModel.thresholdWeightDecreaseSwarm}`);
-  const [thresholdExitCountHigh, setThresholdExitCountHigh] = useState(
-    `${userViewModel.thresholdExitCountHigh}`
+  const [thresholdWeightDecreaseInAutumn, setThresholdWeightDecreaseInAutumn] = useState<number>(
+    userViewModel.thresholdWeightDecreaseInAutumn
   );
-  const [thresholdExitCountLow, setThresholdExitCountLow] = useState(
-    `${userViewModel.thresholdExitCountLow}`
+  const [thresholdWeightDecreaseEarlySpring, setThresholdWeightDecreaseEarlySpring] = useState<number>(
+    userViewModel.thresholdWeightDecreaseEarlySpring
   );
-  const [thresholdWindSpeedStrong, setThresholdWindSpeedStrong] = useState(
-    `${userViewModel.thresholdWindSpeedStrong}`
+  const [thresholdWeightDecreaseSwarm, setThresholdWeightDecreaseSwarm] = useState<number>(
+    userViewModel.thresholdWeightDecreaseSwarm
   );
-  const [thresholdWindSpeedLow, setThresholdWindSpeedLow] = useState(
-    `${userViewModel.thresholdWindSpeedLow}`
+  const [thresholdExitCountHigh, setThresholdExitCountHigh] = useState<number>(
+    userViewModel.thresholdExitCountHigh
   );
-  const [thresholdTempWarm, setThresholdTempWarm] = useState(
-    `${userViewModel.thresholdTempWarm}`
+  const [thresholdExitCountLow, setThresholdExitCountLow] = useState<number>(
+    userViewModel.thresholdExitCountLow
   );
-  const [thresholdWeightIncrease, setThresholdWeightIncrease] = useState(
-    `${userViewModel.thresholdWeightIncrease}`
+  const [thresholdWindSpeedStrong, setThresholdWindSpeedStrong] = useState<number>(
+    userViewModel.thresholdWindSpeedStrong
   );
-  const [thresholdMaxTempChange, setThresholdMaxTempChange] = useState(
-    `${userViewModel.thresholdMaxTempChange}`
+  const [thresholdWindSpeedLow, setThresholdWindSpeedLow] = useState<number>(
+    userViewModel.thresholdWindSpeedLow
   );
-  const [thresholdMaxHumidityChange, setThresholdMaxHumidityChange] = useState(
-    `${userViewModel.thresholdMaxHumidityChange}`
+  const [thresholdTempWarm, setThresholdTempWarm] = useState<number>(
+    userViewModel.thresholdTempWarm
   );
-  const [humidityThreshold, setHumidityThreshold] = useState(
-    `${userViewModel.humidityThreshold}`
+  const [thresholdWeightIncrease, setThresholdWeightIncrease] = useState<number>(
+    userViewModel.thresholdWeightIncrease
+  );
+  const [thresholdMaxTempChange, setThresholdMaxTempChange] = useState<number>(
+    userViewModel.thresholdMaxTempChange
+  );
+  const [thresholdMaxHumidityChange, setThresholdMaxHumidityChange] = useState<number>(
+    userViewModel.thresholdMaxHumidityChange
+  );
+  const [humidityThreshold, setHumidityThreshold] = useState<number>(
+    userViewModel.humidityThreshold
   );
 
   //Spring
-  const [earlySpringStartMonth, setEarlySpringStartMonth] = useState(
-    `${userViewModel.earlySpringStartMonth}`
+  const [earlySpringStartMonth, setEarlySpringStartMonth] = useState<Date>(
+    userViewModel.earlySpringStartMonth
   );
-  const [earlySpringEndMonth, setEarlySpringEndMonth] = useState(
-    `${userViewModel.earlySpringEndMonth}`
+  const [earlySpringEndMonth, setEarlySpringEndMonth] = useState<Date>(
+    userViewModel.earlySpringEndMonth
   );
-  const [earlySpringMonths, setEarlySpringMonths] = useState(
-    `${userViewModel.earlySpringMonths}`
+  const [earlySpringMonths, setEarlySpringMonths] = useState<Date[]>(
+    userViewModel.earlySpringMonths
   );
-  const [lateSpringStartMonth, setLateSpringStartMonth] = useState(
-    `${userViewModel.lateSpringStartMonth}`
+  const [lateSpringStartMonth, setLateSpringStartMonth] = useState<Date>(
+    userViewModel.lateSpringStartMonth
   );
 
   //Autumn
-  const [autumnStartMonth, setAutumnStartMonth] = useState(
-    `${userViewModel.autumnStartMonth}`
+  const [autumnStartMonth, setAutumnStartMonth] = useState<Date>(
+    userViewModel.autumnStartMonth
   );
-  const [autumnEndMonth, setAutumnEndMonth] = useState(
-    `${userViewModel.autumnEndMonth}`
+  const [autumnEndMonth, setAutumnEndMonth] = useState<Date>(
+    userViewModel.autumnEndMonth
   );
-  const [autumnMonths, setAutumnMonths] = useState(
-    `${userViewModel.autumnMonths}`
+  const [autumnMonths, setAutumnMonths] = useState<Date[]>(
+    userViewModel.autumnMonths
   );
-  const [earlyAutumnMonth, setEarlyAutumnMonth] = useState(
-    `${userViewModel.earlyAutumnMonth}`
+  const [earlyAutumnMonth, setEarlyAutumnMonth] = useState<Date>(
+    userViewModel.earlyAutumnMonth
   );
 
   //Winter
-  const [earlyWinterMonths, setEarlyWinterMonths] = useState(
-    `${userViewModel.earlyWinterMonths}`
+  const [earlyWinterMonths, setEarlyWinterMonths] = useState<Date[]>(
+    userViewModel.earlyWinterMonths
   );
 
   //Summer
-  const [summerStartMonth, setSummerStartMonth] = useState(
-    `${userViewModel.summerStartMonth}`
+  const [summerStartMonth, setSummerStartMonth] = useState<Date>(
+    userViewModel.summerStartMonth
   );
-  const [earlySummerEndMonth, setEarlySummerEndMonth] = useState(
-    `${userViewModel.earlySummerEndMonth}`
+  const [earlySummerEndMonth, setEarlySummerEndMonth] = useState<Date>(
+    userViewModel.earlySummerEndMonth
   );
+
+
 
   const getSaveAction = (parameterName: NotificationType) => {
     const actions = {
       [NotificationType.Weather]: () => {
         userViewModel.setThresholdWindSpeedStrong(
-          parseInt(thresholdWindSpeedStrong)
+          thresholdWindSpeedStrong
         );
-        userViewModel.setAutumnMonths(parseInt(autumnMonths));
-        userViewModel.setEarlyWinterMonths(parseInt(earlyWinterMonths));
-        userViewModel.setEarlySpringMonths(parseInt(earlySpringMonths));
+        userViewModel.setAutumnMonths(autumnMonths);
+        userViewModel.setEarlyWinterMonths(earlyWinterMonths);
+        userViewModel.setEarlySpringMonths(earlySpringMonths);
       },
       [NotificationType.PossibleSwarm]: () => {
-        userViewModel.setThresholdWeightDecreaseSwarm(
-          parseInt(thresholdWeightDecreaseSwarm)
-        );
-        userViewModel.setThresholdExitCountHigh(
-          parseInt(thresholdExitCountHigh)
-        );
+        userViewModel.setThresholdWeightDecreaseSwarm(thresholdWeightDecreaseSwarm);
+        userViewModel.setThresholdExitCountHigh(thresholdExitCountHigh);
       },
       [NotificationType.ConsiderFeeding]: () => {
         userViewModel.setThresholdWeightDecreaseEarlySpring(
-          parseFloat(thresholdWeightDecreaseEarlySpring)
+          thresholdWeightDecreaseEarlySpring
         );
-        userViewModel.setEarlySpringStartMonth(
-          parseInt(earlySpringStartMonth, 10)
-        );
-        userViewModel.setEarlySpringEndMonth(parseInt(earlySpringEndMonth, 10));
-        userViewModel.setAutumnStartMonth(parseInt(autumnStartMonth, 10));
-        userViewModel.setAutumnEndMonth(parseInt(autumnEndMonth, 10));
-        userViewModel.setThresholdExitCountLow(parseInt(thresholdExitCountLow));
+        userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
+        userViewModel.setEarlySpringEndMonth(earlySpringEndMonth);
+        userViewModel.setAutumnStartMonth(autumnStartMonth);
+        userViewModel.setAutumnEndMonth(autumnEndMonth);
+        userViewModel.setThresholdExitCountLow(thresholdExitCountLow);
       },
       [NotificationType.HoneyHarvest]: () => {
-        userViewModel.setHumidityThreshold(parseInt(humidityThreshold));
-        userViewModel.setThresholdTempWarm(parseInt(thresholdTempWarm));
-        userViewModel.setThresholdWindSpeedLow(parseInt(thresholdWindSpeedLow));
-        userViewModel.setSummerStartMonth(parseInt(summerStartMonth));
-        userViewModel.setEarlyAutumnMonth(parseInt(earlyAutumnMonth));
+        userViewModel.setHumidityThreshold(humidityThreshold);
+        userViewModel.setThresholdTempWarm(thresholdTempWarm);
+        userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
+        userViewModel.setSummerStartMonth(summerStartMonth);
+        userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
       },
       [NotificationType.Maintenance]: () => {
-        userViewModel.setEarlySpringStartMonth(
-          parseInt(earlySpringStartMonth, 10)
-        );
-        userViewModel.setAutumnEndMonth(parseInt(autumnEndMonth, 10));
-        userViewModel.setThresholdWindSpeedLow(parseInt(thresholdWindSpeedLow));
-        userViewModel.setThresholdTempWarm(parseInt(thresholdTempWarm));
-        userViewModel.setHumidityThreshold(parseInt(humidityThreshold));
+        userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
+        userViewModel.setAutumnEndMonth(autumnEndMonth);
+        userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
+        userViewModel.setThresholdTempWarm(thresholdTempWarm);
+        userViewModel.setHumidityThreshold(humidityThreshold);
       },
       [NotificationType.ConsiderExpanding]: () => {
-        userViewModel.setThresholdWeightIncrease(
-          parseInt(thresholdWeightIncrease)
-        );
+        userViewModel.setThresholdWeightIncrease(thresholdWeightIncrease);
       },
       [NotificationType.CheckHive]: () => {
         userViewModel.setThresholdMaxTempChange(
-          parseInt(thresholdMaxTempChange)
+          thresholdMaxTempChange
         );
         userViewModel.setThresholdMaxHumidityChange(
-          parseInt(thresholdMaxHumidityChange)
+          thresholdMaxHumidityChange
         );
-        userViewModel.setLateSpringStartMonth(parseInt(lateSpringStartMonth));
-        userViewModel.setEarlySummerEndMonth(parseInt(earlySummerEndMonth));
+        userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
+        userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
       },
-      [NotificationType.CustomReminder]: () => {},
+      [NotificationType.CustomReminder]: () => { },
     };
     return actions[parameterName];
   };
@@ -184,35 +177,32 @@ const ModalContent = (props: ModalContentProps) => {
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [activeField, setActiveField] = useState("");
 
-  const onConfirm = (selectedDate: Date) => {
-    const selectedMonth = selectedDate.getMonth() + 1;
+  const onConfirm = (date: Date) => {
+    //const selectedMonth = selectedDate.getMonth() + 1;
     switch (activeField) {
       case "earlyAutumnMonth":
-        setEarlyAutumnMonth(selectedMonth.toString());
+        setEarlyAutumnMonth(date);
         break;
       case "summerStartMonth":
-        setSummerStartMonth(selectedMonth.toString());
+        setSummerStartMonth(date);
         break;
       case "earlySpringStartMonth":
-        setEarlySpringStartMonth(selectedMonth.toString());
+        setEarlySpringStartMonth(date);
         break;
       case "autumnEndMonth":
-        setAutumnEndMonth(selectedMonth.toString());
+        setAutumnEndMonth(date);
         break;
       case "lateSpringStartMonth":
-        setLateSpringStartMonth(selectedMonth.toString());
+        setLateSpringStartMonth(date);
         break;
       case "earlySummerEndMonth":
-        setEarlySummerEndMonth(selectedMonth.toString());
+        setEarlySummerEndMonth(date);
         break;
       case "earlySpringEndMonth":
-        setEarlySpringEndMonth(selectedMonth.toString());
+        setEarlySpringEndMonth(date);
         break;
       case "autumnStartMonth":
-        setAutumnStartMonth(selectedMonth.toString());
-        break;
-      case "autumnStartMonth":
-        setAutumnStartMonth(selectedMonth.toString());
+        setAutumnStartMonth(date);
         break;
 
       default:
@@ -223,14 +213,14 @@ const ModalContent = (props: ModalContentProps) => {
 
   //More than one month
   const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
-  const [markedDates, setMarkedDates] = useState({});
-  const [selectedMonths, setSelectedMonths] = useState({});
+  const [markedDates, setMarkedDates] = useState<{ [key: string]: { selected: boolean } }>({});
+  const [selectedMonths, setSelectedMonths] = useState<Date[]>([]);
   const [activeField2, setActiveField2] = useState("");
 
   const onDayPress = (day: { dateString: string }) => {
     const newMarkedDates = {
       ...markedDates,
-      [day.dateString]: { selected: true },
+      [day.dateString]: { selected: !markedDates[day.dateString]?.selected },
     };
     setMarkedDates(newMarkedDates);
   };
@@ -239,25 +229,28 @@ const ModalContent = (props: ModalContentProps) => {
     setActiveField2(field);
     setCalendarModalVisible(true);
   };
-  const onConfirmSelection = () => {
-    const months = Object.keys(markedDates).map(
-      (date) => new Date(date).getMonth() + 1
-    );
-    const monthsString = months.join(",");
 
-    setSelectedMonths((prev) => ({ ...prev, [activeField]: monthsString }));
+  const onConfirmSelection = () => {
+    // Generer en array av Date-objekter basert på de merkede datoene
+    const selectedDates = Object.entries(markedDates)
+      .filter(([_, value]) => value.selected)
+      .map(([key]) => new Date(key));
+
+    setSelectedMonths(selectedDates);
 
     switch (activeField2) {
       case "autumnMonths":
-        setAutumnMonths(monthsString);
+        setAutumnMonths(selectedDates);
         break;
       case "earlyWinterMonths":
-        setEarlyWinterMonths(monthsString);
+        setEarlyWinterMonths(selectedDates);
         break;
       case "earlySpringMonths":
-        setEarlySpringMonths(monthsString);
+        setEarlySpringMonths(selectedDates);
         break;
     }
+
+    setMarkedDates({});
     setCalendarModalVisible(false);
   };
 
@@ -272,8 +265,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Wind Speed"
-              value={thresholdWindSpeedStrong}
-              onChangeText={setThresholdWindSpeedStrong}
+              value={thresholdWindSpeedStrong.toString()}
+              onChangeText={(text) => setThresholdWindSpeedStrong(Number(text))}
               keyboardType="numeric"
             />
             <VerticalSpacer size={12} />
@@ -283,9 +276,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Autumn Months"
-              value={autumnMonths}
-              onChangeText={setAutumnMonths}
-              keyboardType="numeric"
+              value={autumnMonths.map(date => date.toLocaleDateString()).join(", ")}
+              editable={false}
+
             />
             <Button
               mode="contained"
@@ -296,9 +289,9 @@ const ModalContent = (props: ModalContentProps) => {
 
             <TextInput
               label="Early Winter Months"
-              value={earlyWinterMonths}
-              onChangeText={setEarlyWinterMonths}
-              keyboardType="numeric"
+              value={earlyWinterMonths.map(date => date.toLocaleDateString()).join(", ")}
+              editable={false}
+
             />
             <Button
               mode="contained"
@@ -308,9 +301,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label="Early Spring Months"
-              value={earlySpringMonths}
-              onChangeText={setEarlySpringMonths}
-              keyboardType="numeric"
+              value={earlySpringMonths.map(date => date.toLocaleDateString()).join(", ")}
+              editable={false}
+
             />
             <Button
               mode="contained"
@@ -329,8 +322,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Weight Decrease"
-              value={thresholdWeightDecreaseSwarm}
-              onChangeText={setThresholdWeightDecreaseSwarm}
+              value={thresholdWeightDecreaseSwarm.toString()}
+              onChangeText={(text) => setThresholdWeightDecreaseSwarm(Number(text))}
               keyboardType="numeric"
             />
 
@@ -339,8 +332,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Exit Count"
-              value={thresholdExitCountHigh}
-              onChangeText={setThresholdExitCountHigh}
+              value={thresholdExitCountHigh.toString()}
+              onChangeText={(text) => setThresholdExitCountHigh(Number(text))}
               keyboardType="numeric"
             />
           </View>
@@ -353,27 +346,27 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Wind Speed"
-              value={thresholdWindSpeedLow}
-              onChangeText={setThresholdWindSpeedLow}
+              value={thresholdWindSpeedLow.toString()}
+              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
             <TextInput
               label="Threshold Temperature"
-              value={thresholdTempWarm}
-              onChangeText={setThresholdTempWarm}
+              value={thresholdTempWarm.toString()}
+              onChangeText={(text) => setThresholdTempWarm(Number(text))}
               keyboardType="numeric"
             />
             <TextInput
               label="Humidity Threshold %"
-              value={humidityThreshold}
-              onChangeText={setHumidityThreshold}
+              value={humidityThreshold.toString()}
+              onChangeText={(text) => setHumidityThreshold(Number(text))}
               keyboardType="numeric"
             />
             <TextInput
               label="Early Autumn Month"
-              value={earlyAutumnMonth}
-              onChangeText={setEarlyAutumnMonth}
-              keyboardType="numeric"
+              value={earlyAutumnMonth.toLocaleDateString()}
+              editable={false}
+
             />
             <Button
               mode="contained"
@@ -387,9 +380,9 @@ const ModalContent = (props: ModalContentProps) => {
 
             <TextInput
               label="Summer Start Month"
-              value={summerStartMonth}
-              onChangeText={setSummerStartMonth}
-              keyboardType="numeric"
+              value={summerStartMonth.toLocaleDateString()}
+              editable={false}
+
             />
             <Button
               mode="contained"
@@ -413,9 +406,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Early Spring Start Month"
-              value={earlySpringStartMonth}
-              onChangeText={setEarlySpringStartMonth}
-              keyboardType="numeric"
+              value={earlySpringStartMonth.toLocaleDateString()}
+              editable={false}
             />
             <Button
               mode="contained"
@@ -429,9 +421,8 @@ const ModalContent = (props: ModalContentProps) => {
 
             <TextInput
               label="Autumn End Month"
-              value={autumnEndMonth}
-              onChangeText={setAutumnEndMonth}
-              keyboardType="numeric"
+              value={autumnEndMonth.toLocaleDateString()}
+              editable={false}
             />
             <Button
               mode="contained"
@@ -445,20 +436,20 @@ const ModalContent = (props: ModalContentProps) => {
 
             <TextInput
               label="Threshold Wind Speed"
-              value={thresholdWindSpeedLow}
-              onChangeText={setThresholdWindSpeedLow}
+              value={thresholdWindSpeedLow.toString()}
+              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
             <TextInput
               label="Threshold Temperature"
-              value={thresholdTempWarm}
-              onChangeText={setThresholdTempWarm}
+              value={thresholdTempWarm.toString()}
+              onChangeText={(text) => setThresholdTempWarm(Number(text))}
               keyboardType="numeric"
             />
             <TextInput
               label="Humidity Threshold %"
-              value={humidityThreshold}
-              onChangeText={setHumidityThreshold}
+              value={humidityThreshold.toString()}
+              onChangeText={(text) => setHumidityThreshold(Number(text))}
               keyboardType="numeric"
             />
             <VerticalSpacer size={12} />
@@ -472,8 +463,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Weight Parameter Increase"
-              value={thresholdWeightIncrease}
-              onChangeText={setThresholdWeightIncrease}
+              value={thresholdWeightIncrease.toString()}
+              onChangeText={(text) => setThresholdWeightIncrease(Number(text))}
               keyboardType="numeric"
             />
           </View>
@@ -487,8 +478,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Max Temperature Change"
-              value={thresholdMaxTempChange}
-              onChangeText={setThresholdMaxTempChange}
+              value={thresholdMaxTempChange.toString()}
+              onChangeText={(text) => setThresholdMaxTempChange(Number(text))}
               keyboardType="numeric"
             />
             <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
@@ -496,8 +487,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Max Humidity Change"
-              value={thresholdMaxHumidityChange}
-              onChangeText={setThresholdMaxHumidityChange}
+              value={thresholdMaxHumidityChange.toString()}
+              onChangeText={(text) => setThresholdMaxHumidityChange(Number(text))}
               keyboardType="numeric"
             />
             <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
@@ -506,9 +497,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Late Spring Start Month"
-              value={lateSpringStartMonth}
-              onChangeText={setLateSpringStartMonth}
-              keyboardType="numeric"
+              value={lateSpringStartMonth.toLocaleDateString()}
+              editable={false}
             />
             <Button
               mode="contained"
@@ -522,9 +512,8 @@ const ModalContent = (props: ModalContentProps) => {
 
             <TextInput
               label="Early Summer End Month"
-              value={earlySummerEndMonth}
-              onChangeText={setEarlySummerEndMonth}
-              keyboardType="numeric"
+              value={earlySummerEndMonth.toLocaleDateString()}
+              editable={false}
             />
             <Button
               mode="contained"
@@ -546,15 +535,14 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Weight Decrease"
-              value={thresholdWeightDecreaseEarlySpring}
-              onChangeText={setThresholdWeightDecreaseEarlySpring}
+              value={thresholdWeightDecreaseEarlySpring.toString()}
+              onChangeText={(text) => setThresholdWeightDecreaseEarlySpring(Number(text))}
               keyboardType="numeric"
             />
             <TextInput
               label="Early Spring Start Month"
-              value={earlySpringStartMonth}
-              onChangeText={setEarlySpringStartMonth}
-              keyboardType="numeric"
+              value={earlySpringStartMonth.toLocaleDateString()}
+              editable={false}
             />
             <Button
               mode="contained"
@@ -568,9 +556,8 @@ const ModalContent = (props: ModalContentProps) => {
 
             <TextInput
               label="Early Spring End Month"
-              value={earlySpringEndMonth}
-              onChangeText={setEarlySpringEndMonth}
-              keyboardType="numeric"
+              value={earlySpringEndMonth.toLocaleDateString()}
+              editable={false}
             />
             <Button
               mode="contained"
@@ -589,15 +576,14 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Weight Decrease"
-              value={thresholdWeightDecreaseInAutumn}
-              onChangeText={setThresholdWeightDecreaseInAutumn}
+              value={thresholdWeightDecreaseInAutumn.toString()}
+              onChangeText={(text) => setThresholdWeightDecreaseInAutumn(Number(text))}
               keyboardType="numeric"
             />
             <TextInput
               label="Autumn Start Month"
-              value={autumnStartMonth}
-              onChangeText={setAutumnStartMonth}
-              keyboardType="numeric"
+              value={autumnStartMonth.toLocaleDateString()}
+              editable={false}
             />
             <Button
               mode="contained"
@@ -611,9 +597,8 @@ const ModalContent = (props: ModalContentProps) => {
 
             <TextInput
               label="Autumn End Month"
-              value={autumnEndMonth}
-              onChangeText={setAutumnEndMonth}
-              keyboardType="numeric"
+              value={autumnEndMonth.toLocaleDateString()}
+              editable={false}
             />
             <Button
               mode="contained"
@@ -632,9 +617,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Autumn Start Month"
-              value={autumnStartMonth}
-              onChangeText={setAutumnStartMonth}
-              keyboardType="numeric"
+              value={autumnStartMonth.toLocaleDateString()}
+              editable={false}
             />
             <Button
               mode="contained"
@@ -648,9 +632,8 @@ const ModalContent = (props: ModalContentProps) => {
 
             <TextInput
               label="Autumn End Month"
-              value={autumnEndMonth}
-              onChangeText={setAutumnEndMonth}
-              keyboardType="numeric"
+              value={autumnEndMonth.toLocaleDateString()}
+              editable={false}
             />
             <Button
               mode="contained"
@@ -669,8 +652,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label=" Count for Threshold Exit "
-              value={thresholdExitCountLow}
-              onChangeText={setThresholdExitCountLow}
+              value={thresholdExitCountLow.toString()}
+              onChangeText={(text) => setThresholdExitCountLow(Number(text))}
               keyboardType="numeric"
             />
             <VerticalSpacer size={12} />
