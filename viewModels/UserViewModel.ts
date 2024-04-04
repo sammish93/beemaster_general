@@ -132,7 +132,7 @@ class UserViewModel {
     @observable thresholdWindSpeedStrong: number = 0;
     @observable thresholdWindSpeedLow: number = 0;
     @observable thresholdWeightIncrease: number = 0;
-    @observable thresholdMaxTempChange: number = 0;
+    @observable thresholdMaxTempChangeInHive: number = 0;
     @observable thresholdMaxHumidityChange: number = 0;
     @observable humidityThreshold: number = 0;
     @observable autumnMonths: number[] = [];
@@ -307,8 +307,8 @@ class UserViewModel {
     @action public setThresholdWeightIncrease = (value: number): void => {
         this.thresholdWeightIncrease = value;
     }
-    @action public setThresholdMaxTempChange = (value: number): void => {
-        this.thresholdMaxTempChange = value;
+    @action public setThresholdMaxTempChangeInHive = (value: number): void => {
+        this.thresholdMaxTempChangeInHive = value;
     }
 
     @action public setThresholdMaxHumidityChange = (value: number): void => {
@@ -483,7 +483,7 @@ class UserViewModel {
             thresholdWindSpeedStrong: 10.5,
             thresholdWindSpeedLow: 3.5,
             thresholdWeightIncrease: 2,
-            thresholdMaxTempChange: 10,
+            thresholdMaxTempChangeInHive: 10,
             thresholdMaxHumidityChange: 60,
 
             autumnMonths: [8, 9],
@@ -522,7 +522,7 @@ class UserViewModel {
         this.setThresholdExitCountHigh(userDataFromDatabase.thresholdExitCountHigh);
         this.setThresholdExitCountLow(userDataFromDatabase.thresholdExitCountLow);
         this.setThresholdWeightIncrease(userDataFromDatabase.thresholdWeightIncrease);
-        this.setThresholdMaxTempChange(userDataFromDatabase.thresholdMaxTempChange);
+        this.setThresholdMaxTempChangeInHive(userDataFromDatabase.thresholdMaxTempChangeInHive);
         this.setThresholdMaxHumidityChange(userDataFromDatabase.thresholdMaxHumidityChange);
         this.setHumidityThreshold(userDataFromDatabase.humidityThreshold);
 

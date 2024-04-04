@@ -324,7 +324,7 @@ export const doesHiveWeightIncreaseSignificantly = (weights: number[]): boolean 
 export const isTemperatureChangeDrastic = (temperatures: number[]): boolean => {
     for (let i = 1; i < temperatures.length; i++) {
         const tempChange = Math.abs(temperatures[i] - temperatures[i - 1]);
-        if (tempChange > userViewModel.thresholdMaxTempChange) {
+        if (tempChange > userViewModel.thresholdMaxTempChangeInHive) {
             return true;
         }
     }
