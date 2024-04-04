@@ -233,7 +233,7 @@ export const isDroughtForecast = (weatherConditions: { forecast: string; country
  * Function to check for warm and/or dry days with low wind speed between early spring and late autumn.
  *   
  * @notification Weather - Indicates a notable weather pattern that might impact bee activity and hive conditions.
- * @notification Maintenance - Suggests that the weather conditions are ideal for performing hive maintenance and inspections.
+ * @notification Maintenance - Suggests that the weather conditions are ideal for performing hive maintenance.
  * @notification ConsiderFeeding - Indicates that supplementary feeding may be necessary if the warm, dry conditions persist and natural food sources become scarce.
  *
  * @param weatherConditions Array of objects representing daily weather conditions.
@@ -269,7 +269,7 @@ export const isWarmDryLowWindDay = (
 /**
  * Function to check for warm, dry days with low wind speed between summer and early autumn.
  * 
- * @notification Maintenance - Suggests optimal conditions for performing hive maintenance and inspections.
+ * @notification Maintenance - Suggests optimal conditions for performing hive maintenance.
  * @notification HoneyHarvest - Indicates ideal conditions for honey harvesting due to the stable and favorable weather, potentially leading to a successful and efficient harvest.
  * @param weatherConditions Array of objects representing daily weather conditions.
  * @returns A boolean indicating whether the conditions meet the criteria for a warm, dry day with low wind speed in the specified period.
