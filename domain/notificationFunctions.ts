@@ -211,15 +211,19 @@ export const isSnowForecastInSpecificSeasons = (weatherConditions: string[]): bo
 
 
 /**
- * Function for checking if a drought is forecast.
+ * Function for checking if a drought is forecast based on user's location.
  * 
- * @notification Weather - Triggers a 'Weather' notification when 'drought' is detected in the forecast.
+ * @notification Weather - Triggers a 'Weather' notification when 'drought' is detected in the forecast for the user's current country.
  * @notification ConsiderFeeding - In addition, triggers a 'ConsiderFeeding' notification for beekeepers, indicating that supplementary feeding may be necessary due to reduced availability of natural food sources for bees during drought conditions.
- * @param weatherConditions Array of weather conditions forecasts.
- * @returns A boolean indicating whether a drought is forecast.
+ *
+ * @param weatherConditions Array of objects, each representing a weather forecast description and the country it applies to.
+ * 
+ * @returns A boolean indicating whether a drought is forecast in the user's current country.
  */
-export const isDroughtForecast = (weatherConditions: string[]): boolean => {
-    return weatherConditions.includes('drought');
+export const isDroughtForecast = (weatherConditions: { forecast: string; country: string }[]): boolean => {
+    const userCountry = userViewModel.currentCountry || 'NO';
+    return weatherConditions.some(condition =>
+        condition.forecast.includes('drought') && condition.country === userCountry);
 };
 
 

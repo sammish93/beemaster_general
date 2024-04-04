@@ -12,6 +12,7 @@ import { WEB_CLIENT_ID } from '@env';
 import { NotificationPreference, NotificationType } from "@/constants/Notifications";
 import { notificationPreferences } from "@/data/notificationData";
 import { LocationObject, LocationObjectCoords } from "expo-location";
+
 class UserViewModel {
 
     constructor() {
@@ -470,6 +471,7 @@ class UserViewModel {
             precipitationPreference: PrecipitationMeasurement.Millimeters,
             windSpeedPreference: WindSpeedMeasurement.MetersPerSecond,
             weightPreference: WeightMeasurement.Kilograms,
+
             maxTempParamTooWarm: 40,
 
             thresholdWeightDecreaseInAutumn: 10,
