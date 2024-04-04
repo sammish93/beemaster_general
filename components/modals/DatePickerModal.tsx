@@ -1,47 +1,56 @@
 import React, { useState } from 'react';
 import { Platform, View } from 'react-native';
-import { useTheme, } from "react-native-paper";
-
+import { useTheme } from "react-native-paper";
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
-
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const DateTimePickerModal = ({ onConfirm }: { onConfirm: (date: Date) => void }) => {
-
     const [date, setDate] = useState<Date>(new Date());
-    const [show, setShow] = useState<boolean>(false);
+    const [show, setShow] = useState<boolean>(Platform.OS === 'ios');
 
-
-    const theme = useTheme();
     const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
         const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
         setDate(currentDate);
         if (selectedDate) {
             onConfirm(currentDate);
         }
+        if (Platform.OS === 'ios') {
+            setShow(false);
+        }
     };
 
+    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newMonthIndex = parseInt(event.target.value, 10);
+        const newDate = new Date(date.getFullYear(), newMonthIndex);
+        onConfirm(newDate);
+    };
 
-
-    if (Platform.OS === 'ios' || Platform.OS === 'android') {
+    // Web-version: Dropdown
+    if (Platform.OS === 'web') {
         return (
-            <View >
+            <select value={date.getMonth()} onChange={handleChange}>
+                {monthNames.map((name, index) => (
+                    <option key={index} value={index}>
+                        {name}
+                    </option>
+                ))}
+            </select>
+        );
+    } else if (show) {
+        // Mobileversion:  DateTimePicker
+        return show && (
+            <View>
                 <DateTimePicker
-                    testID="monthPicker"
+                    testID="dateTimePicker"
                     value={date}
                     mode="date"
-                    is24Hour={true}
                     display="default"
                     onChange={onChange}
-
-
                 />
-
             </View>
         );
     } else {
-
         return null;
     }
 };

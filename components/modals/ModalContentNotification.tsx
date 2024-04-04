@@ -54,11 +54,11 @@ const ModalContent = (props: ModalContentProps) => {
   const [thresholdWeightIncrease, setThresholdWeightIncrease] = useState<number>(
     userViewModel.thresholdWeightIncrease
   );
-  const [thresholdMaxTempChange, setThresholdMaxTempChange] = useState<number>(
-    userViewModel.thresholdMaxTempChange
+  const [thresholdMaxTempChangeInHive, setThresholdMaxTempChangeInHive] = useState<number>(
+    userViewModel.thresholdMaxTempChangeInHive
   );
-  const [thresholdMaxHumidityChange, setThresholdMaxHumidityChange] = useState<number>(
-    userViewModel.thresholdMaxHumidityChange
+  const [thresholdMaxHumidityChangeInHive, setThresholdMaxHumidityChangeInHive] = useState<number>(
+    userViewModel.thresholdMaxHumidityChangeInHive
   );
   const [humidityThreshold, setHumidityThreshold] = useState<number>(
     userViewModel.humidityThreshold
@@ -149,11 +149,11 @@ const ModalContent = (props: ModalContentProps) => {
         userViewModel.setThresholdWeightIncrease(thresholdWeightIncrease);
       },
       [NotificationType.CheckHive]: () => {
-        userViewModel.setThresholdMaxTempChange(
-          thresholdMaxTempChange
+        userViewModel.setThresholdMaxTempChangeInHive(
+          thresholdMaxTempChangeInHive
         );
-        userViewModel.setThresholdMaxHumidityChange(
-          thresholdMaxHumidityChange
+        userViewModel.setThresholdMaxHumidityChangeInHive(
+          thresholdMaxHumidityChangeInHive
         );
         userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
         userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
@@ -478,8 +478,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Max Temperature Change"
-              value={thresholdMaxTempChange.toString()}
-              onChangeText={(text) => setThresholdMaxTempChange(Number(text))}
+              value={thresholdMaxTempChangeInHive.toString()}
+              onChangeText={(text) => setThresholdMaxTempChangeInHive(Number(text))}
               keyboardType="numeric"
             />
             <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
@@ -487,8 +487,8 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label="Threshold Max Humidity Change"
-              value={thresholdMaxHumidityChange.toString()}
-              onChangeText={(text) => setThresholdMaxHumidityChange(Number(text))}
+              value={thresholdMaxHumidityChangeInHive.toString()}
+              onChangeText={(text) => setThresholdMaxHumidityChangeInHive(Number(text))}
               keyboardType="numeric"
             />
             <Text style={{ ...theme.fonts.bodyMedium, flex: 1 }}>
@@ -691,6 +691,7 @@ const ModalContent = (props: ModalContentProps) => {
       </View>
       {datePickerVisible && <DatePickerModal onConfirm={onConfirm} />}
       {renderContent()}
+
       <VerticalSpacer size={12} />
 
       <Portal>
