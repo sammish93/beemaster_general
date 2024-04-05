@@ -1,5 +1,11 @@
 import { useNavigation } from "expo-router";
-import { Dimensions, Platform, ScrollView, View } from "react-native";
+import {
+  Dimensions,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useRef, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
@@ -22,6 +28,8 @@ import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import { isValidString } from "@/domain/validation/stringValidation";
 import { ScreenWidth } from "@/constants/Dimensions";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import NotificationInfoModal from "@/components/modals/NotificationInfoModal";
 
 type RootStackParamList = {
   hive: {
@@ -43,6 +51,8 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   const hiveId = params.route.params.hiveId;
   const selectedHive = hiveViewModel.getSelectedHive();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
+  const [notificationInfoModalVisible, setNotificationInfoModalVisible] =
+    useState(false);
   const [addFiltersToHiveModalVisible, setAddFiltersToHiveModalVisible] =
     useState(false);
   const bottomSheetAddFiltersToHiveModalRef = useRef<BottomSheetModal>(null);
@@ -137,8 +147,10 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
 
     Toast.show(
       toastCrossPlatform({
-        title: "Success",
-        text: `Deleted hive '${deletedHiveName}'.`,
+        title: userViewModel.i18n.t("success"),
+        text: userViewModel.i18n.t("toast_deleted_hive", {
+          deletedHiveName: deletedHiveName,
+        }),
         type: "success",
       })
     );
@@ -165,8 +177,10 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
 
       Toast.show(
         toastCrossPlatform({
-          title: "Success",
-          text: `Renamed hive to '${name}'.`,
+          title: userViewModel.i18n.t("success"),
+          text: userViewModel.i18n.t("toast_renamed_hive", {
+            name: name,
+          }),
           type: "success",
         })
       );
@@ -272,15 +286,35 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
             <VerticalSpacer size={12} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text
+            <View
               style={{
-                ...theme.fonts.headlineSmall,
-                textAlign: "center",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
                 padding: 1,
               }}
             >
-              {userViewModel.i18n.t("notifications")}
-            </Text>
+              <Text
+                style={{
+                  ...theme.fonts.headlineSmall,
+                  textAlign: "center",
+                  padding: 1,
+                }}
+              >
+                {userViewModel.i18n.t("notification types")}
+              </Text>
+
+              <TouchableOpacity
+                onPress={() => setNotificationInfoModalVisible(true)}
+                style={{ marginLeft: 8 }}
+              >
+                <MaterialCommunityIcons
+                  style={styles(theme).trailingIcon}
+                  name="information-outline"
+                  size={24}
+                />
+              </TouchableOpacity>
+            </View>
             <VerticalSpacer size={8} />
 
             <NotificationSettingsComponent hiveId={hiveId} />
@@ -361,6 +395,10 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
           deleteHive={handleDeleteHive}
         />
       ) : null}
+      <NotificationInfoModal
+        isOverlayModalVisible={notificationInfoModalVisible}
+        onClose={() => setNotificationInfoModalVisible(false)}
+      />
     </SafeAreaView>
   );
 };

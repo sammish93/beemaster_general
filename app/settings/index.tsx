@@ -1,8 +1,8 @@
 import { useNavigation } from "expo-router";
 import { TouchableOpacity, View, ScrollView } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useContext, useEffect } from "react";
-import { Button, useTheme, Divider, Text, List } from "react-native-paper";
+import { useContext, useEffect, useState } from "react";
+import { Button, useTheme, Divider, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -14,17 +14,31 @@ import DefaultSwitchComponent from "@/components/DefaultSwitch";
 import { VerticalSpacer } from "@/components/Spacers";
 import NotificationButton from "@/components/NotificationButton";
 import NotificationSettingsComponent from "@/components/NotificationSettings";
-import { CountryEnum, CountryOption, LanguageEnum, LanguageOption, availableCountries, availableLanguages } from "@/constants/LocaleEnums";
-import { TemperatureMeasurement, WeightMeasurement } from "@/constants/Measurements";
+import NotificationInfoModal from "@/components/modals/NotificationInfoModal";
+import SettingsInfoModal from "@/components/modals/SettingsInfoModal";
+import {
+  CountryEnum,
+  CountryOption,
+  LanguageEnum,
+  LanguageOption,
+  availableCountries,
+  availableLanguages,
+} from "@/constants/LocaleEnums";
+import {
+  TemperatureMeasurement,
+  WeightMeasurement,
+} from "@/constants/Measurements";
 
 const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-
+  const [notificationInfoModalVisible, setNotificationInfoModalVisible] =
+    useState(false);
+  const [settingsInfoModalVisible, setSettingsInfoModalVisible] =
+    useState(false);
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
-
 
   /**
    * Turns a list of languages (`availableLanguages`) into a list without duplicates, making sure
@@ -34,16 +48,20 @@ const SettingsScreen = () => {
    * removing duplicates and making Norwegian Bokmaal just 'Norwegian'.
    */
 
-  const uniqueLanguageOptions = availableLanguages.reduce<LanguageOption[]>((unique, option) => {
-    const exists = unique.some(u => u.name === option.name);
-    if (!exists) {
-
-      const preferredCode = option.code === LanguageEnum.NorwegianBokmal ? LanguageEnum.Norwegian : option.code;
-      unique.push({ ...option, code: preferredCode });
-    }
-    return unique;
-  }, []);
-
+  const uniqueLanguageOptions = availableLanguages.reduce<LanguageOption[]>(
+    (unique, option) => {
+      const exists = unique.some((u) => u.name === option.name);
+      if (!exists) {
+        const preferredCode =
+          option.code === LanguageEnum.NorwegianBokmal
+            ? LanguageEnum.Norwegian
+            : option.code;
+        unique.push({ ...option, code: preferredCode });
+      }
+      return unique;
+    },
+    []
+  );
 
   /**
    * Turns a list of countries (`availableCountries`) into a list without duplicates, making sure
@@ -54,17 +72,22 @@ const SettingsScreen = () => {
    * easier to manage and understand.
    */
 
-  const uniqueCountryOptions = availableCountries.reduce<CountryOption[]>((unique, option) => {
-    const exists = unique.some(u => u.name === option.name);
-    if (!exists) {
-
-      const preferredCode = option.code === CountryEnum.WebNorway ? CountryEnum.Norway :
-        option.code === CountryEnum.WebEngland ? CountryEnum.England : option.code;
-      unique.push({ ...option, code: preferredCode });
-    }
-    return unique;
-  }, []);
-
+  const uniqueCountryOptions = availableCountries.reduce<CountryOption[]>(
+    (unique, option) => {
+      const exists = unique.some((u) => u.name === option.name);
+      if (!exists) {
+        const preferredCode =
+          option.code === CountryEnum.WebNorway
+            ? CountryEnum.Norway
+            : option.code === CountryEnum.WebEngland
+            ? CountryEnum.England
+            : option.code;
+        unique.push({ ...option, code: preferredCode });
+      }
+      return unique;
+    },
+    []
+  );
 
   const handleLanguageChange = (langCode: LanguageEnum) => {
     userViewModel.setLanguage(langCode);
@@ -89,11 +112,7 @@ const SettingsScreen = () => {
         canOpenDrawer={!!navigation.openDrawer}
         title={userViewModel.i18n.t("settings")}
         trailingIcons={[
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("/settings/info/index");
-            }}
-          >
+          <TouchableOpacity onPress={() => setSettingsInfoModalVisible(true)}>
             <MaterialCommunityIcons
               style={styles(theme).trailingIcon}
               name="information-outline"
@@ -121,8 +140,7 @@ const SettingsScreen = () => {
           <List.Accordion
             title={userViewModel.i18n.t("choose your language")}
             titleStyle={theme.fonts.bodyLarge}
-            left={props => <List.Icon {...props} icon="translate" />}
-
+            left={(props) => <List.Icon {...props} icon="translate" />}
           >
             {uniqueLanguageOptions.map((language) => (
               <List.Item
@@ -140,8 +158,7 @@ const SettingsScreen = () => {
           <List.Accordion
             title={userViewModel.i18n.t("choose your country")}
             titleStyle={theme.fonts.bodyLarge}
-            left={props => <List.Icon {...props} icon="earth" />}
-
+            left={(props) => <List.Icon {...props} icon="earth" />}
           >
             {uniqueCountryOptions.map((country) => (
               <List.Item
@@ -154,46 +171,54 @@ const SettingsScreen = () => {
           </List.Accordion>
 
           <Text style={theme.fonts.bodyLarge}>
-            {userViewModel.i18n.t("measurement preferences")}: {currentMeasurements}
+            {userViewModel.i18n.t("measurement preferences")}:{" "}
+            {currentMeasurements}
           </Text>
           <List.Accordion
             title={userViewModel.i18n.t("select temperature unit")}
             titleStyle={theme.fonts.bodyLarge}
-            left={props => <List.Icon {...props} icon="thermometer" />}
-
-
+            left={(props) => <List.Icon {...props} icon="thermometer" />}
           >
             <List.Item
               title="Celsius (°C)"
               titleStyle={theme.fonts.bodyLarge}
-              onPress={() => userViewModel.setTemperaturePreference(TemperatureMeasurement.Celsius)}
+              onPress={() =>
+                userViewModel.setTemperaturePreference(
+                  TemperatureMeasurement.Celsius
+                )
+              }
             />
             <List.Item
               title="Fahrenheit (°F)"
               titleStyle={theme.fonts.bodyLarge}
-              onPress={() => userViewModel.setTemperaturePreference(TemperatureMeasurement.Fahrenheit)}
+              onPress={() =>
+                userViewModel.setTemperaturePreference(
+                  TemperatureMeasurement.Fahrenheit
+                )
+              }
             />
           </List.Accordion>
-
 
           <List.Accordion
             title={userViewModel.i18n.t("select unit of weight")}
             titleStyle={theme.fonts.bodyLarge}
-            left={props => <List.Icon {...props} icon="scale" />}
-
+            left={(props) => <List.Icon {...props} icon="scale" />}
           >
             <List.Item
               title="Kilogram (kg)"
               titleStyle={theme.fonts.bodyLarge}
-              onPress={() => userViewModel.setWeightPreference(WeightMeasurement.Kilograms)}
+              onPress={() =>
+                userViewModel.setWeightPreference(WeightMeasurement.Kilograms)
+              }
             />
             <List.Item
               title={userViewModel.i18n.t("pounds (lb)")}
               titleStyle={theme.fonts.bodyLarge}
-              onPress={() => userViewModel.setWeightPreference(WeightMeasurement.Pounds)}
+              onPress={() =>
+                userViewModel.setWeightPreference(WeightMeasurement.Pounds)
+              }
             />
           </List.Accordion>
-
 
           <VerticalSpacer size={12} />
 
@@ -249,9 +274,7 @@ const SettingsScreen = () => {
             </Text>
 
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("/settings/info/index");
-              }}
+              onPress={() => setNotificationInfoModalVisible(true)}
               style={{ marginLeft: 8 }}
             >
               <MaterialCommunityIcons
@@ -331,6 +354,14 @@ const SettingsScreen = () => {
           </View>
         </View>
       </ScrollView>
+      <NotificationInfoModal
+        isOverlayModalVisible={notificationInfoModalVisible}
+        onClose={() => setNotificationInfoModalVisible(false)}
+      />
+      <SettingsInfoModal
+        isOverlayModalVisible={settingsInfoModalVisible}
+        onClose={() => setSettingsInfoModalVisible(false)}
+      />
     </SafeAreaView>
   );
 };

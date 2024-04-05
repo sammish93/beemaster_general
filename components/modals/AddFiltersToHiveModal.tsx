@@ -53,13 +53,19 @@ const ModalContent = (props: ModalContentProps) => {
   const [filterList, setFilterList] = useState<string[]>(selectedHive.filters);
 
   const handleAddNewFilters = () => {
-    selectedHive.filters = filterList;
-    hiveViewModel.updateHive(selectedHive);
+    const updatedHive = { ...selectedHive };
+
+    updatedHive.filters = filterList;
+
+    hiveViewModel.updateHive(updatedHive);
+    hiveViewModel.addSelectedHive(updatedHive);
 
     Toast.show(
       toastCrossPlatform({
-        title: "Success",
-        text: `Modified the filters of the hive '${selectedHive.name}'.`,
+        title: userViewModel.i18n.t("success"),
+        text: userViewModel.i18n.t("toast_modified_filters", {
+          name: selectedHive.name,
+        }),
         type: "success",
       })
     );

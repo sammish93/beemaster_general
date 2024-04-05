@@ -11,7 +11,6 @@ import CalendarPage from "@/app/toolbox/calendar";
 import HiveScanPage from "@/app/toolbox/hiveScan";
 import UpdatesPage from "@/app/updates";
 import SettingsPage from "@/app/settings";
-import SettingsInfoPage from "@/app/settings/info";
 import LoginPage from "@/app/login";
 
 const Stack = createNativeStackNavigator();
@@ -125,14 +124,6 @@ export const SettingsStack = (props: StackProps) => (
       component={SettingsPage}
       options={{
         title: "Settings",
-        headerShown: props.headerShown ? props.headerShown : false,
-      }}
-    />
-    <Stack.Screen
-      name="/settings/info/index"
-      component={SettingsInfoPage}
-      options={{
-        title: "Settings Info",
         headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
