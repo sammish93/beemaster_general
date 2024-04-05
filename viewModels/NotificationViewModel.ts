@@ -42,6 +42,19 @@ class NotificationViewModel {
         }
     }
 
+    @action markNotificationsAsRead() {
+        // TODO DB - update all notifications for a single user by setting all isRead values to true.
+        this.notifications.forEach(notification => {
+            notification.isRead = true;
+        });
+    }
+
+    @action getUnreadNotificationAmount() {
+        const unreadNotificationsAmount = this.notifications.filter(notification => !notification.isRead).length;
+        
+        return unreadNotificationsAmount;
+    }
+
     @action removeNotification(notificationId: string) {
         this.notifications = this.notifications.filter(notificationObject => notificationObject.id !== notificationId);
     }

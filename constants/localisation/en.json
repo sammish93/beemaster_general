@@ -213,5 +213,7 @@
   "toast_removed_filter": "Removed '%{filter}' from your filters.",
   "repositioned hive": "Repositioned hive.",
   "oops": "Oops",
-  "manually change permissions": "You need to manually change permissions in your settings."
+  "manually change permissions": "You need to manually change permissions in your settings.",
+  "mark all notifications as seen": "Mark all notifications as seen",
+  "you have no unread notifications": "You have no unread notifications."
 }

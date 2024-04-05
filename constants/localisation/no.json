@@ -213,5 +213,7 @@
   "toast_removed_filter": "Fjernet '%{filter}' fra dine filtre.",
   "repositioned hive": "Omplassert bikuben.",
   "oops": "Oops",
-  "manually change permissions": "Du må manuelt endre tillatelser i dine innstillinger."
+  "manually change permissions": "Du må manuelt endre tillatelser i dine innstillinger.",
+  "mark all notifications as seen": "Marker alle notifikasjoner som lest",
+  "you have no unread notifications": "Du har ingen uleste notifikasjoner."
 }
