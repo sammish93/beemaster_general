@@ -15,13 +15,16 @@ import DefaultSwitchComponent from "@/components/DefaultSwitch";
 import { VerticalSpacer } from "@/components/Spacers";
 import NotificationButton from "@/components/NotificationButton";
 import NotificationSettingsComponent from "@/components/NotificationSettings";
-import NotificationInfoModal from "@/components/modals/NotificaitonInfoModal";
+import NotificationInfoModal from "@/components/modals/NotificationInfoModal";
+import SettingsInfoModal from "@/components/modals/SettingsInfoModal";
 
 const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const [notificationInfoModalVisible, setNotificationInfoModalVisible] =
+    useState(false);
+  const [settingsInfoModalVisible, setSettingsInfoModalVisible] =
     useState(false);
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
@@ -39,11 +42,7 @@ const SettingsScreen = () => {
         canOpenDrawer={!!navigation.openDrawer}
         title={userViewModel.i18n.t("settings")}
         trailingIcons={[
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("/settings/info/index");
-            }}
-          >
+          <TouchableOpacity onPress={() => setSettingsInfoModalVisible(true)}>
             <MaterialCommunityIcons
               style={styles(theme).trailingIcon}
               name="information-outline"
@@ -212,6 +211,10 @@ const SettingsScreen = () => {
       <NotificationInfoModal
         isOverlayModalVisible={notificationInfoModalVisible}
         onClose={() => setNotificationInfoModalVisible(false)}
+      />
+      <SettingsInfoModal
+        isOverlayModalVisible={settingsInfoModalVisible}
+        onClose={() => setSettingsInfoModalVisible(false)}
       />
     </SafeAreaView>
   );

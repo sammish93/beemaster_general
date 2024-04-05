@@ -7,7 +7,7 @@ import { BottomModal, OverlayModal } from "./Modals";
 import { VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
 
-interface UpdateInfoModalProps {
+interface SettingsInfoModalProps {
   isOverlayModalVisible: boolean;
   onClose: () => void;
 }
@@ -16,7 +16,7 @@ interface ModalContentProps {
   onClose: () => void;
 }
 
-const UpdateInfoModal = (props: UpdateInfoModalProps) => {
+const SettingsInfoModal = (props: SettingsInfoModalProps) => {
   return (
     <OverlayModal
       isOverlayModalVisible={props.isOverlayModalVisible}
@@ -51,29 +51,45 @@ const ModalContent = (props: ModalContentProps) => {
       </View>
       <View>
         <Text style={theme.fonts.bodyLarge}>
-          Missed an important notification because your phone was switched off?
-          This screen is intended to display all of your important
-          notifications.
+          This screen contains functionality that allows you to further
+          customise the application to fit your needs.
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Click on the 'Seen' button to dismiss the notification as being marked
-          as read.
+          Switch between light and dark colour schemes by pressing the switch.
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Click on the notification card to visit the hive screen that the
-          notification pertains to.
+          Change your language by choosing a supported language via a dropdown
+          menu. This also influences how dates and times are displayed.
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Want to disable a specific type of notification for only a single one
-          of your hives? Click the 'Mute' button so that you no longer receive
-          notifications of that type for said hive.
+          Note: Changing your country of residence will influence when you will
+          receive notifications. Setting your country of residence to a country
+          in the southern hemisphere will influence notifications that take
+          seasons into account. These parameters can be further customised.
+        </Text>
+        <VerticalSpacer size={20} />
+        <Text style={theme.fonts.bodyLarge}>
+          Adjust your measurement preferences. Switch between celsius,
+          fahrenheit, and kelvins, as well as much more.
+        </Text>
+        <VerticalSpacer size={20} />
+        <Text style={theme.fonts.bodyLarge}>
+          Toggle application permissions on and off. The application can still
+          be used with all permissioned switched off, but some functionality
+          such as using your current location when repositioning a hive will be
+          unavailable.
+        </Text>
+        <VerticalSpacer size={20} />
+        <Text style={theme.fonts.bodyLarge}>
+          Receive notifications for various platforms such as push
+          notifications, SMS messages, or emails.
         </Text>
       </View>
     </>
   );
 };
 
-export default UpdateInfoModal;
+export default SettingsInfoModal;

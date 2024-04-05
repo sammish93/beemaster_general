@@ -29,7 +29,7 @@ import { toastCrossPlatform } from "@/components/ToastCustom";
 import { isValidString } from "@/domain/validation/stringValidation";
 import { ScreenWidth } from "@/constants/Dimensions";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import NotificationInfoModal from "@/components/modals/NotificaitonInfoModal";
+import NotificationInfoModal from "@/components/modals/NotificationInfoModal";
 
 type RootStackParamList = {
   hive: {

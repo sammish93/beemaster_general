@@ -51,9 +51,38 @@ const ModalContent = (props: ModalContentProps) => {
       </View>
       <View>
         <Text style={theme.fonts.bodyLarge}>
-          Details about hive screen here.
+          This screen provides detailed information for a specific hive.
         </Text>
-        {/*TODO Write about how to use this screen*/}
+        <VerticalSpacer size={20} />
+        <Text style={theme.fonts.bodyLarge}>
+          The forecast element includes the current weather conditions for the
+          hive's location, together with a simplified view of the forecast for
+          the following week. Click on the arrow button located on the forecast
+          card to view the weekly forecast in greater detail.
+        </Text>
+        <VerticalSpacer size={20} />
+        <Text style={theme.fonts.bodyLarge}>
+          If you have registered and installed a sensor for your hive then
+          recent data collected by your sensor pertaining to said hive will be
+          shown here. For historical sensor data you can press on the history
+          button located on the chart card.
+        </Text>
+        <VerticalSpacer size={20} />
+        <Text style={theme.fonts.bodyLarge}>
+          You can use notes to record observations and other important details
+          about a specific hive. Click on the pencil icon located on the top
+          right of the screen to create a note. Notes can be edited later on, as
+          well as being pinned, or 'stickied'. Pinned notes will always appear
+          above any other note, so be sure to use this functionality for your
+          most important notes!
+        </Text>
+        <VerticalSpacer size={20} />
+        <Text style={theme.fonts.bodyLarge}>
+          Do you wish to edit your hive, or access additional functionality such
+          as registering additional sensors or repositioning your hive? Click on
+          the cogwheel icon in the top right corner of the screen to navigate to
+          the hive settings screen.
+        </Text>
       </View>
     </>
   );
