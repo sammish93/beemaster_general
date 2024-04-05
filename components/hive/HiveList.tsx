@@ -15,9 +15,15 @@ export interface HiveListProps {
   isDetailedView: boolean;
   navigation: NavigationProp<ReactNavigation.RootParamList>;
   hives: HiveModel[];
+  onPressModal: () => void;
 }
 
-const HiveList = ({ isDetailedView, navigation, hives }: HiveListProps) => {
+const HiveList = ({
+  isDetailedView,
+  navigation,
+  hives,
+  onPressModal,
+}: HiveListProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
   const [parentWidth, setParentWidth] = useState(0);
@@ -47,6 +53,7 @@ const HiveList = ({ isDetailedView, navigation, hives }: HiveListProps) => {
         hiveViewModel.addSelectedHive(item);
         navigation.navigate("/hive/index", { hiveId: item.id });
       }}
+      onPressModal={onPressModal}
       maxWidth={
         numColumns > 1 ? parentWidth / numColumns - itemsInLastRow * 8 : "100%"
       }

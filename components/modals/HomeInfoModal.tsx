@@ -73,10 +73,11 @@ const ModalContent = (props: ModalContentProps) => {
           that you can better organise which hives appear on this screen. Simply
           click on the 'Add new filter' button and give your filter a name. Once
           your filter is added you can add a filter to a hive of your choosing,
-          either by a long press on the hive, or by clicking on the 'Modify hive
-          filters' button on a hive's settings page. From there on you can click
-          your filter at the top of this page and it will filter out all hives
-          that don't include said filter.
+          either by a long press on the hive (mobile users only), clicking on
+          the filter button on the hive card (web users only), or by clicking on
+          the 'Modify hive filters' button on a hive's settings page. From there
+          on you can click your filter at the top of this page and it will
+          filter out all hives that don't include said filter.
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>

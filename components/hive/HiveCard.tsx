@@ -1,7 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { HiveModel } from "@/models/hiveModel";
-import { View, Image } from "react-native";
-import { useTheme, Text, Card, Icon } from "react-native-paper";
+import { View, Image, Platform } from "react-native";
+import {
+  useTheme,
+  Text,
+  Card,
+  Icon,
+  Button,
+  IconButton,
+  FAB,
+} from "react-native-paper";
 import { sensorData } from "@/data/hiveData";
 import getWeatherTypeIconFromString from "@/domain/weatherIconMapper";
 import { MobXProviderContext } from "mobx-react";
@@ -11,6 +25,8 @@ import { fetchWeatherForecast } from "@/data/api/weatherApi";
 import { deserialiseCurrentForecast } from "@/domain/weatherForecastDeserialiser";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "../ToastCustom";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import AddFiltersToHiveModal from "../modals/AddFiltersToHiveModal";
 
 // Assures that only the string "100%" can be passed.
 type maxWidthString = "100%";
@@ -19,6 +35,7 @@ interface HiveCardProps {
   item: HiveModel;
   isDetailedView: boolean;
   onPress: () => void;
+  onPressModal: () => void;
   maxWidth: number | maxWidthString;
 }
 
@@ -26,9 +43,11 @@ const HiveCard = ({
   item,
   isDetailedView,
   onPress,
+  onPressModal,
   maxWidth,
 }: HiveCardProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
+  const { hiveViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
   const [forecast, setForecast] = useState<CurrentForecast>();
 
@@ -60,7 +79,24 @@ const HiveCard = ({
   }, []);
 
   return (
-    <Card onPress={onPress} style={{ margin: 4, flex: 1, maxWidth: maxWidth }}>
+    <Card
+      onPress={onPress}
+      onLongPress={
+        Platform.OS === "web"
+          ? () => null
+          : () => {
+              hiveViewModel.addSelectedHive(item);
+              onPressModal();
+            }
+      }
+      style={{
+        margin: 4,
+        marginBottom: Platform.OS === "web" ? 24 : 4,
+        paddingBottom: Platform.OS === "web" ? 36 : 12,
+        flex: 1,
+        maxWidth: maxWidth,
+      }}
+    >
       <Card.Title title={item.name} titleStyle={{ alignSelf: "center" }} />
       <Card.Content style={{ flexDirection: "row" }}>
         <View
@@ -286,6 +322,17 @@ const HiveCard = ({
           </View>
         ) : null}
       </Card.Content>
+      {Platform.OS === "web" ? (
+        <FAB
+          icon="filter-variant"
+          onPress={() => {
+            hiveViewModel.addSelectedHive(item);
+            onPressModal();
+          }}
+          size="small"
+          style={{ position: "absolute", bottom: -44, right: 12 }}
+        />
+      ) : null}
     </Card>
   );
 };

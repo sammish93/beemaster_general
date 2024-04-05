@@ -22,6 +22,7 @@ import { toastCrossPlatform } from "@/components/ToastCustom";
 import { useNetInfo } from "@react-native-community/netinfo";
 import LoadingScreen from "@/components/LoadingScreen";
 import { NotificationType } from "@/constants/Notifications";
+import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -29,6 +30,9 @@ const HomeScreen = () => {
   const { userViewModel } = useContext(MobXProviderContext);
   const isConnected = useNetInfo();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
+  const [addFiltersToHiveModalVisible, setAddFiltersToHiveModalVisible] =
+    useState(false);
+  const bottomSheetAddFiltersToHiveModalRef = useRef<BottomSheetModal>(null);
   const [removeFilterModalVisible, setRemoveFilterModalVisible] =
     useState(false);
   const bottomSheetRemoveFilterModalRef = useRef<BottomSheetModal>(null);
@@ -67,6 +71,30 @@ const HomeScreen = () => {
     });
 
     handleCloseAddHiveModal();
+  };
+
+  const handleAddFiltersToHiveModalSheetPressOpen = useCallback(() => {
+    bottomSheetAddFiltersToHiveModalRef.current?.present();
+  }, []);
+
+  const handleAddFilterToHiveModalSheetPressClose = useCallback(() => {
+    bottomSheetAddFiltersToHiveModalRef.current?.dismiss();
+  }, []);
+
+  const handleOpenAddFiltersToHiveModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleAddFiltersToHiveModalSheetPressOpen();
+    } else {
+      setAddFiltersToHiveModalVisible(true);
+    }
+  };
+
+  const handleCloseAddFiltersToHiveModal = () => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      handleAddFilterToHiveModalSheetPressClose();
+    } else {
+      setAddFiltersToHiveModalVisible(false);
+    }
   };
 
   const handleAddHiveModalSheetPressOpen = useCallback(() => {
@@ -323,6 +351,7 @@ const HomeScreen = () => {
                 isDetailedView={isDetailedView}
                 navigation={navigation}
                 hives={filteredHiveList}
+                onPressModal={handleOpenAddFiltersToHiveModal}
               />
             </ScrollView>
             <Button
@@ -356,6 +385,11 @@ const HomeScreen = () => {
         isOverlayModalVisible={removeFilterModalVisible}
         onClose={() => handleCloseRemoveFilterModal()}
         bottomSheetModalRef={bottomSheetRemoveFilterModalRef}
+      />
+      <AddFiltersToHiveModal
+        isOverlayModalVisible={addFiltersToHiveModalVisible}
+        bottomSheetModalRef={bottomSheetAddFiltersToHiveModalRef}
+        onClose={() => handleCloseAddFiltersToHiveModal()}
       />
     </SafeAreaView>
   );
