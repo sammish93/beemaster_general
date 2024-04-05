@@ -2,7 +2,7 @@ import { useNavigation } from "expo-router";
 import { TouchableOpacity, View, ScrollView } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext, useEffect, useState } from "react";
-import { Button, useTheme, Divider, Text } from "react-native-paper";
+import { Button, useTheme, Divider, Text, List } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
