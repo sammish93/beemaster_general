@@ -330,7 +330,7 @@ const HiveCard = ({
             onPressModal();
           }}
           size="small"
-          style={{ position: "absolute", bottom: -44, right: 12 }}
+          style={{ position: "absolute", bottom: -44, right: 8 }}
         />
       ) : null}
     </Card>
