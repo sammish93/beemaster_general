@@ -1,7 +1,7 @@
 import { useNavigation } from "expo-router";
 import { TouchableOpacity, View, ScrollView } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, useTheme, Divider, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
@@ -15,12 +15,14 @@ import DefaultSwitchComponent from "@/components/DefaultSwitch";
 import { VerticalSpacer } from "@/components/Spacers";
 import NotificationButton from "@/components/NotificationButton";
 import NotificationSettingsComponent from "@/components/NotificationSettings";
+import NotificationInfoModal from "@/components/modals/NotificaitonInfoModal";
 
 const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
-
+  const [notificationInfoModalVisible, setNotificationInfoModalVisible] =
+    useState(false);
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
 
@@ -127,9 +129,7 @@ const SettingsScreen = () => {
             </Text>
 
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("/settings/info/index");
-              }}
+              onPress={() => setNotificationInfoModalVisible(true)}
               style={{ marginLeft: 8 }}
             >
               <MaterialCommunityIcons
@@ -209,6 +209,10 @@ const SettingsScreen = () => {
           </View>
         </View>
       </ScrollView>
+      <NotificationInfoModal
+        isOverlayModalVisible={notificationInfoModalVisible}
+        onClose={() => setNotificationInfoModalVisible(false)}
+      />
     </SafeAreaView>
   );
 };

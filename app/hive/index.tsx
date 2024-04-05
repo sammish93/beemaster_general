@@ -56,6 +56,8 @@ import HistoricalSensorModal from "@/components/modals/HistoricalSensorModal";
 import { SensorDataList } from "@/models/sensor";
 import Map from "@/components/Map";
 import { HiveModel } from "@/models/hiveModel";
+import HomeInfoModal from "@/components/modals/HomeInfoModal";
+import HiveInfoModal from "@/components/modals/HiveInfoModal";
 
 type RootStackParamList = {
   hive: {
@@ -82,6 +84,7 @@ const HiveScreen = (params: HiveScreenProps) => {
   const [notes, setNotes] = useState<HiveNote[]>([]);
   const [forecast, setForecast] = useState<WeeklySimpleForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
+  const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [historicalSensorData, setHistoricalSensorData] =
     useState<SensorDataList>();
   const [addNoteToHiveModalVisible, setAddNoteToHiveModalVisible] =
@@ -207,6 +210,12 @@ const HiveScreen = (params: HiveScreenProps) => {
         canOpenDrawer={!!navigation.openDrawer}
         title={selectedHive.name}
         trailingIcons={[
+          <TouchableOpacity onPress={() => setInfoModalVisible(true)}>
+            <MaterialCommunityIcons
+              style={styles(theme).trailingIcon}
+              name="information-outline"
+            />
+          </TouchableOpacity>,
           <TouchableOpacity onPress={handleOpenAddNoteToHiveModal}>
             <MaterialCommunityIcons
               style={styles(theme).trailingIcon}
@@ -521,6 +530,10 @@ const HiveScreen = (params: HiveScreenProps) => {
         bottomSheetModalRef={bottomSheetHistoricalSensorModalRef}
         onClose={() => handleCloseHistoricalSensorModal()}
         sensorData={historicalSensorData}
+      />
+      <HiveInfoModal
+        isOverlayModalVisible={infoModalVisible}
+        onClose={() => setInfoModalVisible(false)}
       />
     </SafeAreaView>
   );
