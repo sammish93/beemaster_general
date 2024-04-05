@@ -48,8 +48,8 @@ const HiveCard = ({
       } catch (error) {
         Toast.show(
           toastCrossPlatform({
-            title: "Error",
-            text: "Could not retrieve the latest weather forecast.",
+            title: userViewModel.i18n.t("error"),
+            text: userViewModel.i18n.t("toast error retrieving forecast"),
             type: "error",
           })
         );

@@ -119,9 +119,9 @@ export const usePermissionManager = (type: PermissionType) => {
                     if (locationStatus.canAskAgain === false) {
                         Toast.show(
                             toastCrossPlatform({
-                              title: "Oops!",
-                              text: `You need to manually change permissions in your settings.`,
-                              type: "info",
+                                title: userViewModel.i18n.t("oops"),
+                                text: userViewModel.i18n.t("manually change permissions"),
+                                type: "info",
                             })
                           );
                     }
@@ -159,9 +159,9 @@ export const usePermissionManager = (type: PermissionType) => {
                             if (cameraStatus.canAskAgain === false) {
                                 Toast.show(
                                     toastCrossPlatform({
-                                      title: "Oops!",
-                                      text: `You need to manually change permissions in your settings.`,
-                                      type: "info",
+                                        title: userViewModel.i18n.t("oops"),
+                                        text: userViewModel.i18n.t("manually change permissions"),
+                                        type: "info",
                                     })
                                   );
                             }
@@ -186,8 +186,8 @@ export const usePermissionManager = (type: PermissionType) => {
                         if (mediaStatus.canAskAgain === false) {
                             Toast.show(
                                 toastCrossPlatform({
-                                    title: "Oops!",
-                                    text: `You need to manually change permissions in your settings.`,
+                                    title: userViewModel.i18n.t("oops"),
+                                    text: userViewModel.i18n.t("manually change permissions"),
                                     type: "info",
                                 })
                                 );

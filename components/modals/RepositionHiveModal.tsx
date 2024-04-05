@@ -66,8 +66,8 @@ const ModalContent = (props: ModalContentProps) => {
 
     Toast.show(
       toastCrossPlatform({
-        title: "Success",
-        text: `blah'.`,
+        title: userViewModel.i18n.t("success"),
+        text: userViewModel.i18n.t("repositioned hive"),
         type: "success",
       })
     );

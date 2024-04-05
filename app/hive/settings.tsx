@@ -147,8 +147,10 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
 
     Toast.show(
       toastCrossPlatform({
-        title: "Success",
-        text: `Deleted hive '${deletedHiveName}'.`,
+        title: userViewModel.i18n.t("success"),
+        text: userViewModel.i18n.t("toast_deleted_hive", {
+          deletedHiveName: deletedHiveName,
+        }),
         type: "success",
       })
     );
@@ -175,8 +177,10 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
 
       Toast.show(
         toastCrossPlatform({
-          title: "Success",
-          text: `Renamed hive to '${name}'.`,
+          title: userViewModel.i18n.t("success"),
+          text: userViewModel.i18n.t("toast_renamed_hive", {
+            name: name,
+          }),
           type: "success",
         })
       );

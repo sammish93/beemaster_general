@@ -91,8 +91,10 @@ const HomeScreen = () => {
 
     Toast.show(
       toastCrossPlatform({
-        title: "Success",
-        text: `Added '${filterName}' as a new filter.`,
+        title: userViewModel.i18n.t("success"),
+        text: userViewModel.i18n.t("toast_added_filter", {
+          filterName: filterName,
+        }),
         type: "success",
       })
     );
@@ -191,8 +193,8 @@ const HomeScreen = () => {
     } else {
       Toast.show(
         toastCrossPlatform({
-          title: "Error",
-          text: "Failed to receive hive data from database.",
+          title: userViewModel.i18n.t("error"),
+          text: userViewModel.i18n.t("toast failed to retrieve hive"),
           type: "error",
         })
       );
@@ -205,8 +207,8 @@ const HomeScreen = () => {
     if (isConnected.isConnected?.valueOf() === false) {
       Toast.show(
         toastCrossPlatform({
-          title: "No connection",
-          text: "Some features will be unavailable in offline mode.",
+          title: userViewModel.i18n.t("no connection"),
+          text: userViewModel.i18n.t("toast offline mode"),
           type: "info",
         })
       );

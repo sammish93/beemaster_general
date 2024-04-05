@@ -81,22 +81,12 @@ const HiveForecastScreen = (params: HiveScreenProps) => {
 
         setData("Retrieved forecast!");
         setDetailedForecast(weeklyDetailedForecast);
-
-        Toast.show(
-          toastCrossPlatform({
-            title: "Success!",
-            text: "Click to go home",
-            onPress: () => {
-              navigation.navigate("../index");
-            },
-          })
-        );
       } catch (error) {
         setData("Error retrieving data");
         Toast.show(
           toastCrossPlatform({
-            title: "Error",
-            text: "Could not retrieve the latest weather forecast.",
+            title: userViewModel.i18n.t("error"),
+            text: userViewModel.i18n.t("toast error retrieving forecast"),
             type: "error",
           })
         );

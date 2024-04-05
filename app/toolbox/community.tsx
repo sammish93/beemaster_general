@@ -22,8 +22,9 @@ const CommunityScreen = () => {
         title={userViewModel.i18n.t("community")}
       />
       <View style={styles(theme).main}>
-        <Text style={theme.fonts.titleLarge}>Community</Text>
-        <Text style={theme.fonts.bodyLarge}>Disabled</Text>
+        <Text style={{ ...theme.fonts.bodyLarge, textAlign: "center" }}>
+          {userViewModel.i18n.t("future feature")}
+        </Text>
       </View>
     </SafeAreaView>
   );

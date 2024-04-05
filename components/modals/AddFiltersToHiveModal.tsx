@@ -58,8 +58,10 @@ const ModalContent = (props: ModalContentProps) => {
 
     Toast.show(
       toastCrossPlatform({
-        title: "Success",
-        text: `Modified the filters of the hive '${selectedHive.name}'.`,
+        title: userViewModel.i18n.t("success"),
+        text: userViewModel.i18n.t("toast_modified_filters", {
+          name: selectedHive.name,
+        }),
         type: "success",
       })
     );
