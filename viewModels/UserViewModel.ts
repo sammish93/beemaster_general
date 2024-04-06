@@ -3,7 +3,7 @@ import * as Localization from "expo-localization";
 import { I18n } from "i18n-js";
 import en from '@/constants/localisation/en.json';
 import no from '@/constants/localisation/no.json';
-import { PrecipitationMeasurement, TemperatureMeasurement, WeightMeasurement, WindSpeedMeasurement } from "@/constants/Measurements";
+import { BeeCountMeasurement, PrecipitationMeasurement, TemperatureMeasurement, WeightMeasurement, WindSpeedMeasurement } from "@/constants/Measurements";
 import { availableLanguages, availableCountries, LanguageEnum, CountryEnum } from '@/constants/LocaleEnums';
 import { Platform } from "react-native";
 import { auth, db } from "@/firebaseConfig";
@@ -115,6 +115,7 @@ class UserViewModel {
     @observable precipitationPreference: PrecipitationMeasurement = PrecipitationMeasurement.Millimeters;
     @observable windSpeedPreference: WindSpeedMeasurement = WindSpeedMeasurement.MetersPerSecond;
     @observable weightPreference: WeightMeasurement = WeightMeasurement.Grams;
+    @observable beeCountPreference: BeeCountMeasurement = BeeCountMeasurement.PerMinute;
     // Allows the user to customise which notifications can trigger by a background tasker operation.
     @observable notificationPreferences: NotificationPreference = notificationPreferences;
     @observable mobileNotifications: boolean = true;
@@ -248,6 +249,10 @@ class UserViewModel {
     @action public setWeightPreference = (prefence: WeightMeasurement): void => {
         // TODO DB - Update user's weight preference in DB.
         this.weightPreference = prefence;
+    }
+    @action public setBeeCountPreference = (prefence: BeeCountMeasurement): void => {
+        // TODO DB - Update user's weight preference in DB.
+        this.beeCountPreference = prefence;
     }
 
     @action toggleNotificationPreference(type: NotificationType): void {
