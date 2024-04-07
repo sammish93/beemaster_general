@@ -50,8 +50,7 @@ class UserViewModel {
         });
     }
 
-    @action setLanguage = (langCode: string): void => {
-        this.currentLanguage = langCode;
+    @action public setLanguage = (langCode: string): void => {
 
         let newLocale = 'en';
         switch (langCode) {
@@ -66,12 +65,12 @@ class UserViewModel {
         }
 
         runInAction(() => {
-            this.locale = newLocale;
+            this.currentLanguage = newLocale;
             this.i18n.locale = newLocale;
         });
     };
 
-    @action setCountry = (countryCode: string): void => {
+    @action public setCountry = (countryCode: string): void => {
         this.currentCountry = countryCode;
         switch (countryCode) {
 

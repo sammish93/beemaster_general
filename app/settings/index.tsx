@@ -135,7 +135,7 @@ const SettingsScreen = () => {
             {userViewModel.i18n.t("accessibility")}
           </Text>
 
-          <SwitchTheme key={userViewModel.currentLanguage} />
+          <SwitchTheme />
 
           <Text style={theme.fonts.bodyLarge}>
             {userViewModel.i18n.t("language")}: {currentLanguage}
