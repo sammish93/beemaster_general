@@ -164,11 +164,16 @@ const ModalContent = (props: ModalContentProps) => {
   };
 
   const handleSave = () => {
-    const action = getSaveAction(parameterName);
-    if (action) {
-      action();
+    if (parameterName !== undefined) {
+      const action = getSaveAction(parameterName);
+      if (action) {
+        action();
+      } else {
+        console.log("Unknown parameterName:", parameterName);
+      }
     } else {
-      console.log("Unknown parameterName:", parameterName);
+
+      console.log("parameterName is undefined");
     }
     props.onClose();
   };
@@ -709,9 +714,11 @@ const ModalContent = (props: ModalContentProps) => {
         </Modal>
       </Portal>
       <VerticalSpacer size={12} />
+      {/*TODO: Save button should be under each threshold-value choice*/}
       <Button mode="contained" onPress={handleSave}>
         {userViewModel.i18n.t("save")}
       </Button>
+
     </>
   );
 };

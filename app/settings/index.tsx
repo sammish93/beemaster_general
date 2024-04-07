@@ -35,6 +35,9 @@ const SettingsScreen = () => {
     useState(false);
   const [settingsInfoModalVisible, setSettingsInfoModalVisible] =
     useState(false);
+
+  const [expandedAccordion, setExpandedAccordion] = useState<string | null>(null);
+
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
 
@@ -89,12 +92,16 @@ const SettingsScreen = () => {
 
   const handleLanguageChange = (langCode: LanguageEnum) => {
     userViewModel.setLanguage(langCode);
+    setExpandedAccordion(null);
   };
 
   const handleCountryChange = (countryCode: CountryEnum) => {
     userViewModel.setCountry(countryCode);
+    setExpandedAccordion(null);
   };
-
+  const toggleAccordion = (accordionName: string) => {
+    setExpandedAccordion(expandedAccordion === accordionName ? null : accordionName);
+  };
 
   useEffect(() => {
     userViewModel.fetchUserParametersFromDatabase();
@@ -132,6 +139,8 @@ const SettingsScreen = () => {
             title={userViewModel.i18n.t("choose your language")}
             titleStyle={theme.fonts.bodyLarge}
             left={(props) => <List.Icon {...props} icon="translate" />}
+            expanded={expandedAccordion === "language"}
+            onPress={() => toggleAccordion("language")}
           >
             {uniqueLanguageOptions.map((language) => (
               <List.Item
@@ -150,6 +159,8 @@ const SettingsScreen = () => {
             title={userViewModel.i18n.t("choose your country")}
             titleStyle={theme.fonts.bodyLarge}
             left={(props) => <List.Icon {...props} icon="earth" />}
+            expanded={expandedAccordion === "country"}
+            onPress={() => toggleAccordion("country")}
           >
             {uniqueCountryOptions.map((country) => (
               <List.Item
