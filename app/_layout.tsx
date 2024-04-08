@@ -56,7 +56,7 @@ const RootLayout = () => {
 
   const userTheme = userViewModel.theme;
   const paperTheme = userTheme === "dark" ? customDarkTheme : customLightTheme;
-  paperTheme.colors.secondaryContainer = paperTheme.colors.surfaceDisabled;
+  //paperTheme.colors.secondaryContainer = paperTheme.colors.surfaceDisabled;
 
   // Loading in fonts to use in the application.
   const [loaded, error] = useFonts({
@@ -103,10 +103,7 @@ const RootLayout = () => {
             {(() => {
               if (userViewModel.userId === "") {
                 return <LoginLayout />;
-              } else if (
-                (Platform.OS === "ios" || Platform.OS === "android") &&
-                dimensions.screen.width < ScreenWidth.Compact
-              ) {
+              } else if (Platform.OS === "ios" || Platform.OS === "android") {
                 return (
                   <BottomBarLayout
                     theme={paperTheme}
@@ -144,7 +141,6 @@ export type LayoutProps = {
   width: number;
 };
 
-// TODO Modify navigation (Sam). Fix bugs present.
 const DrawerLayout = (props: LayoutProps) => {
   return (
     <>

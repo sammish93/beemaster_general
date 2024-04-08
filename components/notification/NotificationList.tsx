@@ -27,7 +27,6 @@ const NotificationList = ({
   const [parentWidth, setParentWidth] = useState(0);
   const screenWidth = Dimensions.get("window").width;
 
-  //TODO Modify onPress
   const renderItem = ({ item }: { item: HiveNotification }) => (
     <NotificationCard item={item} navigation={navigation} />
   );

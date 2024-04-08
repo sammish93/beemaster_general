@@ -1,12 +1,13 @@
 import { useNavigation } from "expo-router";
 import { View, useColorScheme } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
+import { useIsFocused } from "@react-navigation/native";
 
 const CalendarScreen = () => {
   const theme = useTheme();

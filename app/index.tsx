@@ -23,6 +23,7 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import LoadingScreen from "@/components/LoadingScreen";
 import { NotificationType } from "@/constants/Notifications";
 import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
+import { useIsFocused } from "@react-navigation/native";
 
 const HomeScreen = () => {
   const theme = useTheme();

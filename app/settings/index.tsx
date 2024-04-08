@@ -28,6 +28,7 @@ import {
   TemperatureMeasurement,
   WeightMeasurement,
 } from "@/constants/Measurements";
+import { useIsFocused } from "@react-navigation/native";
 
 const SettingsScreen = () => {
   const theme = useTheme();

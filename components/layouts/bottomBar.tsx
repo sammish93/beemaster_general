@@ -1,7 +1,7 @@
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
-  IndexStack,
+  HiveStack,
   ToolboxStack,
   UpdatesStack,
   SettingsStack,
@@ -42,13 +42,16 @@ export const MaterialBottomTabsScreen = (props: BottomTabsScreenProps) => {
     <MaterialBottomTabs.Navigator
       activeColor={props.theme.colors.onBackground}
       inactiveColor={props.theme.colors.onBackground}
+      theme={{
+        colors: { secondaryContainer: props.theme.colors.surfaceDisabled },
+      }}
       barStyle={{
         backgroundColor: props.theme.colors.primaryContainer,
       }}
     >
       <MaterialBottomTabs.Screen
         name="index"
-        component={IndexStack}
+        component={HiveStack}
         options={{
           tabBarLabel: userViewModel.i18n.t("home"),
           tabBarIcon: (propsIcon) => (

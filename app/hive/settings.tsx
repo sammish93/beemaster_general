@@ -7,8 +7,8 @@ import {
   View,
 } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useCallback, useContext, useRef, useState } from "react";
-import { RouteProp } from "@react-navigation/native";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { RouteProp, useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useTheme, Text, Button, TextInput, Divider } from "react-native-paper";
 import styles from "@/assets/styles";
@@ -31,24 +31,13 @@ import { ScreenWidth } from "@/constants/Dimensions";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import NotificationInfoModal from "@/components/modals/NotificationInfoModal";
 
-type RootStackParamList = {
-  hive: {
-    hiveId: string;
-  };
-};
-
-type HiveScreenProps = {
-  route: RouteProp<RootStackParamList, "hive">;
-  navigation: StackNavigationProp<RootStackParamList, "hive">;
-};
-
 // TODO Add queen bee customisation.
-const HiveSettingsScreen = (params: HiveScreenProps) => {
+const HiveSettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
-  const hiveId = params.route.params.hiveId;
+  const hiveId = hiveViewModel.getSelectedHive().id;
   const selectedHive = hiveViewModel.getSelectedHive();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
   const [notificationInfoModalVisible, setNotificationInfoModalVisible] =
@@ -143,7 +132,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
     const deletedHiveName: string = selectedHive.name;
     hideDeleteDialog();
     hiveViewModel.removeHive(selectedHive.id);
-    navigation.navigate("../index");
+    navigation.navigate("index");
 
     Toast.show(
       toastCrossPlatform({

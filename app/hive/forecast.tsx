@@ -3,7 +3,7 @@ import { ScrollView, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useContext, useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import styles from "@/assets/styles";
 import { useTheme, Text, Button } from "react-native-paper";
@@ -36,23 +36,12 @@ import "@/assets/customScrollbar.css";
 import DetailedForecast from "@/components/forecast/DetailedForecast";
 import { VerticalSpacer } from "@/components/Spacers";
 
-type RootStackParamList = {
-  hive: {
-    hiveId: string;
-  };
-};
-
-type HiveScreenProps = {
-  route: RouteProp<RootStackParamList, "hive">;
-  navigation: StackNavigationProp<RootStackParamList, "hive">;
-};
-
-const HiveForecastScreen = (params: HiveScreenProps) => {
+const HiveForecastScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
-  const hiveId = params.route.params.hiveId;
+  const hiveId = hiveViewModel.getSelectedHive().id;
   const selectedHive = hiveViewModel.getSelectedHive();
 
   const [data, setData] = useState("");

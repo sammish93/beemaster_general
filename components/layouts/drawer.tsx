@@ -1,16 +1,17 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { withLayoutContext } from "expo-router";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
-  IndexStack,
-  ToolboxStack,
-  UpdatesStack,
-  SettingsStack,
-} from "@/components/layouts/stacks";
+  DrawerContentScrollView,
+  DrawerItem,
+  createDrawerNavigator,
+} from "@react-navigation/drawer";
+import { useNavigation, withLayoutContext } from "expo-router";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { IndexStack } from "@/components/layouts/stacks";
+
 import { Text } from "react-native";
 import { MD3Theme } from "react-native-paper";
 import { useContext } from "react";
 import { MobXProviderContext } from "mobx-react";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 const Drawer = createDrawerNavigator();
 
@@ -30,6 +31,10 @@ const CustomDrawerLabel = (props: DrawerLabelProps) => (
   </Text>
 );
 
+type RootParamList = {
+  index: undefined;
+};
+
 export type DrawerScreenProps = {
   theme: MD3Theme;
   mode: string;
@@ -38,6 +43,7 @@ export type DrawerScreenProps = {
 export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => {
   // Correct placement of useContext hook
   const { userViewModel } = useContext(MobXProviderContext);
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   return (
     <Drawer.Navigator
@@ -50,6 +56,91 @@ export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => {
           backgroundColor: props.theme.colors.primaryContainer,
         },
       }}
+      drawerContent={() => (
+        <DrawerContentScrollView>
+          <DrawerItem
+            label={() => (
+              <CustomDrawerLabel
+                label={userViewModel.i18n.t("home")}
+                theme={props.theme}
+              />
+            )}
+            onPress={() => navigation.navigate("index")}
+            icon={(focused) => (
+              <MaterialCommunityIcons
+                color={
+                  focused
+                    ? props.theme.colors.onSecondaryContainer
+                    : props.theme.colors.onSurfaceVariant
+                }
+                size={24}
+                name={focused ? "home" : "home-outline"}
+              />
+            )}
+          />
+          <DrawerItem
+            label={() => (
+              <CustomDrawerLabel
+                label={userViewModel.i18n.t("toolbox")}
+                theme={props.theme}
+              />
+            )}
+            onPress={() => navigation.navigate("toolbox/index")}
+            icon={(focused) => (
+              <MaterialCommunityIcons
+                color={
+                  focused
+                    ? props.theme.colors.onSecondaryContainer
+                    : props.theme.colors.onSurfaceVariant
+                }
+                size={24}
+                name={focused ? "toolbox" : "toolbox-outline"}
+              />
+            )}
+          />
+          <DrawerItem
+            label={() => (
+              <CustomDrawerLabel
+                label={userViewModel.i18n.t("updates")}
+                theme={props.theme}
+              />
+            )}
+            onPress={() => navigation.navigate("updates/index")}
+            icon={(focused) => (
+              <MaterialCommunityIcons
+                color={
+                  focused
+                    ? props.theme.colors.onSecondaryContainer
+                    : props.theme.colors.onSurfaceVariant
+                }
+                size={24}
+                name={focused ? "bell" : "bell-outline"}
+              />
+            )}
+          />
+          <DrawerItem
+            label={() => (
+              <CustomDrawerLabel
+                label={userViewModel.i18n.t("settings")}
+                theme={props.theme}
+              />
+            )}
+            onPress={() => navigation.navigate("settings/index")}
+            icon={(focused) => (
+              <MaterialCommunityIcons
+                color={
+                  focused
+                    ? props.theme.colors.onSecondaryContainer
+                    : props.theme.colors.onSurfaceVariant
+                }
+                size={24}
+                name={focused ? "cog" : "cog-outline"}
+              />
+            )}
+          />
+          {/* You can add more custom items here */}
+        </DrawerContentScrollView>
+      )}
     >
       <Drawer.Screen
         name="index"
@@ -72,84 +163,6 @@ export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => {
                 }
                 size={24}
                 name={propsIcon.focused ? "home" : "home-outline"}
-              />
-            );
-          },
-        }}
-      />
-      <Drawer.Screen
-        name="toolbox/index"
-        component={ToolboxStack}
-        options={{
-          headerTitle: userViewModel.i18n.t("toolbox"),
-          drawerLabel: () => (
-            <CustomDrawerLabel
-              label={userViewModel.i18n.t("toolbox")}
-              theme={props.theme}
-            />
-          ),
-          drawerIcon(propsIcon) {
-            return (
-              <MaterialCommunityIcons
-                color={
-                  propsIcon.focused
-                    ? props.theme.colors.onSecondaryContainer
-                    : props.theme.colors.onSurfaceVariant
-                }
-                size={24}
-                name={propsIcon.focused ? "toolbox" : "toolbox-outline"}
-              />
-            );
-          },
-        }}
-      />
-      <Drawer.Screen
-        name="updates/index"
-        component={UpdatesStack}
-        options={{
-          headerTitle: userViewModel.i18n.t("updates"),
-          drawerLabel: () => (
-            <CustomDrawerLabel
-              label={userViewModel.i18n.t("updates")}
-              theme={props.theme}
-            />
-          ),
-          drawerIcon(propsIcon) {
-            return (
-              <MaterialCommunityIcons
-                color={
-                  propsIcon.focused
-                    ? props.theme.colors.onSecondaryContainer
-                    : props.theme.colors.onSurfaceVariant
-                }
-                size={24}
-                name={propsIcon.focused ? "bell" : "bell-outline"}
-              />
-            );
-          },
-        }}
-      />
-      <Drawer.Screen
-        name="settings/index"
-        component={SettingsStack}
-        options={{
-          headerTitle: userViewModel.i18n.t("settings"),
-          drawerLabel: () => (
-            <CustomDrawerLabel
-              label={userViewModel.i18n.t("settings")}
-              theme={props.theme}
-            />
-          ),
-          drawerIcon(propsIcon) {
-            return (
-              <MaterialCommunityIcons
-                color={
-                  propsIcon.focused
-                    ? props.theme.colors.onSecondaryContainer
-                    : props.theme.colors.onSurfaceVariant
-                }
-                size={24}
-                name={propsIcon.focused ? "cog" : "cog-outline"}
               />
             );
           },
