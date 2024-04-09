@@ -7,8 +7,8 @@ import {
   View,
 } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useCallback, useContext, useRef, useState } from "react";
-import { RouteProp } from "@react-navigation/native";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { RouteProp, useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useTheme, Text, Button, TextInput, Divider } from "react-native-paper";
 import styles from "@/assets/styles";
@@ -30,25 +30,15 @@ import { isValidString } from "@/domain/validation/stringValidation";
 import { ScreenWidth } from "@/constants/Dimensions";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import NotificationInfoModal from "@/components/modals/NotificationInfoModal";
-
-type RootStackParamList = {
-  hive: {
-    hiveId: string;
-  };
-};
-
-type HiveScreenProps = {
-  route: RouteProp<RootStackParamList, "hive">;
-  navigation: StackNavigationProp<RootStackParamList, "hive">;
-};
+import FileDownloader from "@/components/FileDownloader";
 
 // TODO Add queen bee customisation.
-const HiveSettingsScreen = (params: HiveScreenProps) => {
+const HiveSettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
-  const hiveId = params.route.params.hiveId;
+  const hiveId = hiveViewModel.getSelectedHive().id;
   const selectedHive = hiveViewModel.getSelectedHive();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
   const [notificationInfoModalVisible, setNotificationInfoModalVisible] =
@@ -66,6 +56,33 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
   const [isNameValid, setIsNameValid] = useState<boolean>(true);
   const [nameErrorMessage, setNameErrorMessage] = useState<string>("");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const createJSON = (): string => {
+    // TODO Swap out sensor data with real data.
+    const jsonData = JSON.stringify(
+      [
+        {
+          name: selectedHive.name,
+          latLng: {
+            lat: selectedHive.latLng.lat,
+            lng: selectedHive.latLng.lng,
+          },
+          notes: selectedHive.notes,
+          queen: selectedHive.queen,
+          sensors: {
+            weight: [],
+            temperature: [],
+            humidity: [],
+            count: [],
+          },
+        },
+      ],
+      null,
+      2
+    );
+
+    return jsonData;
+  };
 
   const handleRepositionHiveModalSheetPressOpen = useCallback(() => {
     bottomSheetRepositionHiveModalRef.current?.present();
@@ -143,7 +160,7 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
     const deletedHiveName: string = selectedHive.name;
     hideDeleteDialog();
     hiveViewModel.removeHive(selectedHive.id);
-    navigation.navigate("../index");
+    navigation.navigate("index");
 
     Toast.show(
       toastCrossPlatform({
@@ -358,10 +375,11 @@ const HiveSettingsScreen = (params: HiveScreenProps) => {
               {userViewModel.i18n.t("manage sensors")}
             </Button>
             <VerticalSpacer size={8} />
-            {/* TODO Add functionality to download hive data, e.g. in CSV. */}
-            <Button icon="download" mode="contained" onPress={() => null}>
-              {userViewModel.i18n.t("download hive data")}
-            </Button>
+            <FileDownloader
+              jsonString={createJSON()}
+              fileName="hive_historical_data.json"
+              buttonLabel={userViewModel.i18n.t("download hive data")}
+            />
             <VerticalSpacer size={20} />
             <Button
               icon="delete"

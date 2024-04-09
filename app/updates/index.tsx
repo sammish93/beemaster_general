@@ -27,6 +27,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { VerticalSpacer } from "@/components/Spacers";
 import { hiveViewModel } from "@/viewModels/HiveViewModel";
 import { HiveNotification } from "@/models/notification";
+import { useIsFocused } from "@react-navigation/native";
 
 const UpdatesScreen = () => {
   const theme = useTheme();

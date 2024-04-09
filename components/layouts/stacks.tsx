@@ -22,6 +22,99 @@ type StackProps = {
 export const IndexStack = (props: StackProps) => (
   <Stack.Navigator>
     <Stack.Screen
+      name="index"
+      component={IndexPage}
+      options={{
+        title: "Home",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="hive/index"
+      component={HivePage}
+      options={{
+        title: "Hive",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="hive/settings"
+      component={HiveSettingsPage}
+      options={{
+        title: "Hive Settings",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="hive/forecast"
+      component={HiveForecastPage}
+      options={{
+        title: "Hive Forecast",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="toolbox/index"
+      component={ToolboxPage}
+      options={{
+        title: "Toolbox",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="toolbox/community"
+      component={CommunityPage}
+      options={{
+        title: "Community",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="toolbox/checklist"
+      component={ChecklistPage}
+      options={{
+        title: "Checklist",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="toolbox/calendar"
+      component={CalendarPage}
+      options={{
+        title: "Calendar",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="toolbox/hiveScan"
+      component={HiveScanPage}
+      options={{
+        title: "Hive Scan",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="updates/index"
+      component={UpdatesPage}
+      options={{
+        title: "Updates",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="settings/index"
+      component={SettingsPage}
+      options={{
+        title: "Settings",
+        headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+  </Stack.Navigator>
+);
+
+export const HiveStack = (props: StackProps) => (
+  <Stack.Navigator>
+    <Stack.Screen
       name="../index"
       component={IndexPage}
       options={{
@@ -30,7 +123,7 @@ export const IndexStack = (props: StackProps) => (
       }}
     />
     <Stack.Screen
-      name="/hive/index"
+      name="hive/index"
       component={HivePage}
       options={{
         title: "Hive",
@@ -38,7 +131,7 @@ export const IndexStack = (props: StackProps) => (
       }}
     />
     <Stack.Screen
-      name="/hive/settings"
+      name="hive/settings"
       component={HiveSettingsPage}
       options={{
         title: "Hive Settings",
@@ -46,7 +139,7 @@ export const IndexStack = (props: StackProps) => (
       }}
     />
     <Stack.Screen
-      name="/hive/forecast"
+      name="hive/forecast"
       component={HiveForecastPage}
       options={{
         title: "Hive Forecast",
@@ -60,7 +153,7 @@ export const IndexStack = (props: StackProps) => (
 export const ToolboxStack = (props: StackProps) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="/toolbox/index"
+      name="toolbox"
       component={ToolboxPage}
       options={{
         title: "Toolbox",
@@ -68,7 +161,7 @@ export const ToolboxStack = (props: StackProps) => (
       }}
     />
     <Stack.Screen
-      name="/toolbox/community"
+      name="toolbox/community"
       component={CommunityPage}
       options={{
         title: "Community",
@@ -76,7 +169,7 @@ export const ToolboxStack = (props: StackProps) => (
       }}
     />
     <Stack.Screen
-      name="/toolbox/checklist"
+      name="toolbox/checklist"
       component={ChecklistPage}
       options={{
         title: "Checklist",
@@ -84,7 +177,7 @@ export const ToolboxStack = (props: StackProps) => (
       }}
     />
     <Stack.Screen
-      name="/toolbox/calendar"
+      name="toolbox/calendar"
       component={CalendarPage}
       options={{
         title: "Calendar",
@@ -92,7 +185,7 @@ export const ToolboxStack = (props: StackProps) => (
       }}
     />
     <Stack.Screen
-      name="/toolbox/hiveScan"
+      name="toolbox/hiveScan"
       component={HiveScanPage}
       options={{
         title: "Hive Scan",
@@ -106,7 +199,7 @@ export const ToolboxStack = (props: StackProps) => (
 export const UpdatesStack = (props: StackProps) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="/updates/index"
+      name="updates"
       component={UpdatesPage}
       options={{
         title: "Updates",
@@ -120,7 +213,7 @@ export const UpdatesStack = (props: StackProps) => (
 export const SettingsStack = (props: StackProps) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="/settings/index"
+      name="settings"
       component={SettingsPage}
       options={{
         title: "Settings",

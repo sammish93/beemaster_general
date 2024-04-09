@@ -1,7 +1,7 @@
 import { useNavigation } from "expo-router";
 import { Dimensions, View } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Button, useTheme, Text } from "react-native-paper";
 import styles from "@/assets/styles";
 import TopBar from "@/components/TopBar";
@@ -11,6 +11,7 @@ import ToolboxCard from "@/components/toolbox/ToolboxCard";
 import { ScrollView } from "react-native-virtualized-view";
 import { ScreenWidth } from "@/constants/Dimensions";
 import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
+import { useIsFocused } from "@react-navigation/native";
 
 const ToolboxScreen = () => {
   const theme = useTheme();
@@ -34,7 +35,7 @@ const ToolboxScreen = () => {
                 description={userViewModel.i18n.t("community description")}
                 image={require("@/assets/images/toolbox/community.jpg")}
                 onClick={() => {
-                  navigation.navigate("/toolbox/community");
+                  navigation.navigate("toolbox/community");
                 }}
               />
               <VerticalSpacer size={12} />
@@ -43,7 +44,7 @@ const ToolboxScreen = () => {
                 description={userViewModel.i18n.t("checklist description")}
                 image={require("@/assets/images/toolbox/checklist.jpg")}
                 onClick={() => {
-                  navigation.navigate("/toolbox/checklist");
+                  navigation.navigate("toolbox/checklist");
                 }}
               />
               <VerticalSpacer size={12} />
@@ -52,7 +53,7 @@ const ToolboxScreen = () => {
                 description={userViewModel.i18n.t("calendar description")}
                 image={require("@/assets/images/toolbox/calendar.jpg")}
                 onClick={() => {
-                  navigation.navigate("/toolbox/calendar");
+                  navigation.navigate("toolbox/calendar");
                 }}
               />
               <VerticalSpacer size={12} />
@@ -61,7 +62,7 @@ const ToolboxScreen = () => {
                 description={userViewModel.i18n.t("hive scan description")}
                 image={require("@/assets/images/toolbox/hiveScan.jpg")}
                 onClick={() => {
-                  navigation.navigate("/toolbox/hiveScan");
+                  navigation.navigate("toolbox/hiveScan");
                 }}
               />
             </View>
@@ -73,7 +74,7 @@ const ToolboxScreen = () => {
                   description={userViewModel.i18n.t("community description")}
                   image={require("@/assets/images/toolbox/community.jpg")}
                   onClick={() => {
-                    navigation.navigate("/toolbox/community");
+                    navigation.navigate("toolbox/community");
                   }}
                 />
                 <HorizontalSpacer size={12} />
@@ -82,7 +83,7 @@ const ToolboxScreen = () => {
                   description={userViewModel.i18n.t("checklist description")}
                   image={require("@/assets/images/toolbox/checklist.jpg")}
                   onClick={() => {
-                    navigation.navigate("/toolbox/checklist");
+                    navigation.navigate("toolbox/checklist");
                   }}
                 />
               </View>
@@ -93,7 +94,7 @@ const ToolboxScreen = () => {
                   description={userViewModel.i18n.t("calendar description")}
                   image={require("@/assets/images/toolbox/calendar.jpg")}
                   onClick={() => {
-                    navigation.navigate("/toolbox/calendar");
+                    navigation.navigate("toolbox/calendar");
                   }}
                 />
 
@@ -103,7 +104,7 @@ const ToolboxScreen = () => {
                   description={userViewModel.i18n.t("hive scan description")}
                   image={require("@/assets/images/toolbox/hiveScan.jpg")}
                   onClick={() => {
-                    navigation.navigate("/toolbox/hiveScan");
+                    navigation.navigate("toolbox/hiveScan");
                   }}
                 />
               </View>

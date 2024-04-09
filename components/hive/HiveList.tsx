@@ -51,7 +51,7 @@ const HiveList = ({
       isDetailedView={isDetailedView}
       onPress={() => {
         hiveViewModel.addSelectedHive(item);
-        navigation.navigate("/hive/index", { hiveId: item.id });
+        navigation.navigate("hive/index");
       }}
       onPressModal={onPressModal}
       maxWidth={

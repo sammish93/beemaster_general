@@ -59,25 +59,14 @@ import { HiveModel } from "@/models/hiveModel";
 import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import HiveInfoModal from "@/components/modals/HiveInfoModal";
 
-type RootStackParamList = {
-  hive: {
-    hiveId: string;
-  };
-};
-
-type HiveScreenProps = {
-  route: RouteProp<RootStackParamList, "hive">;
-  navigation: StackNavigationProp<RootStackParamList, "hive">;
-};
-
 // TODO Add queen bee display.
-const HiveScreen = (params: HiveScreenProps) => {
+const HiveScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
-  const hiveId = params.route.params.hiveId;
+  const hiveId = hiveViewModel.getSelectedHive().id;
   const [selectedHive, setSelectedHive] = useState<HiveModel>(
     hiveViewModel.getSelectedHive()
   );
@@ -224,7 +213,7 @@ const HiveScreen = (params: HiveScreenProps) => {
           </TouchableOpacity>,
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("/hive/settings", { hiveId: hiveId });
+              navigation.navigate("hive/settings");
             }}
           >
             <MaterialCommunityIcons
@@ -262,9 +251,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                         }
                         windFormat={userViewModel.windSpeedPreference}
                         onPress={() => {
-                          navigation.navigate("/hive/forecast", {
-                            hiveId: hiveId,
-                          });
+                          navigation.navigate("hive/forecast");
                         }}
                       />
                     </>
@@ -413,9 +400,7 @@ const HiveScreen = (params: HiveScreenProps) => {
                       }
                       windFormat={userViewModel.windSpeedPreference}
                       onPress={() => {
-                        navigation.navigate("/hive/forecast", {
-                          hiveId: hiveId,
-                        });
+                        navigation.navigate("hive/forecast");
                       }}
                     />
                   </>

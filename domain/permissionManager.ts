@@ -193,7 +193,7 @@ export const usePermissionManager = (type: PermissionType) => {
                                 );
                         }
 
-                        userViewModel.setCameraPermission(mediaStatus.status === 'granted');
+                        userViewModel.setMediaPermission(mediaStatus.status === 'granted');
                         setIsEnabled(mediaStatus.status === 'granted')
                         break;
                     }

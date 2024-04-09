@@ -25,7 +25,12 @@ import {
   availableCountries,
   availableLanguages,
 } from "@/constants/LocaleEnums";
-
+import {
+  TemperatureMeasurement,
+  WeightMeasurement,
+} from "@/constants/Measurements";
+import { useIsFocused } from "@react-navigation/native";
+import FileDownloader from "@/components/FileDownloader";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -36,10 +41,28 @@ const SettingsScreen = () => {
   const [settingsInfoModalVisible, setSettingsInfoModalVisible] =
     useState(false);
 
-  const [expandedAccordion, setExpandedAccordion] = useState<string | null>(null);
+  const [expandedAccordion, setExpandedAccordion] = useState<string | null>(
+    null
+  );
 
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
+
+  const createJSON = (): string => {
+    //TODO Add functionality to provide all data stored about a user and their hives.
+    const jsonData = JSON.stringify(
+      [
+        {
+          name: "John Smith",
+          country: "Svíþjóð",
+        },
+      ],
+      null,
+      2
+    );
+
+    return jsonData;
+  };
 
   /**
    * Turns a list of languages (`availableLanguages`) into a list without duplicates, making sure
@@ -81,8 +104,8 @@ const SettingsScreen = () => {
           option.code === CountryEnum.WebNorway
             ? CountryEnum.Norway
             : option.code === CountryEnum.WebEngland
-              ? CountryEnum.England
-              : option.code;
+            ? CountryEnum.England
+            : option.code;
         unique.push({ ...option, code: preferredCode });
       }
       return unique;
@@ -100,7 +123,9 @@ const SettingsScreen = () => {
     setExpandedAccordion(null);
   };
   const toggleAccordion = (accordionName: string) => {
-    setExpandedAccordion(expandedAccordion === accordionName ? null : accordionName);
+    setExpandedAccordion(
+      expandedAccordion === accordionName ? null : accordionName
+    );
   };
 
   useEffect(() => {
@@ -126,7 +151,13 @@ const SettingsScreen = () => {
       />
       <ScrollView>
         <View style={styles(theme).main}>
-          <Text style={{ ...theme.fonts.headlineSmall, textAlign: "center", padding: 1 }} >
+          <Text
+            style={{
+              ...theme.fonts.headlineSmall,
+              textAlign: "center",
+              padding: 1,
+            }}
+          >
             {userViewModel.i18n.t("accessibility")}
           </Text>
 
@@ -178,7 +209,13 @@ const SettingsScreen = () => {
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
-          <Text style={{ ...theme.fonts.headlineSmall, textAlign: "center", padding: 1 }} >
+          <Text
+            style={{
+              ...theme.fonts.headlineSmall,
+              textAlign: "center",
+              padding: 1,
+            }}
+          >
             {userViewModel.i18n.t("permissions")}
           </Text>
 
@@ -188,7 +225,13 @@ const SettingsScreen = () => {
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
-          <Text style={{ ...theme.fonts.headlineSmall, textAlign: "center", padding: 1 }}>
+          <Text
+            style={{
+              ...theme.fonts.headlineSmall,
+              textAlign: "center",
+              padding: 1,
+            }}
+          >
             {userViewModel.i18n.t("notifications")}
           </Text>
 
@@ -199,15 +242,28 @@ const SettingsScreen = () => {
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
-          <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", padding: 1 }} >
-            <Text style={{ ...theme.fonts.headlineSmall, textAlign: "center", padding: 1 }} >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 1,
+            }}
+          >
+            <Text
+              style={{
+                ...theme.fonts.headlineSmall,
+                textAlign: "center",
+                padding: 1,
+              }}
+            >
               {userViewModel.i18n.t("notification types")}
             </Text>
 
             <TouchableOpacity
               onPress={() => setNotificationInfoModalVisible(true)}
-              style={{ marginLeft: 8 }} >
-
+              style={{ marginLeft: 8 }}
+            >
               <MaterialCommunityIcons
                 style={styles(theme).trailingIcon}
                 name="information-outline"
@@ -222,7 +278,14 @@ const SettingsScreen = () => {
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
-          <View style={{ justifyContent: "center", alignItems: "center", padding: 1, margin: 8 }}>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 1,
+              margin: 8,
+            }}
+          >
             <Button
               style={styles(theme).settingsButton}
               mode="contained"
@@ -234,15 +297,12 @@ const SettingsScreen = () => {
               {userViewModel.i18n.t("register email")}
             </Button>
 
-            <Button
+            <FileDownloader
+              jsonString={createJSON()}
+              fileName="user_data.json"
+              buttonLabel={userViewModel.i18n.t("request data")}
               style={styles(theme).settingsButton}
-              mode="contained"
-              onPress={() => {
-                //TODO: Add functionality to provide all data stored about a user and their hives.
-              }}
-            >
-              {userViewModel.i18n.t("request data")}
-            </Button>
+            />
 
             <Button
               icon="logout-variant"
@@ -287,7 +347,6 @@ const SettingsScreen = () => {
         isOverlayModalVisible={settingsInfoModalVisible}
         onClose={() => setSettingsInfoModalVisible(false)}
       />
-
     </SafeAreaView>
   );
 };

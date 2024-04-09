@@ -70,7 +70,7 @@ const NotificationCard = ({ item, navigation }: NotificationProps) => {
 
     hiveViewModel.addSelectedHive(hive);
 
-    navigation.navigate("/hive/index", { hiveId: hive.id });
+    navigation.navigate("hive/index");
   };
 
   return (
