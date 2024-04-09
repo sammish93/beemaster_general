@@ -115,7 +115,7 @@ export const IndexStack = (props: StackProps) => (
 export const HiveStack = (props: StackProps) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="index"
+      name="../index"
       component={IndexPage}
       options={{
         title: "Home",
