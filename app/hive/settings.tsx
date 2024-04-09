@@ -30,6 +30,7 @@ import { isValidString } from "@/domain/validation/stringValidation";
 import { ScreenWidth } from "@/constants/Dimensions";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import NotificationInfoModal from "@/components/modals/NotificationInfoModal";
+import FileDownloader from "@/components/FileDownloader";
 
 // TODO Add queen bee customisation.
 const HiveSettingsScreen = () => {
@@ -55,6 +56,33 @@ const HiveSettingsScreen = () => {
   const [isNameValid, setIsNameValid] = useState<boolean>(true);
   const [nameErrorMessage, setNameErrorMessage] = useState<string>("");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const createJSON = (): string => {
+    // TODO Swap out sensor data with real data.
+    const jsonData = JSON.stringify(
+      [
+        {
+          name: selectedHive.name,
+          latLng: {
+            lat: selectedHive.latLng.lat,
+            lng: selectedHive.latLng.lng,
+          },
+          notes: selectedHive.notes,
+          queen: selectedHive.queen,
+          sensors: {
+            weight: [],
+            temperature: [],
+            humidity: [],
+            count: [],
+          },
+        },
+      ],
+      null,
+      2
+    );
+
+    return jsonData;
+  };
 
   const handleRepositionHiveModalSheetPressOpen = useCallback(() => {
     bottomSheetRepositionHiveModalRef.current?.present();
@@ -347,10 +375,10 @@ const HiveSettingsScreen = () => {
               {userViewModel.i18n.t("manage sensors")}
             </Button>
             <VerticalSpacer size={8} />
-            {/* TODO Add functionality to download hive data, e.g. in CSV. */}
-            <Button icon="download" mode="contained" onPress={() => null}>
-              {userViewModel.i18n.t("download hive data")}
-            </Button>
+            <FileDownloader
+              jsonString={createJSON()}
+              fileName="hive_historical_data.json"
+            />
             <VerticalSpacer size={20} />
             <Button
               icon="delete"
