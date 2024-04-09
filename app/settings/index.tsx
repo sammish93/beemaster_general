@@ -29,6 +29,7 @@ import {
   WeightMeasurement,
 } from "@/constants/Measurements";
 import { useIsFocused } from "@react-navigation/native";
+import FileDownloader from "@/components/FileDownloader";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -40,6 +41,22 @@ const SettingsScreen = () => {
     useState(false);
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
+
+  const createJSON = (): string => {
+    //TODO Add functionality to provide all data stored about a user and their hives.
+    const jsonData = JSON.stringify(
+      [
+        {
+          name: "John Smith",
+          country: "Svíþjóð",
+        },
+      ],
+      null,
+      2
+    );
+
+    return jsonData;
+  };
 
   /**
    * Turns a list of languages (`availableLanguages`) into a list without duplicates, making sure
@@ -311,15 +328,12 @@ const SettingsScreen = () => {
               {userViewModel.i18n.t("register email")}
             </Button>
 
-            <Button
+            <FileDownloader
+              jsonString={createJSON()}
+              fileName="user_data.json"
+              buttonLabel={userViewModel.i18n.t("request data")}
               style={styles(theme).settingsButton}
-              mode="contained"
-              onPress={() => {
-                //TODO: Add functionality to provide all data stored about a user and their hives.
-              }}
-            >
-              {userViewModel.i18n.t("request data")}
-            </Button>
+            />
 
             <Button
               icon="logout-variant"

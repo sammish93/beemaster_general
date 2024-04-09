@@ -8,6 +8,7 @@ interface FileDownloaderProps {
   jsonString: string;
   fileName: string;
   buttonLabel: string;
+  style?: any;
 }
 
 const FileDownloader = (props: FileDownloaderProps) => {
@@ -30,7 +31,12 @@ const FileDownloader = (props: FileDownloaderProps) => {
   };
 
   return (
-    <Button icon="download" mode="contained" onPress={downloadJson}>
+    <Button
+      icon="download"
+      mode="contained"
+      onPress={downloadJson}
+      style={props.style}
+    >
       {props.buttonLabel}
     </Button>
   );

@@ -2,12 +2,13 @@ import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
-import { Button } from "react-native-paper";
+import { Button, MD3Theme } from "react-native-paper";
 
 interface FileDownloaderProps {
   jsonString: string;
   fileName: string;
   buttonLabel: string;
+  style?: any;
 }
 
 const FileDownloader = (props: FileDownloaderProps) => {
@@ -26,7 +27,12 @@ const FileDownloader = (props: FileDownloaderProps) => {
   };
 
   return (
-    <Button icon="download" mode="contained" onPress={downloadJson}>
+    <Button
+      icon="download"
+      mode="contained"
+      onPress={downloadJson}
+      style={props.style}
+    >
       {props.buttonLabel}
     </Button>
   );
