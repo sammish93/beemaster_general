@@ -25,11 +25,6 @@ import {
   availableCountries,
   availableLanguages,
 } from "@/constants/LocaleEnums";
-import {
-  TemperatureMeasurement,
-  WeightMeasurement,
-} from "@/constants/Measurements";
-import { useIsFocused } from "@react-navigation/native";
 import FileDownloader from "@/components/FileDownloader";
 
 const SettingsScreen = () => {
