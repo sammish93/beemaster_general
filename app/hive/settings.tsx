@@ -378,6 +378,7 @@ const HiveSettingsScreen = () => {
             <FileDownloader
               jsonString={createJSON()}
               fileName="hive_historical_data.json"
+              buttonLabel={userViewModel.i18n.t("download hive data")}
             />
             <VerticalSpacer size={20} />
             <Button

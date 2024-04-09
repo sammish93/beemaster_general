@@ -7,6 +7,7 @@ import { Button } from "react-native-paper";
 interface FileDownloaderProps {
   jsonString: string;
   fileName: string;
+  buttonLabel: string;
 }
 
 const FileDownloader = (props: FileDownloaderProps) => {
@@ -30,7 +31,7 @@ const FileDownloader = (props: FileDownloaderProps) => {
 
   return (
     <Button icon="download" mode="contained" onPress={downloadJson}>
-      {userViewModel.i18n.t("download hive data")}
+      {props.buttonLabel}
     </Button>
   );
 };
