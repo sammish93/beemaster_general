@@ -252,7 +252,7 @@ export const areStrongWindsForecast = (weatherConditions: { windSpeed: number; c
 export const isDroughtForecast = (weatherConditions: { forecast: string; country: string }[]): boolean => {
     const userCountry = userViewModel.currentCountry || 'NO';
     return weatherConditions.some(condition =>
-        condition.forecast.includes('drought') && condition.country === userCountry);
+        condition.forecast.includes('tørke') && condition.country === userCountry);
 };
 
 

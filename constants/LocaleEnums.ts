@@ -47,11 +47,4 @@ export const availableCountries: CountryOption[] = [
 
 ];
 
-type SnowSignificanceThreshold = {
-    [key: string]: string[];
-};
 
-export const snowSignificanceThreshold: SnowSignificanceThreshold = {
-    'NO': ['snø', 'kraftig snøfall'],
-    'US': ['heavy snow'],
-};
