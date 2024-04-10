@@ -1,14 +1,12 @@
 import { HiveModel } from '@/models/hiveModel';
 import { convertTemperature } from './measurementConverter';
 import { TemperatureMeasurement } from "@/constants/Measurements";
-import { snowSignificanceThreshold } from '@/constants/LocaleEnums';
 import userViewModel from '@/viewModels/UserViewModel';
 
 
 /**
  * Checks if the temperature is consistently warm over a specified number of days.
  * This function uses the user's temperature unit preference from the UserViewModel to interpret the forecast data.
- * 
  * @notification Weather - This function can trigger a 'Weather' notification when a period of consistent warmth is detected, which may require adjustments in hive management to ensure bee health.
  * @notification ConsiderExpanding - Additionally, a 'ConsiderExpanding' notification might be appropriate if the consistent warm temperatures suggest favorable conditions for hive growth or expansion.
  * @param forecast An array of temperature forecasts, representing daily temperatures.
@@ -21,7 +19,7 @@ export const areTemperaturesConsistentlyWarm = (forecast: number[], numberOfDays
     for (const temperature of forecast) {
         const temp = convertTemperature(temperature, TemperatureMeasurement.Celsius, userViewModel.temperaturePreference);
 
-        if (temp >= userViewModel.thresholdTempWarm) {
+        if (temp >= userViewModel.thresholdTemperatureMax) {
             consecutiveWarmDays++;
             if (consecutiveWarmDays === numberOfDays) {
                 return true;
@@ -37,7 +35,6 @@ export const areTemperaturesConsistentlyWarm = (forecast: number[], numberOfDays
 /**
  * Determines if temperatures are increasing each day throughout a sequence in spring.
  * This function uses the user's temperature unit preference from the UserViewModel to interpret the daily temperatures.
- * 
  * @notification Weather - This function can trigger a 'Weather' notification to highlight a warming trend in spring.
  * @notification ConsiderExpanding - A 'ConsiderExpanding' notification might also be triggered, suggesting that the favorable weather conditions and potential increase in bee activity could necessitate additional space for the hive.
  * @param temperatures An array of daily temperatures.
@@ -58,29 +55,15 @@ export const isWarmerEachDayInSpring = (temperatures: number[]): boolean => {
 
 
 /**
- * Evaluates weather forecasts to determine if snow is expected based on user's location.
- * @notification Weather - This function can trigger a 'Weather' notification to alert users about the possibility of significant snowfall, allowing for timely preparations and adjustments.
- * @param forecast An array of string weather forecasts.
- * @returns True if the forecast includes significant snow keywords based on the user's current country in userViewModel, otherwise false.
- */
-export const isSnowForecast = (forecast: string[]): boolean => {
-    const country = userViewModel.currentCountry || 'NO';
-    const significantSnowKeywords = snowSignificanceThreshold[country] || ['snow'];
-
-    return forecast.some(forecastItem => significantSnowKeywords.some(significantSnowKeywords => forecastItem.includes(significantSnowKeywords)));
-};
-
-/**
  * Checks if the temperature in any of the provided hives exceeds a user-specified maximum temperature.
  * @notification Weather - Indicates when external temperature conditions may adversely affect hive conditions.
  * @notification CheckHive - Suggests an internal hive check might be necessary to prevent overheating.
  * @param hives An array of hive objects, each containing information about a single hive's conditions.
- * @param userViewModel An instance of IUserViewModel containing user-defined temperature preferences, including a maximum temperature parameter.
  * @returns True if any hive's temperature exceeds the maximum temperature parameter defined in the userViewModel, otherwise false.
  */
 export const isHiveTooWarm = (hives: HiveModel[]): boolean => {
     for (const hive of hives) {
-        if (hive.temperature && hive.temperature > (userViewModel.maxTempParamTooWarm ?? 0)) {
+        if (hive.temperature && hive.temperature > (userViewModel.thresholdMaxTempInHive)) {
             return true;
         }
     }
@@ -89,25 +72,44 @@ export const isHiveTooWarm = (hives: HiveModel[]): boolean => {
 
 
 /**
- * Checks when a hive decreases in weight during early spring, based on user-defined parameters from UserViewModel.
- * This function is designed to trigger notifications for beekeepers to consider feeding their bees if significant weight loss is detected in the hive during early spring.
+ * Checks if the temperature in any of the provided hives falls below a user-specified minimum temperature.
+ * @notification Weather - Indicates when external temperature conditions may adversely affect hive conditions by making them too cold.
+ * @notification CheckHive - Suggests an internal hive check might be necessary to ensure adequate warmth for the colony's survival.
+ * @param hives An array of hive objects, each containing information about a single hive's conditions.
+ * @returns True if any hive's temperature falls below the minimum temperature parameter defined in the userViewModel, otherwise false.
+ */
+export const isHiveTooCold = (hives: HiveModel[]): boolean => {
+    for (const hive of hives) {
+        if (hive.temperature && hive.temperature < (userViewModel.thresholdMinTempInHive)) {
+            return true;
+        }
+    }
+    return false;
+};
+
+
+/**
+ * Checks when any of the hives decreases in weight during early spring, based on user-defined parameters from UserViewModel.
+ * This function is designed to trigger notifications for beekeepers to consider feeding their bees if significant weight loss is detected in any of the hives during early spring.
  * It compares daily hive weights against a threshold for significant weight decrease, using the early spring start and end months defined in the user's preferences.
  * 
  * @notification ConsiderFeeding - This function can trigger a 'ConsiderFeeding' notification when a significant weight decrease is detected in the early spring.
- * @param weights Array of daily hive weights.
- * @returns A boolean indicating whether the hive decreases in weight significantly during early spring, as defined by the user. This function uses the threshold for significant weight decrease, early spring start month, and end month from the user's preferences in UserViewModel.
+ * @param hives Array of HiveModel objects, each containing information about a single hive's conditions.
+ * @returns A boolean indicating whether any hive decreases in weight significantly during early spring, as defined by the user. This function uses the threshold for significant weight decrease, early spring start month, and end month from the user's preferences in UserViewModel.
  */
-export const doesHiveWeightDecreaseInEarlySpring = (weights: number[]): boolean => {
+export const doesHiveWeightDecreaseInEarlySpring = (hives: HiveModel[]): boolean => {
     const { thresholdWeightDecreaseEarlySpring, earlySpringStartMonth, earlySpringEndMonth } = userViewModel;
     const currentMonth = new Date().getMonth();
     const startMonth = earlySpringStartMonth.getMonth();
     const endMonth = earlySpringEndMonth.getMonth();
 
     if (currentMonth >= startMonth && currentMonth <= endMonth) {
-        for (let i = 1; i < weights.length; i++) {
-            const weightDecrease = weights[i - 1] - weights[i];
-            if (weightDecrease >= thresholdWeightDecreaseEarlySpring) {
-                return true;
+        for (let i = 1; i < hives.length; i++) {
+            if (hives[i].weight !== undefined && hives[i - 1].weight !== undefined) {
+                const weightDecrease = (hives[i - 1].weight ?? 0) - (hives[i].weight ?? 0);
+                if (weightDecrease >= thresholdWeightDecreaseEarlySpring) {
+                    return true;
+                }
             }
         }
     }
@@ -116,25 +118,25 @@ export const doesHiveWeightDecreaseInEarlySpring = (weights: number[]): boolean 
 
 
 /**
- * Determines if the weight of a hive decreases significantly during the autumn months. 
- * This function supports the beekeeping management process by signaling when bees might need additional feeding to prepare for winter. 
- * 
+ * Determines if the weight of any hive decreases significantly during the autumn months.
+ * This function supports the beekeeping management process by signaling when bees might need additional feeding to prepare for winter.
  * @notification ConsiderFeeding - Triggers a 'ConsiderFeeding' notification if a significant decrease in hive weight is detected during the autumn, suggesting that bees may require additional feeding.
- * @param weights An array of numbers representing the recorded weights of the hive over time.
- * @returns A boolean value indicating whether the weight of the hive decreases significantly during the autumn period.
+ * @param hives An array of HiveModel objects, each containing information about a single hive's conditions over time.
+ * @returns A boolean value indicating whether the weight of any hive decreases significantly during the autumn period, as defined by the user's preferences in UserViewModel.
  */
-export const doesHiveWeightDecreaseInAutumn = (weights: number[]): boolean => {
-    const thresholdWeightDecreaseInAutumn = userViewModel.thresholdWeightDecreaseInAutumn;
-    const { autumnStartMonth, autumnEndMonth } = userViewModel;
+export const doesHiveWeightDecreaseInAutumn = (hives: HiveModel[]): boolean => {
+    const { thresholdWeightDecreaseInAutumn, autumnStartMonth, autumnEndMonth } = userViewModel;
     const currentMonth = new Date().getMonth();
     const startMonth = autumnStartMonth.getMonth();
     const endMonth = autumnEndMonth.getMonth();
 
     if (currentMonth >= startMonth && currentMonth <= endMonth) {
-        for (let i = 1; i < weights.length; i++) {
-            const weightDecrease = weights[i - 1] - weights[i];
-            if (weightDecrease >= thresholdWeightDecreaseInAutumn) {
-                return true;
+        for (let i = 1; i < hives.length; i++) {
+            if (hives[i].weight !== undefined && hives[i - 1].weight !== undefined) {
+                const weightDecrease = (hives[i - 1].weight ?? 0) - (hives[i].weight ?? 0);
+                if (weightDecrease >= thresholdWeightDecreaseInAutumn) {
+                    return true;
+                }
             }
         }
     }
@@ -143,23 +145,25 @@ export const doesHiveWeightDecreaseInAutumn = (weights: number[]): boolean => {
 
 
 /**
- * Checks if there is a snow forecast during the autumn months.
- * 
+ * Checks if there is a snow forecast during the autumn months based on the user's location.
  * @notification Weather - Triggers a 'Weather' notification if snow is forecasted during the autumn, highlighting the need for physical preparations to protect the hives.
  * @notification ConsiderFeeding - Additionally triggers a 'ConsiderFeeding' notification if snow is forecasted, indicating the need to assess and possibly supplement the hive's food supply in expectation of restricted foraging opportunities.
- * @param weatherConditions An array of objects, each containing a `date` (as a Date object) and a `forecast` string.
- * @returns A boolean value indicating whether snow is forecasted during the autumn period.
+ * @param weatherConditions An array of objects, each containing a `date` (as a Date object), a `forecast` string, and a `country` string matching the user's current country.
+ * @returns A boolean value indicating whether snow is forecasted during the autumn period for the user's current country.
  */
-export const isSnowForecastInAutumn = (weatherConditions: { date: Date; forecast: string }[]): boolean => {
+export const isSnowForecastInAutumn = (weatherConditions: { date: Date; forecast: string, country: string }[]): boolean => {
     const { autumnStartMonth, autumnEndMonth } = userViewModel;
+    const userCountry = userViewModel.currentCountry || 'NO';
     const currentMonth = new Date().getMonth();
     const startMonth = autumnStartMonth.getMonth();
     const endMonth = autumnEndMonth.getMonth();
+
     if (currentMonth >= startMonth && currentMonth <= endMonth) {
         return weatherConditions.some(condition =>
-            condition.forecast.includes('snow') &&
-            condition.date.getMonth() + 1 >= startMonth &&
-            condition.date.getMonth() + 1 <= endMonth
+            condition.country === userCountry &&
+            condition.forecast.toLowerCase().includes('snø') &&
+            condition.date.getMonth() >= startMonth &&
+            condition.date.getMonth() <= endMonth
         );
     }
     return false;
@@ -167,68 +171,82 @@ export const isSnowForecastInAutumn = (weatherConditions: { date: Date; forecast
 
 
 /**
- * Determines if the recorded number of bee exits from the hive is consistently low.
- * @notification PossibleSwarm - Triggers a 'PossibleSwarm' notification if it looks like the bees might start swarming.
- * @notification ConsiderFeeding - Triggers a 'ConsiderFeeding' notification if low bee exits could indicate a lack of foraging success, suggesting the need to assess and possibly supplement the hive's food supply.
- *
- * @param beeExits An array of numbers, each representing the count of bee exits during a given period.
+ * Determines if the number of bee exits from the hive is consistently low over a given period. 
+ * @notification PossibleSwarm - Triggers a 'PossibleSwarm' notification if low exit counts suggest the bees might be preparing to swarm.
+ * @notification ConsiderFeeding - Triggers a 'ConsiderFeeding' notification if low exit counts could indicate a lack of foraging success, suggesting the need to assess and possibly supplement the hive's food supply.
+ * @param hives An array of HiveModel objects, including the count of bee exits.
  * @returns A boolean value indicating whether the bee exits have consistently been below a specified threshold.
  */
-export const haveFewBeesExited = (beeExits: number[]): boolean => {
+export const haveFewBeesExited = (hives: HiveModel[]): boolean => {
     const thresholdExitCount = userViewModel.thresholdExitCountLow;
 
-    return beeExits.every(exitCount => exitCount <= thresholdExitCount);
+    return hives.every(hive => hive.beeCount !== undefined && hive.beeCount <= thresholdExitCount);
 };
 
 
 /**
- * Function for checking if strong winds are forecast based on user-defined threshold.
- * @notification Weather - Triggers a 'Weather' notification when forecasted wind speeds meet or exceed the user-defined threshold for strong winds. 
- * @param forecast Array of wind speed forecasts.
- * @returns A boolean indicating whether strong winds are forecast.
+ * Function for checking if a significant number of bees have been exiting the hive.
+ * @notification PossibleSwarm - Alerts to the possibility of swarming activity.
+ * @notification CheckHive
+ * @param hives Array of HiveModel objects, including the count of bee exits.
+ * @returns A boolean indicating whether a significant number of bees have been exiting the hive.
  */
-export const areStrongWindsForecast = (forecast: number[]): boolean => {
+export const haveLotsOfBeesExited = (hives: HiveModel[]): boolean => {
+    const thresholdExitCountHigh = userViewModel.thresholdExitCountHigh;
+
+    return hives.some(hive => hive.beeCount !== undefined && hive.beeCount >= thresholdExitCountHigh);
+};
+
+
+/**
+ * Evaluates weather forecasts to determine if snow is expected based on user's location.
+ * @notification Weather - This function can trigger a 'Weather' notification to alert users about the possibility of significant snowfall.
+ * @notfication ConsiderFeeding
+ * @param weatherConditions Array of objects, each representing a weather forecast description and the country it applies to.
+ * @returns True if the forecast includes significant snow keywords, otherwise false.
+ */
+export const isSnowForecast = (weatherConditions: { forecast: string; country: string }[]): boolean => {
+    const userCountry = userViewModel.currentCountry || 'NO';
+    return weatherConditions.some(condition =>
+        condition.forecast.toLowerCase().includes('snø') && condition.country === userCountry);
+};
+
+
+/**
+ * Evaluates weather forecasts to determine if rain is expected based on user's location.
+ * @notification Weather - This function can trigger a 'Weather' notification to alert users about the possibility of significant rainfall.
+ * @param weatherConditions Array of objects, each representing a weather forecast description and the country it applies to.
+ * @returns True if the forecast includes the keyword 'rain' for the user's current country, otherwise false.
+ */
+export const isRainForecast = (weatherConditions: { forecast: string; country: string }[]): boolean => {
+    const userCountry = userViewModel.currentCountry || 'NO';
+    return weatherConditions.some(condition =>
+        condition.forecast.toLowerCase().includes('regn') && condition.country === userCountry);
+};
+
+
+/**
+ * Function for checking if strong winds are forecast based on user-defined threshold, considering the user's location.
+ * @notification Weather - Triggers a 'Weather' notification when forecasted wind speeds meet or exceed the user-defined threshold for strong winds in the user's current country.
+ * @notification ConsiderFeeding
+ * @param weatherConditions Array of objects, each representing a wind speed forecast and the country it applies to.
+ * @returns A boolean indicating whether strong winds are forecast in the user's current country.
+ */
+export const areStrongWindsForecast = (weatherConditions: { windSpeed: number; country: string }[]): boolean => {
+    const userCountry = userViewModel.currentCountry || 'NO';
     const thresholdWindSpeed = userViewModel.thresholdWindSpeedStrong;
 
-    return forecast.some(windSpeed => windSpeed >= thresholdWindSpeed);
-};
-
-/**
- * Determines if 'snow' is forecasted during specific seasons (autumn, early winter, and early spring) based on the current month.
- * This function checks if the array of weather conditions contains 'snow' and then verifies if the current month
- * falls within the predefined months for autumn, early winter, or early spring as specified in the userViewModel.
- *  
- * @notification Weather - Triggers a 'Weather' notification when snow is forecasted during the specified seasons of autumn, early winter, or early spring.
- * @param weatherConditions An array of strings, each representing a forecast description.
- * @returns True if the current date falls within the specified seasons (autumn, early winter, 
- * or early spring) and 'snow' is included in the weather conditions. False otherwise.
- */
-export const isSnowForecastInSpecificSeasons = (weatherConditions: string[]): boolean => {
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-
-    if (!weatherConditions.includes('snow')) {
-        return false;
-    }
-
-    const isWithinSeason = (seasonMonths: Date[]) => seasonMonths.some(seasonDate =>
-        seasonDate.getMonth() === currentMonth && seasonDate.getFullYear() === currentYear
-    );
-    return isWithinSeason(userViewModel.autumnMonths) ||
-        isWithinSeason(userViewModel.earlyWinterMonths) ||
-        isWithinSeason(userViewModel.earlySpringMonths);
+    return weatherConditions.some(condition =>
+        condition.country === userCountry && condition.windSpeed >= thresholdWindSpeed);
 };
 
 
 /**
  * Function for checking if a drought is forecast based on user's location.
- * 
  * @notification Weather - Triggers a 'Weather' notification when 'drought' is detected in the forecast for the user's current country.
  * @notification ConsiderFeeding - In addition, triggers a 'ConsiderFeeding' notification for beekeepers, indicating that supplementary feeding may be necessary due to reduced availability of natural food sources for bees during drought conditions.
- *
+ * @notfication Maintenance
  * @param weatherConditions Array of objects, each representing a weather forecast description and the country it applies to.
- * 
  * @returns A boolean indicating whether a drought is forecast in the user's current country.
  */
 export const isDroughtForecast = (weatherConditions: { forecast: string; country: string }[]): boolean => {
@@ -238,88 +256,278 @@ export const isDroughtForecast = (weatherConditions: { forecast: string; country
 };
 
 
-
-//MAINTENANCE 
 /**
- * Function to check for warm and/or dry days with low wind speed between early spring and late autumn.
+ * Determines if 'snow' is forecasted during specific seasons (autumn, early winter, and early spring) based on the current month and the user's location.
+ * This function checks if the array of weather conditions contains 'snow' for the user's current country, 
+ * and then verifies if the current month falls within the predefined months for autumn, 
+ * early winter, or early spring as specified in the userViewModel.
+ * @notification Weather - Triggers a 'Weather' notification when snow is forecasted during the specified seasons of autumn, early winter, or early spring for the user's current country.
+ * @notification ConsiderFeeding
+ * @notification CheckHive
+ * @param weatherConditions An array of objects, each representing a forecast description and the country it applies to.
+ * @returns True if the current date falls within the specified seasons (autumn, early winter, 
+ * or early spring), 'snow' is included in the weather conditions, and the conditions apply to the user's current country. False otherwise.
+ */
+export const isSnowForecastInSpecificSeasons = (weatherConditions: { forecast: string; country: string }[]): boolean => {
+    const userCountry = userViewModel.currentCountry || 'NO';
+    const currentMonth = new Date().getMonth();
+
+    const snowForecastInUserCountry = weatherConditions.some(condition =>
+        condition.forecast.toLowerCase().includes('snø') && condition.country === userCountry
+    );
+
+    if (!snowForecastInUserCountry) {
+        return false;
+    }
+
+    const isWithinSeason = (seasonDates: Date[]) => seasonDates.some(seasonDate =>
+        currentMonth === seasonDate.getMonth()
+    );
+
+    return isWithinSeason(userViewModel.autumnMonths) ||
+        isWithinSeason(userViewModel.earlyWinterMonths) ||
+        isWithinSeason(userViewModel.earlySpringMonths);
+};
+
+
+/**
+ * Function to check for warm days with low wind speed between early spring and late autumn,
+ * taking into account the user's current country.
  *   
  * @notification Weather - Indicates a notable weather pattern that might impact bee activity and hive conditions.
  * @notification Maintenance - Suggests that the weather conditions are ideal for performing hive maintenance.
  * @notification ConsiderFeeding - Indicates that supplementary feeding may be necessary if the warm, dry conditions persist and natural food sources become scarce.
- *
- * @param weatherConditions Array of objects representing daily weather conditions.
- * @returns A boolean indicating whether the conditions meet the criteria.
+ * @notification HoneyHarvest
+ * @param weatherConditions Array of objects representing daily weather conditions, including the country.
+ * @returns A boolean indicating whether the conditions meet the criteria for the user's current country.
  */
-export const isWarmDryLowWindDay = (
-    weatherConditions: {
-        temperature: number;
-        humidity: number;
-        windSpeed: number
-    }[],
-): boolean => {
+export const isIdealBeeWeatherBetweenEarlySpringAndLateAutumn = (
+    weatherConditions: { temperature: number; windSpeed: number; country: string }[]): boolean => {
+    const userCountry = userViewModel.currentCountry || 'NO';
     const currentMonth = new Date().getMonth();
-
     const earlySpringStartMonth = userViewModel.earlySpringStartMonth.getMonth();
     const autumnEndMonth = userViewModel.autumnEndMonth.getMonth();
-
     const thresholdWindSpeedLow = userViewModel.thresholdWindSpeedLow;
-    const thresholdTempWarm = userViewModel.thresholdTempWarm;
-    const humidityThreshold = userViewModel.humidityThreshold;
+    const thresholdTempOptimal = userViewModel.thresholdTemperatureOptimal;
 
-    if (currentMonth >= earlySpringStartMonth && currentMonth <= autumnEndMonth) {
-        return weatherConditions.some(condition =>
-            condition.temperature >= thresholdTempWarm &&
-            condition.humidity <= humidityThreshold &&
-            condition.windSpeed <= thresholdWindSpeedLow
-        );
-    }
-    return false;
+    const filteredConditions = weatherConditions.filter(condition =>
+        condition.country === userCountry &&
+        currentMonth >= earlySpringStartMonth &&
+        currentMonth <= autumnEndMonth
+    );
+
+    return filteredConditions.some(condition =>
+        condition.temperature >= thresholdTempOptimal &&
+        condition.windSpeed <= thresholdWindSpeedLow
+    );
 };
 
 
-
 /**
- * Function to check for warm, dry days with low wind speed between summer and early autumn.
- * 
+ * Function to check for warm days with low wind speed between summer and early autumn
+ * taking into account the user's current country.
  * @notification Maintenance - Suggests optimal conditions for performing hive maintenance.
  * @notification HoneyHarvest - Indicates ideal conditions for honey harvesting due to the stable and favorable weather, potentially leading to a successful and efficient harvest.
  * @param weatherConditions Array of objects representing daily weather conditions.
  * @returns A boolean indicating whether the conditions meet the criteria for a warm, dry day with low wind speed in the specified period.
  */
-export const isWarmDryLowWindDayBetweenSummerAndEarlyAutumn = (
-    weatherConditions: { temperature: number; humidity: number; windSpeed: number }[],
+export const isIdealBeeWeatherBetweenSummerAndEarlyAutumn = (
+    weatherConditions: { temperature: number; humidity: number; windSpeed: number, country: string }[],
 ): boolean => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
+    const userCountry = userViewModel.currentCountry || 'NO';
 
-    const humidityThreshold = userViewModel.humidityThreshold;
-    const thresholdTempWarm = userViewModel.thresholdTempWarm;
+    const thresholdTempOptimal = userViewModel.thresholdTemperatureOptimal;
     const thresholdWindSpeedLow = userViewModel.thresholdWindSpeedLow;
     const summerStartMonth = userViewModel.summerStartMonth.getMonth();
     const earlyAutumnMonth = userViewModel.earlyAutumnMonth.getMonth();
 
-    if (currentMonth >= summerStartMonth && currentMonth <= earlyAutumnMonth) {
-        return weatherConditions.some(condition =>
-            condition.temperature >= thresholdTempWarm &&
-            condition.humidity <= humidityThreshold &&
-            condition.windSpeed <= thresholdWindSpeedLow
-        );
+    const relevantConditions = weatherConditions.filter(condition =>
+        condition.country === userCountry &&
+        currentMonth >= summerStartMonth &&
+        currentMonth <= earlyAutumnMonth
+    );
+
+    return relevantConditions.some(condition =>
+        condition.temperature >= thresholdTempOptimal &&
+        condition.windSpeed <= thresholdWindSpeedLow
+    );
+};
+
+
+/**
+ * Checks if there has been a significant increase in hive weight between any two consecutive observations within a specified period,
+ * indicating potential hive growth. This function examines each pair of consecutive weight measurements to identify any single instance of
+ * weight increase that meets or exceeds the thresholdWeightIncrease. It's particularly useful for detecting sudden changes that might
+ * suggest rapid colony growth or significant honey accumulation.
+ * 
+ * The evaluation period is defined by productionPeriodDays, but unlike shouldConsiderHiveExpansionBasedOnWeightIncrease, which assesses
+ * total weight change over the period, this function focuses on significant increases between any two measurements, offering a more granular
+ * insight into hive weight dynamics.
+ * 
+ * @notification ConsiderExpanding - Triggers if a significant weight increase between any two measurements is observed, indicating the hive may be becoming crowded and might benefit from expansion.
+ * @notification HoneyHarvest
+ * @param hives Array of HiveModel objects, representing the hive's conditions over a series of observations.
+ * @returns A boolean indicating whether there has been a significant weight increase between any two consecutive measurements, suggesting the need for potential hive expansion.
+ */
+export const doesHiveWeightIncreaseSignificantly = (hives: HiveModel[]): boolean => {
+    if (hives.length < userViewModel.productionPeriodDays) {
+        console.error("Insufficient data: The number of hive observations does not cover the production period.");
+        return false;
+    }
+    for (let i = 1; i < hives.length; i++) {
+        if (hives[i].weight !== undefined && hives[i - 1].weight !== undefined) {
+            const weightIncrease = (hives[i].weight ?? 0) - (hives[i - 1].weight ?? 0);
+            if (weightIncrease >= userViewModel.thresholdWeightIncrease) {
+                return true;
+            }
+        }
     }
     return false;
 };
 
 
 /**
- * Function for checking if hive weight increases significantly based on user-defined threshold.
+ * Evaluates the total increase in hive weight over a specified period, as represented by weights in a series of HiveModel objects,
+ * to determine the need for hive expansion. This function aggregates the daily weight increases to assess the overall hive growth over time,
+ * rather than focusing on individual fluctuations. It's particularly suited for identifying gradual increases in hive weight that could indicate
+ * the hive is becoming crowded, potentially necessitating expansion.
  * 
- * @notification ConsiderExpanding - Indicates that the hive may be becoming too crowded due to a significant increase in weight. 
- * @param weights Array of daily hive weights.
- * @returns A boolean indicating whether there's a significant increase in hive weight.
+ * The evaluation period is defined by productionPeriodDays, with significant weight gain determined by comparing the total weight change to the
+ * productionPeriodThreshold. A total weight increase meeting or exceeding this threshold suggests the hive may require more space to accommodate
+ * its growth.
+ * 
+ * @notification ConsiderExpanding - Indicates that the hive may be becoming too crowded due to a significant increase in weight, suggesting the need to consider expanding the hive.
+ * @notification HoneyHarvest
+ * @param hives Array of HiveModel objects, representing the hive's conditions over the specified production period.
+ * @returns A boolean indicating whether the hive weight gain over the period suggests the need to consider expansion.
  */
-export const doesHiveWeightIncreaseSignificantly = (weights: number[]): boolean => {
-    for (let i = 1; i < weights.length; i++) {
-        const weightIncrease = weights[i] - weights[i - 1];
-        if (weightIncrease >= userViewModel.thresholdWeightIncrease) {
+export const shouldConsiderHiveExpansionBasedOnWeightIncrease = (hives: HiveModel[]): boolean => {
+    if (hives.length < userViewModel.productionPeriodDays) {
+        return false;
+    }
+
+    let totalWeightChange = 0;
+
+    for (let i = 1; i < hives.length; i++) {
+        const currentWeight = hives[i].weight ?? 0;
+        const previousWeight = hives[i - 1].weight ?? 0;
+        let dailyChange = currentWeight - previousWeight;
+        totalWeightChange += dailyChange;
+    }
+    return totalWeightChange >= userViewModel.productionPeriodThreshold;
+};
+
+
+/**
+ * Evaluates if there has been a significant decrease in hive weight between any two consecutive observations
+ * within a specified period, potentially indicating issues such as swarming behavior.
+ * This function checks each pair of consecutive weight measurements to identify any single instance of weight decrease
+ * that meets or exceeds the thresholdWeightDecrease. It's particularly useful for detecting sudden changes that might
+ * require immediate attention, like the potential for a hive to swarm.
+ * 
+ * @notification PossibleSwarm - Triggers a 'PossibleSwarm' notification if a significant decrease in weight is observed, 
+ * signaling the beekeeper to inspect the hive for signs of swarming.
+ * @param hives Array of HiveModel objects, representing the hive's conditions over a series of observations.
+ * @returns A boolean indicating whether there's been a significant decrease in hive weight between any two consecutive observations.
+ */
+export const doesHiveWeightDecreaseSignificantly = (hives: HiveModel[]): boolean => {
+    if (hives.length < userViewModel.productionPeriodDays) {
+        return false;
+    }
+
+    for (let i = 1; i < hives.length; i++) {
+        if (hives[i].weight !== undefined && hives[i - 1].weight !== undefined) {
+            const weightDecrease = (hives[i - 1].weight ?? 0) - (hives[i].weight ?? 0);
+            if (weightDecrease >= userViewModel.thresholdWeightDecrease) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
+
+
+/**
+ * Evaluates the total decrease in hive weight over a specified period, as indicated by the weights in a series of HiveModel objects,
+ * to determine if there is a need for action. This approach aggregates the daily weight changes to assess the overall
+ * health and condition of the hive over time, rather than focusing on individual fluctuations.
+ * 
+ * @notification ConsiderFeeding - Indicates that the hive may be depleting its stored resources due to a significant decrease in weight,
+ * suggesting that the bees might require feeding to replenish their supplies.
+ * @notification PossibleSwarm - Additionally triggers a 'PossibleSwarm' notification if the significant decrease in weight suggests the bees might be preparing to swarm,
+ * signaling the beekeeper to inspect the hive for further signs and to consider interventions.
+ * @param hives Array of HiveModel objects, representing the hive's conditions over the specified production period.
+ * @returns A boolean indicating whether the total weight loss over the period.
+ */
+
+export const shouldConsiderFeedingBasedOnWeightDecrease = (hives: HiveModel[]): boolean => {
+    if (hives.length < userViewModel.productionPeriodDays) {
+        return false;
+    }
+
+    let totalWeightChange = 0;
+
+    for (let i = 1; i < hives.length; i++) {
+        const currentWeight = hives[i].weight ?? 0;
+        const previousWeight = hives[i - 1].weight ?? 0;
+        let dailyChange = previousWeight - currentWeight;
+        totalWeightChange += dailyChange;
+    }
+
+    if (totalWeightChange >= userViewModel.productionPeriodThreshold) {
+        return true;
+    }
+    return false;
+};
+
+
+
+/**
+ * Checks if the outdoor temperature exceeds the user-defined maximum threshold based on the user's location.
+ * @notification CheckHive - Triggers a 'CheckHive' notification if the outdoor temperature goes above the maximum threshold,
+ * indicating potential stress on the hive due to heat, specific to the user's location.
+ * @param weatherConditions Array of objects, each containing daily outdoor temperature and the country it applies to.
+ * @returns A boolean indicating whether the outdoor temperature has exceeded the user-defined maximum threshold at any point, in the user's location.
+ */
+export const isOutdoorTemperatureAboveMax = (weatherConditions: { temperature: number; country: string }[]): boolean => {
+    const userCountry = userViewModel.currentCountry || 'NO';
+    const thresholdMax = userViewModel.thresholdTemperatureMax;
+
+    return weatherConditions.some(condition =>
+        condition.country === userCountry && condition.temperature > thresholdMax);
+};
+
+
+/**
+ * Checks if the outdoor temperature falls below the user-defined minimum threshold based on the user's location.
+ * @notification CheckHive - Triggers a 'CheckHive' notification if the outdoor temperature goes below the minimum threshold,
+ * indicating potential stress on the hive due to cold, specific to the user's location.
+ * @param weatherConditions Array of objects, each containing daily outdoor temperature and the country it applies to.
+ * @returns A boolean indicating whether the outdoor temperature has fallen below the user-defined minimum threshold at any point, in the user's location.
+ */
+export const isOutdoorTemperatureBelowMin = (weatherConditions: { temperature: number; country: string }[]): boolean => {
+    const userCountry = userViewModel.currentCountry || 'NO';
+    const thresholdMin = userViewModel.thresholdTemperatureMin;
+
+    return weatherConditions.some(condition =>
+        condition.country === userCountry && condition.temperature < thresholdMin);
+};
+
+
+/**
+ * Function for checking if any humidity value is below the predefined minimum threshold.
+ * This function is aimed at helping beekeepers maintain optimal humidity conditions within the hive by
+ * alerting them to low humidity levels that could affect the health and productivity of the bee colony.
+ * @notification CheckHive - Triggers a 'CheckHive' notification if a humidity value is found to be below the minimum threshold.
+ * This advises beekeepers to inspect the hive for potential issues like dryness that could harm the bees or disrupt their activities.
+ * @param humidities Array of daily humidity values, where each value represents a daily average humidity within the hive.
+ * @returns A boolean indicating whether any of the humidity values are below the minimum threshold.
+ */
+export const isHumidityBelowMinimum = (humidities: number[]): boolean => {
+    for (let i = 0; i < humidities.length; i++) {
+        if (humidities[i] < userViewModel.thresholdHumidityMin) {
             return true;
         }
     }
@@ -328,34 +536,17 @@ export const doesHiveWeightIncreaseSignificantly = (weights: number[]): boolean 
 
 
 /**
- * Function for checking if hive temperature increases or decreases drastically in short time.
- * 
- * @notification CheckHive - Triggers a 'CheckHive' notification when a drastic temperature change is detected.
- * @param temperatures Array of daily hive temperatures.
- * @returns A boolean indicating whether there's a drastic increase or decrease in temperature in a short time.
+ * Function for checking if any humidity value is above the predefined maximum threshold.
+ * Aimed at assisting beekeepers in maintaining optimal humidity conditions within the hive, this function
+ * alerts them to high humidity levels that could lead to issues such as mold growth or bee health problems.
+ * @notification CheckHive - Triggers a 'CheckHive' notification if a humidity value is found to be above the maximum threshold.
+ * Beekeepers are advised to inspect the hive for potential high humidity problems that could negatively impact the colony's health.
+ * @param humidities Array of daily humidity values, where each value represents a daily average humidity within the hive.
+ * @returns A boolean indicating whether any of the humidity values are above the maximum threshold.
  */
-export const isTemperatureChangeDrastic = (temperatures: number[]): boolean => {
-    for (let i = 1; i < temperatures.length; i++) {
-        const tempChange = Math.abs(temperatures[i] - temperatures[i - 1]);
-        if (tempChange > userViewModel.thresholdMaxTempChangeInHive) {
-            return true;
-        }
-    }
-    return false;
-};
-
-
-/**
- * Function for checking if humidity increases or decreases drastically in short time.
- * 
- * @notification CheckHive - Triggers a 'CheckHive' notification when a drastic change in humidity is detected, advising beekeepers to inspect the hive. 
- * @param humidities Array of daily humidity values.
- * @returns A boolean indicating whether there's a drastic increase or decrease in humidity in a short time.
- */
-export const isHumidityChangeDrastic = (humidities: number[]): boolean => {
-    for (let i = 1; i < humidities.length; i++) {
-        const humidityChange = Math.abs(humidities[i] - humidities[i - 1]);
-        if (humidityChange > userViewModel.thresholdMaxHumidityChangeInHive) {
+export const isHumidityAboveMaximum = (humidities: number[]): boolean => {
+    for (let i = 0; i < humidities.length; i++) {
+        if (humidities[i] > userViewModel.thresholdHumidityMax) {
             return true;
         }
     }
@@ -365,7 +556,6 @@ export const isHumidityChangeDrastic = (humidities: number[]): boolean => {
 
 /**
  * Function for checking the risk of swarming based on user-defined periods for late spring and early summer.
- * 
  * @notification PossibleSwarm - Indicates that conditions suggestive of an upcoming swarm have been detected.
  * @notification CheckHive - Advises beekeepers to perform detailed hive inspections upon detecting signs of potential swarming.
  * @param queenCuppingDetected Boolean indicating if queen cupping has been detected.
@@ -391,39 +581,88 @@ export const isSwarmingRiskBasedOnUserDefinedSeason = (
 
 
 /**
- * Function for checking if hive weight decreases significantly based on user-defined threshold.
- * 
- * @notification PossibleSwarm - Triggers a 'PossibleSwarm' notification if a significant decrease in weight is observed, signaling the beekeeper to inspect the hive for signs of swarming.
- * @param weights Array of daily hive weights.
- * @returns A boolean indicating whether there's a significant decrease in hive weight.
+ * Checks if winter is starting based on predefined winter start month, current temperature, and user's location.
+ * @notification ConsiderFeeding - Winter can be a challenging time for bees, as natural food sources become scarce.
+ * @notification Weather - Indicates a seasonal change in weather conditions that will impact bee activity and hive conditions.
+ * @param weatherConditions Array of objects representing daily weather conditions including temperature and country.
+ * @returns A boolean indicating whether winter is arriving, considering both the month, temperature criteria, and user's location.
  */
-export const doesHiveWeightDecreaseSignificantly = (weights: number[]): boolean => {
-    for (let i = 1; i < weights.length; i++) {
-        const weightDecrease = weights[i - 1] - weights[i];
-        if (weightDecrease >= userViewModel.thresholdWeightDecreaseSwarm) {
-            return true;
-        }
-    }
-    return false;
+export const isWinterStarting = (weatherConditions: { temperature: number; country: string }[]): boolean => {
+    const userCountry = userViewModel.currentCountry || 'NO';
+    const winterStartMonth = userViewModel.winterStart.getMonth();
+    const currentMonth = new Date().getMonth();
+
+    return weatherConditions.some(condition =>
+        condition.country === userCountry &&
+        currentMonth === winterStartMonth &&
+        condition.temperature < userViewModel.thresholdTemperatureMin
+    );
 };
 
 
 /**
- * Function for checking if a significant number of bees have been exiting the hive.
+ * Checks if winter is about to end based on predefined winter end month, current temperature, and user's location.
  * 
- * @notification PossibleSwarm - Alerts to the possibility of swarming activity.
- * @param beeExits Array of numbers representing the count of bees exiting the hive over a series of observations.
- * @returns A boolean indicating whether a significant number of bees have been exiting the hive.
+ * @notification CheckHive - Check the condition of the hive, including the health of the bee colony, after months of less activity.
+ * @notification Weather - Indicates a seasonal change in weather conditions that will impact bee activity and hive conditions.
+ * @param weatherConditions Array of objects representing daily weather conditions including temperature and country.
+ * @returns A boolean indicating whether winter is soon to be over, considering both the month, temperature criteria, and user's location.
  */
-export const haveLotsOfBeesExited = (beeExits: number[]): boolean => {
-    for (const exitCount of beeExits) {
-        if (exitCount >= userViewModel.thresholdExitCountHigh) {
-            return true;
-        }
-    }
-    return false;
+export const isWinterEnding = (weatherConditions: { temperature: number; country: string }[]): boolean => {
+    const userCountry = userViewModel.currentCountry || 'NO';
+    const winterEndMonth = userViewModel.winterEnd.getMonth();
+    const currentMonth = new Date().getMonth();
+
+    return weatherConditions.some(condition =>
+        condition.country === userCountry &&
+        currentMonth === winterEndMonth &&
+        condition.temperature > userViewModel.thresholdTemperatureMin
+    );
 };
 
+
+/**
+ * Checks if the early winter period is starting based on user-defined dates.
+ * @notification ConsiderFeeding - Winter can be a challenging time for bees, as natural food sources become scarce.
+ * @returns A boolean indicating whether the current date is the start of the early winter period.
+ */
+export const isEarlyWinterStarting = (): boolean => {
+    const currentMonth = new Date().getMonth();
+    const currentDate = new Date().getDate();
+    const earlyWinterStartMonth = userViewModel.earlyWinterStart.getMonth();
+    const earlyWinterStartDate = userViewModel.earlyWinterStart.getDate();
+
+    return currentMonth === earlyWinterStartMonth && currentDate === earlyWinterStartDate;
+};
+
+
+/**
+ * Checks if the early winter period is ending based on user-defined dates.
+ * @notification CheckHive - Check the condition of the hive, including the health of the bee colony, after months of less activity.
+ * @returns A boolean indicating whether the current date is the end of the early winter period.
+ */
+export const isEarlyWinterEnding = (): boolean => {
+    const currentMonth = new Date().getMonth();
+    const currentDate = new Date().getDate();
+    const earlyWinterEndMonth = userViewModel.earlyWinterEnd.getMonth();
+    const earlyWinterEndDate = userViewModel.earlyWinterEnd.getDate();
+
+    return currentMonth === earlyWinterEndMonth && currentDate === earlyWinterEndDate;
+};
+
+
+/**
+ * Checks if the early winter period is starting based on user-defined dates.
+ * @notification ConsiderExpanding - a time of strong growth inside the hive, with increased nectar flow and hive activity
+ * @notification Maintenance - Summer can bring challenges that require the beehives to be maintained to ensure good ventilation and temperature regulation.
+ * @returns A boolean indicating whether the current date is the start of the early winter period.
+ */
+export const isEarlySummerStarting = (): boolean => {
+    const currentMonth = new Date().getMonth();
+    const earlyWinterStartMonth = userViewModel.earlySummerStartMonth.getMonth();
+
+    return currentMonth === earlyWinterStartMonth;
+};
 
 
 interface BeekeepingReminder {
@@ -431,7 +670,6 @@ interface BeekeepingReminder {
     task: string;
     description: string;
 }
-
 /**
  * Function to create a reminder for a beekeeping task.
  * 
@@ -453,13 +691,10 @@ export const createBeekeepingReminder = (
     return reminders;
 };
 
-
-
 /**
  * Filters and returns reminders for a given date from an array of beekeeping reminders.
  * Useful for organizing daily beekeeping tasks by showing only the reminders relevant for a specific date,
  * aiding beekeepers in focusing on and preparing for the day's activities.
- * 
  * @param reminders Array of reminders.
  * @param date The date for which to display reminders.
  * @returns An array of reminders for the specified date.

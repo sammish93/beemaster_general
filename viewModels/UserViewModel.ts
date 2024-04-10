@@ -99,8 +99,6 @@ class UserViewModel {
     };
 
 
-
-
     // Localisation
     @observable i18n;
     @observable userId = "";
@@ -121,44 +119,40 @@ class UserViewModel {
     @observable smsNotifications: boolean = true;
     @observable emailNotifications: boolean = true;
 
+    // Expected to be decimal number
+    @observable thresholdWeightDecreaseInAutumn: number = 2.0;
+    @observable thresholdWeightDecreaseEarlySpring: number = 2.0;
+    @observable thresholdWeightDecrease: number = 2.0;
+    @observable thresholdWeightIncrease: number = 2.0;
 
-    // NOTE: These params aren't fully defined yet. Need to find exactly what we need based on 
-    // academic research first.
+    @observable productionPeriodDays: number = 7;   //num of days
+    @observable productionPeriodThreshold: number = 5.0; //kg
+
+    //Expected to be integer- alle er benyttet i funksjonene
+    @observable thresholdExitCountHigh: number = 30_000;
+    @observable thresholdExitCountLow: number = 2000;
+
 
     // Expected to be decimal number
-    @observable thresholdWeightDecreaseInAutumn: number = 0.0;
-    @observable thresholdWeightDecreaseEarlySpring: number = 0.0;
-    @observable thresholdWeightDecreaseSwarm: number = 0.0;
-    @observable thresholdWeightIncrease: number = 0.0;
+    //- alle er benyttet i funksjonene
+    @observable thresholdTemperatureMin: number = 10.0; //outdoor
+    @observable thresholdTemperatureMax: number = 40.0; //outdoor
+    @observable thresholdTemperatureOptimal: number = 20.0; //outdoor
+    //- alle er benyttet i funksjonene
+    @observable thresholdMinTempInHive: number = 34.0;
+    @observable thresholdMaxTempInHive: number = 36.0;
 
-    //Expected to be integer
-    @observable thresholdExitCountHigh: number = 0;
-    @observable thresholdExitCountLow: number = 0;
+    //- alle er benyttet i funksjonene
+    @observable thresholdWindSpeedStrong: number = 4.0;
+    @observable thresholdWindSpeedLow: number = 2.5;
+    //- alle er benyttet i funksjonene
+    @observable thresholdHumidityMin: number = 70.0; //70% 
+    @observable thresholdHumidityMax: number = 95.0; //95%
 
-    // Expected to be decimal number
-    @observable thresholdTempWarm: number = 0.0;
-    @observable thresholdTemperatureMin: number = 0.0;
-    @observable maxTempParamTooWarm?: number;
-    @observable thresholdMaxTempChangeInHive: number = 0.0;
-
-    @observable thresholdWindSpeedStrong: number = 0.0;
-    @observable thresholdWindSpeedLow: number = 0.0;
-
-    @observable thresholdMaxHumidityChangeInHive: number = 0.0;
-    @observable thresholdHumidityMin: number = 0.0;
-    @observable humidityThreshold: number = 0.0;
-
-    /*@observable summerStartMonth: number = 0;
-    @observable earlyAutumnMonth: number = 0;
-    @observable lateSpringStartMonth: number = 0;
-    @observable earlySummerEndMonth: number = 0;
-    @observable earlySpringStartMonth: number = 0;
-    @observable earlySpringEndMonth: number = 0;
-    @observable autumnStartMonth: number = 0;
-    @observable autumnEndMonth: number = 0;*/
 
     currentYear: number = new Date().getFullYear();
     //JavaScript Date objects are 0-indexed, thats why '-1'
+    //- alle er benyttet i funksjonene
     @observable autumnMonths: Date[] = [
         new Date(this.currentYear, 9 - 1, 1), // 1. september
         new Date(this.currentYear, 10 - 1, 1), // 1. oktober
@@ -172,16 +166,16 @@ class UserViewModel {
         new Date(this.currentYear, 2 - 1, 1), // 1. Feb
         new Date(this.currentYear, 3 - 1, 1), // 1. mars
     ];
-
-    @observable lateSpringStartMonth: Date = new Date(this.currentYear, 5 - 1, 1); // May 1
+    //- alle er benyttet i funksjonene
+    @observable lateSpringStartMonth: Date = new Date(this.currentYear, 6 - 1, 1); // Juni 1
     @observable earlyAutumnMonth: Date = new Date(this.currentYear, 8 - 1, 2); // Aug 2
 
     @observable earlySpringStartMonth: Date = new Date(this.currentYear, 2 - 1, 1); // Feb 
     @observable earlySpringEndMonth: Date = new Date(this.currentYear, 5 - 1, 10); // May 10
     @observable earlySummerStartMonth: Date = new Date(this.currentYear, 5 - 1, 11); // mai 11
     @observable earlySummerEndMonth: Date = new Date(this.currentYear, 8 - 1, 1); // August 1
-    @observable earlyWinterStart: Date = new Date(this.currentYear, 10 - 1, 1); //oct 1
-    @observable earlyWinterEnd: Date = new Date(this.currentYear, 1 - 1, 31);// Jan 31
+    @observable earlyWinterStart: Date = new Date(this.currentYear, 10 - 1, 1); //oct 1 
+    @observable earlyWinterEnd: Date = new Date(this.currentYear, 1 - 1, 31);// Jan 31 
 
     @observable springStartMonth: Date = new Date(this.currentYear, 3 - 1, 1); // March 1
     @observable springEndMonth: Date = new Date(this.currentYear, 5 - 1, 31); // May 1
@@ -190,9 +184,9 @@ class UserViewModel {
     @observable summerEndMonth: Date = new Date(this.currentYear, 8 - 1, 31); // Auguse 31
 
     @observable autumnStartMonth: Date = new Date(this.currentYear, 9 - 1, 1); // September 1
-    @observable autumnEndMonth: Date = new Date(this.currentYear, 9 - 1, 30); // End of september, could also be 1 nov.
+    @observable autumnEndMonth: Date = new Date(this.currentYear, 9 - 1, 30); // End of september.
 
-    @observable winterStart: Date = new Date(this.currentYear, 12 - 1, 1); //October 1st was suggested, but after research i found that in Norway it is December 1
+    @observable winterStart: Date = new Date(this.currentYear, 12 - 1, 1); //December 1 
     @observable winterEnd: Date = new Date(this.currentYear, 2 - 1, 28); //February 28  
 
 
@@ -289,22 +283,29 @@ class UserViewModel {
         }
     }
 
-    // TODO DB - These will all have to be in the DB eventually, but I'm not sure that we're fully finished 
-    // defining exactly what type of parameters should be included. See discord pinned message where 
-    // I asked Ash and Lorena to define exactly what parameters should be used based on academic research.
-    @action public setMaxTempParamTooWarm = (value: number): void => {
-        this.maxTempParamTooWarm = value;
-    }
+    // TODO DB - These will all have to be in the DB eventually.
+
+    //Weight
     @action public setThresholdWeightDecreaseInAutumn = (value: number): void => {
         this.thresholdWeightDecreaseInAutumn = value;
     }
     @action public setThresholdWeightDecreaseEarlySpring = (value: number): void => {
         this.thresholdWeightDecreaseEarlySpring = value;
     }
-    @action public setThresholdWeightDecreaseSwarm = (value: number): void => {
-        this.thresholdWeightDecreaseSwarm = value;
+    @action public setThresholdWeightDecrease = (value: number): void => {
+        this.thresholdWeightDecrease = value;
+    }
+    @action public setThresholdWeightIncrease = (value: number): void => {
+        this.thresholdWeightIncrease = value;
+    }
+    @action public setProductionPeriodDays = (value: number): void => {
+        this.productionPeriodDays = value;
+    }
+    @action public setProductionPeriodThreshold = (value: number): void => {
+        this.productionPeriodThreshold = value;
     }
 
+    //CountExit
     @action public setThresholdExitCountHigh = (value: number): void => {
         this.thresholdExitCountHigh = value;
     }
@@ -312,55 +313,49 @@ class UserViewModel {
         this.thresholdExitCountLow = value;
     }
 
-    @action public setThresholdTempWarm = (value: number): void => {
-        this.thresholdTempWarm = value;
+    //Temperatures
+    @action public setThresholdTemperatureOptimal = (value: number): void => {
+        this.thresholdTemperatureOptimal = value;
     }
+    @action public setThresholdTemperatureMin = (value: number): void => {
+        this.thresholdTemperatureMin = value;
+    }
+    @action public setThresholdTemperatureMax = (value: number): void => {
+        this.thresholdTemperatureMax = value;
+    }
+    @action public setThresholdMinTempInHive = (value: number): void => {
+        this.thresholdMinTempInHive = value;
+    }
+    @action public setThresholdMaxTempInHive = (value: number): void => {
+        this.thresholdMaxTempInHive = value;
+    }
+
+
+    //Windspeed
     @action public setThresholdWindSpeedStrong = (value: number): void => {
         this.thresholdWindSpeedStrong = value;
     }
     @action public setThresholdWindSpeedLow = (value: number): void => {
         this.thresholdWindSpeedLow = value;
     }
-    @action public setHumidityThreshold = (value: number): void => {
-        this.humidityThreshold = value;
+
+    //Humidity
+    @action public setThresholdHumidityMax = (value: number): void => {
+        this.thresholdHumidityMax = value;
     }
-    @action public setThresholdWeightIncrease = (value: number): void => {
-        this.thresholdWeightIncrease = value;
-    }
-    @action public setThresholdMaxTempChangeInHive = (value: number): void => {
-        this.thresholdMaxTempChangeInHive = value;
+    @action public setThresholdHumidityMin = (value: number): void => {
+        this.thresholdHumidityMin = value;
     }
 
-    @action public setThresholdMaxHumidityChangeInHive = (value: number): void => {
-        this.thresholdMaxHumidityChangeInHive = value;
+    //Spring
+    @action public setLateSpringStartMonth = (value: Date): void => {
+        this.lateSpringStartMonth = value;
     }
 
-
-
-    @action public setAutumnMonths = (value: Date[]): void => {
-        this.autumnMonths = value;
-    }
-    @action public setEarlyWinterMonths = (value: Date[]): void => {
-        this.earlyWinterMonths = value;
-    }
     @action public setEarlySpringMonths = (value: Date[]): void => {
         this.earlySpringMonths = value;
     }
 
-    @action public setSummerStartMonth = (value: Date): void => {
-        this.summerStartMonth = value;
-    }
-
-    @action public setEarlyAutumnMonth = (value: Date): void => {
-        this.earlyAutumnMonth = value;
-    }
-
-    @action public setLateSpringStartMonth = (value: Date): void => {
-        this.lateSpringStartMonth = value;
-    }
-    @action public setEarlySummerEndMonth = (value: Date): void => {
-        this.earlySummerEndMonth = value;
-    }
     @action public setEarlySpringStartMonth = (month: Date): void => {
         this.earlySpringStartMonth = month;
     }
@@ -368,7 +363,28 @@ class UserViewModel {
     @action public setEarlySpringEndMonth = (month: Date): void => {
         this.earlySpringEndMonth = month;
     }
+    @action public setSpringStartMonth = (value: Date): void => {
+        this.springStartMonth = value;
+    }
+    @action public setSpringEndMonth = (value: Date): void => {
+        this.springStartMonth = value;
+    }
 
+    //Summer
+    @action public setEarlySummerStartMonth = (value: Date): void => {
+        this.earlySummerStartMonth = value;
+    }
+    @action public setEarlySummerEndMonth = (value: Date): void => {
+        this.earlySummerEndMonth = value;
+    }
+    @action public setSummerStartMonth = (value: Date): void => {
+        this.summerStartMonth = value;
+    }
+    @action public setSummerEndMonth = (value: Date): void => {
+        this.summerEndMonth = value;
+    }
+
+    //Autumn 
     @action public setAutumnStartMonth = (month: Date): void => {
         this.autumnStartMonth = month;
     }
@@ -376,6 +392,31 @@ class UserViewModel {
     @action public setAutumnEndMonth = (month: Date): void => {
         this.autumnEndMonth = month;
     }
+
+    @action public setAutumnMonths = (value: Date[]): void => {
+        this.autumnMonths = value;
+    }
+    @action public setEarlyAutumnMonth = (value: Date): void => {
+        this.earlyAutumnMonth = value;
+    }
+
+    //Winter
+    @action public setEarlyWinterMonths = (value: Date[]): void => {
+        this.earlyWinterMonths = value;
+    }
+    @action public setWinterStart = (value: Date): void => {
+        this.winterStart = value;
+    }
+    @action public setWinterEnd = (value: Date): void => {
+        this.winterEnd = value;
+    }
+    @action public setEarlyWinterStart = (value: Date): void => {
+        this.earlyWinterStart = value;
+    }
+    @action public setEarlyWinterEnd = (value: Date): void => {
+        this.earlyWinterEnd = value;
+    }
+
 
 
     // Clears all the data in this view model.
@@ -516,8 +557,7 @@ class UserViewModel {
      */
 
     @action fetchUserParametersFromDatabase() {
-        // TODO Define parameters first.
-        // TODO DB - Read from DB. Note that parameters should be fully defined before we work on this.
+        // TODO DB - Read from DB. 
         // Dummy data for now
         const userDataFromDatabase = {
             userId: "3536",
@@ -527,44 +567,68 @@ class UserViewModel {
             precipitationPreference: PrecipitationMeasurement.Millimeters,
             windSpeedPreference: WindSpeedMeasurement.MetersPerSecond,
             weightPreference: WeightMeasurement.Kilograms,
+            beeCountPreference: BeeCountMeasurement.PerMinute,
 
-            maxTempParamTooWarm: 40.0,
+            //TODO: Missing notification preferences, not sure if it needs to bee included here 
 
-            thresholdWeightDecreaseInAutumn: 10.0,
-            thresholdWeightDecreaseEarlySpring: 10.0,
-            thresholdWeightDecreaseSwarm: 10.0,
-            thresholdExitCountLow: 20,
-            thresholdExitCountHigh: 80,
-            thresholdTempWarm: 33.0,
-            thresholdWindSpeedStrong: 10.5,
-            thresholdWindSpeedLow: 3.5,
-            thresholdWeightIncrease: 2.0,
-            thresholdMaxTempChangeInHive: 10.0,
-            thresholdMaxHumidityChangeInHive: 60.0,
+            thresholdWeightDecreaseInAutumn: 1.0,
+            thresholdWeightDecreaseEarlySpring: 1.0,
+            thresholdWeightDecrease: 2.5,
+            thresholdWeightIncrease: 2.5,
 
+            thresholdExitCountHigh: 40_000,
+            thresholdExitCountLow: 4_000,
+
+            thresholdTemperatureMin: 8.0,
+            thresholdTemperatureMax: 45.0,
+            thresholdTemperatureOptimal: 25.0,
+
+            thresholdMinTempInHive: 32.0,
+            thresholdMaxTempInHive: 38.0,
+
+            thresholdWindSpeedStrong: 6.5,
+            thresholdWindSpeedLow: 1.5,
+
+            thresholdHumidityMin: 60.0,
+            thresholdHumidityMax: 85.0,
+
+
+            earlyWinterMonths: [
+                new Date(this.currentYear, 10 - 1, 1), // 1. okt
+                new Date(this.currentYear, 11 - 1, 1), // 1. nov    
+            ],
+            earlySpringMonths: [
+                new Date(this.currentYear, 3 - 1, 1), // 1. mars
+                new Date(this.currentYear, 4 - 1, 1), // 1. april    
+            ],
             autumnMonths: [
                 new Date(this.currentYear, 9 - 1, 1), // 1. september
                 new Date(this.currentYear, 10 - 1, 1), // 1. oktober
 
             ],
+
+            earlyAutumnMonth: new Date(this.currentYear, 8 - 1, 1),
             autumnStartMonth: new Date(this.currentYear, 9 - 1, 1),
             autumnEndMonth: new Date(this.currentYear, 10 - 1, 1),
-            earlyAutumnMonth: new Date(this.currentYear, 8 - 1, 1),
-            earlySpringMonths: [
-                new Date(this.currentYear, 3 - 1, 1), // 1. mars
-                new Date(this.currentYear, 4 - 1, 1), // 1. april    
-            ],
-            lateSpringStartMonth: new Date(this.currentYear, 5 - 1, 1),
+
             summerStartMonth: new Date(this.currentYear, 6 - 1, 1),
-            earlySummerEndMonth: new Date(this.currentYear, 7 - 1, 1),
+            summerEndMonth: new Date(this.currentYear, 8 - 1, 1),
+
+            winterStart: new Date(this.currentYear, 11 - 1, 1),
+            winterEnd: new Date(this.currentYear, 2 - 1, 28),
+
             earlySpringStartMonth: new Date(this.currentYear, 3 - 1, 1),
             earlySpringEndMonth: new Date(this.currentYear, 5 - 1, 1),
-            earlyWinterMonths: [
-                new Date(this.currentYear, 10 - 1, 1), // 1. okt
-                new Date(this.currentYear, 11 - 1, 1), // 1. nov    
-            ],
+            lateSpringStartMonth: new Date(this.currentYear, 6 - 1, 1),
 
-            humidityThreshold: 50.0,
+            springStartMonth: new Date(this.currentYear, 3 - 1, 1),
+            springEndMonth: new Date(this.currentYear, 5 - 1, 31),
+
+            earlySummerStartMonth: new Date(this.currentYear, 5 - 1, 11),
+            earlySummerEndMonth: new Date(this.currentYear, 7 - 1, 1),
+            earlyWinterStart: new Date(this.currentYear, 10 - 1, 1),
+            earlyWinterEnd: new Date(this.currentYear, 1 - 1, 31)
+
 
         };
 
@@ -576,20 +640,21 @@ class UserViewModel {
         this.setWindSpeedPreference(userDataFromDatabase.windSpeedPreference);
         this.setWeightPreference(userDataFromDatabase.weightPreference);
 
-        this.setMaxTempParamTooWarm(userDataFromDatabase.maxTempParamTooWarm);
-
         this.setThresholdWeightDecreaseInAutumn(userDataFromDatabase.thresholdWeightDecreaseInAutumn);
         this.setThresholdWeightDecreaseEarlySpring(userDataFromDatabase.thresholdWeightDecreaseEarlySpring);
-        this.setThresholdWeightDecreaseSwarm(userDataFromDatabase.thresholdWeightDecreaseSwarm);
-        this.setThresholdTempWarm(userDataFromDatabase.thresholdTempWarm);
+        this.setThresholdWeightDecrease(userDataFromDatabase.thresholdWeightDecrease);
+        this.setThresholdWeightIncrease(userDataFromDatabase.thresholdWeightIncrease);
+
+        this.setThresholdTemperatureOptimal(userDataFromDatabase.thresholdTemperatureOptimal);
+
         this.setThresholdWindSpeedStrong(userDataFromDatabase.thresholdWindSpeedStrong);
         this.setThresholdWindSpeedLow(userDataFromDatabase.thresholdWindSpeedLow);
+
         this.setThresholdExitCountHigh(userDataFromDatabase.thresholdExitCountHigh);
         this.setThresholdExitCountLow(userDataFromDatabase.thresholdExitCountLow);
-        this.setThresholdWeightIncrease(userDataFromDatabase.thresholdWeightIncrease);
-        this.setThresholdMaxTempChangeInHive(userDataFromDatabase.thresholdMaxTempChangeInHive);
-        this.setThresholdMaxHumidityChangeInHive(userDataFromDatabase.thresholdMaxHumidityChangeInHive);
-        this.setHumidityThreshold(userDataFromDatabase.humidityThreshold);
+
+        this.setThresholdHumidityMax(userDataFromDatabase.thresholdHumidityMax);
+        this.setThresholdHumidityMin(userDataFromDatabase.thresholdHumidityMin);
 
         this.setEarlySpringStartMonth(userDataFromDatabase.earlySpringStartMonth);
         this.setEarlySpringEndMonth(userDataFromDatabase.earlySpringEndMonth);
