@@ -17,6 +17,7 @@ import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
+import { startBackgroundTask } from "@/domain/tasks/notificationTask";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import { useNetInfo } from "@react-native-community/netinfo";
@@ -50,7 +51,23 @@ const HomeScreen = () => {
     hiveViewModel.hives
   );
 
-  const handleAddHive = (hiveName: string, lat: number, lng: number) => {
+  // Register the background task on the startup of the app.
+  // To start the actualt task depends on the OS running the task.
+  useEffect(() => {
+    startBackgroundTask().then(() => {
+      console.log('Background task registered in HomeScreen!');
+    }).catch((error) => {
+      console.error(`Error registering background task: ${error}`);
+    });
+
+  }, []);
+
+  const handleAddHive = (hiveName: string) => {
+    /*
+    TODO Add validation. Coordinates of hive should use current 
+    GPS location. If not available then default to oslo. Add toast on success or failure.
+    */
+
     const newHiveId = `${userViewModel.userId}-hive-${Date.now()}`;
 
     hiveViewModel.addHive({

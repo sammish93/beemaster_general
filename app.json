@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffd669"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "config": {
@@ -25,7 +27,12 @@
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow this app to acsess your location?",
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos.",
         "NSFileProviderDomainUsageDescription": "Allow this app needs access to the file system to store and manage files?",
-        "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos."
+        "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos.",
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "remote-notification"
+        ]
       },
       "googleServicesFile": "./GoogleService-Info.plist"
     },
@@ -75,7 +82,8 @@
             "useFrameworks": "static"
           }
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true

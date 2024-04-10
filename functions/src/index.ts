@@ -1,4 +1,5 @@
 import { onRequest } from "firebase-functions/v2/https";
+import { recurringBackgroundTask } from "./notification_task";
 import * as admin from "firebase-admin";
 
 admin.initializeApp();
@@ -64,3 +65,5 @@ export const addWeightData = onRequest(async (request, response) => {
     response.status(500).send("Error writing document to db");
   }
 });
+
+export { recurringBackgroundTask };
