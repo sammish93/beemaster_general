@@ -660,6 +660,41 @@ export const isEarlySummerStarting = (): boolean => {
     return currentMonth === earlyWinterStartMonth;
 };
 
+/**
+ * Checks if the current date is within the beekeeping spring season as defined in the userViewModel.
+ * The spring season is determined by the springStartMonth and springEndMonth properties in the userViewModel.
+ * @notification ConsiderFeeding
+ * @notification ConsiderExpanding
+ * @notification Maintenance
+ * @returns A boolean indicating whether the current date falls within the defined spring beekeeping season.
+ */
+export const isCurrentlySpringSeason = (): boolean => {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const springStartMonth = userViewModel.springStartMonth.getMonth();
+    const springEndMonth = userViewModel.springEndMonth.getMonth();
+
+    return currentMonth >= springStartMonth && currentMonth <= springEndMonth;
+
+};
+
+/**
+ * Checks if the current date is within the beekeeping summer season as defined in the userViewModel.
+ * The summer season is determined by the summerStartMonth and summerEndMonth properties in the userViewModel.
+ * @notification ConsiderExpanding
+ * @notification HoneyHarvest
+ * @returns A boolean indicating whether the current date falls within the defined summer beekeeping season.
+ */
+export const isCurrentlySummerSeason = (): boolean => {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const summerStartMonth = userViewModel.summerStartMonth.getMonth();
+    const summerEndMonth = userViewModel.summerEndMonth.getMonth();
+
+    return currentMonth >= summerStartMonth && currentMonth <= summerEndMonth;
+
+};
+
 
 interface BeekeepingReminder {
     date: Date;
