@@ -56,7 +56,6 @@ export const isWarmerEachDayInSpring = (temperatures: number[]): boolean => {
 
 /**
  * Checks if the temperature in any of the provided hives exceeds a user-specified maximum temperature.
- * @notification Weather - Indicates when external temperature conditions may adversely affect hive conditions.
  * @notification CheckHive - Suggests an internal hive check might be necessary to prevent overheating.
  * @param hives An array of hive objects, each containing information about a single hive's conditions.
  * @returns True if any hive's temperature exceeds the maximum temperature parameter defined in the userViewModel, otherwise false.
@@ -73,7 +72,6 @@ export const isHiveTooWarm = (hives: HiveModel[]): boolean => {
 
 /**
  * Checks if the temperature in any of the provided hives falls below a user-specified minimum temperature.
- * @notification Weather - Indicates when external temperature conditions may adversely affect hive conditions by making them too cold.
  * @notification CheckHive - Suggests an internal hive check might be necessary to ensure adequate warmth for the colony's survival.
  * @param hives An array of hive objects, each containing information about a single hive's conditions.
  * @returns True if any hive's temperature falls below the minimum temperature parameter defined in the userViewModel, otherwise false.
