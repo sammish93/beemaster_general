@@ -261,7 +261,6 @@ export const isDroughtForecast = (weatherConditions: { forecast: string; country
  * early winter, or early spring as specified in the userViewModel.
  * @notification Weather - Triggers a 'Weather' notification when snow is forecasted during the specified seasons of autumn, early winter, or early spring for the user's current country.
  * @notification ConsiderFeeding
- * @notification CheckHive
  * @param weatherConditions An array of objects, each representing a forecast description and the country it applies to.
  * @returns True if the current date falls within the specified seasons (autumn, early winter, 
  * or early spring), 'snow' is included in the weather conditions, and the conditions apply to the user's current country. False otherwise.
@@ -298,7 +297,7 @@ export const isSnowForecastInSpecificSeasons = (weatherConditions: { forecast: s
  * @param weatherConditions Array of objects representing daily weather conditions, including the country.
  * @returns A boolean indicating whether the conditions meet the criteria for the user's current country.
  */
-export const isIdealBeeWeatherBetweenEarlySpringAndLateAutumn = (
+export const isIdealBeeWeatherBetweenEarlySpringAndEndAutumn = (
     weatherConditions: { temperature: number; windSpeed: number; country: string }[]): boolean => {
     const userCountry = userViewModel.currentCountry || 'NO';
     const currentMonth = new Date().getMonth();
@@ -551,7 +550,6 @@ export const isHumidityAboveMaximum = (hives: HiveModel[]): boolean => {
 /**
  * Function for checking the risk of swarming based on user-defined periods for late spring and early summer.
  * @notification PossibleSwarm - Indicates that conditions suggestive of an upcoming swarm have been detected.
- * @notification CheckHive - Advises beekeepers to perform detailed hive inspections upon detecting signs of potential swarming.
  * @param queenCuppingDetected Boolean indicating if queen cupping has been detected.
  * @param congregationAtEntranceDetected Boolean indicating if there is congregation at the entrance.
  * @returns A boolean indicating whether there is a risk of swarming based on the user-defined season.
