@@ -517,17 +517,15 @@ export const isOutdoorTemperatureBelowMin = (weatherConditions: { temperature: n
 
 
 /**
- * Function for checking if any humidity value is below the predefined minimum threshold.
- * This function is aimed at helping beekeepers maintain optimal humidity conditions within the hive by
- * alerting them to low humidity levels that could affect the health and productivity of the bee colony.
- * @notification CheckHive - Triggers a 'CheckHive' notification if a humidity value is found to be below the minimum threshold.
- * This advises beekeepers to inspect the hive for potential issues like dryness that could harm the bees or disrupt their activities.
- * @param humidities Array of daily humidity values, where each value represents a daily average humidity within the hive.
- * @returns A boolean indicating whether any of the humidity values are below the minimum threshold.
+ * Function for checking if the humidity in any of the provided hives is below a user-specified minimum humidity level.
+ * @notification CheckHive - Triggers a 'CheckHive' notification if a humidity value is found to be below the minimum threshold,
+ * advising beekeepers to inspect the hive for potential issues like dryness that could harm the bees or disrupt their activities.
+ * @param hives An array of HiveModel objects, each containing information about a single hive's conditions.
+ * @returns True if any hive's humidity is below the minimum humidity parameter defined in the userViewModel, otherwise false.
  */
-export const isHumidityBelowMinimum = (humidities: number[]): boolean => {
-    for (let i = 0; i < humidities.length; i++) {
-        if (humidities[i] < userViewModel.thresholdHumidityMin) {
+export const isHumidityBelowMinimum = (hives: HiveModel[]): boolean => {
+    for (const hive of hives) {
+        if (hive.humidity !== undefined && hive.humidity < userViewModel.thresholdHumidityMin) {
             return true;
         }
     }
@@ -535,18 +533,17 @@ export const isHumidityBelowMinimum = (humidities: number[]): boolean => {
 };
 
 
+
 /**
- * Function for checking if any humidity value is above the predefined maximum threshold.
- * Aimed at assisting beekeepers in maintaining optimal humidity conditions within the hive, this function
- * alerts them to high humidity levels that could lead to issues such as mold growth or bee health problems.
- * @notification CheckHive - Triggers a 'CheckHive' notification if a humidity value is found to be above the maximum threshold.
- * Beekeepers are advised to inspect the hive for potential high humidity problems that could negatively impact the colony's health.
- * @param humidities Array of daily humidity values, where each value represents a daily average humidity within the hive.
- * @returns A boolean indicating whether any of the humidity values are above the maximum threshold.
+ * Function for checking if the humidity in any of the provided hives is above a user-specified maximum humidity level.
+ * @notification CheckHive - Triggers a 'CheckHive' notification if a humidity value is found to be above the maximum threshold,
+ * advising beekeepers to inspect the hive for potential high humidity problems that could negatively impact the colony's health.
+ * @param hives An array of HiveModel objects, each containing information about a single hive's conditions.
+ * @returns True if any hive's humidity is above the maximum humidity parameter defined in the userViewModel, otherwise false.
  */
-export const isHumidityAboveMaximum = (humidities: number[]): boolean => {
-    for (let i = 0; i < humidities.length; i++) {
-        if (humidities[i] > userViewModel.thresholdHumidityMax) {
+export const isHumidityAboveMaximum = (hives: HiveModel[]): boolean => {
+    for (const hive of hives) {
+        if (hive.humidity !== undefined && hive.humidity > userViewModel.thresholdHumidityMax) {
             return true;
         }
     }
