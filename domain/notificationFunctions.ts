@@ -296,7 +296,6 @@ export const isSnowForecastInSpecificSeasons = (weatherConditions: { forecast: s
  *   
  * @notification Weather - Indicates a notable weather pattern that might impact bee activity and hive conditions.
  * @notification Maintenance - Suggests that the weather conditions are ideal for performing hive maintenance.
- * @notification ConsiderFeeding - Indicates that supplementary feeding may be necessary if the warm, dry conditions persist and natural food sources become scarce.
  * @notification HoneyHarvest
  * @param weatherConditions Array of objects representing daily weather conditions, including the country.
  * @returns A boolean indicating whether the conditions meet the criteria for the user's current country.

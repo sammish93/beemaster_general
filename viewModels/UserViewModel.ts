@@ -367,7 +367,7 @@ class UserViewModel {
         this.springStartMonth = value;
     }
     @action public setSpringEndMonth = (value: Date): void => {
-        this.springStartMonth = value;
+        this.springEndMonth = value;
     }
 
     //Summer
