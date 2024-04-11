@@ -7,7 +7,7 @@ import userViewModel from '@/viewModels/UserViewModel';
  * Checks if the current date is between late spring and early summer,
  * sending a swarm prevention alert to remind beekeepers to check their hives.
  * @notification PossibleSwarm: if true: "Swarming season is on the way".
- * @returns A message indicating the start of the swarming season and advising beekeepers to inspect their hives.
+ * @returns A Boolean value that indicates the start of swarming season and advises beekeepers to inspect their hives.
  */
 export const sendSwarmPreventionAlert = (): boolean => {
     const currentDate = new Date();
