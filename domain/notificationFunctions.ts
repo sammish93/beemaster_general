@@ -573,8 +573,7 @@ export const isSwarmingRiskBasedOnUserDefinedSeason = (
 
 /**
  * Checks if winter is starting based on predefined winter start month, current temperature, and user's location.
- * @notification ConsiderFeeding - Winter can be a challenging time for bees, as natural food sources become scarce.
- * @notification Weather - Indicates a seasonal change in weather conditions that will impact bee activity and hive conditions.
+ * @notification Weather - Indicates a seasonal change in weather conditions that will impact bee activity and hive conditions: Winter can be a challenging time for bees, as natural food sources become scarce.
  * @param weatherConditions Array of objects representing daily weather conditions including temperature and country.
  * @returns A boolean indicating whether winter is arriving, considering both the month, temperature criteria, and user's location.
  */
