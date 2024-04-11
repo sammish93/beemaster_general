@@ -144,8 +144,8 @@ export const doesHiveWeightDecreaseInAutumn = (hives: HiveModel[]): boolean => {
 
 /**
  * Checks if there is a snow forecast during the autumn months based on the user's location.
- * @notification Weather - Triggers a 'Weather' notification if snow is forecasted during the autumn, highlighting the need for physical preparations to protect the hives.
- * @notification ConsiderFeeding - Additionally triggers a 'ConsiderFeeding' notification if snow is forecasted, indicating the need to assess and possibly supplement the hive's food supply in expectation of restricted foraging opportunities.
+ * @notification Weather - Triggers a 'Weather' notification if snow is forecasted during the autumn, highlighting the need for physical preparations to protect the hives:
+ * - "advice to possibly supplement the hive's food supply in expectation of restricted foraging opportunities."
  * @param weatherConditions An array of objects, each containing a `date` (as a Date object), a `forecast` string, and a `country` string matching the user's current country.
  * @returns A boolean value indicating whether snow is forecasted during the autumn period for the user's current country.
  */
@@ -198,8 +198,8 @@ export const haveLotsOfBeesExited = (hives: HiveModel[]): boolean => {
 
 /**
  * Evaluates weather forecasts to determine if snow is expected based on user's location.
- * @notification Weather - This function can trigger a 'Weather' notification to alert users about the possibility of significant snowfall.
- * @notfication ConsiderFeeding
+ * @notification Weather - This function can trigger a 'Weather' notification to alert users about the possibility of significant snowfall
+ *  -"Advice: to consider feeding based on bad weather for bees to find food in nature".
  * @param weatherConditions Array of objects, each representing a weather forecast description and the country it applies to.
  * @returns True if the forecast includes significant snow keywords, otherwise false.
  */
@@ -226,7 +226,6 @@ export const isRainForecast = (weatherConditions: { forecast: string; country: s
 /**
  * Function for checking if strong winds are forecast based on user-defined threshold, considering the user's location.
  * @notification Weather - Triggers a 'Weather' notification when forecasted wind speeds meet or exceed the user-defined threshold for strong winds in the user's current country.
- * @notification ConsiderFeeding
  * @param weatherConditions Array of objects, each representing a wind speed forecast and the country it applies to.
  * @returns A boolean indicating whether strong winds are forecast in the user's current country.
  */
@@ -241,8 +240,8 @@ export const areStrongWindsForecast = (weatherConditions: { windSpeed: number; c
 
 /**
  * Function for checking if a drought is forecast based on user's location.
- * @notification Weather - Triggers a 'Weather' notification when 'drought' is detected in the forecast for the user's current country.
- * @notification ConsiderFeeding - In addition, triggers a 'ConsiderFeeding' notification for beekeepers, indicating that supplementary feeding may be necessary due to reduced availability of natural food sources for bees during drought conditions.
+ * @notification Weather - Triggers a 'Weather' notification when 'drought' is detected in the forecast for the user's current country:
+ * - "supplementary feeding may be necessary due to reduced availability of natural food sources for bees during drought conditions".
  * @notfication Maintenance
  * @param weatherConditions Array of objects, each representing a weather forecast description and the country it applies to.
  * @returns A boolean indicating whether a drought is forecast in the user's current country.
@@ -259,8 +258,8 @@ export const isDroughtForecast = (weatherConditions: { forecast: string; country
  * This function checks if the array of weather conditions contains 'snow' for the user's current country, 
  * and then verifies if the current month falls within the predefined months for autumn, 
  * early winter, or early spring as specified in the userViewModel.
- * @notification Weather - Triggers a 'Weather' notification when snow is forecasted during the specified seasons of autumn, early winter, or early spring for the user's current country.
- * @notification ConsiderFeeding
+ * @notification Weather - Triggers a 'Weather' notification when snow is forecasted during the specified seasons of autumn, early winter, or early spring for the user's current country: 
+ *      - "consider feeding based on bad weather for bees".
  * @param weatherConditions An array of objects, each representing a forecast description and the country it applies to.
  * @returns True if the current date falls within the specified seasons (autumn, early winter, 
  * or early spring), 'snow' is included in the weather conditions, and the conditions apply to the user's current country. False otherwise.
@@ -615,7 +614,7 @@ export const isWinterEnding = (weatherConditions: { temperature: number; country
 
 /**
  * Checks if the early winter period is starting based on user-defined dates.
- * @notification ConsiderFeeding - Winter can be a challenging time for bees, as natural food sources become scarce.
+ * @notification Weather - Winter can be a challenging time for bees, as natural food sources become scarce.
  * @returns A boolean indicating whether the current date is the start of the early winter period.
  */
 export const isEarlyWinterStarting = (): boolean => {
@@ -659,7 +658,7 @@ export const isEarlySummerStarting = (): boolean => {
 /**
  * Checks if the current date is within the beekeeping spring season as defined in the userViewModel.
  * The spring season is determined by the springStartMonth and springEndMonth properties in the userViewModel.
- * @notification ConsiderFeeding
+ * @notification Weather- "Prepare for beeseason: may consider feeding"
  * @notification ConsiderExpanding
  * @notification Maintenance
  * @returns A boolean indicating whether the current date falls within the defined spring beekeeping season.
