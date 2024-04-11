@@ -3,6 +3,23 @@ import { convertTemperature } from './measurementConverter';
 import { TemperatureMeasurement } from "@/constants/Measurements";
 import userViewModel from '@/viewModels/UserViewModel';
 
+/**
+ * Checks if the current date is between late spring and early summer,
+ * sending a swarm prevention alert to remind beekeepers to check their hives.
+ * @notification PossibleSwarm: if true: "Swarming season is on the way".
+ * @returns A message indicating the start of the swarming season and advising beekeepers to inspect their hives.
+ */
+export const sendSwarmPreventionAlert = (): boolean => {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const lateSpringStartMonth = userViewModel.lateSpringStartMonth.getMonth();
+    const earlySummerStartMonth = userViewModel.earlySummerStartMonth.getMonth();
+
+    return currentMonth >= lateSpringStartMonth && currentMonth <= earlySummerStartMonth;
+
+
+};
+
 
 /**
  * Checks if the temperature is consistently warm over a specified number of days.
