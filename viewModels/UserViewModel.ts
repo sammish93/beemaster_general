@@ -125,29 +125,27 @@ class UserViewModel {
     @observable thresholdWeightDecrease: number = 2.0;
     @observable thresholdWeightIncrease: number = 2.0;
 
-    @observable productionPeriodDays: number = 7;   //num of days
-    @observable productionPeriodThreshold: number = 5.0; //kg
+    @observable productionPeriodDays: number = 7;
+    @observable productionPeriodThreshold: number = 5.0;
 
-    //Expected to be integer- alle er benyttet i funksjonene
+    //Expected to be integer
     @observable thresholdExitCountHigh: number = 30_000;
     @observable thresholdExitCountLow: number = 2000;
 
-
     // Expected to be decimal number
-    //- alle er benyttet i funksjonene
     @observable thresholdTemperatureMin: number = 10.0; //outdoor
     @observable thresholdTemperatureMax: number = 40.0; //outdoor
     @observable thresholdTemperatureOptimal: number = 20.0; //outdoor
-    //- alle er benyttet i funksjonene
+
     @observable thresholdMinTempInHive: number = 34.0;
     @observable thresholdMaxTempInHive: number = 36.0;
 
-    //- alle er benyttet i funksjonene
     @observable thresholdWindSpeedStrong: number = 4.0;
     @observable thresholdWindSpeedLow: number = 2.5;
-    //- alle er benyttet i funksjonene
-    @observable thresholdHumidityMin: number = 70.0; //70% 
-    @observable thresholdHumidityMax: number = 95.0; //95%
+
+    //number in %
+    @observable thresholdHumidityMin: number = 70.0;
+    @observable thresholdHumidityMax: number = 95.0;
 
 
     currentYear: number = new Date().getFullYear();
@@ -558,7 +556,7 @@ class UserViewModel {
 
     @action fetchUserParametersFromDatabase() {
         // TODO DB - Read from DB. 
-        // Dummy data for now
+        // Dummy data for now- Parameters who is not defined under, uses default parameters.
         const userDataFromDatabase = {
             userId: "3536",
             theme: "dark",
@@ -569,7 +567,6 @@ class UserViewModel {
             weightPreference: WeightMeasurement.Kilograms,
             beeCountPreference: BeeCountMeasurement.PerMinute,
 
-            //TODO: Missing notification preferences, not sure if it needs to bee included here 
 
             thresholdWeightDecreaseInAutumn: 1.0,
             thresholdWeightDecreaseEarlySpring: 1.0,
@@ -586,7 +583,6 @@ class UserViewModel {
             thresholdMinTempInHive: 32.0,
             thresholdMaxTempInHive: 38.0,
 
-            thresholdWindSpeedStrong: 6.5,
             thresholdWindSpeedLow: 1.5,
 
             thresholdHumidityMin: 60.0,
@@ -647,7 +643,6 @@ class UserViewModel {
 
         this.setThresholdTemperatureOptimal(userDataFromDatabase.thresholdTemperatureOptimal);
 
-        this.setThresholdWindSpeedStrong(userDataFromDatabase.thresholdWindSpeedStrong);
         this.setThresholdWindSpeedLow(userDataFromDatabase.thresholdWindSpeedLow);
 
         this.setThresholdExitCountHigh(userDataFromDatabase.thresholdExitCountHigh);
