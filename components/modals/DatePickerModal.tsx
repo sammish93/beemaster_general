@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Platform, View } from 'react-native';
-import { List, Title } from 'react-native-paper';
+import { List } from 'react-native-paper';
 import { useTheme } from "react-native-paper";
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { MobXProviderContext } from 'mobx-react';
