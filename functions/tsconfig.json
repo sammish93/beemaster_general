@@ -1,13 +1,23 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
-    "strict": true,
-    "target": "es2017",
-    "skipLibCheck": true, // Needed to ignore type conflicts in node_modules.
+    "strict": false,
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "baseUrl": "..",
+    "paths": {
+      "@/*": ["./*"],
+      "@/data/*": ["../data/*"],
+      "@/domain/*": ["../domain/*"],
+    }
   },
   "compileOnSave": true,
   "include": [

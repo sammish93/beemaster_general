@@ -1,5 +1,5 @@
 import axios from 'axios';
-import isValidCoordinates from "@/domain/validation/coordinateValidation";
+import isValidCoordinates from "../../domain/validation/coordinateValidation";
 import { Platform } from 'react-native';
 
 interface WeatherApiProps {

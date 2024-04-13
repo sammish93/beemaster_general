@@ -8,3 +8,9 @@ export interface HiveNotification {
     isRead: boolean;
     message: string;
 }
+
+export interface NotificationPreference {
+    email: boolean,
+    mobile: boolean,
+    sms: boolean
+}
