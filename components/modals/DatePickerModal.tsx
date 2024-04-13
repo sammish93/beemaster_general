@@ -1,28 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Platform, View } from 'react-native';
-import { List } from 'react-native-paper';
+import { List, Title } from 'react-native-paper';
 import { useTheme } from "react-native-paper";
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-
-//TODO: Oversette hver måned
-
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+import { MobXProviderContext } from 'mobx-react';
 
 const DateTimePickerModal = ({ onConfirm }: { onConfirm: (date: Date) => void }) => {
+    const theme = useTheme();
+    const userViewModel = useContext(MobXProviderContext).userViewModel;
+
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+
     const [date, setDate] = useState<Date>(new Date());
     const [show, setShow] = useState<boolean>(Platform.OS === 'ios');
 
     const [expanded, setExpanded] = useState<boolean>(false);
-    const [selectedMonth, setSelectedMonth] = useState<string>(monthNames[date.getMonth()]);
-
-    const theme = useTheme();
+    const [selectedMonth, setSelectedMonth] = useState<string>(userViewModel.i18n.t(`months.${monthNames[date.getMonth()]}`));
 
     const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
         const currentDate = selectedDate || date;
         setDate(currentDate);
         if (selectedDate) {
             onConfirm(currentDate);
-            setSelectedMonth(monthNames[currentDate.getMonth()]);
+            setSelectedMonth(userViewModel.i18n.t(`months.${monthNames[currentDate.getMonth()]}`));
         }
         if (Platform.OS === 'ios') {
             setShow(false);
@@ -33,7 +34,7 @@ const DateTimePickerModal = ({ onConfirm }: { onConfirm: (date: Date) => void })
         const newDate = new Date(date.getFullYear(), monthIndex);
         setDate(newDate);
         onConfirm(newDate);
-        setSelectedMonth(monthNames[monthIndex]);
+        setSelectedMonth(userViewModel.i18n.t(`months.${monthNames[monthIndex]}`));
         setExpanded(false);
 
     };
@@ -53,9 +54,11 @@ const DateTimePickerModal = ({ onConfirm }: { onConfirm: (date: Date) => void })
                         {monthNames.map((name, index) => (
                             <List.Item
                                 key={index}
-                                title={name}
+                                title={userViewModel.i18n.t(`months.${name}`)}
                                 onPress={() => handleSelecMonth(index)} />
+
                         ))}
+
                     </List.Accordion>
                 </List.Section>
             </View>
