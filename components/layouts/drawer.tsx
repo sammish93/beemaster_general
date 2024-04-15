@@ -9,9 +9,10 @@ import { IndexStack } from "@/components/layouts/stacks";
 
 import { Text } from "react-native";
 import { MD3Theme } from "react-native-paper";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MobXProviderContext } from "mobx-react";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { reaction } from "mobx";
 
 const Drawer = createDrawerNavigator();
 
@@ -43,7 +44,29 @@ export type DrawerScreenProps = {
 export const DrawerScreen = withLayoutContext((props: DrawerScreenProps) => {
   // Correct placement of useContext hook
   const { userViewModel } = useContext(MobXProviderContext);
-  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+  let navigation = useNavigation<StackNavigationProp<RootParamList>>();
+
+  useEffect(() => {
+    const disposer = reaction(
+      () => userViewModel.currentLanguage,
+      (newLanguage, previousLanguage) => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "index" }],
+        });
+
+        // Clunky fix that makes sure that the navigational stack has enough time to reset before
+        // rerendering the UI in the new language.
+        setTimeout(() => {
+          navigation.navigate("settings/index");
+        }, 100);
+      }
+    );
+
+    return () => {
+      disposer();
+    };
+  }, []);
 
   return (
     <Drawer.Navigator

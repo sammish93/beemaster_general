@@ -8,8 +8,11 @@ import {
 } from "@/components/layouts/stacks";
 import { Text } from "react-native";
 import { MD3Theme } from "react-native-paper";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MobXProviderContext } from "mobx-react";
+import { useNavigation } from "expo-router";
+import { reaction } from "mobx";
+import { useNavigationState } from "@react-navigation/native";
 
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
 
@@ -37,6 +40,34 @@ export type BottomTabsScreenProps = {
 export const MaterialBottomTabsScreen = (props: BottomTabsScreenProps) => {
   // Correct placement of useContext hook
   const { userViewModel } = useContext(MobXProviderContext);
+  const navigation = useNavigation();
+
+  const navigationState = useNavigationState((state) => state);
+
+  // Used to rerender the bottom nav bar when the language is changed
+  useEffect(() => {}, [navigationState]);
+
+  useEffect(() => {
+    const disposer = reaction(
+      () => userViewModel.currentLanguage,
+      (newLanguage, previousLanguage) => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "index" }],
+        });
+
+        // Clunky fix that makes sure that the navigational stack has enough time to reset before
+        // rerendering the UI in the new language.
+        setTimeout(() => {
+          navigation.navigate("settings/index");
+        }, 100);
+      }
+    );
+
+    return () => {
+      disposer();
+    };
+  }, []);
 
   return (
     <MaterialBottomTabs.Navigator
