@@ -565,7 +565,7 @@ class UserViewModel {
         // Dummy data for now- Parameters who is not defined under, uses default parameters.
         const userDataFromDatabase = {
             userId: "3536",
-            theme: "dark",
+            theme: "light",
 
             temperaturePreference: TemperatureMeasurement.Celsius,
             precipitationPreference: PrecipitationMeasurement.Millimeters,

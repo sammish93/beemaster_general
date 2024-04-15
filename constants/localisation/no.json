@@ -238,7 +238,7 @@
   "knots (kn)": "Knop (kn)",
   "select measurement unit for bee count": "Velg måleenhet for antall bier",
   "per second (p/s)": "Per sekund (p/s)",
-  "per minute (p/m)": "Per minutt(p/m)",
+  "per minute (p/m)": "Per minutt (p/m)",
   "per hour (p/h)": "Per time (p/h)",
   "alert for strong wind forecast": "Varsel for sterk vindvarsel",
   "set threshold wind speed": "Angi terskelverdi for vindhastighet",
@@ -357,5 +357,7 @@
   "Norwegian NB": "Norsk (Bokmål)",
   "Black Speech": "Svartspråket av Mordor",
   "disabled notification": "Varseltype Deaktivery",
-  "disabled notification description": "Denne varseltypen støttes ennå ikke av applikasjonen."
+  "disabled notification description": "Denne varseltypen støttes ennå ikke av applikasjonen.",
+  "dark": "Mørk",
+  "light": "Lys"
 }

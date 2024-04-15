@@ -357,5 +357,7 @@
   "Norwegian NB": "Norwegian (Bokmål)",
   "Black Speech": "The Black Speech of Mordor",
   "disabled notification": "Notification Type Disabled",
-  "disabled notification description": "This notification type is not yet supported by the application."
+  "disabled notification description": "This notification type is not yet supported by the application.",
+  "dark": "Dark",
+  "light": "Light"
 }
