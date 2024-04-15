@@ -35,7 +35,13 @@ const NotificationSwitchComponent = ({
     setIsSwitchOn(!isSwitchOn);
   };
 
-  return <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />;
+  return (
+    <Switch
+      value={isSwitchOn}
+      onValueChange={onToggleSwitch}
+      disabled={type === NotificationType.CustomReminder}
+    />
+  );
 };
 
 export default NotificationSwitchComponent;

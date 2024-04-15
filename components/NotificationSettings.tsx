@@ -8,6 +8,8 @@ import { NotificationType } from "@/constants/Notifications";
 import NotificationSwitchComponent from "./NotificationSwitch";
 import NotificationModal from "./modals/NotificationModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "./ToastCustom";
 
 interface NotificationSettingsProps {
   hiveId?: string;
@@ -29,6 +31,16 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
 
   const handleCloseModal = () => {
     setAddHiveModalVisible(false);
+  };
+
+  const handleDisabledPress = () => {
+    Toast.show(
+      toastCrossPlatform({
+        title: userViewModel.i18n.t("disabled notification"),
+        text: userViewModel.i18n.t("disabled notification description"),
+        type: "info",
+      })
+    );
   };
 
   return (
@@ -179,14 +191,16 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
         </Text>
         <HorizontalSpacer size={8} />
         <Button
-          icon={"archive-edit"}
+          style={{ backgroundColor: theme.colors.surfaceDisabled }}
+          textColor={theme.colors.onSurfaceDisabled}
+          icon={"archive-off"}
           //contentStyle={{ height: 24 }}
           mode="contained"
-          onPress={() => handleOpenModal(NotificationType.CustomReminder)}
-          disabled={true}
+          onPress={handleDisabledPress}
         >
           {userViewModel.i18n.t("disabled")}
         </Button>
+
         <HorizontalSpacer size={8} />
         <NotificationSwitchComponent
           type={NotificationType.CustomReminder}

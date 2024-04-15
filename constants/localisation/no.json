@@ -355,5 +355,7 @@
   "English UK": "Engelsk (Britisk)",
   "English USA": "Engelsk (USA)",
   "Norwegian NB": "Norsk (Bokmål)",
-  "Black Speech": "Svartspråket av Mordor"
+  "Black Speech": "Svartspråket av Mordor",
+  "disabled notification": "Varseltype Deaktivery",
+  "disabled notification description": "Denne varseltypen støttes ennå ikke av applikasjonen."
 }
