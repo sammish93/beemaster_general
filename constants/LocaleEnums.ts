@@ -1,20 +1,18 @@
 
 
 export enum LanguageEnum {
-    English = 'en',
+    BritishEnglish = 'en-GB',
+    AmericanEnglish = 'en-US',
     Norwegian = 'no',
-    NorwegianBokmal = 'nb',
-
-
+    BlackSpeech = 'fi',
 }
 
 export enum CountryEnum {
     Norway = 'NO',
-    England = 'EN',
+    UnitedKingdom = 'EN',
     USA = 'US',
     WebNorway = 'no',
     WebEngland = 'en',
-
 }
 
 
@@ -32,17 +30,18 @@ export type CountryOption = {
 
 
 export const availableLanguages: LanguageOption[] = [
-    { code: LanguageEnum.English, name: 'English', isEnabled: true },
-    { code: LanguageEnum.Norwegian, name: 'Norsk', isEnabled: true },
-    { code: LanguageEnum.NorwegianBokmal, name: 'Norsk', isEnabled: true },
+    { code: LanguageEnum.BritishEnglish, name: 'English UK', isEnabled: true },
+    { code: LanguageEnum.AmericanEnglish, name: 'English USA', isEnabled: true },
+    { code: LanguageEnum.Norwegian, name: 'Norwegian NB', isEnabled: true },
+    { code: LanguageEnum.BlackSpeech, name: 'Black Speech', isEnabled: true },
 ];
 
 
 export const availableCountries: CountryOption[] = [
-    { code: CountryEnum.Norway, name: 'Norge', isEnabled: true },
-    { code: CountryEnum.England, name: 'England', isEnabled: true },
-    { code: CountryEnum.WebNorway, name: 'Norge', isEnabled: true },
-    { code: CountryEnum.WebEngland, name: 'England', isEnabled: true },
+    { code: CountryEnum.Norway, name: 'Norway', isEnabled: true },
+    { code: CountryEnum.UnitedKingdom, name: 'United Kingdom', isEnabled: true },
+    { code: CountryEnum.WebNorway, name: 'Norway', isEnabled: true },
+    { code: CountryEnum.WebEngland, name: 'United Kingdom', isEnabled: true },
     { code: CountryEnum.USA, name: 'USA', isEnabled: true },
 
 ];

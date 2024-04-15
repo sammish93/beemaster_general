@@ -71,11 +71,7 @@ const SettingsScreen = () => {
     (unique, option) => {
       const exists = unique.some((u) => u.name === option.name);
       if (!exists) {
-        const preferredCode =
-          option.code === LanguageEnum.NorwegianBokmal
-            ? LanguageEnum.Norwegian
-            : option.code;
-        unique.push({ ...option, code: preferredCode });
+        unique.push({ ...option, code: option.code });
       }
       return unique;
     },
@@ -95,13 +91,7 @@ const SettingsScreen = () => {
     (unique, option) => {
       const exists = unique.some((u) => u.name === option.name);
       if (!exists) {
-        const preferredCode =
-          option.code === CountryEnum.WebNorway
-            ? CountryEnum.Norway
-            : option.code === CountryEnum.WebEngland
-            ? CountryEnum.England
-            : option.code;
-        unique.push({ ...option, code: preferredCode });
+        unique.push({ ...option, code: option.code });
       }
       return unique;
     },
@@ -170,7 +160,7 @@ const SettingsScreen = () => {
           >
             {uniqueLanguageOptions.map((language) => (
               <List.Item
-                title={language.name}
+                title={userViewModel.i18n.t(language.name)}
                 titleStyle={theme.fonts.bodyLarge}
                 key={language.code}
                 onPress={() => handleLanguageChange(language.code)}
@@ -190,7 +180,7 @@ const SettingsScreen = () => {
           >
             {uniqueCountryOptions.map((country) => (
               <List.Item
-                title={country.name}
+                title={userViewModel.i18n.t(country.name)}
                 titleStyle={theme.fonts.bodyLarge}
                 key={country.code}
                 onPress={() => handleCountryChange(country.code)}

@@ -3,6 +3,7 @@ import * as Localization from "expo-localization";
 import { I18n } from "i18n-js";
 import en from '@/constants/localisation/en.json';
 import no from '@/constants/localisation/no.json';
+import fi from '@/constants/localisation/fi.json';
 import { BeeCountMeasurement, PrecipitationMeasurement, TemperatureMeasurement, WeightMeasurement, WindSpeedMeasurement } from "@/constants/Measurements";
 import { availableLanguages, availableCountries, LanguageEnum, CountryEnum } from '@/constants/LocaleEnums';
 import { Platform } from "react-native";
@@ -22,6 +23,7 @@ class UserViewModel {
         this.i18n = new I18n({
             en,
             no,
+            fi
         });
         this.i18n.locale = Localization.locale;
         this.i18n.enableFallback = true;
@@ -54,14 +56,18 @@ class UserViewModel {
 
         let newLocale = 'en';
         switch (langCode) {
-            case LanguageEnum.English:
-                newLocale = 'en';
+            case LanguageEnum.BritishEnglish:
+                newLocale = 'en-GB';
+                break;
+            case LanguageEnum.AmericanEnglish:
+                newLocale = 'en-US';
                 break;
             case LanguageEnum.Norwegian:
-            case LanguageEnum.NorwegianBokmal:
                 newLocale = 'no';
                 break;
-
+            case LanguageEnum.BlackSpeech:
+                newLocale = 'fi';
+                break;
         }
 
         runInAction(() => {
@@ -80,7 +86,7 @@ class UserViewModel {
                 this.dateFormat = "DD/MM/YYYY";
 
                 break;
-            case CountryEnum.England:
+            case CountryEnum.UnitedKingdom:
                 this.temperaturePreference = TemperatureMeasurement.Celsius;
                 this.weightPreference = WeightMeasurement.Kilograms;
                 this.dateFormat = "DD/MM/YYYY";
