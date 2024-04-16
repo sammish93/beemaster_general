@@ -151,12 +151,27 @@ const styles = (theme?: MD3Theme) => {
       gap: 2
     },
     settingsButton: {
-      width: Platform.OS === 'web' ? '50%' : screenWidth - 52,
+      width: Platform.OS === 'web' ? 
+                Math.min(ScreenWidth.Compact, screenWidth * 0.9) : 
+                screenWidth - 52,
+      flex: 1,
       margin: 4,
       alignSelf: 'center'
     },
-
-
+    settingsItem: {
+      width: Platform.OS === 'web' ? 
+                Math.min(ScreenWidth.Medium, screenWidth * 0.9) : 
+                screenWidth - 52,
+      flex: 1,
+      alignSelf: 'center'
+    },
+    settingsSubitem: {
+      width: Platform.OS === 'web' ? 
+                Math.min(ScreenWidth.Compact, screenWidth * 0.9) : 
+                screenWidth - 52,
+      flex: 1,
+      alignSelf: 'center'
+    },
   });
 };
 

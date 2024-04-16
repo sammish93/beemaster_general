@@ -11,10 +11,7 @@ export enum CountryEnum {
     Norway = 'NO',
     UnitedKingdom = 'EN',
     USA = 'US',
-    WebNorway = 'no',
-    WebEngland = 'en',
 }
-
 
 export type LanguageOption = {
     code: LanguageEnum;
@@ -40,8 +37,6 @@ export const availableLanguages: LanguageOption[] = [
 export const availableCountries: CountryOption[] = [
     { code: CountryEnum.Norway, name: 'Norway', isEnabled: true },
     { code: CountryEnum.UnitedKingdom, name: 'United Kingdom', isEnabled: true },
-    { code: CountryEnum.WebNorway, name: 'Norway', isEnabled: true },
-    { code: CountryEnum.WebEngland, name: 'United Kingdom', isEnabled: true },
     { code: CountryEnum.USA, name: 'USA', isEnabled: true },
 
 ];

@@ -76,31 +76,31 @@ class UserViewModel {
         });
     };
 
-    @action public setCountry = (countryCode: string): void => {
+    @action public setCountry = (countryCode: string, changeDefaultVariables: boolean = false): void => {
         this.currentCountry = countryCode;
         switch (countryCode) {
 
             case CountryEnum.Norway:
-                this.temperaturePreference = TemperatureMeasurement.Celsius;
-                this.weightPreference = WeightMeasurement.Kilograms;
-                this.dateFormat = "DD/MM/YYYY";
+                if (changeDefaultVariables) {
+                    // TODO Default variables for Norway.
+                }
 
                 break;
             case CountryEnum.UnitedKingdom:
-                this.temperaturePreference = TemperatureMeasurement.Celsius;
-                this.weightPreference = WeightMeasurement.Kilograms;
-                this.dateFormat = "DD/MM/YYYY";
+                if (changeDefaultVariables) {
+                    // TODO Default variables for UK.
+                }
+
                 break;
             case CountryEnum.USA:
-                this.temperaturePreference = TemperatureMeasurement.Fahrenheit;
-                this.weightPreference = WeightMeasurement.Pounds;
-                this.dateFormat = "MM/DD/YYYY";
+                if (changeDefaultVariables) {
+                    // TODO Default variables for USA.
+                }
+
                 break;
 
             default:
-                this.temperaturePreference = TemperatureMeasurement.Celsius;
-                this.weightPreference = WeightMeasurement.Kilograms;
-                this.dateFormat = "DD/MM/YYYY";
+                null
         }
     };
 
@@ -564,8 +564,8 @@ class UserViewModel {
         // TODO DB - Read from DB. 
         // Dummy data for now- Parameters who is not defined under, uses default parameters.
         const userDataFromDatabase = {
-            userId: "3536",
             theme: "light",
+            currentCountry: "NO",
 
             temperaturePreference: TemperatureMeasurement.Celsius,
             precipitationPreference: PrecipitationMeasurement.Millimeters,
@@ -634,8 +634,8 @@ class UserViewModel {
 
         };
 
-        this.setUserId(userDataFromDatabase.userId);
         this.setTheme(userDataFromDatabase.theme);
+        this.setCountry(userDataFromDatabase.currentCountry);
 
         this.setTemperaturePreference(userDataFromDatabase.temperaturePreference);
         this.setPrecipitationPreference(userDataFromDatabase.precipitationPreference);

@@ -54,15 +54,20 @@ const HomeScreen = () => {
   // Register the background task on the startup of the app.
   // To start the actualt task depends on the OS running the task.
   useEffect(() => {
-    startBackgroundTask().then(() => {
-      console.log('Background task registered in HomeScreen!');
-    }).catch((error) => {
-      console.error(`Error registering background task: ${error}`);
-    });
-
+    startBackgroundTask()
+      .then(() => {
+        console.log("Background task registered in HomeScreen!");
+      })
+      .catch((error) => {
+        console.error(`Error registering background task: ${error}`);
+      });
   }, []);
 
-  const handleAddHive = (hiveName: string) => {
+  const handleAddHive = (
+    hiveName: string,
+    latitude: number,
+    longitude: number
+  ) => {
     /*
     TODO Add validation. Coordinates of hive should use current 
     GPS location. If not available then default to oslo. Add toast on success or failure.
@@ -73,7 +78,7 @@ const HomeScreen = () => {
     hiveViewModel.addHive({
       id: newHiveId,
       name: hiveName,
-      latLng: { lat: lat, lng: lng },
+      latLng: { lat: latitude, lng: longitude },
       filters: [],
       notes: [],
       preferences: {

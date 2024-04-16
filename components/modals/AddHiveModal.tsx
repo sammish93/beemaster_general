@@ -63,19 +63,18 @@ const ModalContent = (props: ModalContentProps) => {
 
   const handleAddNewHive = () => {
     if (isNameValid) {
-      console.log(newLocation?.latitude);
       if (newLocation?.latitude != null && newLocation?.longitude != null) {
         props.onAddHive(
           newHiveName,
           newLocation.latitude,
-          newLocation?.longitude
+          newLocation.longitude
         );
 
         Toast.show(
           toastCrossPlatform({
             title: userViewModel.i18n.t("success"),
             text: userViewModel.i18n.t("toast_added_hive", {
-              filterName: newHiveName,
+              newHiveName: newHiveName,
             }),
             type: "success",
           })

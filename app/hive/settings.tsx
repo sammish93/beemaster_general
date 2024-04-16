@@ -350,45 +350,57 @@ const HiveSettingsScreen = () => {
               {userViewModel.i18n.t("additional functionality")}
             </Text>
             <VerticalSpacer size={8} />
-
-            <Button
-              icon="pencil"
-              mode="contained"
-              onPress={handleOpenAddFiltersToHiveModal}
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 1,
+                margin: 8,
+              }}
             >
-              {userViewModel.i18n.t("modify hive filters")}
-            </Button>
-            <VerticalSpacer size={8} />
-            <Button
-              icon="map-marker"
-              mode="contained"
-              onPress={handleOpenRepositionHiveModal}
-            >
-              {userViewModel.i18n.t("reposition hive")}
-            </Button>
-            <VerticalSpacer size={8} />
-            <Button
-              icon="remote"
-              mode="contained"
-              onPress={handleOpenRegisterSensorModal}
-            >
-              {userViewModel.i18n.t("manage sensors")}
-            </Button>
-            <VerticalSpacer size={8} />
-            <FileDownloader
-              jsonString={createJSON()}
-              fileName="hive_historical_data.json"
-              buttonLabel={userViewModel.i18n.t("download hive data")}
-            />
-            <VerticalSpacer size={20} />
-            <Button
-              icon="delete"
-              mode="contained"
-              onPress={handleDeleteButtonPress}
-              style={{ backgroundColor: theme.colors.error }}
-            >
-              {userViewModel.i18n.t("delete hive")}
-            </Button>
+              <Button
+                style={styles(theme).settingsButton}
+                icon="pencil"
+                mode="contained"
+                onPress={handleOpenAddFiltersToHiveModal}
+              >
+                {userViewModel.i18n.t("modify hive filters")}
+              </Button>
+              <Button
+                style={styles(theme).settingsButton}
+                icon="map-marker"
+                mode="contained"
+                onPress={handleOpenRepositionHiveModal}
+              >
+                {userViewModel.i18n.t("reposition hive")}
+              </Button>
+              <Button
+                style={styles(theme).settingsButton}
+                icon="remote"
+                mode="contained"
+                onPress={handleOpenRegisterSensorModal}
+              >
+                {userViewModel.i18n.t("manage sensors")}
+              </Button>
+              <FileDownloader
+                style={styles(theme).settingsButton}
+                jsonString={createJSON()}
+                fileName="hive_historical_data.json"
+                buttonLabel={userViewModel.i18n.t("download hive data")}
+              />
+              <VerticalSpacer size={12} />
+              <Button
+                style={{
+                  ...styles(theme).settingsButton,
+                  backgroundColor: theme.colors.error,
+                }}
+                icon="delete"
+                mode="contained"
+                onPress={handleDeleteButtonPress}
+              >
+                {userViewModel.i18n.t("delete hive")}
+              </Button>
+            </View>
           </View>
         </ScrollView>
       )}

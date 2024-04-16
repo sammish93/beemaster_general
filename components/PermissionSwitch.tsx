@@ -4,6 +4,7 @@ import { Switch, useTheme } from "react-native-paper";
 import { MobXProviderContext } from "mobx-react";
 import { usePermissionManager } from "../domain/permissionManager";
 import { VerticalSpacer } from "./Spacers";
+import styles from "@/assets/styles";
 
 type PermissionType =
   | "location permission"
@@ -56,7 +57,12 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
   }
 
   return (
-    <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
+    <View
+      style={{
+        flexDirection: "column",
+        alignItems: "flex-start",
+      }}
+    >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Text
           style={[

@@ -115,7 +115,7 @@ const SettingsScreen = () => {
 
   useEffect(() => {
     userViewModel.fetchUserParametersFromDatabase();
-    userViewModel.updateLocaleSettings();
+    //userViewModel.updateLocaleSettings();
   }, [userViewModel]);
 
   return (
@@ -148,18 +148,29 @@ const SettingsScreen = () => {
 
           <SwitchTheme />
 
-          <Text style={theme.fonts.bodyLarge}>
-            {userViewModel.i18n.t("language")}: {currentLanguage}
-          </Text>
+          <VerticalSpacer size={8} />
+
           <List.Accordion
-            title={userViewModel.i18n.t("choose your language")}
+            style={{
+              ...styles(theme).settingsItem,
+              borderRadius: 20,
+              backgroundColor: theme.colors.background,
+            }}
+            theme={{ colors: { background: "transparent" } }}
+            title={`${userViewModel.i18n.t("language")}: ${userViewModel.i18n.t(
+              userViewModel.i18n.locale
+            )}`}
             titleStyle={theme.fonts.bodyLarge}
+            description={expandedAccordion === "language" ? "description" : ""}
+            descriptionStyle={theme.fonts.bodySmall}
             left={(props) => <List.Icon {...props} icon="translate" />}
             expanded={expandedAccordion === "language"}
             onPress={() => toggleAccordion("language")}
           >
             {uniqueLanguageOptions.map((language) => (
               <List.Item
+                style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
+                theme={{ colors: { background: "blue" } }}
                 title={userViewModel.i18n.t(language.name)}
                 titleStyle={theme.fonts.bodyLarge}
                 key={language.code}
@@ -168,18 +179,29 @@ const SettingsScreen = () => {
             ))}
           </List.Accordion>
 
-          <Text style={theme.fonts.bodyLarge}>
-            {userViewModel.i18n.t("country")}: {currentCountry}
-          </Text>
+          <VerticalSpacer size={20} />
+
           <List.Accordion
-            title={userViewModel.i18n.t("choose your country")}
+            style={{
+              ...styles(theme).settingsItem,
+              borderRadius: 20,
+              backgroundColor: theme.colors.background,
+            }}
+            theme={{ colors: { background: "transparent" } }}
+            title={`${userViewModel.i18n.t("country")}: ${userViewModel.i18n.t(
+              userViewModel.currentCountry
+            )}`}
             titleStyle={theme.fonts.bodyLarge}
+            description={expandedAccordion === "country" ? "description" : ""}
+            descriptionStyle={theme.fonts.bodySmall}
             left={(props) => <List.Icon {...props} icon="earth" />}
             expanded={expandedAccordion === "country"}
             onPress={() => toggleAccordion("country")}
           >
             {uniqueCountryOptions.map((country) => (
               <List.Item
+                style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
+                theme={{ colors: { background: "blue" } }}
                 title={userViewModel.i18n.t(country.name)}
                 titleStyle={theme.fonts.bodyLarge}
                 key={country.code}
@@ -187,6 +209,8 @@ const SettingsScreen = () => {
               />
             ))}
           </List.Accordion>
+
+          <VerticalSpacer size={20} />
 
           <ListMeasurements />
 
@@ -299,6 +323,8 @@ const SettingsScreen = () => {
             >
               {userViewModel.i18n.t("logout")}
             </Button>
+
+            <VerticalSpacer size={12} />
 
             <Button
               icon="account-remove-outline"
