@@ -306,6 +306,34 @@ class HiveViewModel {
     }
   }
 
+  @action async addNoteToSelectedHive(newNote: HiveNote) {
+    if (!this.selectedHive || !auth.currentUser) {
+      console.error("No hive selected or user not authenticated");
+      return;
+    }
+
+    const notesCollectionRef = collection(
+      db,
+      `users/${auth.currentUser.uid}/hives/${this.selectedHive.id}/notes`
+    );
+    try {
+      const docRef = await addDoc(notesCollectionRef, {
+        note: newNote.note,
+        isSticky: newNote.isSticky,
+        timestamp: Timestamp.fromDate(newNote.timestamp),
+      });
+
+      runInAction(() => {
+        const fullNote = { ...newNote, id: docRef.id };
+        this.selectedHive?.notes.push(fullNote);
+        console.log("Note added with ID:", docRef.id);
+      });
+      console.log("Note added successfully");
+    } catch (error) {
+      console.error("Error adding note:", error);
+    }
+  }
+
   @action toggleNotificationPreference(type: NotificationType): void {
     // TODO DB - Update DB. Note that this preference boolean isn't the global toggle for a user.
     // It's for a specific hive. E.g. user weatherNotification = true, but they might want to set
