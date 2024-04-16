@@ -222,6 +222,12 @@ class HiveViewModel {
         (note) => note.id === noteObject.id
       );
       if (noteIndex !== -1) {
+        const currentNote = this.selectedHive.notes[noteIndex];
+
+        if (currentNote.note !== noteObject.note) {
+          noteObject.timestamp = new Date();
+        }
+
         this.selectedHive.notes[noteIndex] = noteObject;
 
         const userId = auth.currentUser?.uid;
@@ -236,11 +242,16 @@ class HiveViewModel {
         );
 
         try {
-          await updateDoc(noteRef, {
+          const updateData = {
             note: noteObject.note,
             isSticky: noteObject.isSticky,
-            timestamp: Timestamp.fromDate(noteObject.timestamp),
-          });
+          };
+
+          if (currentNote.note !== noteObject.note) {
+            updateData.timestamp = Timestamp.fromDate(noteObject.timestamp);
+          }
+
+          await updateDoc(noteRef, updateData);
           console.log("Note updated successfully in the database");
         } catch (error) {
           console.error("Error updating note:", error);
@@ -257,15 +268,31 @@ class HiveViewModel {
     note.isSticky = !note.isSticky;
     this.modifyNote(note);
   }
+  @action sortNotes() {
+    console.log(
+      "Before sorting:",
+      this.selectedHive?.notes.map((n) => ({
+        id: n.id,
+        sticky: n.isSticky,
+        time: n.timestamp,
+      }))
+    );
 
-  @action
-  sortNotes() {
     this.selectedHive?.notes.sort((a: HiveNote, b: HiveNote) => {
       if (Number(b.isSticky) - Number(a.isSticky) !== 0) {
         return Number(b.isSticky) - Number(a.isSticky);
       }
       return b.timestamp.getTime() - a.timestamp.getTime();
     });
+
+    console.log(
+      "After sorting:",
+      this.selectedHive?.notes.map((n) => ({
+        id: n.id,
+        sticky: n.isSticky,
+        time: n.timestamp,
+      }))
+    );
   }
 
   @action removeNote(noteId: string) {
