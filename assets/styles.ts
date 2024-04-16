@@ -163,14 +163,23 @@ const styles = (theme?: MD3Theme) => {
                 Math.min(ScreenWidth.Medium, screenWidth * 0.9) : 
                 screenWidth - 52,
       flex: 1,
-      alignSelf: 'center'
+      alignSelf: 'center',
+      justifyContent: 'center'
     },
     settingsSubitem: {
       width: Platform.OS === 'web' ? 
                 Math.min(ScreenWidth.Compact, screenWidth * 0.9) : 
                 screenWidth - 52,
       flex: 1,
-      alignSelf: 'center'
+      alignSelf: 'center',
+      justifyContent: 'center'
+    },
+    hiveRenameItem: {
+      width: Platform.OS === 'web' ? 
+                Math.min(ScreenWidth.Medium, screenWidth * 0.9) : 
+                screenWidth - 52,
+      alignSelf: 'center',
+      justifyContent: 'center'
     },
   });
 };

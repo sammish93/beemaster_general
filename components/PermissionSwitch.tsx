@@ -63,7 +63,13 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
         alignItems: "flex-start",
       }}
     >
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View
+        style={{
+          ...styles(paperTheme).settingsSubitem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text
           style={[
             paperTheme.fonts.bodyLarge,
@@ -74,19 +80,27 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
         </Text>
         <Switch value={isEnabled} onValueChange={toggleSwitch} />
       </View>
-      <VerticalSpacer size={6} />
+      <VerticalSpacer size={4} />
       {type === "location permission" && location && (
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text
-            style={[
-              paperTheme.fonts.bodyLarge,
-              { marginRight: 10, color: paperTheme.colors.onSurface },
-            ]}
+        <>
+          <View
+            style={{
+              ...styles(paperTheme).settingsSubitem,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
           >
-            {userViewModel.i18n.t("position")}: Lat: {location.latitude}, Long:{" "}
-            {location.longitude}
-          </Text>
-        </View>
+            <Text
+              style={{
+                ...paperTheme.fonts.bodySmall,
+                color: paperTheme.colors.onSurface,
+              }}
+            >
+              {userViewModel.i18n.t("position")}: Lat: {location.latitude}, Lng:{" "}
+              {location.longitude}
+            </Text>
+          </View>
+        </>
       )}
     </View>
   );

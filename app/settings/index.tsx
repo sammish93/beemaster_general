@@ -218,6 +218,8 @@ const SettingsScreen = () => {
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
+          <VerticalSpacer size={8} />
+
           <Text
             style={{
               ...theme.fonts.headlineSmall,
@@ -228,11 +230,17 @@ const SettingsScreen = () => {
             {userViewModel.i18n.t("permissions")}
           </Text>
 
+          <VerticalSpacer size={8} />
+
           <PermissionSwitch type="location permission" />
           <PermissionSwitch type="camera permission" />
           <PermissionSwitch type="media permission" />
 
+          <VerticalSpacer size={12} />
+
           <Divider style={{ backgroundColor: theme.colors.outline }} />
+
+          <VerticalSpacer size={8} />
 
           <Text
             style={{
@@ -244,12 +252,21 @@ const SettingsScreen = () => {
             {userViewModel.i18n.t("notifications")}
           </Text>
 
+          <VerticalSpacer size={8} />
+
           <DefaultSwitchComponent type="mobile" />
           <DefaultSwitchComponent type="sms" />
           <DefaultSwitchComponent type="email" />
+
+          {/*TODO - Create a section with NotificationButton to allow manual debugging etc for 
+          demonstration of app functionality. */}
           <NotificationButton />
 
+          <VerticalSpacer size={12} />
+
           <Divider style={{ backgroundColor: theme.colors.outline }} />
+
+          <VerticalSpacer size={8} />
 
           <View
             style={{
@@ -280,6 +297,8 @@ const SettingsScreen = () => {
               />
             </TouchableOpacity>
           </View>
+
+          <VerticalSpacer size={8} />
 
           <NotificationSettingsComponent />
 

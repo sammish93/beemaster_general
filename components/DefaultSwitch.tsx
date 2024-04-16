@@ -4,6 +4,7 @@ import { Text, View } from "react-native";
 import { MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { VerticalSpacer } from "./Spacers";
+import styles from "@/assets/styles";
 
 type Type = "mobile" | "sms" | "email";
 interface PermissionSwitchProps {
@@ -56,7 +57,13 @@ const DefaultSwitchComponent = ({ type }: PermissionSwitchProps) => {
 
   return (
     <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View
+        style={{
+          ...styles(paperTheme).settingsSubitem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text
           style={[
             paperTheme.fonts.bodyLarge,

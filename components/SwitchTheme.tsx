@@ -4,6 +4,7 @@ import { useTheme, Text, Switch } from "react-native-paper";
 import { MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { HorizontalSpacer } from "./Spacers";
+import styles from "@/assets/styles";
 
 /**
  * A functional component that provides a UI toggle for switching between light and dark themes.
@@ -28,7 +29,13 @@ const SwitchTheme = () => {
 
   return (
     <>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View
+        style={{
+          ...styles(theme).settingsSubitem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text style={theme.fonts.bodyLarge}>{switchLabel} : </Text>
         <Text style={theme.fonts.bodyLarge}>
           {userViewModel.theme === "dark"
