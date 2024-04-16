@@ -13,6 +13,7 @@ import {
   addDoc,
   Timestamp,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import {
   NotificationPreference,
@@ -277,12 +278,31 @@ class HiveViewModel {
     });
   }
 
-  @action removeNote(noteId: string) {
-    // TODO DB - Delete from DB.
+  @action async removeNote(noteId: string) {
     if (this.selectedHive) {
       this.selectedHive.notes = this.selectedHive.notes.filter(
         (note) => note.id !== noteId
       );
+
+      const userId = auth.currentUser?.uid;
+      if (!userId) {
+        console.error("User not logged in");
+        return;
+      }
+
+      const noteRef = doc(
+        db,
+        `users/${userId}/hives/${this.selectedHive.id}/notes/${noteId}`
+      );
+
+      try {
+        await deleteDoc(noteRef);
+        console.log("Note deleted successfully from the database");
+      } catch (error) {
+        console.error("Error deleting note:", error);
+      }
+    } else {
+      console.error("No selected hive to remove a note from");
     }
   }
 
