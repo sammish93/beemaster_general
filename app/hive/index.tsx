@@ -203,7 +203,7 @@ const HiveScreen = () => {
 
   useEffect(() => {
     sortNotes();
-  }, []);
+  }, [notes]);
 
   return (
     <SafeAreaView style={styles(theme).container}>
