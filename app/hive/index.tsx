@@ -180,7 +180,7 @@ const HiveScreen = () => {
         .fetchNotesForHive(selectedHive.id)
         .then(() => {
           console.log("Notes fetched for hive: ", selectedHive.id);
-          setNotes(hiveViewModel.getHiveFromId(selectedHive.id)?.notes || []);
+          setNotes([...hiveViewModel.getSelectedHive().notes]);
         })
         .catch((error) => {
           console.error("Failed to fetch notes: ", error);

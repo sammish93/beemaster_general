@@ -5,7 +5,15 @@ import { action, makeAutoObservable, runInAction } from "mobx";
 import { filterData, hiveListData } from "../data/hiveData";
 import { HiveNote } from "@/models/note";
 import { auth, db } from "@/firebaseConfig";
-import { collection, doc, getDoc, getDocs, addDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  addDoc,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
 import {
   NotificationPreference,
   NotificationType,
@@ -204,18 +212,44 @@ class HiveViewModel {
   }
 
   @action getSelectedNote() {
+    console.log("get selected note: ", this.selectedNote?.id);
     return this.selectedNote;
   }
 
-  @action modifyNote(noteObject: HiveNote) {
-    // TODO DB - Update DB for specific note ID under selected hive ID.
-    if (this.selectedHive) {
+  @action async modifyNote(noteObject: HiveNote) {
+    if (this.selectedHive && noteObject.id) {
       const noteIndex = this.selectedHive.notes.findIndex(
         (note) => note.id === noteObject.id
       );
       if (noteIndex !== -1) {
         this.selectedHive.notes[noteIndex] = noteObject;
+
+        const userId = auth.currentUser?.uid;
+        if (!userId) {
+          console.error("User not logged in");
+          return;
+        }
+
+        const noteRef = doc(
+          db,
+          `users/${userId}/hives/${this.selectedHive.id}/notes/${noteObject.id}`
+        );
+
+        try {
+          await updateDoc(noteRef, {
+            note: noteObject.note,
+            isSticky: noteObject.isSticky,
+            timestamp: Timestamp.fromDate(noteObject.timestamp),
+          });
+          console.log("Note updated successfully in the database");
+        } catch (error) {
+          console.error("Error updating note:", error);
+        }
+      } else {
+        console.log("Note not found in the current hive");
       }
+    } else {
+      console.error("No hive selected or note ID missing");
     }
   }
 
