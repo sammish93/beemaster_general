@@ -26,6 +26,7 @@ import {
   availableLanguages,
 } from "@/constants/LocaleEnums";
 import FileDownloader from "@/components/FileDownloader";
+import DialogCountry from "@/components/modals/DialogCountry";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -35,13 +36,18 @@ const SettingsScreen = () => {
     useState(false);
   const [settingsInfoModalVisible, setSettingsInfoModalVisible] =
     useState(false);
-
+  const [showCountryDialog, setShowCountryDialog] = useState(false);
+  const [countryCode, setCountryCode] = useState<CountryEnum>();
   const [expandedAccordion, setExpandedAccordion] = useState<string | null>(
     null
   );
 
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
+
+  const hideCountryDialog = () => {
+    setShowCountryDialog(false);
+  };
 
   const createJSON = (): string => {
     //TODO Add functionality to provide all data stored about a user and their hives.
@@ -104,9 +110,11 @@ const SettingsScreen = () => {
   };
 
   const handleCountryChange = (countryCode: CountryEnum) => {
-    userViewModel.setCountry(countryCode);
+    setCountryCode(countryCode);
+    setShowCountryDialog(true);
     setExpandedAccordion(null);
   };
+
   const toggleAccordion = (accordionName: string) => {
     setExpandedAccordion(
       expandedAccordion === accordionName ? null : accordionName
@@ -387,6 +395,12 @@ const SettingsScreen = () => {
         isOverlayModalVisible={settingsInfoModalVisible}
         onClose={() => setSettingsInfoModalVisible(false)}
       />
+      {countryCode != undefined && showCountryDialog ? (
+        <DialogCountry
+          hideDialog={hideCountryDialog}
+          countryCode={countryCode}
+        />
+      ) : null}
     </SafeAreaView>
   );
 };
