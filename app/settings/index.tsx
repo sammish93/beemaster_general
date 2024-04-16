@@ -161,8 +161,13 @@ const SettingsScreen = () => {
               userViewModel.i18n.locale
             )}`}
             titleStyle={theme.fonts.bodyLarge}
-            description={expandedAccordion === "language" ? "description" : ""}
+            description={
+              expandedAccordion === "language"
+                ? userViewModel.i18n.t("language description")
+                : ""
+            }
             descriptionStyle={theme.fonts.bodySmall}
+            descriptionNumberOfLines={5}
             left={(props) => <List.Icon {...props} icon="translate" />}
             expanded={expandedAccordion === "language"}
             onPress={() => toggleAccordion("language")}
@@ -192,8 +197,13 @@ const SettingsScreen = () => {
               userViewModel.currentCountry
             )}`}
             titleStyle={theme.fonts.bodyLarge}
-            description={expandedAccordion === "country" ? "description" : ""}
+            description={
+              expandedAccordion === "country"
+                ? userViewModel.i18n.t("country description")
+                : ""
+            }
             descriptionStyle={theme.fonts.bodySmall}
+            descriptionNumberOfLines={5}
             left={(props) => <List.Icon {...props} icon="earth" />}
             expanded={expandedAccordion === "country"}
             onPress={() => toggleAccordion("country")}

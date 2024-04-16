@@ -92,12 +92,6 @@ class UserViewModel {
                 }
 
                 break;
-            case CountryEnum.USA:
-                if (changeDefaultVariables) {
-                    // TODO Default variables for USA.
-                }
-
-                break;
 
             default:
                 null

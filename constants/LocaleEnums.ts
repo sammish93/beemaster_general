@@ -37,7 +37,6 @@ export const availableLanguages: LanguageOption[] = [
 export const availableCountries: CountryOption[] = [
     { code: CountryEnum.Norway, name: 'Norway', isEnabled: true },
     { code: CountryEnum.UnitedKingdom, name: 'United Kingdom', isEnabled: true },
-    { code: CountryEnum.USA, name: 'USA', isEnabled: true },
 
 ];
 

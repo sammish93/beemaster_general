@@ -144,7 +144,7 @@
   "weight": "Vekt",
   "temperature": "Temperatur",
   "humidity": "Luftfuktighet",
-  "bee count": "Bie telling",
+  "bee count": "Bietelling",
   "location": "Lokasjon",
   "delete": "Slett",
   "cancel": "Avbryt",
@@ -366,5 +366,12 @@
   "fi": "Svartspråket av Mordor",
   "EN": "Storbritannia",
   "US": "USA",
-  "NO": "Norge"
+  "NO": "Norge",
+  "language description": "Endre språket i applikasjonen. Merk at applikasjonen kan start på nytt.",
+"country description": "Endre landet dine birøkter er basert i. Du kan også velge å tilbakestille visse standard varselpararametere som når hver sesong begynner.",
+"temperature description": "Endre måleenheten som temperaturen vises i. Temperatur brukes av værmeldingsfunksjonalitet og temperatursensorfunksjonalitet.",
+"weight description": "Endre måleenheten som vekten vises i. Vekt brukes av vektsensorfunksjonalitet.",
+"precipitation description": "Endre måleenheten som nedbør vises i. Nedbør brukes av værmeldingsfunksjonalitet.",
+"windspeed description": "Endre måleenheten som vindhastighet vises i. Vindhastighet brukes av værmeldingsfunksjonalitet.",
+"bee count description": "Endre måleenheten som bietelling vises i. Bietelling brukes av tellefølerfunksjonalitet."
 }

@@ -43,8 +43,13 @@ const ListMeasurements = () => {
           userViewModel.temperaturePreference
         }`}
         titleStyle={theme.fonts.bodyLarge}
-        description={expanded === "temperature" ? "description" : ""}
+        description={
+          expanded === "temperature"
+            ? userViewModel.i18n.t("temperature description")
+            : ""
+        }
         descriptionStyle={theme.fonts.bodySmall}
+        descriptionNumberOfLines={5}
         left={(props) => <List.Icon {...props} icon="thermometer" />}
         expanded={expanded === "temperature"}
         onPress={() => handlePress("temperature")}
@@ -90,8 +95,13 @@ const ListMeasurements = () => {
           userViewModel.weightPreference
         }`}
         titleStyle={theme.fonts.bodyLarge}
-        description={expanded === "weight" ? "description" : ""}
+        description={
+          expanded === "weight"
+            ? userViewModel.i18n.t("weight description")
+            : ""
+        }
         descriptionStyle={theme.fonts.bodySmall}
+        descriptionNumberOfLines={5}
         left={(props) => <List.Icon {...props} icon="scale" />}
         expanded={expanded === "weight"}
         onPress={() => handlePress("weight")}
@@ -176,8 +186,13 @@ const ListMeasurements = () => {
           userViewModel.precipitationPreference
         }`}
         titleStyle={theme.fonts.bodyLarge}
-        description={expanded === "precipitation" ? "description" : ""}
+        description={
+          expanded === "precipitation"
+            ? userViewModel.i18n.t("precipitation description")
+            : ""
+        }
         descriptionStyle={theme.fonts.bodySmall}
+        descriptionNumberOfLines={5}
         left={(props) => <List.Icon {...props} icon="weather-rainy" />}
         expanded={expanded === "precipitation"}
         onPress={() => handlePress("precipitation")}
@@ -236,8 +251,13 @@ const ListMeasurements = () => {
           userViewModel.windSpeedPreference
         }`}
         titleStyle={theme.fonts.bodyLarge}
-        description={expanded === "windspeed" ? "description" : ""}
+        description={
+          expanded === "windspeed"
+            ? userViewModel.i18n.t("windspeed description")
+            : ""
+        }
         descriptionStyle={theme.fonts.bodySmall}
+        descriptionNumberOfLines={5}
         left={(props) => <List.Icon {...props} icon="weather-windy-variant" />}
         expanded={expanded === "windspeed"}
         onPress={() => handlePress("windspeed")}
@@ -310,8 +330,13 @@ const ListMeasurements = () => {
           userViewModel.beeCountPreference
         }`}
         titleStyle={theme.fonts.bodyLarge}
-        description={expanded === "bee count" ? "description" : ""}
+        description={
+          expanded === "bee count"
+            ? userViewModel.i18n.t("bee count description")
+            : ""
+        }
         descriptionStyle={theme.fonts.bodySmall}
+        descriptionNumberOfLines={5}
         left={(props) => <List.Icon {...props} icon="bee" />}
         expanded={expanded === "bee count"}
         onPress={() => handlePress("bee count")}
