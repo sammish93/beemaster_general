@@ -31,13 +31,14 @@ export const sendSwarmPreventionAlert = (): boolean => {
  * @notification ConsiderExpanding - Additionally, a 'ConsiderExpanding' notification might be 
  * appropriate if the consistent warm temperatures suggest favorable conditions for hive growth or expansion.
  * @param forecast An array of temperature forecasts, representing daily temperatures.
- * @param numberOfDays The number of consecutive days to check for consistent warmth.
- * @returns True if the temperature is consistently above the threshold for the specified number 
- * of consecutive days, otherwise false.
+ * @returns True if the temperature is consistently above the threshold for 7 consecutive days, otherwise false.
+
  */
 
-export const areTemperaturesConsistentlyWarm = (forecast: number[], numberOfDays: number): boolean => {
+export const areTemperaturesConsistentlyWarm = (forecast: number[]): boolean => {
     let consecutiveWarmDays = 0;
+    const numberOfDays = 7;
+
     for (const temperature of forecast) {
         const temp = convertTemperature(temperature, TemperatureMeasurement.Celsius, userViewModel.temperaturePreference);
 
@@ -66,6 +67,14 @@ export const areTemperaturesConsistentlyWarm = (forecast: number[], numberOfDays
  * spring, otherwise false.
  */
 export const isWarmerEachDayInSpring = (temperatures: number[]): boolean => {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDate();
+    const springStart = userViewModel.springStartMonth.getDate();
+    const springEnd = userViewModel.springStartMonth.getDate();
+
+    if (currentDay < springStart || currentDay > springEnd) {
+        return false;
+    }
 
     for (let i = 1; i < temperatures.length; i++) {
         const tempDay1 = convertTemperature(temperatures[i - 1], TemperatureMeasurement.Celsius, userViewModel.temperaturePreference);
