@@ -269,30 +269,12 @@ class HiveViewModel {
     this.modifyNote(note);
   }
   @action sortNotes() {
-    console.log(
-      "Before sorting:",
-      this.selectedHive?.notes.map((n) => ({
-        id: n.id,
-        sticky: n.isSticky,
-        time: n.timestamp,
-      }))
-    );
-
     this.selectedHive?.notes.sort((a: HiveNote, b: HiveNote) => {
       if (Number(b.isSticky) - Number(a.isSticky) !== 0) {
         return Number(b.isSticky) - Number(a.isSticky);
       }
       return b.timestamp.getTime() - a.timestamp.getTime();
     });
-
-    console.log(
-      "After sorting:",
-      this.selectedHive?.notes.map((n) => ({
-        id: n.id,
-        sticky: n.isSticky,
-        time: n.timestamp,
-      }))
-    );
   }
 
   @action removeNote(noteId: string) {
