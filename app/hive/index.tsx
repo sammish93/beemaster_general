@@ -175,6 +175,20 @@ const HiveScreen = () => {
   }, []);
 
   useEffect(() => {
+    if (isFocused && selectedHive) {
+      hiveViewModel
+        .fetchNotesForHive(selectedHive.id)
+        .then(() => {
+          console.log("Notes fetched for hive: ", selectedHive.id);
+          setNotes(hiveViewModel.getHiveFromId(selectedHive.id)?.notes || []);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch notes: ", error);
+        });
+    }
+  }, [selectedHive?.id, isFocused]);
+
+  useEffect(() => {
     setSelectedHive(hiveViewModel.getSelectedHive());
   }, [isFocused]);
 

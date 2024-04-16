@@ -59,7 +59,7 @@ class HiveViewModel {
             latLng: data.latLng,
             // TODO DB - read notes, preferences, queen, and the latest sensor reading from DB.
             // Right now they are all dummy data.
-            notes: notes,
+            notes: [],
             preferences: notificationPreferences,
             temperature: 4,
             weight: 5,
@@ -76,6 +76,35 @@ class HiveViewModel {
     } catch (error) {
       console.error("Error fetching hives: ", error);
     }
+  }
+
+  @action async fetchNotesForHive(hiveId: string) {
+    console.log("notes fetch called: ", hiveId);
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error("User not logged in");
+      return;
+    }
+
+    const notesCollectionRef = collection(
+      db,
+      `users/${userId}/hives/${hiveId}/notes`
+    );
+    const notesSnapshot = await getDocs(notesCollectionRef);
+    runInAction(() => {
+      const hiveIndex = this.hives.findIndex((hive) => hive.id === hiveId);
+      if (hiveIndex !== -1) {
+        this.hives[hiveIndex].notes = notesSnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            note: data.note,
+            isSticky: data.isSticky,
+            timestamp: new Date(data.timestamp.seconds * 1000),
+          } as HiveNote;
+        });
+      }
+    });
   }
 
   @action async addHive(hive: HiveModel) {
