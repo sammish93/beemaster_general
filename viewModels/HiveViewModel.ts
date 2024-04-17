@@ -159,9 +159,24 @@ class HiveViewModel {
     }
   }
 
-  @action removeHive(hiveId: string) {
-    // TODO DB - Delete this hive from the DB.
-    this.hives = this.hives.filter((item) => item.id !== hiveId);
+  @action async removeHive(hiveId: string) {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error("User not logged in");
+      return;
+    }
+
+    runInAction(() => {
+      this.hives = this.hives.filter((hive) => hive.id !== hiveId);
+    });
+
+    const hiveRef = doc(db, `users/${userId}/hives/${hiveId}`);
+    try {
+      await deleteDoc(hiveRef);
+      console.log("Hive deleted successfully from the database");
+    } catch (error) {
+      console.error("Error deleting hive:", error);
+    }
   }
 
   @action numberOfHives() {
