@@ -172,7 +172,7 @@ export const notificationStrategies = {
 
     weather: async ({ user, hive, weatherData}: Props) => {
         const weeklyTemperatures = getWeeklyTemperatureData(weatherData.weeklyForecast);
-        if (areTemperaturesConsistentlyWarm(weeklyTemperatures, weeklyTemperatures.length)) {
+        if (areTemperaturesConsistentlyWarm(weeklyTemperatures)) {
             logMessage('warm trend', user, hive);
 
             const message = `Its getting warm around ${hive.hiveName}. Consider checking it out.`;

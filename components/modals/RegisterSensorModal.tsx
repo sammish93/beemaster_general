@@ -53,6 +53,11 @@ const ModalContent = (props: ModalContentProps) => {
     // TODO - Implement registration of a hive. Remember validating that the hive ID is the correct
     // sensor type as what's trying to be added, and that it isn't registered to an existing hive.
     // TODO DB - Write this to the DB.
+    
+    const userId = userViewModel
+    const hiveId = selectedHive.id;
+    console.log("Hive ID: ", hiveId);
+
     props.onClose();
   };
 
