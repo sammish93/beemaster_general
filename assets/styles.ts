@@ -106,6 +106,7 @@ const styles = (theme?: MD3Theme) => {
     calendarView: {
       backgroundColor: dynamicTheme.colors.secondaryContainer,
       padding: 12,
+      paddingRight: 4,
       borderRadius: 20,
       maxHeight: screenHeight * 0.85,
     },

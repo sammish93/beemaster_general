@@ -1752,7 +1752,6 @@ const ModalContent = (props: ModalContentProps) => {
           onPress={props.onClose}
         />
       </View>
-      {datePickerVisible && <DatePickerModal onConfirm={onConfirm} />}
       {renderContent()}
 
       <VerticalSpacer size={12} />
@@ -1801,6 +1800,19 @@ const ModalContent = (props: ModalContentProps) => {
               >
                 {userViewModel.i18n.t("confirm")}
               </Button>
+            </ScrollView>
+          </View>
+        </Modal>
+        <Modal
+          visible={datePickerVisible}
+          onDismiss={() => {
+            setDatePickerVisible(false);
+          }}
+          style={styles(theme).calendarContainer}
+        >
+          <View style={styles(theme).calendarView}>
+            <ScrollView style={styles(theme).overlayScrollView}>
+              <DatePickerModal onConfirm={onConfirm} />
             </ScrollView>
           </View>
         </Modal>

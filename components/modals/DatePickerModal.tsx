@@ -6,6 +6,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { MobXProviderContext } from "mobx-react";
+import styles from "@/assets/styles";
 
 const DateTimePickerModal = ({
   onConfirm,
@@ -75,12 +76,21 @@ const DateTimePickerModal = ({
           <List.Accordion
             title={selectedMonth}
             expanded={expanded}
+            description={expanded ? userViewModel.i18n.t("select a month") : ""}
+            descriptionStyle={theme.fonts.bodySmall}
+            descriptionNumberOfLines={5}
             onPress={() => setExpanded(!expanded)}
             left={(props) => <List.Icon {...props} icon="calendar" />}
+            style={{
+              borderRadius: 20,
+              backgroundColor: theme.colors.background,
+            }}
+            theme={{ ...theme, colors: { background: "transparent" } }}
           >
             {monthNames.map((name, index) => (
               <List.Item
                 key={index}
+                style={{ borderRadius: 20 }}
                 title={userViewModel.i18n.t(`months.${name}`)}
                 onPress={() => handleSelecMonth(index)}
               />
