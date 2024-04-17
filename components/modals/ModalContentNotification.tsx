@@ -15,11 +15,26 @@ import { Calendar, LocaleConfig } from "react-native-calendars";
 import { View } from "react-native";
 import { NotificationType } from "@/constants/Notifications";
 import locales from "@/constants/localisation/calendar";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "../ToastCustom";
+import styles from "@/assets/styles";
 
 interface ModalContentProps {
   onClose: () => void;
   onSave: (newValue: string) => void;
   parameterName: NotificationType | undefined;
+}
+
+interface DateDetails {
+  selected: boolean;
+  startingDay: boolean;
+  endingDay: boolean;
+  color: string;
+  textColor: string;
+}
+
+interface MarkedDates {
+  [key: string]: DateDetails;
 }
 
 const ModalContent = (props: ModalContentProps) => {
@@ -354,18 +369,78 @@ const ModalContent = (props: ModalContentProps) => {
 
   //More than one month
   const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
-  const [markedDates, setMarkedDates] = useState<{
-    [key: string]: { selected: boolean };
-  }>({});
+  const [markedDates, setMarkedDates] = useState<MarkedDates>({});
   const [selectedMonths, setSelectedMonths] = useState<Date[]>([]);
   const [activeField2, setActiveField2] = useState("");
 
   const onDayPress = (day: { dateString: string }) => {
-    const newMarkedDates = {
-      ...markedDates,
-      [day.dateString]: { selected: !markedDates[day.dateString]?.selected },
-    };
-    setMarkedDates(newMarkedDates);
+    let newMarkedDates = { ...markedDates };
+
+    if (newMarkedDates[day.dateString]) {
+      // Unmark date if already selected.
+      delete newMarkedDates[day.dateString];
+    } else {
+      const selectedKeys = Object.keys(newMarkedDates).filter(
+        (key) => newMarkedDates[key].selected
+      );
+
+      // Checks to see only 2 dates are displayed.
+      if (selectedKeys.length < 2) {
+        newMarkedDates[day.dateString] = {
+          selected: true,
+          startingDay: false,
+          endingDay: false,
+          color: theme.colors.primaryContainer,
+          textColor: theme.colors.onPrimaryContainer,
+        };
+      } else {
+        // TODO - Add mobile implementation.
+        alert(
+          "You can only select a maximum of 2 dates. Unselect another date first."
+        );
+        return;
+      }
+    }
+
+    // Sorts selected dates ascending.
+    const sortedKeys = Object.keys(newMarkedDates)
+      .filter((key) => newMarkedDates[key].selected)
+      .sort();
+
+    // Adds additional properties for front-end display by filling in all dates in between dates chosen.
+    const sortedMarkedDates: MarkedDates = {};
+    if (sortedKeys.length === 2) {
+      const startDate = new Date(sortedKeys[0]);
+      const endDate = new Date(sortedKeys[1]);
+      for (
+        let dt = new Date(startDate);
+        dt <= endDate;
+        dt.setDate(dt.getDate() + 1)
+      ) {
+        const isoDate = dt.toISOString().split("T")[0];
+        sortedMarkedDates[isoDate] = {
+          selected: true,
+          startingDay: false,
+          endingDay: false,
+          color: theme.colors.primaryContainer,
+          textColor: theme.colors.onPrimaryContainer,
+        };
+      }
+
+      // Adds additional properties to signal which dates have been chosen via front-end bezels.
+      sortedMarkedDates[sortedKeys[0]].startingDay = true;
+      sortedMarkedDates[sortedKeys[1]].endingDay = true;
+    } else if (sortedKeys.length === 1) {
+      sortedMarkedDates[sortedKeys[0]] = {
+        selected: true,
+        startingDay: true,
+        endingDay: true,
+        color: theme.colors.primaryContainer,
+        textColor: theme.colors.onPrimaryContainer,
+      };
+    }
+
+    setMarkedDates(sortedMarkedDates);
   };
 
   const openCalendarModal = (field: string) => {
@@ -374,13 +449,21 @@ const ModalContent = (props: ModalContentProps) => {
   };
 
   const onConfirmSelection = () => {
-    // Generer en array av Date-objekter basert på de merkede datoene
-    const selectedDates = Object.entries(markedDates)
+    // Generate an array of Date objects based on the marked dates.
+    const allSelectedDates = Object.entries(markedDates)
       .filter(([_, value]) => value.selected)
       .map(([key]) => new Date(key));
 
+    // Restrict the dates to only the first and last object - gets rid of the dates in between
+    // that were required for front-end date period display.
+    const selectedDates =
+      allSelectedDates.length > 1
+        ? [allSelectedDates[0], allSelectedDates[allSelectedDates.length - 1]]
+        : allSelectedDates; // TODO - throw an error that the user can't select a single date.
+
     setSelectedMonths(selectedDates);
 
+    // Update the appropriate state based on activeField2
     switch (activeField2) {
       case "autumnMonths":
         setAutumnMonths(selectedDates);
@@ -1676,12 +1759,16 @@ const ModalContent = (props: ModalContentProps) => {
       <Portal>
         <Modal
           visible={isCalendarModalVisible}
-          onDismiss={() => setCalendarModalVisible(false)}
+          onDismiss={() => {
+            setCalendarModalVisible(false);
+            setMarkedDates({});
+          }}
+          style={styles(theme).overlayModal}
         >
           <Calendar
             onDayPress={onDayPress}
             markedDates={markedDates}
-            markingType={"multi-dot"}
+            markingType={"period"}
           />
           <Button mode="contained" onPress={onConfirmSelection}>
             {userViewModel.i18n.t("confirm")}
