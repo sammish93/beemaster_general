@@ -366,5 +366,12 @@
   "fi": "Mordor Gûl",
   "EN": "Narûk Thrak",
   "US": "Rûk Narûk",
-  "NO": "Snaga Narûk"
+  "NO": "Snaga Narûk",
+  "language description": "Tharkûn Mâth an. Nâr Uglûk.",
+  "country description": "Tharkûn Narûk Narâk rûk in. Ghâshgûl, gimbub Uglûk snaga pûrz Narâkûrz mâthub Thrakat rûks.",
+  "temperature description": "Tharkûn Lûkûrz gimbub. Lûkûrz gimbub Ûzg mâthub and Lûkûrz Krampûr pûrz.",
+  "weight description": "Tharkûn Thrak gimbub. Thrak gimbub Thrak Krampûr pûrz.",
+  "precipitation description": "Tharkûn Los gimbub. Los gimbub Ûzg mâthub pûrz.",
+  "windspeed description": "Tharkûn Ghashûrz gimbub. Ghashûrz gimbub Ûzg mâthub pûrz.",
+  "bee count description": "Tharkûn Narâkûrz gimbub. Narâkûrz gimbub Narâkûrz Krampûr pûrz."
 }

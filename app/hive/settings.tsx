@@ -231,6 +231,7 @@ const HiveSettingsScreen = () => {
 
             <View
               style={{
+                ...styles(theme).hiveRenameItem,
                 flexDirection:
                   Dimensions.get("window").width <= ScreenWidth.Compact
                     ? "column"

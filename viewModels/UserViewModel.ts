@@ -53,6 +53,7 @@ class UserViewModel {
     }
 
     @action public setLanguage = (langCode: string): void => {
+        // TODO DB - Write language to DB
 
         let newLocale = 'en';
         switch (langCode) {
@@ -77,6 +78,7 @@ class UserViewModel {
     };
 
     @action public setCountry = (countryCode: string, changeDefaultVariables: boolean = false): void => {
+        // TODO DB - Write country to DB.
         this.currentCountry = countryCode;
         switch (countryCode) {
 
@@ -89,12 +91,6 @@ class UserViewModel {
             case CountryEnum.UnitedKingdom:
                 if (changeDefaultVariables) {
                     // TODO Default variables for UK.
-                }
-
-                break;
-            case CountryEnum.USA:
-                if (changeDefaultVariables) {
-                    // TODO Default variables for USA.
                 }
 
                 break;
@@ -523,12 +519,7 @@ class UserViewModel {
     }
 
     @action public updateLocaleSettings = () => {
-        // TODO Consider splitting up this function to only language and country. The user's language should 
-        // decide the localisation. The user's country should decide the default value for parameters.
-        // example - Sam and Ash want the app country set to Norway because they have their hives there.
-        // They want to use the app in English though. Ash wants dates to appear in MM/DD format and Sam 
-        // wants dates to appear in DD/MM. British English vs American English localisation.
-        // TODO DB - Update user's country and language.
+        // Not too sure about the point of this function outside of debugging.
         let regionCode: string;
         if (Platform.OS === 'web') {
             regionCode = Localization.locale;
@@ -563,6 +554,7 @@ class UserViewModel {
     @action fetchUserParametersFromDatabase() {
         // TODO DB - Read from DB. 
         // Dummy data for now- Parameters who is not defined under, uses default parameters.
+        // UserID isn't present in the dummy data because we already have live data
         const userDataFromDatabase = {
             theme: "light",
             currentCountry: "NO",

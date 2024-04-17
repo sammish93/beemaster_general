@@ -10,6 +10,7 @@ import NotificationModal from "./modals/NotificationModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "./ToastCustom";
+import styles from "@/assets/styles";
 
 interface NotificationSettingsProps {
   hiveId?: string;
@@ -45,7 +46,13 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
 
   return (
     <>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View
+        style={{
+          ...styles(theme).settingsItem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
           {userViewModel.i18n.t("weather")}
         </Text>
@@ -64,8 +71,14 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
           hiveId={props.hiveId}
         />
       </View>
-      <VerticalSpacer size={2} />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <VerticalSpacer size={4} />
+      <View
+        style={{
+          ...styles(theme).settingsItem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
           {userViewModel.i18n.t("possible swarm")}
         </Text>
@@ -84,8 +97,14 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
           hiveId={props.hiveId}
         />
       </View>
-      <VerticalSpacer size={2} />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <VerticalSpacer size={4} />
+      <View
+        style={{
+          ...styles(theme).settingsItem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
           {userViewModel.i18n.t("consider feeding")}
         </Text>
@@ -104,8 +123,14 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
           hiveId={props.hiveId}
         />
       </View>
-      <VerticalSpacer size={2} />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <VerticalSpacer size={4} />
+      <View
+        style={{
+          ...styles(theme).settingsItem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
           {userViewModel.i18n.t("honey harvest")}
         </Text>
@@ -124,8 +149,14 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
           hiveId={props.hiveId}
         />
       </View>
-      <VerticalSpacer size={2} />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <VerticalSpacer size={4} />
+      <View
+        style={{
+          ...styles(theme).settingsItem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
           {userViewModel.i18n.t("maintenance")}
         </Text>
@@ -144,8 +175,14 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
           hiveId={props.hiveId}
         />
       </View>
-      <VerticalSpacer size={2} />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <VerticalSpacer size={4} />
+      <View
+        style={{
+          ...styles(theme).settingsItem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
           {userViewModel.i18n.t("expand hive")}
         </Text>
@@ -164,8 +201,14 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
           hiveId={props.hiveId}
         />
       </View>
-      <VerticalSpacer size={2} />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <VerticalSpacer size={4} />
+      <View
+        style={{
+          ...styles(theme).settingsItem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
           {userViewModel.i18n.t("check hive")}
         </Text>
@@ -184,8 +227,14 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
           hiveId={props.hiveId}
         />
       </View>
-      <VerticalSpacer size={2} />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <VerticalSpacer size={4} />
+      <View
+        style={{
+          ...styles(theme).settingsItem,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
           {userViewModel.i18n.t("reminder")}
         </Text>
@@ -207,7 +256,7 @@ const NotificationSettingsComponent = (props: NotificationSettingsProps) => {
           hiveId={props.hiveId}
         />
       </View>
-      <VerticalSpacer size={2} />
+      <VerticalSpacer size={4} />
       <NotificationModal
         isOverlayModalVisible={AddHiveModalVisible}
         bottomSheetModalRef={bottomSheetAddHiveModalRef}

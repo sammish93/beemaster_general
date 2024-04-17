@@ -366,5 +366,12 @@
   "fi": "The Black Speech of Mordor",
   "EN": "United Kingdom",
   "US": "USA",
-  "NO": "Norway"
+  "NO": "Norway",
+  "language description": "Change the language of the application. Note that the application may need to refresh.",
+  "country description": "Change the country that your hives are based in. Additionally, you can choose to reset certain default notification parameters such as when each season begins.",
+  "temperature description": "Change the measurement that temperature is shown in. Temperature is used by weather forecast and temperature sensor functionality.",
+  "weight description": "Change the measurement that weight is shown in. Weight is used by weight sensor functionality.",
+  "precipitation description": "Change the measurement that precipitation is shown in. Precipitation is used by weather forecast functionality.",
+  "windspeed description": "Change the measurement that wind speed is shown in. Wind speed is used by weather forecast functionality.",
+  "bee count description": "Change the measurement that bee count is shown in. Bee count is used by count sensor functionality."
 }

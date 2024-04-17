@@ -26,6 +26,7 @@ import {
   availableLanguages,
 } from "@/constants/LocaleEnums";
 import FileDownloader from "@/components/FileDownloader";
+import DialogCountry from "@/components/modals/DialogCountry";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -35,13 +36,18 @@ const SettingsScreen = () => {
     useState(false);
   const [settingsInfoModalVisible, setSettingsInfoModalVisible] =
     useState(false);
-
+  const [showCountryDialog, setShowCountryDialog] = useState(false);
+  const [countryCode, setCountryCode] = useState<CountryEnum>();
   const [expandedAccordion, setExpandedAccordion] = useState<string | null>(
     null
   );
 
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
+
+  const hideCountryDialog = () => {
+    setShowCountryDialog(false);
+  };
 
   const createJSON = (): string => {
     //TODO Add functionality to provide all data stored about a user and their hives.
@@ -104,9 +110,11 @@ const SettingsScreen = () => {
   };
 
   const handleCountryChange = (countryCode: CountryEnum) => {
-    userViewModel.setCountry(countryCode);
+    setCountryCode(countryCode);
+    setShowCountryDialog(true);
     setExpandedAccordion(null);
   };
+
   const toggleAccordion = (accordionName: string) => {
     setExpandedAccordion(
       expandedAccordion === accordionName ? null : accordionName
@@ -161,8 +169,13 @@ const SettingsScreen = () => {
               userViewModel.i18n.locale
             )}`}
             titleStyle={theme.fonts.bodyLarge}
-            description={expandedAccordion === "language" ? "description" : ""}
+            description={
+              expandedAccordion === "language"
+                ? userViewModel.i18n.t("language description")
+                : ""
+            }
             descriptionStyle={theme.fonts.bodySmall}
+            descriptionNumberOfLines={5}
             left={(props) => <List.Icon {...props} icon="translate" />}
             expanded={expandedAccordion === "language"}
             onPress={() => toggleAccordion("language")}
@@ -192,8 +205,13 @@ const SettingsScreen = () => {
               userViewModel.currentCountry
             )}`}
             titleStyle={theme.fonts.bodyLarge}
-            description={expandedAccordion === "country" ? "description" : ""}
+            description={
+              expandedAccordion === "country"
+                ? userViewModel.i18n.t("country description")
+                : ""
+            }
             descriptionStyle={theme.fonts.bodySmall}
+            descriptionNumberOfLines={5}
             left={(props) => <List.Icon {...props} icon="earth" />}
             expanded={expandedAccordion === "country"}
             onPress={() => toggleAccordion("country")}
@@ -218,6 +236,8 @@ const SettingsScreen = () => {
 
           <Divider style={{ backgroundColor: theme.colors.outline }} />
 
+          <VerticalSpacer size={8} />
+
           <Text
             style={{
               ...theme.fonts.headlineSmall,
@@ -228,11 +248,17 @@ const SettingsScreen = () => {
             {userViewModel.i18n.t("permissions")}
           </Text>
 
+          <VerticalSpacer size={8} />
+
           <PermissionSwitch type="location permission" />
           <PermissionSwitch type="camera permission" />
           <PermissionSwitch type="media permission" />
 
+          <VerticalSpacer size={12} />
+
           <Divider style={{ backgroundColor: theme.colors.outline }} />
+
+          <VerticalSpacer size={8} />
 
           <Text
             style={{
@@ -244,12 +270,21 @@ const SettingsScreen = () => {
             {userViewModel.i18n.t("notifications")}
           </Text>
 
+          <VerticalSpacer size={8} />
+
           <DefaultSwitchComponent type="mobile" />
           <DefaultSwitchComponent type="sms" />
           <DefaultSwitchComponent type="email" />
+
+          {/*TODO - Create a section with NotificationButton to allow manual debugging etc for 
+          demonstration of app functionality. */}
           <NotificationButton />
 
+          <VerticalSpacer size={12} />
+
           <Divider style={{ backgroundColor: theme.colors.outline }} />
+
+          <VerticalSpacer size={8} />
 
           <View
             style={{
@@ -280,6 +315,8 @@ const SettingsScreen = () => {
               />
             </TouchableOpacity>
           </View>
+
+          <VerticalSpacer size={8} />
 
           <NotificationSettingsComponent />
 
@@ -358,6 +395,12 @@ const SettingsScreen = () => {
         isOverlayModalVisible={settingsInfoModalVisible}
         onClose={() => setSettingsInfoModalVisible(false)}
       />
+      {countryCode != undefined && showCountryDialog ? (
+        <DialogCountry
+          hideDialog={hideCountryDialog}
+          countryCode={countryCode}
+        />
+      ) : null}
     </SafeAreaView>
   );
 };

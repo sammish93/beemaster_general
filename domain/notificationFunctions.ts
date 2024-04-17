@@ -31,13 +31,14 @@ export const sendSwarmPreventionAlert = (): boolean => {
  * @notification ConsiderExpanding - Additionally, a 'ConsiderExpanding' notification might be 
  * appropriate if the consistent warm temperatures suggest favorable conditions for hive growth or expansion.
  * @param forecast An array of temperature forecasts, representing daily temperatures.
- * @param numberOfDays The number of consecutive days to check for consistent warmth.
- * @returns True if the temperature is consistently above the threshold for the specified number 
- * of consecutive days, otherwise false.
+ * @returns True if the temperature is consistently above the threshold for 7 consecutive days, otherwise false.
+
  */
 
-export const areTemperaturesConsistentlyWarm = (forecast: number[], numberOfDays: number): boolean => {
+export const areTemperaturesConsistentlyWarm = (forecast: number[]): boolean => {
     let consecutiveWarmDays = 0;
+    const numberOfDays = 7;
+
     for (const temperature of forecast) {
         const temp = convertTemperature(temperature, TemperatureMeasurement.Celsius, userViewModel.temperaturePreference);
 
@@ -66,6 +67,14 @@ export const areTemperaturesConsistentlyWarm = (forecast: number[], numberOfDays
  * spring, otherwise false.
  */
 export const isWarmerEachDayInSpring = (temperatures: number[]): boolean => {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDate();
+    const springStart = userViewModel.springStartMonth.getDate();
+    const springEnd = userViewModel.springStartMonth.getDate();
+
+    if (currentDay < springStart || currentDay > springEnd) {
+        return false;
+    }
 
     for (let i = 1; i < temperatures.length; i++) {
         const tempDay1 = convertTemperature(temperatures[i - 1], TemperatureMeasurement.Celsius, userViewModel.temperaturePreference);
@@ -377,11 +386,11 @@ export const isIdealBeeWeatherBetweenEarlySpringAndEndAutumn = (
  * @notification HoneyHarvest - Indicates ideal conditions for honey harvesting due to the stable and 
  * favorable weather, potentially leading to a successful and efficient harvest.
  * @param weatherConditions Array of objects representing daily weather conditions.
- * @returns A boolean indicating whether the conditions meet the criteria for a warm, dry day with low wind speed 
+ * @returns A boolean indicating whether the conditions meet the criteria for a warm and low wind speed 
  * in the specified period.
  */
 export const isIdealBeeWeatherBetweenSummerAndEarlyAutumn = (
-    weatherConditions: { temperature: number; humidity: number; windSpeed: number, country: string }[],
+    weatherConditions: { temperature: number; windSpeed: number, country: string }[],
 ): boolean => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
@@ -778,46 +787,4 @@ export const isCurrentlySummerSeason = (): boolean => {
 
 };
 
-
-interface BeekeepingReminder {
-    date: Date;
-    task: string;
-    description: string;
-}
-/**
- * Function to create a reminder for a beekeeping task.
- * 
- * @notification CustomReminder - Generates a 'CustomReminder' for beekeeping tasks, facilitating task management
- *  and ensuring timely execution of critical beekeeping activities.
- * @param reminders Array of existing reminders.
- * @param date The date for the reminder.
- * @param task The task for which the reminder is set.
- * @param description A description of the task or reminder.
- * @returns An updated array of reminders including the new reminder.
- */
-export const createBeekeepingReminder = (
-    reminders: BeekeepingReminder[],
-    date: Date,
-    task: string,
-    description: string
-): BeekeepingReminder[] => {
-    const newReminder: BeekeepingReminder = { date, task, description };
-    reminders.push(newReminder);
-    return reminders;
-};
-
-/**
- * Filters and returns reminders for a given date from an array of beekeeping reminders.
- * Useful for organizing daily beekeeping tasks by showing only the reminders relevant for a specific date,
- * aiding beekeepers in focusing on and preparing for the day's activities.
- * @param reminders Array of reminders.
- * @param date The date for which to display reminders.
- * @returns An array of reminders for the specified date.
- */
-export const getRemindersForDate = (
-    reminders: BeekeepingReminder[],
-    date: Date
-): BeekeepingReminder[] => {
-    return reminders.filter(reminder => reminder.date.toDateString() === date.toDateString());
-};
 
