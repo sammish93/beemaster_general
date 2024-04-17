@@ -7,6 +7,7 @@ import {
   useTheme,
   Modal,
   Portal,
+  Divider,
 } from "react-native-paper";
 import { MobXProviderContext } from "mobx-react";
 import DatePickerModal from "./DatePickerModal";
@@ -489,6 +490,7 @@ const ModalContent = (props: ModalContentProps) => {
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for strong wind forecast")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold wind speed")}
               value={thresholdWindSpeedStrong.toString()}
@@ -496,10 +498,13 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for consistently high temperature")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
@@ -507,12 +512,15 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for is 'snow' forecasted during specific seasons"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("autumn months")}
               value={autumnMonths
@@ -522,12 +530,14 @@ const ModalContent = (props: ModalContentProps) => {
                 .join(", ")}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => openCalendarModal("autumnMonths")}
             >
               {userViewModel.i18n.t("set autumn months")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("early winter months")}
               value={earlyWinterMonths
@@ -537,12 +547,14 @@ const ModalContent = (props: ModalContentProps) => {
                 .join(", ")}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => openCalendarModal("earlyWinterMonths")}
             >
               {userViewModel.i18n.t("set early winter months")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("early spring months")}
               value={earlySpringMonths
@@ -552,6 +564,7 @@ const ModalContent = (props: ModalContentProps) => {
                 .join(", ")}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => openCalendarModal("earlySpringMonths")}
@@ -559,12 +572,15 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set early spring months")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for is 'snow' forecasted during autumn"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("autumn start month")}
               value={autumnStartMonth.toLocaleDateString(
@@ -572,6 +588,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -582,6 +599,7 @@ const ModalContent = (props: ModalContentProps) => {
               {" "}
               {userViewModel.i18n.t("set autumn start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("autumn end month")}
               value={autumnEndMonth.toLocaleDateString(
@@ -589,6 +607,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -600,18 +619,22 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set autumn end month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for ideal bee weather between early spring and end autumn"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set threshold for optimal temperature"
@@ -622,6 +645,7 @@ const ModalContent = (props: ModalContentProps) => {
               }
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("early spring start month")}
               value={earlySpringStartMonth.toLocaleDateString(
@@ -629,6 +653,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -639,6 +664,7 @@ const ModalContent = (props: ModalContentProps) => {
               {" "}
               {userViewModel.i18n.t("set early spring start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("autumn end month")}
               value={autumnEndMonth.toLocaleDateString(
@@ -646,6 +672,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -657,15 +684,26 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set autumn end month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for is winter starting")}
             </Text>
+            <VerticalSpacer size={4} />
+            <TextInput
+              label={userViewModel.i18n.t("set threshold temperature minimum")}
+              value={thresholdTemperatureMin.toString()}
+              onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
+              keyboardType="numeric"
+            />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("winter start month")}
               value={winterStart.toLocaleDateString(userViewModel.i18n.locale)}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -676,22 +714,27 @@ const ModalContent = (props: ModalContentProps) => {
               {" "}
               {userViewModel.i18n.t("set winter start month")}
             </Button>
+
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
+            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+              {userViewModel.i18n.t("alert for is winter ending")}
+            </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
               onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
               keyboardType="numeric"
             />
-
-            <VerticalSpacer size={12} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
-              {userViewModel.i18n.t("alert for is winter ending")}
-            </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("winter end month")}
               value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -702,17 +745,14 @@ const ModalContent = (props: ModalContentProps) => {
               {" "}
               {userViewModel.i18n.t("set winter end month")}
             </Button>
-            <TextInput
-              label={userViewModel.i18n.t("set threshold temperature minimum")}
-              value={thresholdTemperatureMin.toString()}
-              onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
-              keyboardType="numeric"
-            />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for is early winter starting")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("early winter start month")}
               value={earlyWinterStart.toLocaleDateString(
@@ -720,6 +760,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -731,10 +772,13 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set early winter start month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for is currently spring season")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("spring start month")}
               value={springStartMonth.toLocaleDateString(
@@ -742,6 +786,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -752,6 +797,7 @@ const ModalContent = (props: ModalContentProps) => {
               {" "}
               {userViewModel.i18n.t("set spring start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("spring end month")}
               value={springEndMonth.toLocaleDateString(
@@ -759,6 +805,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -780,6 +827,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "alert between late spring and early summer"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("late spring start month")}
               value={lateSpringStartMonth.toLocaleDateString(
@@ -787,6 +835,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -797,6 +846,7 @@ const ModalContent = (props: ModalContentProps) => {
               {" "}
               {userViewModel.i18n.t("set late spring start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("early summer start month")}
               value={earlySummerStartMonth.toLocaleDateString(
@@ -804,6 +854,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -815,12 +866,15 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set early summer start month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for hive weight decreases significantly"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number for threshold value for weight decrease"
@@ -829,6 +883,7 @@ const ModalContent = (props: ModalContentProps) => {
               onChangeText={(text) => setThresholdWeightDecrease(Number(text))}
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number of days for production period"
@@ -838,12 +893,15 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert to check if many bees have exited the hive"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold for high exit count")}
               value={thresholdExitCountHigh.toString()}
@@ -851,12 +909,15 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for have few bees been exited the hive"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold for low exit count")}
               value={thresholdExitCountLow.toString()}
@@ -864,12 +925,15 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for total weight decrease over a period"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number of days for production period"
@@ -878,6 +942,7 @@ const ModalContent = (props: ModalContentProps) => {
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number for threshold value for production period"
@@ -889,12 +954,15 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for possible swarming based on defined season"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("late spring start month")}
               value={lateSpringStartMonth.toLocaleDateString(
@@ -902,6 +970,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -912,6 +981,7 @@ const ModalContent = (props: ModalContentProps) => {
               {" "}
               {userViewModel.i18n.t("set late spring start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("early summer end month")}
               value={earlySummerEndMonth.toLocaleDateString(
@@ -919,6 +989,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -940,12 +1011,14 @@ const ModalContent = (props: ModalContentProps) => {
                 "alert for ideal bee weather between summer and early autumn"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set threshold for optimal temperature"
@@ -956,6 +1029,7 @@ const ModalContent = (props: ModalContentProps) => {
               }
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("early autumn month")}
               value={earlyAutumnMonth.toLocaleDateString(
@@ -963,6 +1037,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -972,6 +1047,7 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set early autumn month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("summer start month")}
               value={summerStartMonth.toLocaleDateString(
@@ -979,6 +1055,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -989,18 +1066,22 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set summer start month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for ideal bee weather between early spring and end autumn"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set threshold for optimal temperature"
@@ -1011,6 +1092,7 @@ const ModalContent = (props: ModalContentProps) => {
               }
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("early spring start month")}
               value={earlySpringStartMonth.toLocaleDateString(
@@ -1018,6 +1100,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1027,6 +1110,7 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set early spring start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("autumn end month")}
               value={autumnEndMonth.toLocaleDateString(
@@ -1034,6 +1118,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1045,12 +1130,15 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set autumn end month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for significant increase in hive weight"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number for threshold value for weight increase"
@@ -1060,12 +1148,15 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for total weight increase over a period"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number of days for production period"
@@ -1074,6 +1165,7 @@ const ModalContent = (props: ModalContentProps) => {
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number for threshold value for production period"
@@ -1085,10 +1177,13 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for summer season")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("summer start month")}
               value={summerStartMonth.toLocaleDateString(
@@ -1096,6 +1191,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1105,6 +1201,7 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set summer start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("summer end month")}
               value={summerEndMonth.toLocaleDateString(
@@ -1112,6 +1209,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1132,6 +1230,25 @@ const ModalContent = (props: ModalContentProps) => {
                 "alert for ideal bee weather between early spring and end autumn"
               )}
             </Text>
+            <VerticalSpacer size={4} />
+            <TextInput
+              label={userViewModel.i18n.t("set threshold for low wind speed")}
+              value={thresholdWindSpeedLow.toString()}
+              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              keyboardType="numeric"
+            />
+            <VerticalSpacer size={4} />
+            <TextInput
+              label={userViewModel.i18n.t(
+                "set threshold for optimal temperature"
+              )}
+              value={thresholdTemperatureOptimal.toString()}
+              onChangeText={(text) =>
+                setThresholdTemperatureOptimal(Number(text))
+              }
+              keyboardType="numeric"
+            />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("early spring start month")}
               value={earlySpringStartMonth.toLocaleDateString(
@@ -1139,6 +1256,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1148,6 +1266,7 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set early spring start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("autumn end month")}
               value={autumnEndMonth.toLocaleDateString(
@@ -1155,6 +1274,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1164,12 +1284,23 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set autumn end month")}
             </Button>
+
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
+            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+              {userViewModel.i18n.t(
+                "alert for ideal bee weather between summer and early autumn"
+              )}
+            </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set threshold for optimal temperature"
@@ -1180,13 +1311,7 @@ const ModalContent = (props: ModalContentProps) => {
               }
               keyboardType="numeric"
             />
-
-            <VerticalSpacer size={12} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
-              {userViewModel.i18n.t(
-                "alert for ideal bee weather between summer and early autumn"
-              )}
-            </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("summer start month")}
               value={summerStartMonth.toLocaleDateString(
@@ -1194,6 +1319,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1203,6 +1329,7 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set summer start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("early autumn month")}
               value={earlyAutumnMonth.toLocaleDateString(
@@ -1210,6 +1337,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1219,27 +1347,14 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set early autumn month")}
             </Button>
-            <TextInput
-              label={userViewModel.i18n.t("set threshold for low wind speed")}
-              value={thresholdWindSpeedLow.toString()}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
-              keyboardType="numeric"
-            />
-            <TextInput
-              label={userViewModel.i18n.t(
-                "set threshold for optimal temperature"
-              )}
-              value={thresholdTemperatureOptimal.toString()}
-              onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
-              }
-              keyboardType="numeric"
-            />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for is early summer starting")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("early summer start month")}
               value={earlySummerStartMonth.toLocaleDateString(
@@ -1247,6 +1362,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1257,10 +1373,13 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set early summer start month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert to check if it's spring")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("spring start month")}
               value={springStartMonth.toLocaleDateString(
@@ -1268,6 +1387,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1277,6 +1397,7 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set spring start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("spring end month")}
               value={springEndMonth.toLocaleDateString(
@@ -1284,6 +1405,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1304,6 +1426,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "alert for significant increase in hive weigh"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number for threshold value for weight increase"
@@ -1313,12 +1436,15 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for total weight increase over a period"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number of days for production period"
@@ -1327,6 +1453,7 @@ const ModalContent = (props: ModalContentProps) => {
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number for threshold value for production period"
@@ -1338,10 +1465,13 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for consistently high temperature")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
@@ -1349,10 +1479,13 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for is early summer starting")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("early summer start month")}
               value={earlySummerStartMonth.toLocaleDateString(
@@ -1360,6 +1493,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1370,10 +1504,13 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set early summer start month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for is spring season")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("spring start month")}
               value={springStartMonth.toLocaleDateString(
@@ -1381,6 +1518,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1390,6 +1528,7 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set spring start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("spring end month")}
               value={springEndMonth.toLocaleDateString(
@@ -1397,6 +1536,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1407,10 +1547,13 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set spring end month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for summer season")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("summer start month")}
               value={summerStartMonth.toLocaleDateString(
@@ -1418,6 +1561,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1427,6 +1571,7 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set summer start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("summer end month")}
               value={summerEndMonth.toLocaleDateString(
@@ -1434,6 +1579,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1454,6 +1600,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "alert to check if hive temperature is too warm"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set threshold max temperature for hive"
@@ -1462,13 +1609,16 @@ const ModalContent = (props: ModalContentProps) => {
               onChangeText={(text) => setThresholdMaxTempInHive(Number(text))}
               keyboardType="numeric"
             />
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
 
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert to check if hive temperature is too cold"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set threshold minimum temperature for hive"
@@ -1478,10 +1628,13 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for consistently high temperature")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
@@ -1489,10 +1642,13 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for consistently low temperature")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
@@ -1500,12 +1656,15 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert to check if humidity in hive is above maximum threshold"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("threshold max humidity")}
               value={thresholdHumidityMax.toString()}
@@ -1513,12 +1672,15 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert to check if humidity in hive is below minimum threshold"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("threshold min humidity")}
               value={thresholdHumidityMin.toString()}
@@ -1526,10 +1688,13 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for is early winter ending")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("early winter end month")}
               value={earlyWinterEnd.toLocaleDateString(
@@ -1537,6 +1702,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1547,15 +1713,19 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set early winter end month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t("alert for is winter ending")}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("winter end month")}
               value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1566,12 +1736,15 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set winter end month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert to check if many bees have exited the hive"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold for high exit count")}
               value={thresholdExitCountHigh.toString()}
@@ -1589,6 +1762,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "alert for hive weight decrease in early spring"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number for thresholdvalue for weight decrease"
@@ -1599,6 +1773,7 @@ const ModalContent = (props: ModalContentProps) => {
               }
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("early spring start month")}
               value={earlySpringStartMonth.toLocaleDateString(
@@ -1606,6 +1781,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1615,6 +1791,7 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set early spring start month")}
             </Button>
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("early spring end month")}
               value={earlySpringEndMonth.toLocaleDateString(
@@ -1622,6 +1799,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1632,12 +1810,15 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set early spring end month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for hive weight decreases in autumn"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number for threshold value for weight decrease"
@@ -1648,6 +1829,7 @@ const ModalContent = (props: ModalContentProps) => {
               }
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("autumn start month")}
               value={autumnStartMonth.toLocaleDateString(
@@ -1655,6 +1837,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1664,7 +1847,7 @@ const ModalContent = (props: ModalContentProps) => {
             >
               {userViewModel.i18n.t("set autumn start month")}
             </Button>
-
+            <VerticalSpacer size={12} />
             <TextInput
               label={userViewModel.i18n.t("autumn end month")}
               value={autumnEndMonth.toLocaleDateString(
@@ -1672,6 +1855,7 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               editable={false}
             />
+            <VerticalSpacer size={4} />
             <Button
               mode="contained"
               onPress={() => {
@@ -1682,12 +1866,15 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("set autumn end month")}
             </Button>
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for total weight decrease over a period"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number of days for production period"
@@ -1696,6 +1883,7 @@ const ModalContent = (props: ModalContentProps) => {
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
               keyboardType="numeric"
             />
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t(
                 "set number for threshold value for production period"
@@ -1707,12 +1895,15 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
 
-            <VerticalSpacer size={12} />
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
             <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
               {userViewModel.i18n.t(
                 "alert for have few bees been exited the hive"
               )}
             </Text>
+            <VerticalSpacer size={4} />
             <TextInput
               label={userViewModel.i18n.t("set threshold for low exit count")}
               value={thresholdExitCountLow.toString()}
