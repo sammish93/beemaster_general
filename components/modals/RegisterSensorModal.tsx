@@ -58,17 +58,10 @@ const ModalContent = (props: ModalContentProps) => {
     // sensor type as what's trying to be added, and that it isn't registered to an existing hive.
     // TODO DB - Write this to the DB.
 
-    const usersCollection = collection(db, 'users');
-    const userDoc = doc(usersCollection, userId);
-    const hivesCollection = collection(userDoc, 'hives');
-    const hiveDoc = doc(hivesCollection, hiveId);
-
-    const hiveSnapshot = await getDoc(hiveDoc);
+    const hiveDocument = doc(db, `users/${userId}/hives/${hiveId}}`);
+    const hiveSnapshot = await getDoc(hiveDocument);
     if (hiveSnapshot.exists()) {
       console.log(`Hive document data: ${hiveSnapshot.data().sensorId}`);
-    }
-    else {
-      console.log(`Document does not exists`);
     }
 
 
