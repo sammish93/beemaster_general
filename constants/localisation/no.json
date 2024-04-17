@@ -373,5 +373,6 @@
 "weight description": "Endre måleenheten som vekten vises i. Vekt brukes av vektsensorfunksjonalitet.",
 "precipitation description": "Endre måleenheten som nedbør vises i. Nedbør brukes av værmeldingsfunksjonalitet.",
 "windspeed description": "Endre måleenheten som vindhastighet vises i. Vindhastighet brukes av værmeldingsfunksjonalitet.",
-"bee count description": "Endre måleenheten som bietelling vises i. Bietelling brukes av tellefølerfunksjonalitet."
+"bee count description": "Endre måleenheten som bietelling vises i. Bietelling brukes av tellefølerfunksjonalitet.",
+"reset": "Nullstill"
 }

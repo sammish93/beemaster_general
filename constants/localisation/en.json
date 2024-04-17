@@ -373,5 +373,6 @@
   "weight description": "Change the measurement that weight is shown in. Weight is used by weight sensor functionality.",
   "precipitation description": "Change the measurement that precipitation is shown in. Precipitation is used by weather forecast functionality.",
   "windspeed description": "Change the measurement that wind speed is shown in. Wind speed is used by weather forecast functionality.",
-  "bee count description": "Change the measurement that bee count is shown in. Bee count is used by count sensor functionality."
+  "bee count description": "Change the measurement that bee count is shown in. Bee count is used by count sensor functionality.",
+  "reset": "Reset"
 }

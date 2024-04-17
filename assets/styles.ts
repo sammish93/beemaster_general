@@ -100,6 +100,15 @@ const styles = (theme?: MD3Theme) => {
       paddingRight: 4,
       borderRadius: 20,
     },
+    calendarContainer: {
+      alignItems: "center",
+    },
+    calendarView: {
+      backgroundColor: dynamicTheme.colors.secondaryContainer,
+      padding: 12,
+      borderRadius: 20,
+      maxHeight: screenHeight * 0.8,
+    },
     overlayScrollView: {
       paddingRight: 8
     },

@@ -18,6 +18,7 @@ import locales from "@/constants/localisation/calendar";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "../ToastCustom";
 import styles from "@/assets/styles";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface ModalContentProps {
   onClose: () => void;
@@ -1763,16 +1764,45 @@ const ModalContent = (props: ModalContentProps) => {
             setCalendarModalVisible(false);
             setMarkedDates({});
           }}
-          style={styles(theme).overlayModal}
+          style={styles(theme).calendarContainer}
         >
-          <Calendar
-            onDayPress={onDayPress}
-            markedDates={markedDates}
-            markingType={"period"}
-          />
-          <Button mode="contained" onPress={onConfirmSelection}>
-            {userViewModel.i18n.t("confirm")}
-          </Button>
+          <View style={styles(theme).calendarView}>
+            <ScrollView style={styles(theme).overlayScrollView}>
+              <Calendar
+                onDayPress={onDayPress}
+                markedDates={markedDates}
+                markingType={"period"}
+                style={{
+                  backgroundColor: theme.colors.background,
+                  padding: 12,
+                  borderRadius: 20,
+                }}
+                theme={{
+                  arrowColor: theme.colors.primary,
+                  calendarBackground: theme.colors.background,
+                  monthTextColor: theme.colors.onBackground,
+                  dayTextColor: theme.colors.onBackground,
+                  todayTextColor: theme.colors.primary,
+                }}
+              />
+              <VerticalSpacer size={8} />
+              <Button
+                mode="contained"
+                onPress={() => setMarkedDates({})}
+                disabled={Object.keys(markedDates).length === 0}
+              >
+                {userViewModel.i18n.t("reset")}
+              </Button>
+              <VerticalSpacer size={8} />
+              <Button
+                mode="contained"
+                onPress={onConfirmSelection}
+                disabled={Object.keys(markedDates).length < 2}
+              >
+                {userViewModel.i18n.t("confirm")}
+              </Button>
+            </ScrollView>
+          </View>
         </Modal>
       </Portal>
       <VerticalSpacer size={12} />
