@@ -44,7 +44,7 @@ export const evaluateAndSendNotification = async (user: User, hives: Hive[]) => 
                     notificationStrategies[notificationType](params);
                 }
                 else {
-                    console.log(`Notification ${notificationType} is turned of for both user and hive`);
+                    console.log(`Notification ${notificationType} is turned off for both user and hive`);
                 }
             });
         } catch (error) {
