@@ -1,5 +1,5 @@
 export enum NotificationType {
-  considerFeeding = "considerFeeding",
+  ConsiderFeeding = "considerFeeding",
   ConsiderExpanding = "considerExpanding",
   HoneyHarvest = "honeyHarvest",
   Maintenance = "maintenance",
