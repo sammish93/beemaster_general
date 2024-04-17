@@ -133,6 +133,7 @@ class HiveViewModel {
         hiveName: hive.name,
         hiveFilter: hive.filters,
         latLng: hive.latLng,
+        notificationTypePreference: notificationPreferences,
       });
       runInAction(() => {
         this.hives.push({
