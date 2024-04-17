@@ -20,6 +20,7 @@ import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "../ToastCustom";
 import styles from "@/assets/styles";
 import CalendarModal from "./CalendarModal";
+import MonthModal from "./MonthModal";
 
 interface ModalContentProps {
   onClose: () => void;
@@ -1947,22 +1948,6 @@ const ModalContent = (props: ModalContentProps) => {
 
       <VerticalSpacer size={12} />
 
-      <Portal>
-        <Modal
-          visible={datePickerVisible}
-          onDismiss={() => {
-            setDatePickerVisible(false);
-          }}
-          style={styles(theme).calendarContainer}
-        >
-          <View style={styles(theme).calendarView}>
-            <ScrollView style={styles(theme).overlayScrollView}>
-              <DatePickerModal onConfirm={onConfirm} />
-            </ScrollView>
-          </View>
-        </Modal>
-      </Portal>
-      <VerticalSpacer size={12} />
       {/*TODO: Save button should be under each threshold-value choice*/}
       <Button mode="contained" onPress={handleSave}>
         {userViewModel.i18n.t("save")}
@@ -1977,6 +1962,13 @@ const ModalContent = (props: ModalContentProps) => {
         markedDates={markedDates}
         setMarkedDates={() => setMarkedDates({})}
         onConfirmSelection={onConfirmSelection}
+      />
+      <MonthModal
+        isOverlayModalVisible={datePickerVisible}
+        onClose={() => {
+          setDatePickerVisible(false);
+        }}
+        onConfirm={onConfirm}
       />
     </>
   );
