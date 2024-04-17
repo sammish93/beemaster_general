@@ -13,13 +13,13 @@ import { MobXProviderContext } from "mobx-react";
 import DatePickerModal from "./DatePickerModal";
 import { VerticalSpacer } from "../Spacers";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { NotificationType } from "@/constants/Notifications";
 import locales from "@/constants/localisation/calendar";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "../ToastCustom";
 import styles from "@/assets/styles";
-import { ScrollView } from "react-native-gesture-handler";
+import CalendarModal from "./CalendarModal";
 
 interface ModalContentProps {
   onClose: () => void;
@@ -1949,52 +1949,6 @@ const ModalContent = (props: ModalContentProps) => {
 
       <Portal>
         <Modal
-          visible={isCalendarModalVisible}
-          onDismiss={() => {
-            setCalendarModalVisible(false);
-            setMarkedDates({});
-          }}
-          style={styles(theme).calendarContainer}
-        >
-          <View style={styles(theme).calendarView}>
-            <ScrollView style={styles(theme).overlayScrollView}>
-              <Calendar
-                onDayPress={onDayPress}
-                markedDates={markedDates}
-                markingType={"period"}
-                style={{
-                  backgroundColor: theme.colors.background,
-                  padding: 12,
-                  borderRadius: 20,
-                }}
-                theme={{
-                  arrowColor: theme.colors.primary,
-                  calendarBackground: theme.colors.background,
-                  monthTextColor: theme.colors.onBackground,
-                  dayTextColor: theme.colors.onBackground,
-                  todayTextColor: theme.colors.primary,
-                }}
-              />
-              <VerticalSpacer size={8} />
-              <Button
-                mode="contained"
-                onPress={() => setMarkedDates({})}
-                disabled={Object.keys(markedDates).length === 0}
-              >
-                {userViewModel.i18n.t("reset")}
-              </Button>
-              <VerticalSpacer size={8} />
-              <Button
-                mode="contained"
-                onPress={onConfirmSelection}
-                disabled={Object.keys(markedDates).length < 2}
-              >
-                {userViewModel.i18n.t("confirm")}
-              </Button>
-            </ScrollView>
-          </View>
-        </Modal>
-        <Modal
           visible={datePickerVisible}
           onDismiss={() => {
             setDatePickerVisible(false);
@@ -2013,6 +1967,17 @@ const ModalContent = (props: ModalContentProps) => {
       <Button mode="contained" onPress={handleSave}>
         {userViewModel.i18n.t("save")}
       </Button>
+      <CalendarModal
+        isOverlayModalVisible={isCalendarModalVisible}
+        onClose={() => {
+          setCalendarModalVisible(false);
+          setMarkedDates({});
+        }}
+        onDayPress={onDayPress}
+        markedDates={markedDates}
+        setMarkedDates={() => setMarkedDates({})}
+        onConfirmSelection={onConfirmSelection}
+      />
     </>
   );
 };

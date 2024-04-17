@@ -375,5 +375,6 @@
   "windspeed description": "Change the measurement that wind speed is shown in. Wind speed is used by weather forecast functionality.",
   "bee count description": "Change the measurement that bee count is shown in. Bee count is used by count sensor functionality.",
   "reset": "Reset",
-  "select a month": "Select a month."
+  "select a month": "Select a month.",
+  "choose date range": "Choose date range"
 }
