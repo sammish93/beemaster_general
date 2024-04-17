@@ -8,6 +8,8 @@ import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
 import { db } from "@/firebaseConfig";
 import { collection, doc, getDoc, addDoc } from "firebase/firestore";
+import { checkSensorIdUsage } from "@/utils/sensorUtils";
+import { DocumentData } from "@google-cloud/firestore";
 
 interface RegisterSensorModalProps {
   isOverlayModalVisible: boolean;
@@ -53,17 +55,26 @@ const ModalContent = (props: ModalContentProps) => {
   const userId = userViewModel.getUserId();
   const hiveId = selectedHive.id;
 
-  const handleRegisterSensor = async (weightSensor: boolean) => {
+  const handleRegisterSensor = async (isWeightSensor: boolean) => {
     // TODO - Implement registration of a hive. Remember validating that the hive ID is the correct
     // sensor type as what's trying to be added, and that it isn't registered to an existing hive.
     // TODO DB - Write this to the DB.
 
-    const hiveDocument = doc(db, `users/${userId}/hives/${hiveId}}`);
-    const hiveSnapshot = await getDoc(hiveDocument);
-    if (hiveSnapshot.exists()) {
-      console.log(`Hive document data: ${hiveSnapshot.data().sensorId}`);
-    }
+    const sensorId = `WS-1`; // TODO: Move to a more secure place.
 
+    if (isWeightSensor) {
+      const isUsed = await checkSensorIdUsage(sensorId);
+
+      if (isUsed) {
+        console.error(`Sensor ID: ${sensorId} is already in use.`);
+      }
+
+      // TODO: Handle registration of sensor.
+
+    }
+    else {
+      console.log(`Only weight sensor registration is supported at the moment.`);
+    }
 
     props.onClose();
   };
