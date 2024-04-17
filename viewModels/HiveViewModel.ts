@@ -148,15 +148,21 @@ class HiveViewModel {
     }
   }
 
-  @action updateHive(hiveToUpdate: HiveModel) {
-    // TODO DB - Update DB for specific hive ID.
-    if (hiveToUpdate) {
-      const hiveIndex = this.hives.findIndex(
-        (hive) => hive.id === hiveToUpdate.id
-      );
-      if (hiveIndex !== -1) {
-        this.hives[hiveIndex] = hiveToUpdate;
-      }
+  @action async updateHive(hiveToUpdate: HiveModel) {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error("User not logged in");
+      return;
+    }
+    const hiveRef = doc(db, `users/${userId}/hives/${hiveToUpdate.id}`);
+
+    try {
+      await updateDoc(hiveRef, {
+        hiveFilter: hiveToUpdate.filters,
+      });
+      console.log("Hive updated successfully:", hiveToUpdate);
+    } catch (error) {
+      console.error("Error updating hive in Firestore:", error);
     }
   }
 
@@ -184,9 +190,36 @@ class HiveViewModel {
     return this.hives.length;
   }
 
-  @action addFilter(filter: string) {
-    // TODO DB - Write this filter to the DB under the currently selected hive.
-    this.filters.push(filter);
+  @action async addFilter(filter: string) {
+    if (!this.selectedHive) {
+      console.error("No hive selected");
+      return;
+    }
+
+    if (!this.selectedHive.filters.includes(filter)) {
+      runInAction(() => {
+        this.selectedHive.filters.push(filter);
+      });
+
+      const userId = auth.currentUser?.uid;
+      if (!userId) {
+        console.error("User not logged in");
+        return;
+      }
+
+      const hiveRef = doc(db, `users/${userId}/hives/${this.selectedHive.id}`);
+
+      try {
+        await updateDoc(hiveRef, {
+          hiveFilter: this.selectedHive.filters,
+        });
+        console.log("Filter added successfully to the database");
+      } catch (error) {
+        console.error("Error updating filters in the database:", error);
+      }
+    } else {
+      console.log("Filter already exists in the selected hive");
+    }
   }
 
   @action removeFilter(filter: string) {
