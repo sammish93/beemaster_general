@@ -386,11 +386,11 @@ export const isIdealBeeWeatherBetweenEarlySpringAndEndAutumn = (
  * @notification HoneyHarvest - Indicates ideal conditions for honey harvesting due to the stable and 
  * favorable weather, potentially leading to a successful and efficient harvest.
  * @param weatherConditions Array of objects representing daily weather conditions.
- * @returns A boolean indicating whether the conditions meet the criteria for a warm, dry day with low wind speed 
+ * @returns A boolean indicating whether the conditions meet the criteria for a warm and low wind speed 
  * in the specified period.
  */
 export const isIdealBeeWeatherBetweenSummerAndEarlyAutumn = (
-    weatherConditions: { temperature: number; humidity: number; windSpeed: number, country: string }[],
+    weatherConditions: { temperature: number; windSpeed: number, country: string }[],
 ): boolean => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
