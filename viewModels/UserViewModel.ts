@@ -417,7 +417,132 @@ class UserViewModel {
         this.earlyWinterEnd = value;
     }
 
+    // Getters - don't need to be read from the DB.
+    // Weight
+    public getThresholdWeightDecreaseInAutumn = (): number => {
+        return this.thresholdWeightDecreaseInAutumn;
+    }
+    public getThresholdWeightDecreaseEarlySpring = (): number => {
+        return this.thresholdWeightDecreaseEarlySpring;
+    }
+    public getThresholdWeightDecrease = (): number => {
+        return this.thresholdWeightDecrease;
+    }
+    public getThresholdWeightIncrease = (): number => {
+        return this.thresholdWeightIncrease;
+    }
+    public getProductionPeriodDays = (): number => {
+        return this.productionPeriodDays;
+    }
+    public getProductionPeriodThreshold = (): number => {
+        return this.productionPeriodThreshold;
+    }
 
+    // CountExit
+    public getThresholdExitCountHigh = (): number => {
+        return this.thresholdExitCountHigh;
+    }
+    public getThresholdExitCountLow = (): number => {
+        return this.thresholdExitCountLow;
+    }
+
+    // Temperatures
+    public getThresholdTemperatureOptimal = (): number => {
+        return this.thresholdTemperatureOptimal;
+    }
+    public getThresholdTemperatureMin = (): number => {
+        return this.thresholdTemperatureMin;
+    }
+    public getThresholdTemperatureMax = (): number => {
+        return this.thresholdTemperatureMax;
+    }
+    public getThresholdMinTempInHive = (): number => {
+        return this.thresholdMinTempInHive;
+    }
+    public getThresholdMaxTempInHive = (): number => {
+        return this.thresholdMaxTempInHive;
+    }
+
+    // Windspeed
+    public getThresholdWindSpeedStrong = (): number => {
+        return this.thresholdWindSpeedStrong;
+    }
+    public getThresholdWindSpeedLow = (): number => {
+        return this.thresholdWindSpeedLow;
+    }
+
+    // Humidity
+    public getThresholdHumidityMax = (): number => {
+        return this.thresholdHumidityMax;
+    }
+    public getThresholdHumidityMin = (): number => {
+        return this.thresholdHumidityMin;
+    }
+
+    // Spring
+    public getLateSpringStartMonth = (): Date => {
+        return this.lateSpringStartMonth;
+    }
+    public getEarlySpringMonths = (): Date[] => {
+        return this.earlySpringMonths;
+    }
+    public getEarlySpringStartMonth = (): Date => {
+        return this.earlySpringStartMonth;
+    }
+    public getEarlySpringEndMonth = (): Date => {
+        return this.earlySpringEndMonth;
+    }
+    public getSpringStartMonth = (): Date => {
+        return this.springStartMonth;
+    }
+    public getSpringEndMonth = (): Date => {
+        return this.springEndMonth;
+    }
+
+    // Summer
+    public getEarlySummerStartMonth = (): Date => {
+        return this.earlySummerStartMonth;
+    }
+    public getEarlySummerEndMonth = (): Date => {
+        return this.earlySummerEndMonth;
+    }
+    public getSummerStartMonth = (): Date => {
+        return this.summerStartMonth;
+    }
+    public getSummerEndMonth = (): Date => {
+        return this.summerEndMonth;
+    }
+
+    // Autumn
+    public getAutumnStartMonth = (): Date => {
+        return this.autumnStartMonth;
+    }
+    public getAutumnEndMonth = (): Date => {
+        return this.autumnEndMonth;
+    }
+    public getAutumnMonths = (): Date[] => {
+        return this.autumnMonths;
+    }
+    public getEarlyAutumnMonth = (): Date => {
+        return this.earlyAutumnMonth;
+    }
+
+    // Winter
+    public getEarlyWinterMonths = (): Date[] => {
+        return this.earlyWinterMonths;
+    }
+    public getWinterStart = (): Date => {
+        return this.winterStart;
+    }
+    public getWinterEnd = (): Date => {
+        return this.winterEnd;
+    }
+    public getEarlyWinterStart = (): Date => {
+        return this.earlyWinterStart;
+    }
+    public getEarlyWinterEnd = (): Date => {
+        return this.earlyWinterEnd;
+    }
 
     // Clears all the data in this view model.
     // Useful for when a user logs out.

@@ -301,6 +301,12 @@ const HiveSettingsScreen = () => {
               </>
             ) : null}
 
+            <VerticalSpacer size={8} />
+            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <VerticalSpacer size={8} />
+
+            <VerticalSpacer size={4} />
+
             <VerticalSpacer size={12} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
