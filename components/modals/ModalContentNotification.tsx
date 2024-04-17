@@ -432,7 +432,9 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("autumn months")}
               value={autumnMonths
-                .map((date) => date.toLocaleDateString())
+                .map((date) =>
+                  date.toLocaleDateString(userViewModel.i18n.locale)
+                )
                 .join(", ")}
               editable={false}
             />
@@ -445,7 +447,9 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("early winter months")}
               value={earlyWinterMonths
-                .map((date) => date.toLocaleDateString())
+                .map((date) =>
+                  date.toLocaleDateString(userViewModel.i18n.locale)
+                )
                 .join(", ")}
               editable={false}
             />
@@ -458,7 +462,9 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("early spring months")}
               value={earlySpringMonths
-                .map((date) => date.toLocaleDateString())
+                .map((date) =>
+                  date.toLocaleDateString(userViewModel.i18n.locale)
+                )
                 .join(", ")}
               editable={false}
             />
@@ -477,7 +483,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("autumn start month")}
-              value={autumnStartMonth.toLocaleDateString()}
+              value={autumnStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -492,7 +500,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString()}
+              value={autumnEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -530,7 +540,9 @@ const ModalContent = (props: ModalContentProps) => {
             />
             <TextInput
               label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString()}
+              value={earlySpringStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -545,7 +557,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString()}
+              value={autumnEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -565,7 +579,7 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("winter start month")}
-              value={winterStart.toLocaleDateString()}
+              value={winterStart.toLocaleDateString(userViewModel.i18n.locale)}
               editable={false}
             />
             <Button
@@ -591,7 +605,7 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("winter end month")}
-              value={winterEnd.toLocaleDateString()}
+              value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
               editable={false}
             />
             <Button
@@ -617,7 +631,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("early winter start month")}
-              value={earlyWinterStart.toLocaleDateString()}
+              value={earlyWinterStart.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -637,7 +653,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("spring start month")}
-              value={springStartMonth.toLocaleDateString()}
+              value={springStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -652,7 +670,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("spring end month")}
-              value={springEndMonth.toLocaleDateString()}
+              value={springEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -678,7 +698,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("late spring start month")}
-              value={lateSpringStartMonth.toLocaleDateString()}
+              value={lateSpringStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -693,7 +715,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("early summer start month")}
-              value={earlySummerStartMonth.toLocaleDateString()}
+              value={earlySummerStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -789,7 +813,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("late spring start month")}
-              value={lateSpringStartMonth.toLocaleDateString()}
+              value={lateSpringStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -804,7 +830,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("early summer end month")}
-              value={earlySummerEndMonth.toLocaleDateString()}
+              value={earlySummerEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -846,7 +874,9 @@ const ModalContent = (props: ModalContentProps) => {
             />
             <TextInput
               label={userViewModel.i18n.t("early autumn month")}
-              value={earlyAutumnMonth.toLocaleDateString()}
+              value={earlyAutumnMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -860,7 +890,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString()}
+              value={summerStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -897,7 +929,9 @@ const ModalContent = (props: ModalContentProps) => {
             />
             <TextInput
               label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString()}
+              value={earlySpringStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -911,7 +945,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString()}
+              value={autumnEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -971,7 +1007,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString()}
+              value={summerStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -985,7 +1023,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("summer end month")}
-              value={summerEndMonth.toLocaleDateString()}
+              value={summerEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1010,7 +1050,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString()}
+              value={earlySpringStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1024,7 +1066,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString()}
+              value={autumnEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1061,7 +1105,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString()}
+              value={summerStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1075,7 +1121,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("early autumn month")}
-              value={earlyAutumnMonth.toLocaleDateString()}
+              value={earlyAutumnMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1110,7 +1158,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("early summer start month")}
-              value={earlySummerStartMonth.toLocaleDateString()}
+              value={earlySummerStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1129,7 +1179,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("spring start month")}
-              value={springStartMonth.toLocaleDateString()}
+              value={springStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1143,7 +1195,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("spring end month")}
-              value={springEndMonth.toLocaleDateString()}
+              value={springEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1217,7 +1271,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("early summer start month")}
-              value={earlySummerStartMonth.toLocaleDateString()}
+              value={earlySummerStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1236,7 +1292,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("spring start month")}
-              value={springStartMonth.toLocaleDateString()}
+              value={springStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1250,7 +1308,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("spring end month")}
-              value={springEndMonth.toLocaleDateString()}
+              value={springEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1269,7 +1329,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString()}
+              value={summerStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1283,7 +1345,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("summer end month")}
-              value={summerEndMonth.toLocaleDateString()}
+              value={summerEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1384,7 +1448,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("early winter end month")}
-              value={earlyWinterEnd.toLocaleDateString()}
+              value={earlyWinterEnd.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1403,7 +1469,7 @@ const ModalContent = (props: ModalContentProps) => {
             </Text>
             <TextInput
               label={userViewModel.i18n.t("winter end month")}
-              value={winterEnd.toLocaleDateString()}
+              value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
               editable={false}
             />
             <Button
@@ -1451,7 +1517,9 @@ const ModalContent = (props: ModalContentProps) => {
             />
             <TextInput
               label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString()}
+              value={earlySpringStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1465,7 +1533,9 @@ const ModalContent = (props: ModalContentProps) => {
             </Button>
             <TextInput
               label={userViewModel.i18n.t("early spring end month")}
-              value={earlySpringEndMonth.toLocaleDateString()}
+              value={earlySpringEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1496,7 +1566,9 @@ const ModalContent = (props: ModalContentProps) => {
             />
             <TextInput
               label={userViewModel.i18n.t("autumn start month")}
-              value={autumnStartMonth.toLocaleDateString()}
+              value={autumnStartMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
@@ -1511,7 +1583,9 @@ const ModalContent = (props: ModalContentProps) => {
 
             <TextInput
               label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString()}
+              value={autumnEndMonth.toLocaleDateString(
+                userViewModel.i18n.locale
+              )}
               editable={false}
             />
             <Button
