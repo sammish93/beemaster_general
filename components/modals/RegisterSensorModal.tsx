@@ -6,6 +6,8 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { BottomModal, OverlayModal } from "./Modals";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
+import { db } from "@/firebaseConfig";
+import { collection, doc, getDoc, addDoc } from "firebase/firestore";
 
 interface RegisterSensorModalProps {
   isOverlayModalVisible: boolean;
@@ -48,18 +50,31 @@ const ModalContent = (props: ModalContentProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const selectedHive = hiveViewModel.getSelectedHive();
+  const userId = userViewModel.getUserId();
+  const hiveId = selectedHive.id;
 
-  const handleRegisterSensor = () => {
+  const handleRegisterSensor = async (weightSensor: boolean) => {
     // TODO - Implement registration of a hive. Remember validating that the hive ID is the correct
     // sensor type as what's trying to be added, and that it isn't registered to an existing hive.
     // TODO DB - Write this to the DB.
-    
-    const userId = userViewModel
-    const hiveId = selectedHive.id;
-    console.log("Hive ID: ", hiveId);
+
+    const usersCollection = collection(db, 'users');
+    const userDoc = doc(usersCollection, userId);
+    const hivesCollection = collection(userDoc, 'hives');
+    const hiveDoc = doc(hivesCollection, hiveId);
+
+    const hiveSnapshot = await getDoc(hiveDoc);
+    if (hiveSnapshot.exists()) {
+      console.log(`Hive document data: ${hiveSnapshot.data().sensorId}`);
+    }
+    else {
+      console.log(`Document does not exists`);
+    }
+
 
     props.onClose();
   };
+
 
   return (
     <>
@@ -82,14 +97,14 @@ const ModalContent = (props: ModalContentProps) => {
       <View>
         {/* TODO Modify code to show only 'add sensor' if sensor doesn't currently exist, otherwise 
         show a delete sensor button. Swap out onPress function */}
-        <Button icon="weight" mode="contained" onPress={handleRegisterSensor}>
+        <Button icon="weight" mode="contained" onPress={() => handleRegisterSensor(true)}>
           {userViewModel.i18n.t("add weight sensor")}
         </Button>
         <VerticalSpacer size={8} />
         <Button
           icon="home-thermometer"
           mode="contained"
-          onPress={handleRegisterSensor}
+          onPress={() => handleRegisterSensor(false)}
         >
           {userViewModel.i18n.t("add temperature sensor")}
         </Button>
@@ -97,12 +112,12 @@ const ModalContent = (props: ModalContentProps) => {
         <Button
           icon="air-humidifier"
           mode="contained"
-          onPress={handleRegisterSensor}
+          onPress={() => handleRegisterSensor(false)}
         >
           {userViewModel.i18n.t("add humidity sensor")}
         </Button>
         <VerticalSpacer size={8} />
-        <Button icon="bee" mode="contained" onPress={handleRegisterSensor}>
+        <Button icon="bee" mode="contained" onPress={() => handleRegisterSensor(false)}>
           {userViewModel.i18n.t("add bee count sensor")}
         </Button>
       </View>
