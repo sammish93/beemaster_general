@@ -158,6 +158,7 @@ class HiveViewModel {
 
     try {
       await updateDoc(hiveRef, {
+        hiveName: hive.name,
         hiveFilter: hiveToUpdate.filters,
       });
       console.log("Hive updated successfully:", hiveToUpdate);
