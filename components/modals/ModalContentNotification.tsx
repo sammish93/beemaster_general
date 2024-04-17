@@ -49,121 +49,121 @@ const ModalContent = (props: ModalContentProps) => {
 
   //Thresholds weights
   const [thresholdWeightDecreaseInAutumn, setThresholdWeightDecreaseInAutumn] =
-    useState<number>(userViewModel.thresholdWeightDecreaseInAutumn);
+    useState<number>(userViewModel.getThresholdWeightDecreaseInAutumn());
   const [
     thresholdWeightDecreaseEarlySpring,
     setThresholdWeightDecreaseEarlySpring,
-  ] = useState<number>(userViewModel.thresholdWeightDecreaseEarlySpring);
+  ] = useState<number>(userViewModel.getThresholdWeightDecreaseEarlySpring());
   const [thresholdWeightDecrease, setThresholdWeightDecrease] =
-    useState<number>(userViewModel.thresholdWeightDecrease);
+    useState<number>(userViewModel.getThresholdWeightDecrease());
   const [thresholdWeightIncrease, setThresholdWeightIncrease] =
-    useState<number>(userViewModel.thresholdWeightIncrease);
+    useState<number>(userViewModel.getThresholdWeightIncrease());
   const [productionPeriodDays, setProductionPeriodDays] = useState<number>(
-    userViewModel.productionPeriodDays
+    userViewModel.getProductionPeriodDays()
   );
   const [productionPeriodThreshold, setProductionPeriodThreshold] =
-    useState<number>(userViewModel.productionPeriodThreshold);
+    useState<number>(userViewModel.getProductionPeriodThreshold());
 
   //Exit
   const [thresholdExitCountHigh, setThresholdExitCountHigh] = useState<number>(
-    userViewModel.thresholdExitCountHigh
+    userViewModel.getThresholdExitCountHigh()
   );
   const [thresholdExitCountLow, setThresholdExitCountLow] = useState<number>(
-    userViewModel.thresholdExitCountLow
+    userViewModel.getThresholdExitCountLow()
   );
 
   //Temp
   const [thresholdTemperatureOptimal, setThresholdTemperatureOptimal] =
-    useState<number>(userViewModel.thresholdTemperatureOptimal);
+    useState<number>(userViewModel.getThresholdTemperatureOptimal());
 
   const [thresholdTemperatureMax, setThresholdTemperatureMax] =
-    useState<number>(userViewModel.thresholdTemperatureMax);
+    useState<number>(userViewModel.getThresholdTemperatureMax());
   const [thresholdTemperatureMin, setThresholdTemperatureMin] =
-    useState<number>(userViewModel.thresholdTemperatureMin);
+    useState<number>(userViewModel.getThresholdTemperatureMin());
 
   const [thresholdMinTempInHive, setThresholdMinTempInHive] = useState<number>(
-    userViewModel.thresholdMinTempInHive
+    userViewModel.getThresholdMinTempInHive()
   );
   const [thresholdMaxTempInHive, setThresholdMaxTempInHive] = useState<number>(
-    userViewModel.thresholdMaxTempInHive
+    userViewModel.getThresholdMaxTempInHive()
   );
 
   //Windspeed
   const [thresholdWindSpeedStrong, setThresholdWindSpeedStrong] =
-    useState<number>(userViewModel.thresholdWindSpeedStrong);
+    useState<number>(userViewModel.getThresholdWindSpeedStrong());
   const [thresholdWindSpeedLow, setThresholdWindSpeedLow] = useState<number>(
-    userViewModel.thresholdWindSpeedLow
+    userViewModel.getThresholdWindSpeedLow()
   );
 
   //Humidity
   const [thresholdHumidityMax, setThresholdHumidityMax] = useState<number>(
-    userViewModel.thresholdHumidityMax
+    userViewModel.getThresholdHumidityMax()
   );
   const [thresholdHumidityMin, setThresholdHumidityMin] = useState<number>(
-    userViewModel.thresholdHumidityMin
+    userViewModel.getThresholdHumidityMin()
   );
 
   //Spring
   const [earlySpringStartMonth, setEarlySpringStartMonth] = useState<Date>(
-    userViewModel.earlySpringStartMonth
+    userViewModel.getEarlySpringStartMonth()
   );
   const [earlySpringEndMonth, setEarlySpringEndMonth] = useState<Date>(
-    userViewModel.earlySpringEndMonth
+    userViewModel.getEarlySpringEndMonth()
   );
   const [earlySpringMonths, setEarlySpringMonths] = useState<Date[]>(
-    userViewModel.earlySpringMonths
+    userViewModel.getEarlySpringMonths()
   );
   const [lateSpringStartMonth, setLateSpringStartMonth] = useState<Date>(
-    userViewModel.lateSpringStartMonth
+    userViewModel.getLateSpringStartMonth()
   );
   const [springStartMonth, setSpringStartMonth] = useState<Date>(
-    userViewModel.springStartMonth
+    userViewModel.getSpringStartMonth()
   );
   const [springEndMonth, setSpringEndMonth] = useState<Date>(
-    userViewModel.springEndMonth
+    userViewModel.getSpringEndMonth()
   );
 
   //Autumn
   const [autumnStartMonth, setAutumnStartMonth] = useState<Date>(
-    userViewModel.autumnStartMonth
+    userViewModel.getAutumnStartMonth()
   );
   const [autumnEndMonth, setAutumnEndMonth] = useState<Date>(
-    userViewModel.autumnEndMonth
+    userViewModel.getAutumnEndMonth()
   );
   const [autumnMonths, setAutumnMonths] = useState<Date[]>(
-    userViewModel.autumnMonths
+    userViewModel.getAutumnMonths()
   );
   const [earlyAutumnMonth, setEarlyAutumnMonth] = useState<Date>(
-    userViewModel.earlyAutumnMonth
+    userViewModel.getEarlyAutumnMonth()
   );
 
   //Winter
   const [earlyWinterMonths, setEarlyWinterMonths] = useState<Date[]>(
-    userViewModel.earlyWinterMonths
+    userViewModel.getEarlyWinterMonths()
   );
   const [winterStart, setWinterStart] = useState<Date>(
-    userViewModel.winterStart
+    userViewModel.getWinterStart()
   );
   const [winterEnd, setWinterEnd] = useState<Date>(userViewModel.winterEnd);
   const [earlyWinterStart, setEarlyWinterStart] = useState<Date>(
-    userViewModel.earlyWinterStart
+    userViewModel.getEarlyWinterStart()
   );
   const [earlyWinterEnd, setEarlyWinterEnd] = useState<Date>(
-    userViewModel.earlyWinterEnd
+    userViewModel.getEarlyWinterEnd()
   );
 
   //Summer
   const [summerStartMonth, setSummerStartMonth] = useState<Date>(
-    userViewModel.summerStartMonth
+    userViewModel.getSummerStartMonth()
   );
   const [summerEndMonth, setSummerEndMonth] = useState<Date>(
-    userViewModel.summerEndMonth
+    userViewModel.getSummerEndMonth()
   );
   const [earlySummerEndMonth, setEarlySummerEndMonth] = useState<Date>(
-    userViewModel.earlySummerEndMonth
+    userViewModel.getEarlySummerEndMonth()
   );
   const [earlySummerStartMonth, setEarlySummerStartMonth] = useState<Date>(
-    userViewModel.earlySummerStartMonth
+    userViewModel.getEarlySummerStartMonth()
   );
 
   const getSaveAction = (parameterName: NotificationType) => {
