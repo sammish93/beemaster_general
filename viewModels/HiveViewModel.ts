@@ -350,15 +350,45 @@ class HiveViewModel {
     }
   }
 
-  @action toggleNotificationPreference(type: NotificationType): void {
-    // TODO DB - Update DB. Note that this preference boolean isn't the global toggle for a user.
-    // It's for a specific hive. E.g. user weatherNotification = true, but they might want to set
-    // inactive hive weatherNotification values to false to avoid excess alerts.
-    if (this.selectedHive && this.selectedHive.preferences) {
-      this.selectedHive.preferences[type] =
-        !this.selectedHive.preferences[type];
+  @action async toggleNotificationPreference(
+    type: NotificationType
+  ): Promise<void> {
+    if (!this.selectedHive) {
+      console.error("No hive selected");
+      return;
+    }
+
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error("User not logged in");
+      return;
+    }
+
+    const hiveRef = doc(db, `users/${userId}/hives/${this.selectedHive.id}`);
+
+    const docSnapshot = await getDoc(hiveRef);
+    if (docSnapshot.exists()) {
+      const hiveData = docSnapshot.data();
+      const currentPreferences = hiveData.notificationTypePreference || {};
+
+      currentPreferences[type] = !currentPreferences[type];
+
+      try {
+        await updateDoc(hiveRef, {
+          notificationTypePreference: currentPreferences,
+        });
+        console.log(
+          "Notification preferences updated successfully for the selected hive"
+        );
+
+        runInAction(() => {
+          this.selectedHive.preferences = currentPreferences;
+        });
+      } catch (error) {
+        console.error("Error updating notification preferences:", error);
+      }
     } else {
-      // TODO Error handling
+      console.error("Hive document does not exist");
     }
   }
 
