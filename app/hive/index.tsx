@@ -191,6 +191,12 @@ const HiveScreen = () => {
   useEffect(() => {
     setSelectedHive(hiveViewModel.getSelectedHive());
   }, [isFocused]);
+  useEffect(() => {
+    if (selectedHive.id) {
+      console.log("not pref Id : ", selectedHive.id);
+      hiveViewModel.fetchNotificationPreferencesForHive(selectedHive.id);
+    }
+  }, [selectedHive.id]);
 
   // TODO Test. Consider refactoring to domain layer.
   // Sorting the notes so that the stickied notes appear on the top. Additionally, sorts based on timestamp

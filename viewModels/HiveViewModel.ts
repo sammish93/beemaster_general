@@ -69,7 +69,7 @@ class HiveViewModel {
             // TODO DB - read notes, preferences, queen, and the latest sensor reading from DB.
             // Right now they are all dummy data.
             notes: [],
-            preferences: notificationPreferences,
+            preferences: data.notificationTypePreference,
             temperature: 4,
             weight: 5,
             humidity: 78,
@@ -379,6 +379,38 @@ class HiveViewModel {
       }
     } else {
       // TODO Error handling
+    }
+  }
+  @action async fetchNotificationPreferencesForHive(hiveId: string) {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error("User not logged in");
+      return;
+    }
+
+    const hiveRef = doc(db, `users/${userId}/hives/${hiveId}`);
+    try {
+      const docSnapshot = await getDoc(hiveRef);
+      if (docSnapshot.exists()) {
+        const hiveData = docSnapshot.data();
+        runInAction(() => {
+          const hiveIndex = this.hives.findIndex((hive) => hive.id === hiveId);
+          if (hiveIndex !== -1) {
+            this.hives[hiveIndex].preferences =
+              hiveData.notificationTypePreference || {};
+            console.log(
+              "Notification preferences fetched:",
+              this.hives[hiveIndex].preferences
+            );
+          } else {
+            console.error("Hive not found in local state");
+          }
+        });
+      } else {
+        console.error("Hive document does not exist");
+      }
+    } catch (error) {
+      console.error("Error fetching notification preferences:", error);
     }
   }
 }
