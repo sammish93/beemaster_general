@@ -107,6 +107,7 @@ const ModalContent = (props: ModalContentProps) => {
           value={sensorId}
           onChangeText={setSensorId}
           mode="outlined"
+          maxLength={15}
           style={{flex: 1}}
         />
         <HorizontalSpacer size={16} />
