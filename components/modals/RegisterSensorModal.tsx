@@ -72,6 +72,11 @@ const ModalContent = (props: ModalContentProps) => {
 
   };
 
+  const handleRemoveSensor = (sensorId: string) => {
+    const updatedSensors = sensors.filter(id => id != sensorId);
+    setSensors(updatedSensors);
+  }
+
 
   return (
     <>
@@ -119,16 +124,19 @@ const ModalContent = (props: ModalContentProps) => {
           {`Error: ${sensorId} is already in use. Please choose another id.`}
         </Text>
       }
-      { sensors.length != 0 && <SensorListOverview allSensors={sensors}/> } 
+      { sensors.length != 0 && 
+        <SensorListOverview allSensors={sensors} removeSensor={handleRemoveSensor}/> 
+      } 
     </>
   );
 };
 
 interface Sensors {
   allSensors: string[]
+  removeSensor: (sensorId: string) => void
 }
 
-const SensorListOverview = ({ allSensors }: Sensors) => {
+const SensorListOverview = ({ allSensors, removeSensor }: Sensors) => {
   const { userViewModel } = useContext(MobXProviderContext);
 
   return (
@@ -143,7 +151,7 @@ const SensorListOverview = ({ allSensors }: Sensors) => {
             <View style={{display: "flex", flexDirection: "row"}}>
               <List.Icon icon="weight"/>
               <HorizontalSpacer size={25}/>
-              <Button mode="contained" onPress={() => console.log("")}>
+              <Button mode="contained" onPress={() => removeSensor(sensorId)}>
                 {userViewModel.i18n.t("remove")}
               </Button>
             </View>
