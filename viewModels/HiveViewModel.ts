@@ -247,15 +247,6 @@ class HiveViewModel {
     }
   }
 
-  @action removeFilter(filter: string) {
-    // TODO DB - Delete this filter from the user, as well as all hives that have the filter.
-    this.filters = this.filters.filter((item) => item !== filter);
-
-    this.hives.forEach((hive) => {
-      hive.filters = hive.filters.filter((hiveFilter) => hiveFilter !== filter);
-    });
-  }
-
   @action numberOfFilters() {
     return this.filters.length;
   }
