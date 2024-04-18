@@ -19,7 +19,7 @@ import {
   NotificationPreference,
   NotificationType,
 } from "@/constants/Notifications";
-import { notificationPreferences } from "@/data/notificationData";
+import { notificationTypePreferences } from "@/data/notificationData";
 import hive from "@/app/hive";
 import { removeHive } from "@/utils/hiveUtils";
 
@@ -133,7 +133,7 @@ class HiveViewModel {
         hiveName: hive.name,
         hiveFilter: hive.filters,
         latLng: hive.latLng,
-        notificationTypePreference: notificationPreferences,
+        notificationTypePreference: notificationTypePreferences,
       });
       runInAction(() => {
         this.hives.push({

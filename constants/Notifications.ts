@@ -9,6 +9,6 @@ export enum NotificationType {
   CustomReminder = "customReminder",
 }
 
-export type NotificationPreference = {
+export type NotificationTypePreference = {
   [key in NotificationType]: boolean;
 };
