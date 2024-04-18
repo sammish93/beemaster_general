@@ -185,12 +185,8 @@ const HiveSettingsScreen = () => {
 
   const handleUpdateName = (name: string) => {
     if (isNameValid) {
-      const updatedHive = { ...selectedHive };
-      updatedHive.name = name;
-
-      hiveViewModel.updateHive(updatedHive);
-      hiveViewModel.addSelectedHive(updatedHive);
-      console.log("changed hive name" + hiveViewModel.getSelectedHive().name);
+      hiveViewModel.updateHiveName(selectedHive.id, name);
+      console.log("changed hive name " + hiveViewModel.getSelectedHive().name);
 
       Toast.show(
         toastCrossPlatform({

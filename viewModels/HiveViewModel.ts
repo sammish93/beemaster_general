@@ -158,12 +158,36 @@ class HiveViewModel {
 
     try {
       await updateDoc(hiveRef, {
-        hiveName: hive.name,
         hiveFilter: hiveToUpdate.filters,
       });
       console.log("Hive updated successfully:", hiveToUpdate);
     } catch (error) {
       console.error("Error updating hive in Firestore:", error);
+    }
+  }
+
+  @action async updateHiveName(hiveId: string, newName: string) {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error("User not logged in");
+      return;
+    }
+    const hiveRef = doc(db, `users/${userId}/hives/${hiveId}`);
+
+    try {
+      await updateDoc(hiveRef, {
+        hiveName: newName,
+      });
+      console.log("Hive name updated successfully:", newName);
+
+      runInAction(() => {
+        const hive = this.hives.find((h) => h.id === hiveId);
+        if (hive) {
+          hive.name = newName;
+        }
+      });
+    } catch (error) {
+      console.error("Error updating hive name in Firestore:", error);
     }
   }
 
