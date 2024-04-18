@@ -42,6 +42,6 @@ export const registerSensor = async (userId: string, hiveId: string, sensorId: s
     else {
         // Create a new document since it does not exists from before.
         await setDoc(assignmentRef, { hiveId, sensorTypes: {isWeightSensor: true} });
-        return { success: true, message: "Sensor assigned successfully." };
+        return { success: true, message: `Sensor assigned successfully to hive (Hive ID: ${hiveId})` };
     }
 };

@@ -61,7 +61,7 @@ const ModalContent = (props: ModalContentProps) => {
     const fetchSensorData = async () => {
       console.log("Fetching sensor data from database!");
 
-      // TODO: Move sensor id to another place.
+      // TODO: Move sensor ID to another place.
       const sensorData = await getSensorAssignment(userId, "weight-sensor-1");
       if (sensorData && sensorData.data.hiveId === hiveId) {
         setSensors([sensorData.id]);
