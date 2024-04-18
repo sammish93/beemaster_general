@@ -6,7 +6,7 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { BottomModal, OverlayModal } from "./Modals";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
-import { registerSensor, getSensorAssignment } from "@/utils/sensorUtils";
+import { registerSensor, getSensorAssignment, deregisterSensor } from "@/utils/sensorUtils";
 import { ScrollView } from "react-native-gesture-handler";
 
 interface RegisterSensorModalProps {
@@ -96,10 +96,18 @@ const ModalContent = (props: ModalContentProps) => {
     }
   };
 
-  const handleRemoveSensor = (sensorId: string) => {
-    // TODO: Remove sensor assignment from database.
-    const updatedSensors = sensors.filter(id => id != sensorId);
-    setSensors(updatedSensors);
+  const handleRemoveSensor = async (sensorId: string) => {
+
+    const response = await deregisterSensor(userId, hiveId, sensorId);
+    if (response.success) {
+      setSensorErrorMessage(response.message);
+      const updatedSensors = sensors.filter(id => id != sensorId);
+      setSensors(updatedSensors);
+    }
+    else {
+      setSensorErrorMessage(response.message);
+      setSensorRegistrationError(true);
+    }
   };
 
 

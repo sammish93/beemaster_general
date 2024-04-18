@@ -16,7 +16,6 @@ export const getSensorAssignment = async (userId: string, sensorId: string) => {
 
 // Register a new sensor to a hive.
 export const registerSensor = async (userId: string, hiveId: string, sensorId: string) => {
-
     const sensorAssignment = await getSensorAssignment(userId, sensorId);
     const assignmentRef = doc(db, `users/${userId}/sensorAssignments`, sensorId);
 
@@ -43,5 +42,18 @@ export const registerSensor = async (userId: string, hiveId: string, sensorId: s
         // Create a new document since it does not exists from before.
         await setDoc(assignmentRef, { hiveId, sensorTypes: {isWeightSensor: true} });
         return { success: true, message: `Sensor assigned successfully to hive (Hive ID: ${hiveId})` };
+    }
+};
+
+export const deregisterSensor = async (userId: string, hiveId: string, sensorId: string) => {
+    const sensorAssignment = await getSensorAssignment(userId, sensorId);
+    const sensorRef = doc(db, `users/${userId}/sensorAssignments`, sensorId);
+
+    if (sensorAssignment) {
+        await updateDoc(sensorRef, { hiveId: null, sensorTypes: {isWeightSensor: null}});
+        return { success: true, message: `Sensor deregistered from hive (Hive ID: ${hiveId})`};
+    }
+    else {
+        return { success: false, message: `Deregistration failed, no sensor assigned to the hive.`};
     }
 };
