@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Checkbox, useTheme } from "react-native-paper";
+import { Checkbox, useTheme, List } from "react-native-paper";
 import { Button, TextInput, IconButton, Text } from "react-native-paper";
 import { Platform, View } from "react-native";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
@@ -7,6 +7,7 @@ import { BottomModal, OverlayModal } from "./Modals";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
 import { checkSensorIdUsage } from "@/utils/sensorUtils";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface RegisterSensorModalProps {
   isOverlayModalVisible: boolean;
@@ -49,32 +50,26 @@ const ModalContent = (props: ModalContentProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const [sensorId, setSensorId] = useState('');
+
+  // TODO: API call to fetch registered sensors in the database.
+  const [sensors, setSensors] = useState<string[]>([]);
+  const [sensorRegistrationError, setSensorRegistrationError] = useState(false);
   const selectedHive = hiveViewModel.getSelectedHive();
   const userId = userViewModel.getUserId();
   const hiveId = selectedHive.id;
 
-  const handleRegisterSensor = async (isWeightSensor: boolean) => {
-    // TODO - Implement registration of a hive. Remember validating that the hive ID is the correct
-    // sensor type as what's trying to be added, and that it isn't registered to an existing hive.
-    // TODO DB - Write this to the DB.
+  const handleRegisterSensor = async (sensorId: string) => {
 
-    console.log(`SensorID: ${sensorId}`);
-
-    if (isWeightSensor) {
-      const isUsed = await checkSensorIdUsage(sensorId);
-
-      if (isUsed) {
-        console.error(`Sensor ID: ${sensorId} is already in use.`);
-      }
-
-      // TODO: Handle registration of sensor.
-
+    // TODO: Implement sensor id validation and logic to save in db. 
+    if (sensors.includes(sensorId)) {
+      setSensorRegistrationError(true);
     }
     else {
-      console.log(`Only weight sensor registration is supported at the moment.`);
+      const updatedSensors = [...sensors, sensorId];
+      setSensors(updatedSensors);
+      setSensorRegistrationError(false);
     }
 
-    props.onClose();
   };
 
 
@@ -105,18 +100,59 @@ const ModalContent = (props: ModalContentProps) => {
         <TextInput 
           label="Sensor ID"
           value={sensorId}
-          onChangeText={setSensorId}
+          onChangeText={(input) => {
+            setSensorId(input);
+            setSensorRegistrationError(false);
+          }}
           mode="outlined"
           maxLength={15}
           style={{flex: 1}}
         />
         <HorizontalSpacer size={16} />
-        <Button mode="contained" onPress={() => handleRegisterSensor(true)}>
+        <Button mode="contained" onPress={() => handleRegisterSensor(sensorId)}>
           {userViewModel.i18n.t("add sensor")}
         </Button>
         <VerticalSpacer size={8} />
       </View>
+      { sensorRegistrationError && 
+        <Text style={{color: "red", marginLeft: 16 }}>
+          {`Error: ${sensorId} is already in use. Please choose another id.`}
+        </Text>
+      }
+      { sensors.length != 0 && <SensorListOverview allSensors={sensors}/> } 
     </>
+  );
+};
+
+interface Sensors {
+  allSensors: string[]
+}
+
+const SensorListOverview = ({ allSensors }: Sensors) => {
+  const { userViewModel } = useContext(MobXProviderContext);
+
+  return (
+    <ScrollView>
+      <List.Section>
+        <List.Subheader>Overview of registered sensors</List.Subheader>
+        { allSensors.map((sensorId, key) => (
+        <List.Item 
+          key={key}
+          title={sensorId}
+          right={() => (
+            <View style={{display: "flex", flexDirection: "row"}}>
+              <List.Icon icon="weight"/>
+              <HorizontalSpacer size={25}/>
+              <Button mode="contained" onPress={() => console.log("")}>
+                {userViewModel.i18n.t("remove")}
+              </Button>
+            </View>
+          )}
+        >
+        </List.Item>
+        ))}
+      </List.Section>
+    </ScrollView>
   );
 };
 
