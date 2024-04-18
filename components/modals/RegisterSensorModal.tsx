@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Checkbox, useTheme, List } from "react-native-paper";
 import { Button, TextInput, IconButton, Text } from "react-native-paper";
 import { Platform, View } from "react-native";
@@ -6,7 +6,7 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { BottomModal, OverlayModal } from "./Modals";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
-import { registerSensor } from "@/utils/sensorUtils";
+import { registerSensor, getSensorAssignment } from "@/utils/sensorUtils";
 import { ScrollView } from "react-native-gesture-handler";
 
 interface RegisterSensorModalProps {
@@ -50,8 +50,6 @@ const ModalContent = (props: ModalContentProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const { hiveViewModel } = useContext(MobXProviderContext);
   const [sensorId, setSensorId] = useState('');
-
-  // TODO: API call to fetch registered sensors in the database.
   const [sensors, setSensors] = useState<string[]>([]);
   const [sensorRegistrationError, setSensorRegistrationError] = useState(false);
   const [sensorErrorMessage, setSensorErrorMessage] = useState('');
@@ -59,14 +57,27 @@ const ModalContent = (props: ModalContentProps) => {
   const userId = userViewModel.getUserId();
   const hiveId = selectedHive.id;
 
+  useEffect(() => {
+    const fetchSensorData = async () => {
+      console.log("Fetching sensor data from database!");
+
+      // TODO: Move sensor id to another place.
+      const sensorData = await getSensorAssignment(userId, "weight-sensor-1");
+      if (sensorData && sensorData.data.hiveId === hiveId) {
+        setSensors([sensorData.id]);
+      }
+    }
+    fetchSensorData();
+  }, [])
+
   const handleRegisterSensor = async (sensorId: string) => {
 
+    // TODO: Move sensor ID to another place.
     if (sensorId !== "weight-sensor-1") {
       setSensorErrorMessage("The provided sensor id do not exists.");
       setSensorRegistrationError(true);
       return;
     }
-
     if (sensors.includes(sensorId)) {
       setSensorErrorMessage("This hive already has the provided sensor.");
       setSensorRegistrationError(true);
@@ -86,6 +97,7 @@ const ModalContent = (props: ModalContentProps) => {
   };
 
   const handleRemoveSensor = (sensorId: string) => {
+    // TODO: Remove sensor assignment from database.
     const updatedSensors = sensors.filter(id => id != sensorId);
     setSensors(updatedSensors);
   };
