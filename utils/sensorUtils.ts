@@ -1,29 +1,42 @@
-import { query, collection, where, getDocs } from "firebase/firestore";
+import { getDoc, doc, updateDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
 
-// Used to check if an hive in the database has the sensor registered to it.
-export const checkSensorIdUsage = async (sensorId: string): Promise<boolean> => {
-    const hivesQuery = query(collection(db, `users/*/hives`), where(`sensorId`,`==`, sensorId )); 
-    const queryResult = await getDocs(hivesQuery);
+// Check if a sensor is already assigned and return assignment details.
+export const getSensorAssignment = async (sensorId: string) => {
+    const referance = doc(db, "sensorAssignments", sensorId);
+    const document = await getDoc(referance);
 
-    return !queryResult.empty;
+    if (document.exists()) {
+        return document.data();
+    }
+
+    return null;
 };
 
-// Adds a new sensor to the specific hive if it is not already registered.
-export const registerNewSensor = (): string => {
+// Register a new sensor to a hive.
+export const registerSensor = async (hiveId: string, hiveName: string, sensorId: string) => {
 
-    if (!checkSensorIdUsage) {
-        // TODO: Add new sensor to the specific hive in the database.
+    const sensorAssignment = await getSensorAssignment(sensorId);
+    const assignmentRef = doc(db, "sensorAssingments", sensorId);
 
-        return `Sensor was successfully registered to hive: ${"name"}`;
-    } 
+    if (sensorAssignment) {
+        
+        // Check if sensor is registered to another hive.
+        if (sensorAssignment.hiveId && sensorAssignment.hiveId !== hiveId) {
+            return {
+                success: false,
+                message: `Sensor is already assigned to hive: ${hiveName}.`
+            };
+        }
+
+        // Update existing document with new information.
+        await updateDoc(assignmentRef, { hiveId, sensorTypes: {isWeightSensor: true} });
+        return { success: true, message: "Sensor assignment updated successfully." };
+    }
     else {
-        return "Sensor registration failed. The sensor is already registered.";
+        // Create a new document since it does not exists from before.
+        await setDoc(assignmentRef, { hiveId, sensorTypes: {isWeightSensor: true} });
+        return { success: true, message: "Sensor assigned successfully." };
     }
 };
-
-// Deregister a sensor from a specific hive. 
-export const deregisterSensor = () => {
-
-}

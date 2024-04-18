@@ -6,7 +6,7 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { BottomModal, OverlayModal } from "./Modals";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
-import { checkSensorIdUsage } from "@/utils/sensorUtils";
+import { getSensorAssignment } from "@/utils/sensorUtils";
 import { ScrollView } from "react-native-gesture-handler";
 
 interface RegisterSensorModalProps {
@@ -57,6 +57,7 @@ const ModalContent = (props: ModalContentProps) => {
   const selectedHive = hiveViewModel.getSelectedHive();
   const userId = userViewModel.getUserId();
   const hiveId = selectedHive.id;
+  const hiveName = selectedHive.name;
 
   const handleRegisterSensor = async (sensorId: string) => {
 
@@ -75,7 +76,7 @@ const ModalContent = (props: ModalContentProps) => {
   const handleRemoveSensor = (sensorId: string) => {
     const updatedSensors = sensors.filter(id => id != sensorId);
     setSensors(updatedSensors);
-  }
+  };
 
 
   return (
