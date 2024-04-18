@@ -57,7 +57,7 @@ const ModalContent = (props: ModalContentProps) => {
 
     updatedHive.filters = filterList;
 
-    hiveViewModel.updateHive(updatedHive);
+    hiveViewModel.updateHiveFilters(updatedHive);
     hiveViewModel.addSelectedHive(updatedHive);
 
     Toast.show(

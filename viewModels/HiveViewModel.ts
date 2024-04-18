@@ -148,7 +148,7 @@ class HiveViewModel {
     }
   }
 
-  @action async updateHive(hiveToUpdate: HiveModel) {
+  @action async updateHiveFilters(hiveToUpdate: HiveModel) {
     const userId = auth.currentUser?.uid;
     if (!userId) {
       console.error("User not logged in");
@@ -215,7 +215,7 @@ class HiveViewModel {
     return this.hives.length;
   }
 
-  @action async addFilter(filter: string) {
+  @action async modifyHiveFilters(filter: string) {
     if (!this.selectedHive) {
       console.error("No hive selected");
       return;
