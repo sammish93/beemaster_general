@@ -45,6 +45,7 @@ export const registerSensor = async (userId: string, hiveId: string, sensorId: s
     }
 };
 
+// Removes sensor from hive.
 export const deregisterSensor = async (userId: string, hiveId: string, sensorId: string) => {
     const sensorAssignment = await getSensorAssignment(userId, sensorId);
     const sensorRef = doc(db, `users/${userId}/sensorAssignments`, sensorId);
