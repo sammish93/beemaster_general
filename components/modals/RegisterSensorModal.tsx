@@ -6,7 +6,7 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { BottomModal, OverlayModal } from "./Modals";
 import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
-import { getSensorAssignment } from "@/utils/sensorUtils";
+import { registerSensor } from "@/utils/sensorUtils";
 import { ScrollView } from "react-native-gesture-handler";
 
 interface RegisterSensorModalProps {
@@ -61,16 +61,30 @@ const ModalContent = (props: ModalContentProps) => {
 
   const handleRegisterSensor = async (sensorId: string) => {
 
-    // TODO: Implement sensor id validation and logic to save in db. 
+    if (sensorId !== "weight-sensor-1") {
+
+      // TODO: Add better error handling.
+      console.log(`The provided sensor id do not exists.`);
+      return;
+    }
+
     if (sensors.includes(sensorId)) {
       setSensorRegistrationError(true);
     }
     else {
-      const updatedSensors = [...sensors, sensorId];
-      setSensors(updatedSensors);
-      setSensorRegistrationError(false);
-    }
 
+      const response = await registerSensor(userId, hiveId, sensorId);
+      if (response.success) {
+        const updatedSensors = [...sensors, sensorId];
+        setSensors(updatedSensors);
+        setSensorRegistrationError(false);
+
+        console.log(`Message: ${response.message}`);
+      }
+      else {
+        console.log(`Message: ${response.message}`);
+      }
+    }
   };
 
   const handleRemoveSensor = (sensorId: string) => {
