@@ -54,35 +54,33 @@ const ModalContent = (props: ModalContentProps) => {
   // TODO: API call to fetch registered sensors in the database.
   const [sensors, setSensors] = useState<string[]>([]);
   const [sensorRegistrationError, setSensorRegistrationError] = useState(false);
+  const [sensorErrorMessage, setSensorErrorMessage] = useState('');
   const selectedHive = hiveViewModel.getSelectedHive();
   const userId = userViewModel.getUserId();
   const hiveId = selectedHive.id;
-  const hiveName = selectedHive.name;
 
   const handleRegisterSensor = async (sensorId: string) => {
 
     if (sensorId !== "weight-sensor-1") {
-
-      // TODO: Add better error handling.
-      console.log(`The provided sensor id do not exists.`);
+      setSensorErrorMessage("The provided sensor id do not exists.");
+      setSensorRegistrationError(true);
       return;
     }
 
     if (sensors.includes(sensorId)) {
+      setSensorErrorMessage("This hive already has the provided sensor.");
       setSensorRegistrationError(true);
     }
     else {
-
       const response = await registerSensor(userId, hiveId, sensorId);
       if (response.success) {
         const updatedSensors = [...sensors, sensorId];
         setSensors(updatedSensors);
         setSensorRegistrationError(false);
-
-        console.log(`Message: ${response.message}`);
       }
       else {
-        console.log(`Message: ${response.message}`);
+        setSensorErrorMessage(response.message);
+        setSensorRegistrationError(true);
       }
     }
   };
@@ -134,11 +132,7 @@ const ModalContent = (props: ModalContentProps) => {
         </Button>
         <VerticalSpacer size={8} />
       </View>
-      { sensorRegistrationError && 
-        <Text style={{color: "red", marginLeft: 16 }}>
-          {`Error: ${sensorId} is already in use. Please choose another id.`}
-        </Text>
-      }
+      { sensorRegistrationError && <ShowSensorErrorMessage message={sensorErrorMessage}/>}
       { sensors.length != 0 && 
         <SensorListOverview allSensors={sensors} removeSensor={handleRemoveSensor}/> 
       } 
@@ -176,6 +170,18 @@ const SensorListOverview = ({ allSensors, removeSensor }: Sensors) => {
         ))}
       </List.Section>
     </ScrollView>
+  );
+};
+
+interface ErrorMessage {
+  message: string
+}
+
+const ShowSensorErrorMessage = ({message}: ErrorMessage) => {
+  return (
+    <Text style={{color: "red", marginLeft: 16 }}>
+      {`Error: ${message}`}
+    </Text>
   );
 };
 
