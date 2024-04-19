@@ -36,7 +36,7 @@ import {
 } from "@/constants/Notifications"
 import { notificationTypePreferences } from "@/data/notificationData"
 import { LocationObject, LocationObjectCoords } from "expo-location"
-import { doc, collection, setDoc } from "firebase/firestore"
+import { doc, collection, setDoc, getDoc } from "firebase/firestore"
 import { User } from "@/models"
 import { notificationPreferences, preferences } from "@/data/userData"
 
@@ -481,8 +481,36 @@ class UserViewModel {
         const { idToken } = await GoogleSignin.signIn()
         const googleCredential = GoogleAuthProvider.credential(idToken)
         const result = await signInWithCredential(auth, googleCredential)
+        const user = result.user
+
+        if (user) {
+          const userRef = doc(db, "users", user.uid)
+          const docSnap = await getDoc(userRef)
+          if (!docSnap.exists()) {
+            const newUser = {
+              id: user.uid,
+              email: user.email,
+              isAnonymous: false,
+              mobileNr: null,
+              notificationPreference: notificationPreferences,
+              notificationTypePreference: notificationTypePreferences,
+              preferences: {
+                country: this.currentCountry,
+                language: this.currentLanguage,
+                theme: this.theme,
+              },
+              simplifiedView: true,
+              gdprConsent: this.gdprConsent,
+              filters: [],
+            }
+            await this.createUserDocument(newUser)
+            console.log("New user document created for Google sign-in.")
+          } else {
+            console.log("Existing Google user logged in.")
+          }
+        }
       } catch (error) {
-        console.error("Error signing in with Google (Native): ", error)
+        console.error("Error signing in with Google(Native): ", error)
       }
     }
   }
@@ -522,7 +550,11 @@ class UserViewModel {
         mobileNr: null,
         notificationPreference: notificationPreferences,
         notificationTypePreference: notificationTypePreferences,
-        preferences: preferences,
+        preferences: {
+          language: this.currentLanguage,
+          country: this.currentCountry,
+          theme: this.theme,
+        },
         simplifiedView: true,
         gdprConsent: this.gdprConsent,
         filters: [],

@@ -228,7 +228,11 @@ const LoginScreen = () => {
               OR
             </Text>
             <VerticalSpacer size={4} />
-            <Button icon="google" mode="contained" onPress={handleGoogleSignIn}>
+            <Button
+              icon="google"
+              mode="contained"
+              onPress={() => handleAuthProcess("google")}
+            >
               Login with Google
             </Button>
             <VerticalSpacer size={8} />
