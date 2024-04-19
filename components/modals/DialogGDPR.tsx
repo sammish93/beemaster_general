@@ -1,12 +1,13 @@
-import * as React from "react";
-import { Button, Dialog, Portal, Text } from "react-native-paper";
-import { ScrollView, Platform } from "react-native";
-import styles from "@/assets/styles";
-import { useTheme } from "react-native-paper";
-import { VerticalSpacer } from "../Spacers";
+import * as React from "react"
+import { Button, Dialog, Portal, Text } from "react-native-paper"
+import { ScrollView, Platform } from "react-native"
+import styles from "@/assets/styles"
+import { useTheme } from "react-native-paper"
+import { VerticalSpacer } from "../Spacers"
 
 interface DialogGDPRProps {
-  hideDialog: () => void;
+  hideDialog: () => void
+  onConsent: (consent: boolean) => void
 }
 
 /**
@@ -16,9 +17,9 @@ interface DialogGDPRProps {
  * @param hideDialog - A function to close the dialog.
  */
 
-const DialogGDPR = ({ hideDialog }: DialogGDPRProps) => {
-  return <DialogModal hideDialog={hideDialog} />;
-};
+const DialogGDPR = ({ hideDialog, onConsent }: DialogGDPRProps) => {
+  return <DialogModal hideDialog={hideDialog} onConsent={onConsent} />
+}
 
 /**
  * `MobileModal` component renders the GDPR dialog specifically designed for mobile platforms.
@@ -27,8 +28,17 @@ const DialogGDPR = ({ hideDialog }: DialogGDPRProps) => {
  * @param hideDialog - A function to close the dialog.
  */
 
-const DialogModal = ({ hideDialog }: DialogGDPRProps) => {
-  const theme = useTheme();
+const DialogModal = ({ hideDialog, onConsent }: DialogGDPRProps) => {
+  const theme = useTheme()
+  const handleAccept = () => {
+    onConsent(true)
+    hideDialog()
+  }
+
+  const handleCancel = () => {
+    onConsent(false)
+    hideDialog()
+  }
 
   return (
     <Portal>
@@ -94,14 +104,14 @@ const DialogModal = ({ hideDialog }: DialogGDPRProps) => {
         </Dialog.ScrollArea>
         <Dialog.Actions>
           <Button
-            onPress={hideDialog}
+            onPress={handleCancel}
             accessibilityLabel="Cancel the modal"
             accessibilityHint="Close if disagree to terms of use"
           >
             Cancel
           </Button>
           <Button
-            onPress={() => console.log("Ok pressed")}
+            onPress={handleAccept}
             accessibilityLabel="Ok to terms of use"
             accessibilityHint="Agree to terms of use"
           >
@@ -110,7 +120,7 @@ const DialogModal = ({ hideDialog }: DialogGDPRProps) => {
         </Dialog.Actions>
       </Dialog>
     </Portal>
-  );
-};
+  )
+}
 
-export default DialogGDPR;
+export default DialogGDPR

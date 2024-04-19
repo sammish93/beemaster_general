@@ -63,6 +63,7 @@ class UserViewModel {
   @observable authInitialized = false
   @observable dateFormat: string = "DD/MM/YYYY"
   @observable locale = Localization.locale
+  @observable gdprConsent = false
 
   initializeAuthListener() {
     onAuthStateChanged(auth, (user) => {
@@ -75,6 +76,10 @@ class UserViewModel {
         this.authInitialized = true
       })
     })
+  }
+
+  @action public setGdprConsent = (consent: boolean): void => {
+    this.gdprConsent = consent
   }
 
   @action public setLanguage = (langCode: string): void => {
@@ -519,6 +524,7 @@ class UserViewModel {
         notificationTypePreference: notificationTypePreferences,
         preferences: preferences,
         simplifiedView: true,
+        gdprConsent: this.gdprConsent,
         filters: [],
       }
 

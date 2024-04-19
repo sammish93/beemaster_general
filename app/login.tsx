@@ -31,6 +31,7 @@ const LoginScreen = () => {
   const [isSignUp, setIsSignUp] = useState(false)
   const { signUpError } = userViewModel
   const [showGDPRDialog, setShowGDPRDialog] = useState(false)
+  const [currentAuthMethod, setCurrentAuthMethod] = useState("")
 
   const handleEmailChange = (email: string) => {
     setEmail(email)
@@ -50,13 +51,6 @@ const LoginScreen = () => {
     userViewModel.clearSignUpError()
     setShowGDPRDialog(false)
   }, [isSignUp, userViewModel])
-
-  const handleLoginSuccess = async () => {
-    // Check if GDPR and country need to be set (for new or first-time users)
-    if (await userViewModel.checkIfNewOrFirstTimeUser()) {
-      setShowGDPRDialog(true)
-    }
-  }
 
   console.log(`Platform.OS: ${Platform.OS}`)
   const handleGoogleSignIn = () => {
@@ -95,13 +89,42 @@ const LoginScreen = () => {
   const handleAnonymousSignIn = () => {
     userViewModel.signInAnonymously()
   }
-  const [showDialog, setShowDialog] = React.useState(false)
 
-  const handleLoginPress = () => {
-    setShowDialog(true) //Viser gdpr-dialogen
+  const handleAuthProcess = (method: string) => {
+    setCurrentAuthMethod(method)
+    console.log("sign in method: ", method)
+    console.log("gdpr ", userViewModel.gdprConsent)
+    if (!userViewModel.gdprConsent || !userViewModel.userId) {
+      setShowGDPRDialog(true)
+    } else {
+      proceedWithAuthentication(method)
+    }
   }
-  const hideDialog = () => {
-    setShowDialog(false) // Hides the GDPR dialog
+
+  const proceedWithAuthentication = (method: string) => {
+    switch (method) {
+      case "email":
+        handleEmailSignIn()
+        break
+      case "google":
+        handleGoogleSignIn()
+        break
+      case "anonymous":
+        handleAnonymousSignIn()
+        break
+      default:
+        console.error("Invalid authentication method")
+    }
+  }
+
+  const handleGdprConsent = (consent: boolean) => {
+    setShowGDPRDialog(false)
+    if (consent) {
+      userViewModel.setGdprConsent(true)
+      proceedWithAuthentication(currentAuthMethod)
+    } else {
+      console.log("GDPR consent was not given.")
+    }
   }
 
   return (
@@ -182,7 +205,11 @@ const LoginScreen = () => {
         )}
         {isSignUp ? (
           <>
-            <Button icon="email" mode="contained" onPress={handleEmailSignIn}>
+            <Button
+              icon="email"
+              mode="contained"
+              onPress={() => handleAuthProcess("email")}
+            >
               Sign Up
             </Button>
           </>
@@ -229,6 +256,12 @@ const LoginScreen = () => {
               : "Don't have an account? Sign up"}
           </Text>
         </Pressable>
+        {showGDPRDialog && (
+          <DialogGDPR
+            hideDialog={() => setShowGDPRDialog(false)}
+            onConsent={handleGdprConsent}
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   )
