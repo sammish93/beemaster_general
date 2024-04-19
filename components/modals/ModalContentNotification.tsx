@@ -46,247 +46,468 @@ const ModalContent = (props: ModalContentProps) => {
   const userViewModel = useContext(MobXProviderContext).userViewModel;
 
   LocaleConfig.locales = locales;
-
   LocaleConfig.defaultLocale = userViewModel.i18n.locale;
+
+  const [errorValidationMessage, setIsErrorValidationMessage] =
+    useState<string>("");
 
   //Thresholds weights
   const [thresholdWeightDecreaseInAutumn, setThresholdWeightDecreaseInAutumn] =
     useState<number>(userViewModel.getThresholdWeightDecreaseInAutumn());
   const [
+    isThresholdWeightDecreaseInAutumnValid,
+    setIsThresholdWeightDecreaseInAutumnValid,
+  ] = useState<boolean>();
+  const [
     thresholdWeightDecreaseEarlySpring,
     setThresholdWeightDecreaseEarlySpring,
   ] = useState<number>(userViewModel.getThresholdWeightDecreaseEarlySpring());
+  const [
+    isThresholdWeightDecreaseEarlySpringValid,
+    setIsThresholdWeightDecreaseEarlySpringValid,
+  ] = useState<boolean>();
   const [thresholdWeightDecrease, setThresholdWeightDecrease] =
     useState<number>(userViewModel.getThresholdWeightDecrease());
+  const [isThresholdWeightDecreaseValid, setIsThresholdWeightDecreaseValid] =
+    useState<boolean>();
   const [thresholdWeightIncrease, setThresholdWeightIncrease] =
     useState<number>(userViewModel.getThresholdWeightIncrease());
+  const [isThresholdWeightIncreaseValid, setIsThresholdWeightIncreaseValid] =
+    useState<boolean>();
   const [productionPeriodDays, setProductionPeriodDays] = useState<number>(
     userViewModel.getProductionPeriodDays()
   );
+  const [isProductionPeriodDaysValid, setIsProductionPeriodDaysValid] =
+    useState<boolean>();
   const [productionPeriodThreshold, setProductionPeriodThreshold] =
     useState<number>(userViewModel.getProductionPeriodThreshold());
+  const [
+    isProductionPeriodThresholdValid,
+    setIsProductionPeriodThresholdValid,
+  ] = useState<boolean>();
 
   //Exit
   const [thresholdExitCountHigh, setThresholdExitCountHigh] = useState<number>(
     userViewModel.getThresholdExitCountHigh()
   );
+  const [isThresholdExitCountHighValid, setIsThresholdExitCountHighValid] =
+    useState<boolean>();
   const [thresholdExitCountLow, setThresholdExitCountLow] = useState<number>(
     userViewModel.getThresholdExitCountLow()
   );
+  const [isThresholdExitCountLowValid, setIsThresholdExitCountLowValid] =
+    useState<boolean>();
 
   //Temp
   const [thresholdTemperatureOptimal, setThresholdTemperatureOptimal] =
     useState<number>(userViewModel.getThresholdTemperatureOptimal());
-
+  const [
+    isThresholdTemperatureOptimalValid,
+    setIsThresholdTemperatureOptimalValid,
+  ] = useState<boolean>();
   const [thresholdTemperatureMax, setThresholdTemperatureMax] =
     useState<number>(userViewModel.getThresholdTemperatureMax());
+  const [isThresholdTemperatureMaxValid, setIsThresholdTemperatureMaxValid] =
+    useState<boolean>();
   const [thresholdTemperatureMin, setThresholdTemperatureMin] =
     useState<number>(userViewModel.getThresholdTemperatureMin());
-
+  const [isThresholdTemperatureMinValid, setIsThresholdTemperatureMinValid] =
+    useState<boolean>();
   const [thresholdMinTempInHive, setThresholdMinTempInHive] = useState<number>(
     userViewModel.getThresholdMinTempInHive()
   );
+  const [isThresholdMinTempInHiveValid, setIsThresholdMinTempInHiveValid] =
+    useState<boolean>();
   const [thresholdMaxTempInHive, setThresholdMaxTempInHive] = useState<number>(
     userViewModel.getThresholdMaxTempInHive()
   );
+  const [isThresholdMaxTempInHiveValid, setIsThresholdMaxTempInHiveValid] =
+    useState<boolean>();
 
   //Windspeed
   const [thresholdWindSpeedStrong, setThresholdWindSpeedStrong] =
     useState<number>(userViewModel.getThresholdWindSpeedStrong());
+  const [isThresholdWindSpeedStrongValid, setIsThresholdWindSpeedStrongValid] =
+    useState<boolean>();
   const [thresholdWindSpeedLow, setThresholdWindSpeedLow] = useState<number>(
     userViewModel.getThresholdWindSpeedLow()
   );
+  const [isThresholdWindSpeedLowValid, setIsThresholdWindSpeedLowValid] =
+    useState<boolean>();
 
   //Humidity
   const [thresholdHumidityMax, setThresholdHumidityMax] = useState<number>(
     userViewModel.getThresholdHumidityMax()
   );
+  const [isThresholdHumidityMaxValid, setIsThresholdHumidityMaxValid] =
+    useState<boolean>();
   const [thresholdHumidityMin, setThresholdHumidityMin] = useState<number>(
     userViewModel.getThresholdHumidityMin()
   );
+  const [isThresholdHumidityMinValid, setIsThresholdHumidityMinValid] =
+    useState<boolean>();
 
   //Spring
   const [earlySpringStartMonth, setEarlySpringStartMonth] = useState<Date>(
     userViewModel.getEarlySpringStartMonth()
   );
+  const [isEarlySpringStartMonthValid, setIsEarlySpringStartMonthValid] =
+    useState<boolean>();
   const [earlySpringEndMonth, setEarlySpringEndMonth] = useState<Date>(
     userViewModel.getEarlySpringEndMonth()
   );
+  const [isEarlySpringEndMonthValid, setIsEarlySpringEndMonthValid] =
+    useState<boolean>();
   const [earlySpringMonths, setEarlySpringMonths] = useState<Date[]>(
     userViewModel.getEarlySpringMonths()
   );
+  const [isEarlySpringMonthsValid, setIsEarlySpringMonthsValid] =
+    useState<boolean>();
   const [lateSpringStartMonth, setLateSpringStartMonth] = useState<Date>(
     userViewModel.getLateSpringStartMonth()
   );
+  const [isLateSpringStartMonthValid, setIsLateSpringStartMonthValid] =
+    useState<boolean>();
   const [springStartMonth, setSpringStartMonth] = useState<Date>(
     userViewModel.getSpringStartMonth()
   );
+  const [isSpringStartMonthValid, setIsSpringStartMonthValid] =
+    useState<boolean>();
   const [springEndMonth, setSpringEndMonth] = useState<Date>(
     userViewModel.getSpringEndMonth()
   );
+  const [isSpringEndMonthValid, setIsSpringEndMonthValid] = useState<boolean>();
 
   //Autumn
   const [autumnStartMonth, setAutumnStartMonth] = useState<Date>(
     userViewModel.getAutumnStartMonth()
   );
+  const [isAutumnStartMonthValid, setIsAutumnStartMonthValid] =
+    useState<boolean>();
   const [autumnEndMonth, setAutumnEndMonth] = useState<Date>(
     userViewModel.getAutumnEndMonth()
   );
+  const [isAutumnEndMonthValid, setIsAutumnEndMonthValid] = useState<boolean>();
   const [autumnMonths, setAutumnMonths] = useState<Date[]>(
     userViewModel.getAutumnMonths()
   );
+  const [isAutumnMonthsValid, setIsAutumnMonthsValid] = useState<boolean>();
   const [earlyAutumnMonth, setEarlyAutumnMonth] = useState<Date>(
     userViewModel.getEarlyAutumnMonth()
   );
+  const [isEarlyAutumnMonthValid, setIsEarlyAutumnMonthValid] =
+    useState<boolean>();
 
   //Winter
   const [earlyWinterMonths, setEarlyWinterMonths] = useState<Date[]>(
     userViewModel.getEarlyWinterMonths()
   );
+  const [isEarlyWinterMonthsValid, setIsEarlyWinterMonthsValid] =
+    useState<boolean>();
   const [winterStart, setWinterStart] = useState<Date>(
     userViewModel.getWinterStart()
   );
+  const [isWinterStartValid, setIsWinterStartValid] = useState<boolean>();
   const [winterEnd, setWinterEnd] = useState<Date>(userViewModel.winterEnd);
+  const [isWinterEndValid, setIsWinterEndValid] = useState<boolean>();
   const [earlyWinterStart, setEarlyWinterStart] = useState<Date>(
     userViewModel.getEarlyWinterStart()
   );
+  const [isEarlyWinterStartValid, setIsEarlyWinterStartValid] =
+    useState<boolean>();
   const [earlyWinterEnd, setEarlyWinterEnd] = useState<Date>(
     userViewModel.getEarlyWinterEnd()
   );
+  const [isEarlyWinterEndValid, setIsEarlyWinterEndValid] = useState<boolean>();
 
   //Summer
   const [summerStartMonth, setSummerStartMonth] = useState<Date>(
     userViewModel.getSummerStartMonth()
   );
+  const [isSummerStartMonthValid, setIsSummerStartMonthValid] =
+    useState<boolean>();
   const [summerEndMonth, setSummerEndMonth] = useState<Date>(
     userViewModel.getSummerEndMonth()
   );
+  const [isSummerEndMonthValid, setIsSummerEndMonthValid] = useState<boolean>();
   const [earlySummerEndMonth, setEarlySummerEndMonth] = useState<Date>(
     userViewModel.getEarlySummerEndMonth()
   );
+  const [isEarlySummerEndMonthValid, setIsEarlySummerEndMonthValid] =
+    useState<boolean>();
   const [earlySummerStartMonth, setEarlySummerStartMonth] = useState<Date>(
     userViewModel.getEarlySummerStartMonth()
   );
+  const [isEarlySummerStartMonthValid, setIsEarlySummerStartMonthValid] =
+    useState<boolean>();
 
   const getSaveAction = (parameterName: NotificationType) => {
     const actions = {
       [NotificationType.Weather]: () => {
-        userViewModel.setThresholdWindSpeedStrong(thresholdWindSpeedStrong);
-        userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
+        if (
+          isThresholdWindSpeedStrongValid &&
+          isThresholdWindSpeedLowValid &&
+          isEarlyWinterMonthsValid &&
+          isWinterStartValid &&
+          isWinterEndValid &&
+          isEarlyWinterStartValid &&
+          isWinterEndValid &&
+          isEarlySpringMonthsValid &&
+          isEarlySpringStartMonthValid &&
+          isThresholdTemperatureMaxValid &&
+          isThresholdTemperatureMinValid &&
+          isThresholdTemperatureOptimalValid &&
+          isAutumnMonthsValid &&
+          isAutumnStartMonthValid &&
+          isAutumnEndMonthValid
+        ) {
+          setIsErrorValidationMessage("");
 
-        userViewModel.setEarlyWinterMonths(earlyWinterMonths);
-        userViewModel.setWinterStart(winterStart);
-        userViewModel.setWinterEnd(winterEnd);
-        userViewModel.setEarlyWinterStart(earlyWinterStart);
-        userViewModel.setEarlyWinterEnd(earlyWinterEnd);
+          userViewModel.setThresholdWindSpeedStrong(thresholdWindSpeedStrong);
+          userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
 
-        userViewModel.setEarlySpringMonths(earlySpringMonths);
-        userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
+          userViewModel.setEarlyWinterMonths(earlyWinterMonths);
+          userViewModel.setWinterStart(winterStart);
+          userViewModel.setWinterEnd(winterEnd);
+          userViewModel.setEarlyWinterStart(earlyWinterStart);
+          userViewModel.setEarlyWinterEnd(earlyWinterEnd);
 
-        userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-        userViewModel.setThresholdTemperatureMin(thresholdTemperatureMin);
-        userViewModel.setThresholdTemperatureOptimal(
-          thresholdTemperatureOptimal
-        );
+          userViewModel.setEarlySpringMonths(earlySpringMonths);
+          userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
 
-        userViewModel.setAutumnMonths(autumnMonths);
-        userViewModel.setAutumnStartMonth(autumnStartMonth);
-        userViewModel.setAutumnEndMonth(autumnEndMonth);
+          userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
+          userViewModel.setThresholdTemperatureMin(thresholdTemperatureMin);
+          userViewModel.setThresholdTemperatureOptimal(
+            thresholdTemperatureOptimal
+          );
+
+          userViewModel.setAutumnMonths(autumnMonths);
+          userViewModel.setAutumnStartMonth(autumnStartMonth);
+          userViewModel.setAutumnEndMonth(autumnEndMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
       [NotificationType.PossibleSwarm]: () => {
-        userViewModel.setThresholdWeightDecrease(thresholdWeightDecrease);
-        userViewModel.setThresholdExitCountHigh(thresholdExitCountHigh);
-        userViewModel.setThresholdExitCountLow(thresholdExitCountLow);
-        userViewModel.setProductionPeriodDays(productionPeriodDays);
-        userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
-        userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
-        userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
+        if (
+          isThresholdWeightDecreaseValid &&
+          isThresholdExitCountHighValid &&
+          isThresholdExitCountLowValid &&
+          isProductionPeriodDaysValid &&
+          isProductionPeriodThresholdValid &&
+          isLateSpringStartMonthValid &&
+          isEarlySummerEndMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+
+          userViewModel.setThresholdWeightDecrease(thresholdWeightDecrease);
+          userViewModel.setThresholdExitCountHigh(thresholdExitCountHigh);
+          userViewModel.setThresholdExitCountLow(thresholdExitCountLow);
+          userViewModel.setProductionPeriodDays(productionPeriodDays);
+          userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
+          userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
+          userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
 
       [NotificationType.ConsiderFeeding]: () => {
-        userViewModel.setThresholdWeightDecreaseEarlySpring(
-          thresholdWeightDecreaseEarlySpring
-        );
-        userViewModel.setThresholdWindSpeedStrong(thresholdWindSpeedStrong);
-        userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
-        userViewModel.setEarlySpringEndMonth(earlySpringEndMonth);
-        userViewModel.setEarlySpringMonths(earlySpringMonths);
-        userViewModel.setEarlyWinterMonths(earlyWinterMonths);
-        userViewModel.setEarlyWinterStart(earlyWinterStart);
-        userViewModel.setWinterStart(winterStart);
-        userViewModel.thresholdTemperatureMin(thresholdTemperatureMin);
-        userViewModel.setThresholdWeightDecreaseInAutumn(
-          thresholdWeightDecreaseInAutumn
-        );
-        userViewModel.setAutumnStartMonth(autumnStartMonth);
-        userViewModel.setAutumnEndMonth(autumnEndMonth);
-        userViewModel.setAutumnMonths(autumnMonths);
-        userViewModel.setProductionPeriodDays(productionPeriodDays);
-        userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
-        userViewModel.setThresholdExitCountLow(thresholdExitCountLow);
-        userViewModel.setSpringStartMonth(springStartMonth);
-        userViewModel.setSpringStartMonth(springEndMonth);
+        if (
+          isThresholdWeightDecreaseEarlySpringValid &&
+          isThresholdWindSpeedStrongValid &&
+          isEarlySpringStartMonthValid &&
+          isEarlySpringEndMonthValid &&
+          isEarlySpringMonthsValid &&
+          isEarlyWinterMonthsValid &&
+          isEarlyWinterStartValid &&
+          isWinterStartValid &&
+          isThresholdTemperatureMinValid &&
+          isThresholdWeightDecreaseInAutumnValid &&
+          isAutumnStartMonthValid &&
+          isAutumnEndMonthValid &&
+          isAutumnMonthsValid &&
+          isProductionPeriodDaysValid &&
+          isProductionPeriodThresholdValid &&
+          isThresholdExitCountLowValid &&
+          isSpringStartMonthValid &&
+          isSpringEndMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+
+          userViewModel.setThresholdWeightDecreaseEarlySpring(
+            thresholdWeightDecreaseEarlySpring
+          );
+          userViewModel.setThresholdWindSpeedStrong(thresholdWindSpeedStrong);
+          userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
+          userViewModel.setEarlySpringEndMonth(earlySpringEndMonth);
+          userViewModel.setEarlySpringMonths(earlySpringMonths);
+          userViewModel.setEarlyWinterMonths(earlyWinterMonths);
+          userViewModel.setEarlyWinterStart(earlyWinterStart);
+          userViewModel.setWinterStart(winterStart);
+          userViewModel.thresholdTemperatureMin(thresholdTemperatureMin);
+          userViewModel.setThresholdWeightDecreaseInAutumn(
+            thresholdWeightDecreaseInAutumn
+          );
+          userViewModel.setAutumnStartMonth(autumnStartMonth);
+          userViewModel.setAutumnEndMonth(autumnEndMonth);
+          userViewModel.setAutumnMonths(autumnMonths);
+          userViewModel.setProductionPeriodDays(productionPeriodDays);
+          userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
+          userViewModel.setThresholdExitCountLow(thresholdExitCountLow);
+          userViewModel.setSpringStartMonth(springStartMonth);
+          userViewModel.setSpringEndMonth(springEndMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
       [NotificationType.HoneyHarvest]: () => {
-        userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-        userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
-        userViewModel.setSummerStartMonth(summerStartMonth);
-        userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
-        userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
-        userViewModel.setAutumnEndMonth(autumnEndMonth);
-        userViewModel.setProductionPeriodDays(productionPeriodDays);
-        userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
-        userViewModel.setThresholdWeightIncrease(thresholdWeightIncrease);
-        userViewModel.setThresholdTemperatureOptimal(
-          thresholdTemperatureOptimal
-        );
-        userViewModel.setSummerEndMonth(summerEndMonth);
+        if (
+          isThresholdTemperatureMaxValid &&
+          isThresholdWindSpeedLowValid &&
+          isSummerStartMonthValid &&
+          isEarlyAutumnMonthValid &&
+          isEarlySpringStartMonthValid &&
+          isAutumnEndMonthValid &&
+          isProductionPeriodDaysValid &&
+          isProductionPeriodThresholdValid &&
+          isThresholdWeightIncreaseValid &&
+          isThresholdTemperatureOptimalValid &&
+          isSummerEndMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+
+          userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
+          userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
+          userViewModel.setSummerStartMonth(summerStartMonth);
+          userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
+          userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
+          userViewModel.setAutumnEndMonth(autumnEndMonth);
+          userViewModel.setProductionPeriodDays(productionPeriodDays);
+          userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
+          userViewModel.setThresholdWeightIncrease(thresholdWeightIncrease);
+          userViewModel.setThresholdTemperatureOptimal(
+            thresholdTemperatureOptimal
+          );
+          userViewModel.setSummerEndMonth(summerEndMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
       [NotificationType.Maintenance]: () => {
-        userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
-        userViewModel.setAutumnEndMonth(autumnEndMonth);
-        userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
-        userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-        userViewModel.setSummerStartMonth(summerStartMonth);
-        userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
-        userViewModel.setThresholdTemperatureOptimal(
-          thresholdTemperatureOptimal
-        );
-        userViewModel.setEarlySummerStartMonth(earlySummerStartMonth);
-        userViewModel.setSpringStartMonth(springStartMonth);
-        userViewModel.setSpringStartMonth(springEndMonth);
+        if (
+          isEarlySpringStartMonthValid &&
+          isAutumnEndMonthValid &&
+          isThresholdWindSpeedLowValid &&
+          isThresholdTemperatureMaxValid &&
+          isSummerStartMonthValid &&
+          isEarlyAutumnMonthValid &&
+          isThresholdTemperatureOptimalValid &&
+          isEarlySummerStartMonthValid &&
+          isSpringStartMonthValid &&
+          isSpringEndMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+
+          userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
+          userViewModel.setAutumnEndMonth(autumnEndMonth);
+          userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
+          userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
+          userViewModel.setSummerStartMonth(summerStartMonth);
+          userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
+          userViewModel.setThresholdTemperatureOptimal(
+            thresholdTemperatureOptimal
+          );
+          userViewModel.setEarlySummerStartMonth(earlySummerStartMonth);
+          userViewModel.setSpringStartMonth(springStartMonth);
+          userViewModel.setSpringEndMonth(springEndMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
 
       [NotificationType.ConsiderExpanding]: () => {
-        userViewModel.setThresholdWeightIncrease(thresholdWeightIncrease);
-        userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-        userViewModel.setProductionPeriodDays(productionPeriodDays);
-        userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
-        userViewModel.setEarlySummerStartMonth(earlySummerStartMonth);
-        userViewModel.setSpringStartMonth(springStartMonth);
-        userViewModel.setSpringStartMonth(springEndMonth);
-        userViewModel.setSummerEndMonth(summerEndMonth);
-        userViewModel.setSummerStartMonth(summerStartMonth);
+        if (
+          isThresholdWeightIncreaseValid &&
+          isThresholdTemperatureMaxValid &&
+          isProductionPeriodDaysValid &&
+          isProductionPeriodThresholdValid &&
+          isEarlySummerStartMonthValid &&
+          isSpringStartMonthValid &&
+          isSpringEndMonthValid &&
+          isSummerEndMonthValid &&
+          isSummerStartMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+
+          userViewModel.setThresholdWeightIncrease(thresholdWeightIncrease);
+          userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
+          userViewModel.setProductionPeriodDays(productionPeriodDays);
+          userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
+          userViewModel.setEarlySummerStartMonth(earlySummerStartMonth);
+          userViewModel.setSpringStartMonth(springStartMonth);
+          userViewModel.setSpringEndMonth(springEndMonth);
+          userViewModel.setSummerEndMonth(summerEndMonth);
+          userViewModel.setSummerStartMonth(summerStartMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
 
       [NotificationType.CheckHive]: () => {
-        userViewModel.setThresholdMinTempInHive(thresholdMinTempInHive);
-        userViewModel.setThresholdMaxTempInHive(thresholdMaxTempInHive);
+        if (
+          isThresholdMinTempInHiveValid &&
+          isThresholdMaxTempInHiveValid &&
+          isLateSpringStartMonthValid &&
+          isEarlySummerEndMonthValid &&
+          isEarlySpringMonthsValid &&
+          isThresholdTemperatureMaxValid &&
+          isThresholdTemperatureMinValid &&
+          isThresholdHumidityMaxValid &&
+          isThresholdHumidityMinValid &&
+          isThresholdExitCountHighValid &&
+          isWinterEndValid &&
+          isEarlyWinterMonthsValid &&
+          isAutumnMonthsValid &&
+          isEarlySpringMonthsValid &&
+          isEarlyWinterEndValid
+        ) {
+          setIsErrorValidationMessage("");
 
-        userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
-        userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
-        userViewModel.earlySpringMonths(earlySpringMonths);
-        userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-        userViewModel.setThresholdTemperatureMin(thresholdTemperatureMin);
+          userViewModel.setThresholdMinTempInHive(thresholdMinTempInHive);
+          userViewModel.setThresholdMaxTempInHive(thresholdMaxTempInHive);
 
-        userViewModel.setThresholdHumidityMax(thresholdHumidityMax);
-        userViewModel.setThresholdHumidityMin(thresholdHumidityMin);
-        userViewModel.setThresholdExitCountHigh(thresholdExitCountHigh);
-        userViewModel.setWinterEnd(winterEnd);
-        userViewModel.setEarlyWinterMonths(earlyWinterMonths);
-        userViewModel.setAutumnMonths(autumnMonths);
-        userViewModel.setEarlySpringMonths(earlySpringMonths);
-        userViewModel.setEarlyWinterEnd(earlyWinterEnd);
+          userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
+          userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
+          userViewModel.earlySpringMonths(earlySpringMonths);
+          userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
+          userViewModel.setThresholdTemperatureMin(thresholdTemperatureMin);
+
+          userViewModel.setThresholdHumidityMax(thresholdHumidityMax);
+          userViewModel.setThresholdHumidityMin(thresholdHumidityMin);
+          userViewModel.setThresholdExitCountHigh(thresholdExitCountHigh);
+          userViewModel.setWinterEnd(winterEnd);
+          userViewModel.setEarlyWinterMonths(earlyWinterMonths);
+          userViewModel.setAutumnMonths(autumnMonths);
+          userViewModel.setEarlySpringMonths(earlySpringMonths);
+          userViewModel.setEarlyWinterEnd(earlyWinterEnd);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
       [NotificationType.CustomReminder]: () => {},
     };
@@ -304,7 +525,14 @@ const ModalContent = (props: ModalContentProps) => {
     } else {
       console.log("parameterName is undefined");
     }
-    props.onClose();
+
+    if (
+      errorValidationMessage != "" &&
+      errorValidationMessage !=
+        userViewModel.i18n.t("notification param error message")
+    ) {
+      props.onClose();
+    }
   };
 
   //One month
@@ -495,6 +723,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold wind speed")}
               value={thresholdWindSpeedStrong.toString()}
+              error={!isThresholdWindSpeedStrongValid}
               onChangeText={(text) => setThresholdWindSpeedStrong(Number(text))}
               keyboardType="numeric"
             />
@@ -509,6 +738,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
+              error={!isThresholdTemperatureMaxValid}
               onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
               keyboardType="numeric"
             />
@@ -529,6 +759,7 @@ const ModalContent = (props: ModalContentProps) => {
                   date.toLocaleDateString(userViewModel.i18n.locale)
                 )
                 .join(", ")}
+              error={!isAutumnMonthsValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -546,6 +777,7 @@ const ModalContent = (props: ModalContentProps) => {
                   date.toLocaleDateString(userViewModel.i18n.locale)
                 )
                 .join(", ")}
+              error={!isEarlyWinterMonthsValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -563,6 +795,7 @@ const ModalContent = (props: ModalContentProps) => {
                   date.toLocaleDateString(userViewModel.i18n.locale)
                 )
                 .join(", ")}
+              error={!isEarlySpringMonthsValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -587,6 +820,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={autumnStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isAutumnStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -606,6 +840,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={autumnEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isAutumnEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -632,6 +867,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
+              error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
@@ -641,6 +877,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold for optimal temperature"
               )}
               value={thresholdTemperatureOptimal.toString()}
+              error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
                 setThresholdTemperatureOptimal(Number(text))
               }
@@ -652,6 +889,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlySpringStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlySpringStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -671,6 +909,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={autumnEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isAutumnEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -695,6 +934,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
+              error={!isThresholdTemperatureMinValid}
               onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
               keyboardType="numeric"
             />
@@ -702,6 +942,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("winter start month")}
               value={winterStart.toLocaleDateString(userViewModel.i18n.locale)}
+              error={!isWinterStartValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -726,6 +967,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
+              error={!isThresholdTemperatureMinValid}
               onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
               keyboardType="numeric"
             />
@@ -733,6 +975,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("winter end month")}
               value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
+              error={!isWinterEndValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -759,6 +1002,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlyWinterStart.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlyWinterStartValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -785,6 +1029,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={springStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSpringStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -804,6 +1049,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={springEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSpringEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -834,6 +1080,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={lateSpringStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isLateSpringStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -853,6 +1100,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlySummerStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlySummerStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -881,6 +1129,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for weight decrease"
               )}
               value={thresholdWeightDecrease.toString()}
+              error={!isThresholdWeightDecreaseValid}
               onChangeText={(text) => setThresholdWeightDecrease(Number(text))}
               keyboardType="numeric"
             />
@@ -890,6 +1139,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number of days for production period"
               )}
               value={productionPeriodDays.toString()}
+              error={!isProductionPeriodDaysValid}
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
               keyboardType="numeric"
             />
@@ -906,6 +1156,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for high exit count")}
               value={thresholdExitCountHigh.toString()}
+              error={!isThresholdExitCountHighValid}
               onChangeText={(text) => setThresholdExitCountHigh(Number(text))}
               keyboardType="numeric"
             />
@@ -922,6 +1173,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low exit count")}
               value={thresholdExitCountLow.toString()}
+              error={!isThresholdExitCountLowValid}
               onChangeText={(text) => setThresholdExitCountLow(Number(text))}
               keyboardType="numeric"
             />
@@ -940,6 +1192,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number of days for production period"
               )}
               value={productionPeriodDays.toString()}
+              error={!isProductionPeriodDaysValid}
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
               keyboardType="numeric"
             />
@@ -949,6 +1202,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for production period"
               )}
               value={productionPeriodThreshold.toString()}
+              error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
                 setProductionPeriodThreshold(Number(text))
               }
@@ -969,6 +1223,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={lateSpringStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isLateSpringStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -988,6 +1243,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlySummerEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlySummerEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1016,6 +1272,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
+              error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
@@ -1025,6 +1282,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold for optimal temperature"
               )}
               value={thresholdTemperatureOptimal.toString()}
+              error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
                 setThresholdTemperatureOptimal(Number(text))
               }
@@ -1036,6 +1294,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlyAutumnMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlyAutumnMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1054,6 +1313,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={summerStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSummerStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1079,6 +1339,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
+              error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
@@ -1088,6 +1349,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold for optimal temperature"
               )}
               value={thresholdTemperatureOptimal.toString()}
+              error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
                 setThresholdTemperatureOptimal(Number(text))
               }
@@ -1099,6 +1361,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlySpringStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlySpringStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1117,6 +1380,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={autumnEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isAutumnEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1145,6 +1409,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for weight increase"
               )}
               value={thresholdWeightIncrease.toString()}
+              error={!isThresholdWeightIncreaseValid}
               onChangeText={(text) => setThresholdWeightIncrease(Number(text))}
               keyboardType="numeric"
             />
@@ -1163,6 +1428,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number of days for production period"
               )}
               value={productionPeriodDays.toString()}
+              error={!isProductionPeriodDaysValid}
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
               keyboardType="numeric"
             />
@@ -1172,6 +1438,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for production period"
               )}
               value={productionPeriodThreshold.toString()}
+              error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
                 setProductionPeriodThreshold(Number(text))
               }
@@ -1190,6 +1457,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={summerStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSummerStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1208,6 +1476,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={summerEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSummerEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1235,6 +1504,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
+              error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
@@ -1244,6 +1514,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold for optimal temperature"
               )}
               value={thresholdTemperatureOptimal.toString()}
+              error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
                 setThresholdTemperatureOptimal(Number(text))
               }
@@ -1255,6 +1526,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlySpringStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlySpringStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1273,6 +1545,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={autumnEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isAutumnEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1298,6 +1571,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
+              error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               keyboardType="numeric"
             />
@@ -1307,6 +1581,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold for optimal temperature"
               )}
               value={thresholdTemperatureOptimal.toString()}
+              error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
                 setThresholdTemperatureOptimal(Number(text))
               }
@@ -1318,6 +1593,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={summerStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSummerStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1336,6 +1612,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlyAutumnMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlyAutumnMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1361,6 +1638,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlySummerStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlySummerStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1386,6 +1664,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={springStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSpringStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1404,6 +1683,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={springEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSpringEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1433,6 +1713,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for weight increase"
               )}
               value={thresholdWeightIncrease.toString()}
+              error={!isThresholdWeightIncreaseValid}
               onChangeText={(text) => setThresholdWeightIncrease(Number(text))}
               keyboardType="numeric"
             />
@@ -1451,6 +1732,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number of days for production period"
               )}
               value={productionPeriodDays.toString()}
+              error={!isProductionPeriodDaysValid}
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
               keyboardType="numeric"
             />
@@ -1460,6 +1742,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for production period"
               )}
               value={productionPeriodThreshold.toString()}
+              error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
                 setProductionPeriodThreshold(Number(text))
               }
@@ -1476,6 +1759,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
+              error={!isThresholdTemperatureMaxValid}
               onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
               keyboardType="numeric"
             />
@@ -1492,6 +1776,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlySummerStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlySummerStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1517,6 +1802,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={springStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSpringStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1535,6 +1821,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={springEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSpringEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1560,6 +1847,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={summerStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSummerStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1578,6 +1866,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={summerEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isSummerEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1607,6 +1896,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold max temperature for hive"
               )}
               value={thresholdMaxTempInHive.toString()}
+              error={!isThresholdMaxTempInHiveValid}
               onChangeText={(text) => setThresholdMaxTempInHive(Number(text))}
               keyboardType="numeric"
             />
@@ -1625,6 +1915,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold minimum temperature for hive"
               )}
               value={thresholdMinTempInHive.toString()}
+              error={!isThresholdMinTempInHiveValid}
               onChangeText={(text) => setThresholdMinTempInHive(Number(text))}
               keyboardType="numeric"
             />
@@ -1639,6 +1930,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
+              error={!isThresholdTemperatureMaxValid}
               onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
               keyboardType="numeric"
             />
@@ -1653,6 +1945,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
+              error={!isThresholdTemperatureMinValid}
               onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
               keyboardType="numeric"
             />
@@ -1669,6 +1962,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("threshold max humidity")}
               value={thresholdHumidityMax.toString()}
+              error={!isThresholdHumidityMaxValid}
               onChangeText={(text) => setThresholdHumidityMax(Number(text))}
               keyboardType="numeric"
             />
@@ -1685,6 +1979,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("threshold min humidity")}
               value={thresholdHumidityMin.toString()}
+              error={!isThresholdHumidityMinValid}
               onChangeText={(text) => setThresholdHumidityMin(Number(text))}
               keyboardType="numeric"
             />
@@ -1701,6 +1996,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlyWinterEnd.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlyWinterEndValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1724,6 +2020,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("winter end month")}
               value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
+              error={!isWinterEndValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1749,6 +2046,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for high exit count")}
               value={thresholdExitCountHigh.toString()}
+              error={!isThresholdExitCountHighValid}
               onChangeText={(text) => setThresholdExitCountHigh(Number(text))}
               keyboardType="numeric"
             />
@@ -1769,6 +2067,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for thresholdvalue for weight decrease"
               )}
               value={thresholdWeightDecreaseEarlySpring.toString()}
+              error={!isThresholdWeightDecreaseEarlySpringValid}
               onChangeText={(text) =>
                 setThresholdWeightDecreaseEarlySpring(Number(text))
               }
@@ -1780,6 +2079,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlySpringStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlySpringStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1798,6 +2098,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={earlySpringEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isEarlySpringEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1825,6 +2126,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for weight decrease"
               )}
               value={thresholdWeightDecreaseInAutumn.toString()}
+              error={!isThresholdWeightDecreaseInAutumnValid}
               onChangeText={(text) =>
                 setThresholdWeightDecreaseInAutumn(Number(text))
               }
@@ -1836,6 +2138,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={autumnStartMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isAutumnStartMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1854,6 +2157,7 @@ const ModalContent = (props: ModalContentProps) => {
               value={autumnEndMonth.toLocaleDateString(
                 userViewModel.i18n.locale
               )}
+              error={!isAutumnEndMonthValid}
               editable={false}
             />
             <VerticalSpacer size={4} />
@@ -1881,6 +2185,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number of days for production period"
               )}
               value={productionPeriodDays.toString()}
+              error={!isProductionPeriodDaysValid}
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
               keyboardType="numeric"
             />
@@ -1890,6 +2195,7 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for production period"
               )}
               value={productionPeriodThreshold.toString()}
+              error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
                 setProductionPeriodThreshold(Number(text))
               }
@@ -1908,6 +2214,7 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low exit count")}
               value={thresholdExitCountLow.toString()}
+              error={!isThresholdExitCountLowValid}
               onChangeText={(text) => setThresholdExitCountLow(Number(text))}
               keyboardType="numeric"
             />
@@ -1948,7 +2255,22 @@ const ModalContent = (props: ModalContentProps) => {
 
       <VerticalSpacer size={12} />
 
-      {/*TODO: Save button should be under each threshold-value choice*/}
+      {errorValidationMessage ? (
+        <>
+          <Text
+            style={{
+              ...theme.fonts.bodyLarge,
+              flex: 1,
+              textAlign: "center",
+              color: theme.colors.error,
+            }}
+          >
+            {errorValidationMessage}
+          </Text>
+          <VerticalSpacer size={4} />
+        </>
+      ) : null}
+
       <Button mode="contained" onPress={handleSave}>
         {userViewModel.i18n.t("save")}
       </Button>
