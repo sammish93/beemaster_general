@@ -56,7 +56,6 @@ const ListMeasurements = () => {
       >
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title="Celsius (°C)"
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -69,7 +68,6 @@ const ListMeasurements = () => {
         />
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title="Fahrenheit (°F)"
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -108,7 +106,6 @@ const ListMeasurements = () => {
       >
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("grams (g)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -121,7 +118,6 @@ const ListMeasurements = () => {
         />
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("kilograms (kg)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -134,7 +130,6 @@ const ListMeasurements = () => {
         />
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("pounds (lb)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -147,7 +142,6 @@ const ListMeasurements = () => {
         />
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("ounces (℥)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -160,7 +154,6 @@ const ListMeasurements = () => {
         />
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("stones (st)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -199,7 +192,6 @@ const ListMeasurements = () => {
       >
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("centimeters (cm)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -212,7 +204,6 @@ const ListMeasurements = () => {
         />
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("millimeters (mm)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -225,7 +216,6 @@ const ListMeasurements = () => {
         />
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("inches (in)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -264,7 +254,6 @@ const ListMeasurements = () => {
       >
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("meters per second (m/s)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -278,7 +267,6 @@ const ListMeasurements = () => {
 
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("miles per hour (mph)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -291,7 +279,6 @@ const ListMeasurements = () => {
         />
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("kilometers per hour (km/h)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -304,7 +291,6 @@ const ListMeasurements = () => {
         />
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("knots (kn)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -343,7 +329,6 @@ const ListMeasurements = () => {
       >
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("per second (p/s)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -357,7 +342,6 @@ const ListMeasurements = () => {
 
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("per minute (p/m)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>
@@ -370,7 +354,6 @@ const ListMeasurements = () => {
         />
         <List.Item
           style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-          theme={{ colors: { background: "blue" } }}
           title={userViewModel.i18n.t("per hour (p/h)")}
           titleStyle={theme.fonts.bodyLarge}
           onPress={() =>

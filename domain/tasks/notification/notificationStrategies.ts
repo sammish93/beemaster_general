@@ -1,7 +1,7 @@
 import { Hive, User } from "@/models";
 import { NotificationType } from "@/constants/Notifications";
 import { sendNotification } from "./sendNotification";
-import { areTemperaturesConsistentlyWarm, doesHiveWeightIncreaseSignificantly, isHumidityChangeDrastic, isSnowForecast, isTemperatureChangeDrastic, isWarmerEachDayInSpring, doesHiveWeightDecreaseInEarlySpring, doesHiveWeightDecreaseInAutumn,createBeekeepingReminder, isWarmDryLowWindDay,isWarmDryLowWindDayBetweenSummerAndEarlyAutumn } from "@/domain/notificationFunctions";
+import { areTemperaturesConsistentlyWarm, doesHiveWeightIncreaseSignificantly, isSnowForecast, isWarmerEachDayInSpring, doesHiveWeightDecreaseInEarlySpring, doesHiveWeightDecreaseInAutumn } from "@/domain/notificationFunctions";
 import { getDailyHumidityData, getDailyTemperatureData, getDailyWeatherConditionsFromHourly, getWeatherConditions, getWeeklyTemperatureData } from "../weather/weatherDataProcessor";
 import { createNotificationObject, logMessage } from "./notificationHelpers";
 import { WeatherData } from "@/models/weatherModel";
@@ -67,7 +67,7 @@ export const notificationStrategies = {
         }        
 
         const weeklyTemperatures = getWeeklyTemperatureData(weatherData.weeklyForecast);
-        if (areTemperaturesConsistentlyWarm(weeklyTemperatures, weeklyTemperatures.length)) {
+        if (areTemperaturesConsistentlyWarm(weeklyTemperatures)) {
             logMessage('warm trend', user, hive);
             
             const message = `Its getting warm around ${hive.hiveName}. Consider expanding the hive.`;
