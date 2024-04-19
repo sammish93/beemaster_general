@@ -377,5 +377,6 @@
 "reset": "Nullstill",
 "select a month": "Velg en måned.",
 "select a month without full stop": "Velg en måned",
-"choose date range": "Velg datoer"
+"choose date range": "Velg datoer",
+"notification param error message": "Noen av parameterne dine er ugyldige. Ugyldige parametere er uthevet."
 }

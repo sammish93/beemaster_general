@@ -377,5 +377,6 @@
   "reset": "Reset",
   "select a month": "Select a month.",
   "select a month without full stop": "Select a month",
-  "choose date range": "Choose date range"
+  "choose date range": "Choose date range",
+  "notification param error message": "Some of your parameters are invalid. Invalid parameters are highlighted."
 }
