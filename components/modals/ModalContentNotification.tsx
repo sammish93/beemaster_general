@@ -13,7 +13,7 @@ import { MobXProviderContext } from "mobx-react";
 import DatePickerModal from "./DatePickerModal";
 import { VerticalSpacer } from "../Spacers";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import { ScrollView, View } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import { NotificationType } from "@/constants/Notifications";
 import locales from "@/constants/localisation/calendar";
 import Toast from "react-native-toast-message";
@@ -62,6 +62,7 @@ const ModalContent = (props: ModalContentProps) => {
 
   const [errorValidationMessage, setIsErrorValidationMessage] =
     useState<string>("");
+  const [isValid, setValid] = useState<boolean>(false);
 
   //Thresholds weights
   const [thresholdWeightDecreaseInAutumn, setThresholdWeightDecreaseInAutumn] =
@@ -333,6 +334,7 @@ const ModalContent = (props: ModalContentProps) => {
           isAutumnEndMonthValid
         ) {
           setIsErrorValidationMessage("");
+          setValid(true);
 
           userViewModel.setThresholdWindSpeedStrong(
             convertWindSpeedToDbFormat(
@@ -395,6 +397,7 @@ const ModalContent = (props: ModalContentProps) => {
           isEarlySummerEndMonthValid
         ) {
           setIsErrorValidationMessage("");
+          setValid(true);
 
           userViewModel.setThresholdWeightDecrease(
             convertWeightToDbFormat(
@@ -449,6 +452,7 @@ const ModalContent = (props: ModalContentProps) => {
           isSpringEndMonthValid
         ) {
           setIsErrorValidationMessage("");
+          setValid(true);
 
           userViewModel.setThresholdWeightDecreaseEarlySpring(
             thresholdWeightDecreaseEarlySpring
@@ -465,7 +469,7 @@ const ModalContent = (props: ModalContentProps) => {
           userViewModel.setEarlyWinterMonths(earlyWinterMonths);
           userViewModel.setEarlyWinterStart(earlyWinterStart);
           userViewModel.setWinterStart(winterStart);
-          userViewModel.thresholdTemperatureMin(
+          userViewModel.setThresholdTemperatureMin(
             convertTempToDbFormat(
               Number(thresholdTemperatureMin),
               userViewModel.temperaturePreference
@@ -513,6 +517,7 @@ const ModalContent = (props: ModalContentProps) => {
           isSummerEndMonthValid
         ) {
           setIsErrorValidationMessage("");
+          setValid(true);
 
           userViewModel.setThresholdTemperatureMax(
             convertTempToDbFormat(
@@ -567,6 +572,7 @@ const ModalContent = (props: ModalContentProps) => {
           isSpringEndMonthValid
         ) {
           setIsErrorValidationMessage("");
+          setValid(true);
 
           userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
           userViewModel.setAutumnEndMonth(autumnEndMonth);
@@ -613,6 +619,7 @@ const ModalContent = (props: ModalContentProps) => {
           isSummerStartMonthValid
         ) {
           setIsErrorValidationMessage("");
+          setValid(true);
 
           userViewModel.setThresholdWeightIncrease(
             convertWeightToDbFormat(
@@ -661,6 +668,7 @@ const ModalContent = (props: ModalContentProps) => {
           isEarlyWinterEndValid
         ) {
           setIsErrorValidationMessage("");
+          setValid(true);
 
           userViewModel.setThresholdMinTempInHive(
             convertTempToDbFormat(
@@ -677,7 +685,7 @@ const ModalContent = (props: ModalContentProps) => {
 
           userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
           userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
-          userViewModel.earlySpringMonths(earlySpringMonths);
+          userViewModel.setEarlySpringMonths(earlySpringMonths);
           userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
           userViewModel.setThresholdTemperatureMin(thresholdTemperatureMin);
 
@@ -706,6 +714,8 @@ const ModalContent = (props: ModalContentProps) => {
   };
 
   const handleSave = () => {
+    setValid(false);
+
     if (parameterName !== undefined) {
       const action = getSaveAction(parameterName);
       if (action) {
@@ -716,15 +726,15 @@ const ModalContent = (props: ModalContentProps) => {
     } else {
       console.log("parameterName is undefined");
     }
+  };
 
-    if (
-      errorValidationMessage != "" &&
-      errorValidationMessage !=
-        userViewModel.i18n.t("notification param error message")
-    ) {
+  // Since changing a state is asynchronous it's best to close the modal via an useEffect, otherwise
+  // it sometimes doesn't trigger and requires 2 button presses.
+  useEffect(() => {
+    if (isValid) {
       props.onClose();
     }
-  };
+  }, [isValid]);
 
   //One month
   const [datePickerVisible, setDatePickerVisible] = useState(false);
@@ -982,59 +992,49 @@ const ModalContent = (props: ModalContentProps) => {
               )}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn months")}
-              value={autumnMonths
-                .map((date) =>
-                  date.toLocaleDateString(userViewModel.i18n.locale)
-                )
-                .join(", ")}
-              error={!isAutumnMonthsValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
-              onPress={() => openCalendarModal("autumnMonths")}
-            >
-              {userViewModel.i18n.t("set autumn months")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early winter months")}
-              value={earlyWinterMonths
-                .map((date) =>
-                  date.toLocaleDateString(userViewModel.i18n.locale)
-                )
-                .join(", ")}
-              error={!isEarlyWinterMonthsValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity onPress={() => openCalendarModal("autumnMonths")}>
+              <TextInput
+                label={userViewModel.i18n.t("autumn months")}
+                value={autumnMonths
+                  .map((date) =>
+                    date.toLocaleDateString(userViewModel.i18n.locale)
+                  )
+                  .join(", ")}
+                error={!isAutumnMonthsValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => openCalendarModal("earlyWinterMonths")}
             >
-              {userViewModel.i18n.t("set early winter months")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring months")}
-              value={earlySpringMonths
-                .map((date) =>
-                  date.toLocaleDateString(userViewModel.i18n.locale)
-                )
-                .join(", ")}
-              error={!isEarlySpringMonthsValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early winter months")}
+                value={earlyWinterMonths
+                  .map((date) =>
+                    date.toLocaleDateString(userViewModel.i18n.locale)
+                  )
+                  .join(", ")}
+                error={!isEarlyWinterMonthsValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => openCalendarModal("earlySpringMonths")}
             >
-              {userViewModel.i18n.t("set early spring months")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early spring months")}
+                value={earlySpringMonths
+                  .map((date) =>
+                    date.toLocaleDateString(userViewModel.i18n.locale)
+                  )
+                  .join(", ")}
+                error={!isEarlySpringMonthsValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1045,45 +1045,38 @@ const ModalContent = (props: ModalContentProps) => {
               )}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn start month")}
-              value={autumnStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isAutumnStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set autumn start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isAutumnEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("autumn start month")}
+                value={autumnStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set autumn end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("autumn end month")}
+                value={autumnEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1125,45 +1118,38 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlySpringStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set early spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isAutumnEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early spring start month")}
+                value={earlySpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set autumn end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("autumn end month")}
+                value={autumnEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1187,23 +1173,21 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("winter start month")}
-              value={winterStart.toLocaleDateString(userViewModel.i18n.locale)}
-              error={!isWinterStartValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("winterStart");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set winter start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("winter start month")}
+                value={winterStart.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isWinterStartValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1227,23 +1211,19 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("winter end month")}
-              value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
-              error={!isWinterEndValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("winterEnd");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set winter end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("winter end month")}
+                value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
+                error={!isWinterEndValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1252,25 +1232,21 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is early winter starting")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early winter start month")}
-              value={earlyWinterStart.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlyWinterStartValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlyWinterStart");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set early winter start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early winter start month")}
+                value={earlyWinterStart.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlyWinterStartValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1279,45 +1255,38 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is currently spring season")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("spring start month")}
-              value={springStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSpringStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("spring end month")}
-              value={springEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSpringEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("spring start month")}
+                value={springStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set spring end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("spring end month")}
+                value={springEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
           </View>
         );
 
@@ -1330,45 +1299,38 @@ const ModalContent = (props: ModalContentProps) => {
               )}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("late spring start month")}
-              value={lateSpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isLateSpringStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("lateSpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set late spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early summer start month")}
-              value={earlySummerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlySummerStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("late spring start month")}
+                value={lateSpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isLateSpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set early summer start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early summer start month")}
+                value={earlySummerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1507,45 +1469,38 @@ const ModalContent = (props: ModalContentProps) => {
               )}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("late spring start month")}
-              value={lateSpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isLateSpringStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("lateSpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set late spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early summer end month")}
-              value={earlySummerEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlySummerEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("late spring start month")}
+                value={lateSpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isLateSpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set early summer end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early summer end month")}
+                value={earlySummerEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySummerEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
           </View>
         );
 
@@ -1589,43 +1544,38 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early autumn month")}
-              value={earlyAutumnMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlyAutumnMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlyAutumnMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early autumn month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSummerStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early autumn month")}
+                value={earlyAutumnMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlyAutumnMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("summer start month")}
+                value={summerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1667,44 +1617,38 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlySpringStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isAutumnEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early spring start month")}
+                value={earlySpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set autumn end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("autumn end month")}
+                value={autumnEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1779,43 +1723,38 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for summer season")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSummerStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("summer end month")}
-              value={summerEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSummerEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("summer start month")}
+                value={summerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("summer end month")}
+                value={summerEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
           </View>
         );
 
@@ -1859,43 +1798,38 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlySpringStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isAutumnEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early spring start month")}
+                value={earlySpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set autumn end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("autumn end month")}
+                value={autumnEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1937,43 +1871,38 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSummerStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early autumn month")}
-              value={earlyAutumnMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlyAutumnMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("summer start month")}
+                value={summerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlyAutumnMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early autumn month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early autumn month")}
+                value={earlyAutumnMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlyAutumnMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1982,24 +1911,21 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is early summer starting")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early summer start month")}
-              value={earlySummerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlySummerStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early summer start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early summer start month")}
+                value={earlySummerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -2008,43 +1934,38 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert to check if it's spring")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("spring start month")}
-              value={springStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSpringStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("spring end month")}
-              value={springEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSpringEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("spring start month")}
+                value={springStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set spring end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("spring end month")}
+                value={springEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
           </View>
         );
 
@@ -2143,24 +2064,21 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is early summer starting")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early summer start month")}
-              value={earlySummerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlySummerStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early summer start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early summer start month")}
+                value={earlySummerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -2169,43 +2087,38 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is spring season")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("spring start month")}
-              value={springStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSpringStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("spring end month")}
-              value={springEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSpringEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("spring start month")}
+                value={springStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set spring end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("spring end month")}
+                value={springEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -2214,43 +2127,38 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for summer season")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSummerStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("summer end month")}
-              value={summerEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isSummerEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("summer start month")}
+                value={summerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("summer end month")}
+                value={summerEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
           </View>
         );
 
@@ -2403,24 +2311,21 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is early winter ending")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early winter end month")}
-              value={earlyWinterEnd.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlyWinterEndValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlyWinterEnd");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early winter end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early winter end month")}
+                value={earlyWinterEnd.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlyWinterEndValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -2429,22 +2334,19 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is winter ending")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("winter end month")}
-              value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
-              error={!isWinterEndValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("winterEnd");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set winter end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("winter end month")}
+                value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
+                error={!isWinterEndValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -2496,43 +2398,38 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlySpringStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring end month")}
-              value={earlySpringEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isEarlySpringEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early spring start month")}
+                value={earlySpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early spring end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early spring end month")}
+                value={earlySpringEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySpringEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -2559,43 +2456,38 @@ const ModalContent = (props: ModalContentProps) => {
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn start month")}
-              value={autumnStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isAutumnStartMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set autumn start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              error={!isAutumnEndMonthValid}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("autumn start month")}
+                value={autumnStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set autumn end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("autumn end month")}
+                value={autumnEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
