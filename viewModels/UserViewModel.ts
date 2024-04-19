@@ -316,19 +316,6 @@ class UserViewModel {
     this.emailNotifications = !this.emailNotifications
   }
 
-  @action signInWithGoogleWeb = async () => {
-    const provider = new GoogleAuthProvider()
-    provider.setCustomParameters({
-      prompt: "select_account",
-    })
-    try {
-      console.log("signin with web")
-      const result = await signInWithPopup(auth, provider)
-    } catch (error) {
-      console.error("Error signing in with Google: ", error)
-    }
-  }
-
   // TODO DB - These will all have to be in the DB eventually.
 
   //Weight
@@ -464,8 +451,19 @@ class UserViewModel {
     this.earlyWinterEnd = value
   }
 
-  // Clears all the data in this view model.
-  // Useful for when a user logs out.
+  @action signInWithGoogleWeb = async () => {
+    const provider = new GoogleAuthProvider()
+    provider.setCustomParameters({
+      prompt: "select_account",
+    })
+    try {
+      console.log("signin with web")
+      const result = await signInWithPopup(auth, provider)
+    } catch (error) {
+      console.error("Error signing in with Google: ", error)
+    }
+  }
+
   @action signInWithGoogleNative = async () => {
     if (Platform.OS !== "web") {
       const { GoogleSignin } = await import(
@@ -591,7 +589,34 @@ class UserViewModel {
   @action signInAnonymously = async () => {
     try {
       const result = await signInAnonymously(auth)
-      this.setUserId(result.user.uid)
+      const user = result.user
+
+      if (user) {
+        const userRef = doc(db, "users", user.uid)
+        const docSnap = await getDoc(userRef)
+        if (!docSnap.exists()) {
+          const newUser = {
+            id: user.uid,
+            email: user.email,
+            isAnonymous: false,
+            mobileNr: null,
+            notificationPreference: notificationPreferences,
+            notificationTypePreference: notificationTypePreferences,
+            preferences: {
+              country: this.currentCountry,
+              language: this.currentLanguage,
+              theme: this.theme,
+            },
+            simplifiedView: true,
+            gdprConsent: this.gdprConsent,
+            filters: [],
+          }
+          await this.createUserDocument(newUser)
+          console.log("New user document created for anonymous.")
+        } else {
+          console.log("Existing anonymous user logged in.")
+        }
+      }
     } catch (error) {
       console.error("Error signing in anonymously: ", error)
     }

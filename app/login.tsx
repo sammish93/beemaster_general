@@ -239,7 +239,7 @@ const LoginScreen = () => {
             <Button
               icon="incognito"
               mode="contained"
-              onPress={handleAnonymousSignIn}
+              onPress={() => handleAuthProcess("anonymous")}
             >
               Login Anonymously
             </Button>
