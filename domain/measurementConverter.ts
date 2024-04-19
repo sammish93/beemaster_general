@@ -103,7 +103,7 @@ export const convertBeeCountToDbFormat = (count: number, userPreference: BeeCoun
       }
 }
 
-export const convertTemperatureFromDbFormat = (temperature: number, userPreference: TemperatureMeasurement): number => {
+export const convertTempFromDbFormat = (temperature: number, userPreference: TemperatureMeasurement): number => {
     switch (userPreference) {
         case TemperatureMeasurement.Fahrenheit:
             return (temperature * 9/5) + 32;

@@ -24,9 +24,13 @@ import MonthModal from "./MonthModal";
 import { isValidString } from "@/domain/validation/stringValidation";
 import { isValidNumber } from "@/domain/validation/numberValidation";
 import {
+  convertBeeCountFromDbFormat,
   convertBeeCountToDbFormat,
+  convertTempFromDbFormat,
   convertTempToDbFormat,
+  convertWeightFromDbFormat,
   convertWeightToDbFormat,
+  convertWindSpeedFromDbFormat,
   convertWindSpeedToDbFormat,
 } from "@/domain/measurementConverter";
 
@@ -61,7 +65,12 @@ const ModalContent = (props: ModalContentProps) => {
 
   //Thresholds weights
   const [thresholdWeightDecreaseInAutumn, setThresholdWeightDecreaseInAutumn] =
-    useState<string>(userViewModel.getThresholdWeightDecreaseInAutumn());
+    useState<string>(
+      convertWeightFromDbFormat(
+        userViewModel.getThresholdWeightDecreaseInAutumn(),
+        userViewModel.weightPreference
+      ).toString()
+    );
   const [
     isThresholdWeightDecreaseInAutumnValid,
     setIsThresholdWeightDecreaseInAutumnValid,
@@ -69,17 +78,32 @@ const ModalContent = (props: ModalContentProps) => {
   const [
     thresholdWeightDecreaseEarlySpring,
     setThresholdWeightDecreaseEarlySpring,
-  ] = useState<string>(userViewModel.getThresholdWeightDecreaseEarlySpring());
+  ] = useState<string>(
+    convertWeightFromDbFormat(
+      userViewModel.getThresholdWeightDecreaseEarlySpring(),
+      userViewModel.weightPreference
+    ).toString()
+  );
   const [
     isThresholdWeightDecreaseEarlySpringValid,
     setIsThresholdWeightDecreaseEarlySpringValid,
   ] = useState<boolean>(true);
   const [thresholdWeightDecrease, setThresholdWeightDecrease] =
-    useState<string>(userViewModel.getThresholdWeightDecrease());
+    useState<string>(
+      convertWeightFromDbFormat(
+        userViewModel.getThresholdWeightDecrease(),
+        userViewModel.weightPreference
+      ).toString()
+    );
   const [isThresholdWeightDecreaseValid, setIsThresholdWeightDecreaseValid] =
     useState<boolean>(true);
   const [thresholdWeightIncrease, setThresholdWeightIncrease] =
-    useState<string>(userViewModel.getThresholdWeightIncrease());
+    useState<string>(
+      convertWeightFromDbFormat(
+        userViewModel.getThresholdWeightIncrease(),
+        userViewModel.weightPreference
+      ).toString()
+    );
   const [isThresholdWeightIncreaseValid, setIsThresholdWeightIncreaseValid] =
     useState<boolean>(true);
   const [productionPeriodDays, setProductionPeriodDays] = useState<string>(
@@ -96,49 +120,84 @@ const ModalContent = (props: ModalContentProps) => {
 
   //Exit
   const [thresholdExitCountHigh, setThresholdExitCountHigh] = useState<string>(
-    userViewModel.getThresholdExitCountHigh()
+    convertBeeCountFromDbFormat(
+      userViewModel.getThresholdExitCountHigh(),
+      userViewModel.beeCountPreference
+    ).toString()
   );
   const [isThresholdExitCountHighValid, setIsThresholdExitCountHighValid] =
     useState<boolean>(true);
   const [thresholdExitCountLow, setThresholdExitCountLow] = useState<string>(
-    userViewModel.getThresholdExitCountLow()
+    convertBeeCountFromDbFormat(
+      userViewModel.getThresholdExitCountLow(),
+      userViewModel.beeCountPreference
+    ).toString()
   );
   const [isThresholdExitCountLowValid, setIsThresholdExitCountLowValid] =
     useState<boolean>(true);
 
   //Temp
   const [thresholdTemperatureOptimal, setThresholdTemperatureOptimal] =
-    useState<string>(userViewModel.getThresholdTemperatureOptimal());
+    useState<string>(
+      convertTempFromDbFormat(
+        userViewModel.getThresholdTemperatureOptimal(),
+        userViewModel.temperaturePreference
+      ).toString()
+    );
   const [
     isThresholdTemperatureOptimalValid,
     setIsThresholdTemperatureOptimalValid,
   ] = useState<boolean>(true);
   const [thresholdTemperatureMax, setThresholdTemperatureMax] =
-    useState<string>(userViewModel.getThresholdTemperatureMax());
+    useState<string>(
+      convertTempFromDbFormat(
+        userViewModel.getThresholdTemperatureMax(),
+        userViewModel.temperaturePreference
+      ).toString()
+    );
   const [isThresholdTemperatureMaxValid, setIsThresholdTemperatureMaxValid] =
     useState<boolean>(true);
   const [thresholdTemperatureMin, setThresholdTemperatureMin] =
-    useState<string>(userViewModel.getThresholdTemperatureMin());
+    useState<string>(
+      convertTempFromDbFormat(
+        userViewModel.getThresholdTemperatureMin(),
+        userViewModel.temperaturePreference
+      ).toString()
+    );
   const [isThresholdTemperatureMinValid, setIsThresholdTemperatureMinValid] =
     useState<boolean>(true);
   const [thresholdMinTempInHive, setThresholdMinTempInHive] = useState<string>(
-    userViewModel.getThresholdMinTempInHive()
+    convertTempFromDbFormat(
+      userViewModel.getThresholdMinTempInHive(),
+      userViewModel.temperaturePreference
+    ).toString()
   );
   const [isThresholdMinTempInHiveValid, setIsThresholdMinTempInHiveValid] =
     useState<boolean>(true);
   const [thresholdMaxTempInHive, setThresholdMaxTempInHive] = useState<string>(
-    userViewModel.getThresholdMaxTempInHive()
+    convertTempFromDbFormat(
+      userViewModel.getThresholdMaxTempInHive(),
+      userViewModel.temperaturePreference
+    ).toString()
   );
   const [isThresholdMaxTempInHiveValid, setIsThresholdMaxTempInHiveValid] =
     useState<boolean>(true);
 
   //Windspeed
   const [thresholdWindSpeedStrong, setThresholdWindSpeedStrong] =
-    useState<string>(userViewModel.getThresholdWindSpeedStrong());
+    useState<string>(
+      convertWindSpeedFromDbFormat(
+        userViewModel.getThresholdWindSpeedStrong(),
+        userViewModel.windSpeedPreference
+      ).toString()
+    );
   const [isThresholdWindSpeedStrongValid, setIsThresholdWindSpeedStrongValid] =
     useState<boolean>(true);
   const [thresholdWindSpeedLow, setThresholdWindSpeedLow] = useState<string>(
-    userViewModel.getThresholdWindSpeedLow()
+    convertWindSpeedFromDbFormat(
+      userViewModel.getThresholdWindSpeedLow(),
+      userViewModel.windSpeedPreference
+    ).toString()
   );
   const [isThresholdWindSpeedLowValid, setIsThresholdWindSpeedLowValid] =
     useState<boolean>(true);
