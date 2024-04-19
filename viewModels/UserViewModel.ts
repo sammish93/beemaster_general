@@ -459,6 +459,34 @@ class UserViewModel {
     try {
       console.log("signin with web")
       const result = await signInWithPopup(auth, provider)
+      const user = result.user
+
+      if (user) {
+        const userRef = doc(db, "users", user.uid)
+        const docSnap = await getDoc(userRef)
+        if (!docSnap.exists()) {
+          const newUser = {
+            id: user.uid,
+            email: user.email,
+            isAnonymous: false,
+            mobileNr: null,
+            notificationPreference: notificationPreferences,
+            notificationTypePreference: notificationTypePreferences,
+            preferences: {
+              country: this.currentCountry,
+              language: this.currentLanguage,
+              theme: this.theme,
+            },
+            simplifiedView: true,
+            gdprConsent: this.gdprConsent,
+            filters: [],
+          }
+          await this.createUserDocument(newUser)
+          console.log("New user document created for Google sign-in.")
+        } else {
+          console.log("Existing Google user logged in.")
+        }
+      }
     } catch (error) {
       console.error("Error signing in with Google: ", error)
     }
