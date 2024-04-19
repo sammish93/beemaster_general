@@ -913,12 +913,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdWindSpeedLow,
+                  setIsThresholdWindSpeedLowValid
                 )
               }
               keyboardType="numeric"
@@ -931,13 +930,11 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdTemperatureOptimal.toString()}
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdTemperatureOptimal,
+                  setIsThresholdTemperatureOptimalValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -994,12 +991,12 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
               error={!isThresholdTemperatureMinValid}
-              onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdTemperatureMin,
+                  setIsThresholdTemperatureMinValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -1034,12 +1031,12 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
               error={!isThresholdTemperatureMinValid}
-              onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdTemperatureMin,
+                  setIsThresholdTemperatureMinValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -1203,12 +1200,11 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               value={thresholdWeightDecrease.toString()}
               error={!isThresholdWeightDecreaseValid}
-              onChangeText={(text) => setThresholdWeightDecrease(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdWeightDecrease,
+                  setIsThresholdWeightDecreaseValid
                 )
               }
               keyboardType="numeric"
@@ -1220,12 +1216,11 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               value={productionPeriodDays.toString()}
               error={!isProductionPeriodDaysValid}
-              onChangeText={(text) => setProductionPeriodDays(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setProductionPeriodDays,
+                  setIsProductionPeriodDaysValid
                 )
               }
               keyboardType="numeric"
@@ -1244,12 +1239,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold for high exit count")}
               value={thresholdExitCountHigh.toString()}
               error={!isThresholdExitCountHighValid}
-              onChangeText={(text) => setThresholdExitCountHigh(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdExitCountHigh,
+                  setIsThresholdExitCountHighValid
                 )
               }
               keyboardType="numeric"
@@ -1268,12 +1262,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold for low exit count")}
               value={thresholdExitCountLow.toString()}
               error={!isThresholdExitCountLowValid}
-              onChangeText={(text) => setThresholdExitCountLow(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdExitCountLow,
+                  setIsThresholdExitCountLowValid
                 )
               }
               keyboardType="numeric"
@@ -1294,12 +1287,11 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               value={productionPeriodDays.toString()}
               error={!isProductionPeriodDaysValid}
-              onChangeText={(text) => setProductionPeriodDays(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setProductionPeriodDays,
+                  setIsProductionPeriodDaysValid
                 )
               }
               keyboardType="numeric"
@@ -1312,13 +1304,10 @@ const ModalContent = (props: ModalContentProps) => {
               value={productionPeriodThreshold.toString()}
               error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
-                setProductionPeriodThreshold(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setProductionPeriodThreshold,
+                  setIsProductionPeriodThresholdValid
                 )
               }
               keyboardType="numeric"
@@ -1388,12 +1377,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdWindSpeedLow,
+                  setIsThresholdWindSpeedLowValid
                 )
               }
               keyboardType="numeric"
@@ -1406,13 +1394,11 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdTemperatureOptimal.toString()}
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdTemperatureOptimal,
+                  setIsThresholdTemperatureOptimalValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -1469,12 +1455,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdWindSpeedLow,
+                  setIsThresholdWindSpeedLowValid
                 )
               }
               keyboardType="numeric"
@@ -1487,13 +1472,11 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdTemperatureOptimal.toString()}
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdTemperatureOptimal,
+                  setIsThresholdTemperatureOptimalValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -1553,12 +1536,11 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               value={thresholdWeightIncrease.toString()}
               error={!isThresholdWeightIncreaseValid}
-              onChangeText={(text) => setThresholdWeightIncrease(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdWeightIncrease,
+                  setIsThresholdWeightIncreaseValid
                 )
               }
               keyboardType="numeric"
@@ -1579,12 +1561,11 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               value={productionPeriodDays.toString()}
               error={!isProductionPeriodDaysValid}
-              onChangeText={(text) => setProductionPeriodDays(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setProductionPeriodDays,
+                  setIsProductionPeriodDaysValid
                 )
               }
               keyboardType="numeric"
@@ -1597,13 +1578,10 @@ const ModalContent = (props: ModalContentProps) => {
               value={productionPeriodThreshold.toString()}
               error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
-                setProductionPeriodThreshold(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setProductionPeriodThreshold,
+                  setIsProductionPeriodThresholdValid
                 )
               }
               keyboardType="numeric"
@@ -1669,12 +1647,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdWindSpeedLow,
+                  setIsThresholdWindSpeedLowValid
                 )
               }
               keyboardType="numeric"
@@ -1687,13 +1664,11 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdTemperatureOptimal.toString()}
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdTemperatureOptimal,
+                  setIsThresholdTemperatureOptimalValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -1750,12 +1725,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdWindSpeedLow,
+                  setIsThresholdWindSpeedLowValid
                 )
               }
               keyboardType="numeric"
@@ -1768,13 +1742,11 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdTemperatureOptimal.toString()}
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdTemperatureOptimal,
+                  setIsThresholdTemperatureOptimalValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -1906,12 +1878,11 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               value={thresholdWeightIncrease.toString()}
               error={!isThresholdWeightIncreaseValid}
-              onChangeText={(text) => setThresholdWeightIncrease(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdWeightIncrease,
+                  setIsThresholdWeightIncreaseValid
                 )
               }
               keyboardType="numeric"
@@ -1932,12 +1903,11 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               value={productionPeriodDays.toString()}
               error={!isProductionPeriodDaysValid}
-              onChangeText={(text) => setProductionPeriodDays(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setProductionPeriodDays,
+                  setIsProductionPeriodDaysValid
                 )
               }
               keyboardType="numeric"
@@ -1950,13 +1920,10 @@ const ModalContent = (props: ModalContentProps) => {
               value={productionPeriodThreshold.toString()}
               error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
-                setProductionPeriodThreshold(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setProductionPeriodThreshold,
+                  setIsProductionPeriodThresholdValid
                 )
               }
               keyboardType="numeric"
@@ -1973,12 +1940,12 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
               error={!isThresholdTemperatureMaxValid}
-              onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdTemperatureMax,
+                  setIsThresholdTemperatureMaxValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -2117,12 +2084,12 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               value={thresholdMaxTempInHive.toString()}
               error={!isThresholdMaxTempInHiveValid}
-              onChangeText={(text) => setThresholdMaxTempInHive(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdMaxTempInHive,
+                  setIsThresholdMaxTempInHiveValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -2143,12 +2110,12 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               value={thresholdMinTempInHive.toString()}
               error={!isThresholdMinTempInHiveValid}
-              onChangeText={(text) => setThresholdMinTempInHive(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdMinTempInHive,
+                  setIsThresholdMinTempInHiveValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -2165,12 +2132,12 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
               error={!isThresholdTemperatureMaxValid}
-              onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdTemperatureMax,
+                  setIsThresholdTemperatureMaxValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -2187,12 +2154,12 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
               error={!isThresholdTemperatureMinValid}
-              onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdTemperatureMin,
+                  setIsThresholdTemperatureMinValid,
+                  -99
                 )
               }
               keyboardType="numeric"
@@ -2211,12 +2178,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("threshold max humidity")}
               value={thresholdHumidityMax.toString()}
               error={!isThresholdHumidityMaxValid}
-              onChangeText={(text) => setThresholdHumidityMax(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdHumidityMax,
+                  setIsThresholdHumidityMaxValid
                 )
               }
               keyboardType="numeric"
@@ -2235,12 +2201,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("threshold min humidity")}
               value={thresholdHumidityMin.toString()}
               error={!isThresholdHumidityMinValid}
-              onChangeText={(text) => setThresholdHumidityMin(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdHumidityMin,
+                  setIsThresholdHumidityMinValid
                 )
               }
               keyboardType="numeric"
@@ -2309,12 +2274,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold for high exit count")}
               value={thresholdExitCountHigh.toString()}
               error={!isThresholdExitCountHighValid}
-              onChangeText={(text) => setThresholdExitCountHigh(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdExitCountHigh,
+                  setIsThresholdExitCountHighValid
                 )
               }
               keyboardType="numeric"
@@ -2338,13 +2302,10 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdWeightDecreaseEarlySpring.toString()}
               error={!isThresholdWeightDecreaseEarlySpringValid}
               onChangeText={(text) =>
-                setThresholdWeightDecreaseEarlySpring(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdWeightDecreaseEarlySpring,
+                  setIsThresholdWeightDecreaseEarlySpringValid
                 )
               }
               keyboardType="numeric"
@@ -2404,13 +2365,10 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdWeightDecreaseInAutumn.toString()}
               error={!isThresholdWeightDecreaseInAutumnValid}
               onChangeText={(text) =>
-                setThresholdWeightDecreaseInAutumn(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdWeightDecreaseInAutumn,
+                  setIsThresholdWeightDecreaseInAutumnValid
                 )
               }
               keyboardType="numeric"
@@ -2469,12 +2427,11 @@ const ModalContent = (props: ModalContentProps) => {
               )}
               value={productionPeriodDays.toString()}
               error={!isProductionPeriodDaysValid}
-              onChangeText={(text) => setProductionPeriodDays(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setProductionPeriodDays,
+                  setIsProductionPeriodDaysValid
                 )
               }
               keyboardType="numeric"
@@ -2487,13 +2444,10 @@ const ModalContent = (props: ModalContentProps) => {
               value={productionPeriodThreshold.toString()}
               error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
-                setProductionPeriodThreshold(Number(text))
-              }
-              onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setProductionPeriodThreshold,
+                  setIsProductionPeriodThresholdValid
                 )
               }
               keyboardType="numeric"
@@ -2512,12 +2466,11 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold for low exit count")}
               value={thresholdExitCountLow.toString()}
               error={!isThresholdExitCountLowValid}
-              onChangeText={(text) => setThresholdExitCountLow(Number(text))}
               onChangeText={(text) =>
                 handleModifyTextInput(
                   text,
-                  setThresholdWindSpeedStrong,
-                  setIsThresholdWindSpeedStrongValid
+                  setThresholdExitCountLow,
+                  setIsThresholdExitCountLowValid
                 )
               }
               keyboardType="numeric"
