@@ -23,6 +23,12 @@ import CalendarModal from "./CalendarModal";
 import MonthModal from "./MonthModal";
 import { isValidString } from "@/domain/validation/stringValidation";
 import { isValidNumber } from "@/domain/validation/numberValidation";
+import {
+  convertBeeCountToDbFormat,
+  convertTempToDbFormat,
+  convertWeightToDbFormat,
+  convertWindSpeedToDbFormat,
+} from "@/domain/measurementConverter";
 
 interface ModalContentProps {
   onClose: () => void;
@@ -269,8 +275,18 @@ const ModalContent = (props: ModalContentProps) => {
         ) {
           setIsErrorValidationMessage("");
 
-          userViewModel.setThresholdWindSpeedStrong(thresholdWindSpeedStrong);
-          userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
+          userViewModel.setThresholdWindSpeedStrong(
+            convertWindSpeedToDbFormat(
+              Number(thresholdWindSpeedStrong),
+              userViewModel.windSpeedPreference
+            )
+          );
+          userViewModel.setThresholdWindSpeedLow(
+            convertWindSpeedToDbFormat(
+              Number(thresholdWindSpeedLow),
+              userViewModel.windSpeedPreference
+            )
+          );
 
           userViewModel.setEarlyWinterMonths(earlyWinterMonths);
           userViewModel.setWinterStart(winterStart);
@@ -281,10 +297,23 @@ const ModalContent = (props: ModalContentProps) => {
           userViewModel.setEarlySpringMonths(earlySpringMonths);
           userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
 
-          userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-          userViewModel.setThresholdTemperatureMin(thresholdTemperatureMin);
+          userViewModel.setThresholdTemperatureMax(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMax),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setThresholdTemperatureMin(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMin),
+              userViewModel.temperaturePreference
+            )
+          );
           userViewModel.setThresholdTemperatureOptimal(
-            thresholdTemperatureOptimal
+            convertTempToDbFormat(
+              Number(thresholdTemperatureOptimal),
+              userViewModel.temperaturePreference
+            )
           );
 
           userViewModel.setAutumnMonths(autumnMonths);
@@ -308,11 +337,28 @@ const ModalContent = (props: ModalContentProps) => {
         ) {
           setIsErrorValidationMessage("");
 
-          userViewModel.setThresholdWeightDecrease(thresholdWeightDecrease);
-          userViewModel.setThresholdExitCountHigh(thresholdExitCountHigh);
-          userViewModel.setThresholdExitCountLow(thresholdExitCountLow);
-          userViewModel.setProductionPeriodDays(productionPeriodDays);
-          userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
+          userViewModel.setThresholdWeightDecrease(
+            convertWeightToDbFormat(
+              Number(thresholdWeightDecrease),
+              userViewModel.weightPreference
+            )
+          );
+          userViewModel.setThresholdExitCountHigh(
+            convertBeeCountToDbFormat(
+              Number(thresholdExitCountHigh),
+              userViewModel.beeCountPreference
+            )
+          );
+          userViewModel.setThresholdExitCountLow(
+            convertBeeCountToDbFormat(
+              Number(thresholdExitCountLow),
+              userViewModel.beeCountPreference
+            )
+          );
+          userViewModel.setProductionPeriodDays(Number(productionPeriodDays));
+          userViewModel.setProductionPeriodThreshold(
+            Number(productionPeriodThreshold)
+          );
           userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
           userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
         } else {
@@ -348,23 +394,43 @@ const ModalContent = (props: ModalContentProps) => {
           userViewModel.setThresholdWeightDecreaseEarlySpring(
             thresholdWeightDecreaseEarlySpring
           );
-          userViewModel.setThresholdWindSpeedStrong(thresholdWindSpeedStrong);
+          userViewModel.setThresholdWindSpeedStrong(
+            convertWindSpeedToDbFormat(
+              Number(thresholdWindSpeedStrong),
+              userViewModel.windSpeedPreference
+            )
+          );
           userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
           userViewModel.setEarlySpringEndMonth(earlySpringEndMonth);
           userViewModel.setEarlySpringMonths(earlySpringMonths);
           userViewModel.setEarlyWinterMonths(earlyWinterMonths);
           userViewModel.setEarlyWinterStart(earlyWinterStart);
           userViewModel.setWinterStart(winterStart);
-          userViewModel.thresholdTemperatureMin(thresholdTemperatureMin);
+          userViewModel.thresholdTemperatureMin(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMin),
+              userViewModel.temperaturePreference
+            )
+          );
           userViewModel.setThresholdWeightDecreaseInAutumn(
-            thresholdWeightDecreaseInAutumn
+            convertWeightToDbFormat(
+              Number(thresholdWeightDecreaseInAutumn),
+              userViewModel.weightPreference
+            )
           );
           userViewModel.setAutumnStartMonth(autumnStartMonth);
           userViewModel.setAutumnEndMonth(autumnEndMonth);
           userViewModel.setAutumnMonths(autumnMonths);
-          userViewModel.setProductionPeriodDays(productionPeriodDays);
-          userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
-          userViewModel.setThresholdExitCountLow(thresholdExitCountLow);
+          userViewModel.setProductionPeriodDays(Number(productionPeriodDays));
+          userViewModel.setProductionPeriodThreshold(
+            Number(productionPeriodThreshold)
+          );
+          userViewModel.setThresholdExitCountLow(
+            convertBeeCountToDbFormat(
+              Number(thresholdExitCountLow),
+              userViewModel.beeCountPreference
+            )
+          );
           userViewModel.setSpringStartMonth(springStartMonth);
           userViewModel.setSpringEndMonth(springEndMonth);
         } else {
@@ -389,17 +455,37 @@ const ModalContent = (props: ModalContentProps) => {
         ) {
           setIsErrorValidationMessage("");
 
-          userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-          userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
+          userViewModel.setThresholdTemperatureMax(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMax),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setThresholdWindSpeedLow(
+            convertWindSpeedToDbFormat(
+              Number(thresholdWindSpeedLow),
+              userViewModel.windSpeedPreference
+            )
+          );
           userViewModel.setSummerStartMonth(summerStartMonth);
           userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
           userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
           userViewModel.setAutumnEndMonth(autumnEndMonth);
-          userViewModel.setProductionPeriodDays(productionPeriodDays);
-          userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
-          userViewModel.setThresholdWeightIncrease(thresholdWeightIncrease);
+          userViewModel.setProductionPeriodDays(Number(productionPeriodDays));
+          userViewModel.setProductionPeriodThreshold(
+            Number(productionPeriodThreshold)
+          );
+          userViewModel.setThresholdWeightIncrease(
+            convertWeightToDbFormat(
+              Number(thresholdWeightIncrease),
+              userViewModel.weightPreference
+            )
+          );
           userViewModel.setThresholdTemperatureOptimal(
-            thresholdTemperatureOptimal
+            convertTempToDbFormat(
+              Number(thresholdTemperatureOptimal),
+              userViewModel.temperaturePreference
+            )
           );
           userViewModel.setSummerEndMonth(summerEndMonth);
         } else {
@@ -425,12 +511,25 @@ const ModalContent = (props: ModalContentProps) => {
 
           userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
           userViewModel.setAutumnEndMonth(autumnEndMonth);
-          userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
-          userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
+          userViewModel.setThresholdWindSpeedLow(
+            convertWindSpeedToDbFormat(
+              Number(thresholdWindSpeedLow),
+              userViewModel.windSpeedPreference
+            )
+          );
+          userViewModel.setThresholdTemperatureMax(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMax),
+              userViewModel.temperaturePreference
+            )
+          );
           userViewModel.setSummerStartMonth(summerStartMonth);
           userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
           userViewModel.setThresholdTemperatureOptimal(
-            thresholdTemperatureOptimal
+            convertTempToDbFormat(
+              Number(thresholdTemperatureOptimal),
+              userViewModel.temperaturePreference
+            )
           );
           userViewModel.setEarlySummerStartMonth(earlySummerStartMonth);
           userViewModel.setSpringStartMonth(springStartMonth);
@@ -456,10 +555,22 @@ const ModalContent = (props: ModalContentProps) => {
         ) {
           setIsErrorValidationMessage("");
 
-          userViewModel.setThresholdWeightIncrease(thresholdWeightIncrease);
-          userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-          userViewModel.setProductionPeriodDays(productionPeriodDays);
-          userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
+          userViewModel.setThresholdWeightIncrease(
+            convertWeightToDbFormat(
+              Number(thresholdWeightIncrease),
+              userViewModel.weightPreference
+            )
+          );
+          userViewModel.setThresholdTemperatureMax(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMax),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setProductionPeriodDays(Number(productionPeriodDays));
+          userViewModel.setProductionPeriodThreshold(
+            Number(productionPeriodThreshold)
+          );
           userViewModel.setEarlySummerStartMonth(earlySummerStartMonth);
           userViewModel.setSpringStartMonth(springStartMonth);
           userViewModel.setSpringEndMonth(springEndMonth);
@@ -492,8 +603,18 @@ const ModalContent = (props: ModalContentProps) => {
         ) {
           setIsErrorValidationMessage("");
 
-          userViewModel.setThresholdMinTempInHive(thresholdMinTempInHive);
-          userViewModel.setThresholdMaxTempInHive(thresholdMaxTempInHive);
+          userViewModel.setThresholdMinTempInHive(
+            convertTempToDbFormat(
+              Number(thresholdMinTempInHive),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setThresholdMaxTempInHive(
+            convertTempToDbFormat(
+              Number(thresholdMaxTempInHive),
+              userViewModel.temperaturePreference
+            )
+          );
 
           userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
           userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
@@ -501,9 +622,14 @@ const ModalContent = (props: ModalContentProps) => {
           userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
           userViewModel.setThresholdTemperatureMin(thresholdTemperatureMin);
 
-          userViewModel.setThresholdHumidityMax(thresholdHumidityMax);
-          userViewModel.setThresholdHumidityMin(thresholdHumidityMin);
-          userViewModel.setThresholdExitCountHigh(thresholdExitCountHigh);
+          userViewModel.setThresholdHumidityMax(Number(thresholdHumidityMax));
+          userViewModel.setThresholdHumidityMin(Number(thresholdHumidityMin));
+          userViewModel.setThresholdExitCountHigh(
+            convertBeeCountToDbFormat(
+              Number(thresholdExitCountHigh),
+              userViewModel.beeCountPreference
+            )
+          );
           userViewModel.setWinterEnd(winterEnd);
           userViewModel.setEarlyWinterMonths(earlyWinterMonths);
           userViewModel.setAutumnMonths(autumnMonths);
