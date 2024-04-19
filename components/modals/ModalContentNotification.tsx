@@ -21,6 +21,8 @@ import { toastCrossPlatform } from "../ToastCustom";
 import styles from "@/assets/styles";
 import CalendarModal from "./CalendarModal";
 import MonthModal from "./MonthModal";
+import { isValidString } from "@/domain/validation/stringValidation";
+import { isValidNumber } from "@/domain/validation/numberValidation";
 
 interface ModalContentProps {
   onClose: () => void;
@@ -53,193 +55,197 @@ const ModalContent = (props: ModalContentProps) => {
 
   //Thresholds weights
   const [thresholdWeightDecreaseInAutumn, setThresholdWeightDecreaseInAutumn] =
-    useState<number>(userViewModel.getThresholdWeightDecreaseInAutumn());
+    useState<string>(userViewModel.getThresholdWeightDecreaseInAutumn());
   const [
     isThresholdWeightDecreaseInAutumnValid,
     setIsThresholdWeightDecreaseInAutumnValid,
-  ] = useState<boolean>();
+  ] = useState<boolean>(true);
   const [
     thresholdWeightDecreaseEarlySpring,
     setThresholdWeightDecreaseEarlySpring,
-  ] = useState<number>(userViewModel.getThresholdWeightDecreaseEarlySpring());
+  ] = useState<string>(userViewModel.getThresholdWeightDecreaseEarlySpring());
   const [
     isThresholdWeightDecreaseEarlySpringValid,
     setIsThresholdWeightDecreaseEarlySpringValid,
-  ] = useState<boolean>();
+  ] = useState<boolean>(true);
   const [thresholdWeightDecrease, setThresholdWeightDecrease] =
-    useState<number>(userViewModel.getThresholdWeightDecrease());
+    useState<string>(userViewModel.getThresholdWeightDecrease());
   const [isThresholdWeightDecreaseValid, setIsThresholdWeightDecreaseValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [thresholdWeightIncrease, setThresholdWeightIncrease] =
-    useState<number>(userViewModel.getThresholdWeightIncrease());
+    useState<string>(userViewModel.getThresholdWeightIncrease());
   const [isThresholdWeightIncreaseValid, setIsThresholdWeightIncreaseValid] =
-    useState<boolean>();
-  const [productionPeriodDays, setProductionPeriodDays] = useState<number>(
+    useState<boolean>(true);
+  const [productionPeriodDays, setProductionPeriodDays] = useState<string>(
     userViewModel.getProductionPeriodDays()
   );
   const [isProductionPeriodDaysValid, setIsProductionPeriodDaysValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [productionPeriodThreshold, setProductionPeriodThreshold] =
-    useState<number>(userViewModel.getProductionPeriodThreshold());
+    useState<string>(userViewModel.getProductionPeriodThreshold());
   const [
     isProductionPeriodThresholdValid,
     setIsProductionPeriodThresholdValid,
-  ] = useState<boolean>();
+  ] = useState<boolean>(true);
 
   //Exit
-  const [thresholdExitCountHigh, setThresholdExitCountHigh] = useState<number>(
+  const [thresholdExitCountHigh, setThresholdExitCountHigh] = useState<string>(
     userViewModel.getThresholdExitCountHigh()
   );
   const [isThresholdExitCountHighValid, setIsThresholdExitCountHighValid] =
-    useState<boolean>();
-  const [thresholdExitCountLow, setThresholdExitCountLow] = useState<number>(
+    useState<boolean>(true);
+  const [thresholdExitCountLow, setThresholdExitCountLow] = useState<string>(
     userViewModel.getThresholdExitCountLow()
   );
   const [isThresholdExitCountLowValid, setIsThresholdExitCountLowValid] =
-    useState<boolean>();
+    useState<boolean>(true);
 
   //Temp
   const [thresholdTemperatureOptimal, setThresholdTemperatureOptimal] =
-    useState<number>(userViewModel.getThresholdTemperatureOptimal());
+    useState<string>(userViewModel.getThresholdTemperatureOptimal());
   const [
     isThresholdTemperatureOptimalValid,
     setIsThresholdTemperatureOptimalValid,
-  ] = useState<boolean>();
+  ] = useState<boolean>(true);
   const [thresholdTemperatureMax, setThresholdTemperatureMax] =
-    useState<number>(userViewModel.getThresholdTemperatureMax());
+    useState<string>(userViewModel.getThresholdTemperatureMax());
   const [isThresholdTemperatureMaxValid, setIsThresholdTemperatureMaxValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [thresholdTemperatureMin, setThresholdTemperatureMin] =
-    useState<number>(userViewModel.getThresholdTemperatureMin());
+    useState<string>(userViewModel.getThresholdTemperatureMin());
   const [isThresholdTemperatureMinValid, setIsThresholdTemperatureMinValid] =
-    useState<boolean>();
-  const [thresholdMinTempInHive, setThresholdMinTempInHive] = useState<number>(
+    useState<boolean>(true);
+  const [thresholdMinTempInHive, setThresholdMinTempInHive] = useState<string>(
     userViewModel.getThresholdMinTempInHive()
   );
   const [isThresholdMinTempInHiveValid, setIsThresholdMinTempInHiveValid] =
-    useState<boolean>();
-  const [thresholdMaxTempInHive, setThresholdMaxTempInHive] = useState<number>(
+    useState<boolean>(true);
+  const [thresholdMaxTempInHive, setThresholdMaxTempInHive] = useState<string>(
     userViewModel.getThresholdMaxTempInHive()
   );
   const [isThresholdMaxTempInHiveValid, setIsThresholdMaxTempInHiveValid] =
-    useState<boolean>();
+    useState<boolean>(true);
 
   //Windspeed
   const [thresholdWindSpeedStrong, setThresholdWindSpeedStrong] =
-    useState<number>(userViewModel.getThresholdWindSpeedStrong());
+    useState<string>(userViewModel.getThresholdWindSpeedStrong());
   const [isThresholdWindSpeedStrongValid, setIsThresholdWindSpeedStrongValid] =
-    useState<boolean>();
-  const [thresholdWindSpeedLow, setThresholdWindSpeedLow] = useState<number>(
+    useState<boolean>(true);
+  const [thresholdWindSpeedLow, setThresholdWindSpeedLow] = useState<string>(
     userViewModel.getThresholdWindSpeedLow()
   );
   const [isThresholdWindSpeedLowValid, setIsThresholdWindSpeedLowValid] =
-    useState<boolean>();
+    useState<boolean>(true);
 
   //Humidity
-  const [thresholdHumidityMax, setThresholdHumidityMax] = useState<number>(
+  const [thresholdHumidityMax, setThresholdHumidityMax] = useState<string>(
     userViewModel.getThresholdHumidityMax()
   );
   const [isThresholdHumidityMaxValid, setIsThresholdHumidityMaxValid] =
-    useState<boolean>();
-  const [thresholdHumidityMin, setThresholdHumidityMin] = useState<number>(
+    useState<boolean>(true);
+  const [thresholdHumidityMin, setThresholdHumidityMin] = useState<string>(
     userViewModel.getThresholdHumidityMin()
   );
   const [isThresholdHumidityMinValid, setIsThresholdHumidityMinValid] =
-    useState<boolean>();
+    useState<boolean>(true);
 
   //Spring
   const [earlySpringStartMonth, setEarlySpringStartMonth] = useState<Date>(
     userViewModel.getEarlySpringStartMonth()
   );
   const [isEarlySpringStartMonthValid, setIsEarlySpringStartMonthValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [earlySpringEndMonth, setEarlySpringEndMonth] = useState<Date>(
     userViewModel.getEarlySpringEndMonth()
   );
   const [isEarlySpringEndMonthValid, setIsEarlySpringEndMonthValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [earlySpringMonths, setEarlySpringMonths] = useState<Date[]>(
     userViewModel.getEarlySpringMonths()
   );
   const [isEarlySpringMonthsValid, setIsEarlySpringMonthsValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [lateSpringStartMonth, setLateSpringStartMonth] = useState<Date>(
     userViewModel.getLateSpringStartMonth()
   );
   const [isLateSpringStartMonthValid, setIsLateSpringStartMonthValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [springStartMonth, setSpringStartMonth] = useState<Date>(
     userViewModel.getSpringStartMonth()
   );
   const [isSpringStartMonthValid, setIsSpringStartMonthValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [springEndMonth, setSpringEndMonth] = useState<Date>(
     userViewModel.getSpringEndMonth()
   );
-  const [isSpringEndMonthValid, setIsSpringEndMonthValid] = useState<boolean>();
+  const [isSpringEndMonthValid, setIsSpringEndMonthValid] =
+    useState<boolean>(true);
 
   //Autumn
   const [autumnStartMonth, setAutumnStartMonth] = useState<Date>(
     userViewModel.getAutumnStartMonth()
   );
   const [isAutumnStartMonthValid, setIsAutumnStartMonthValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [autumnEndMonth, setAutumnEndMonth] = useState<Date>(
     userViewModel.getAutumnEndMonth()
   );
-  const [isAutumnEndMonthValid, setIsAutumnEndMonthValid] = useState<boolean>();
+  const [isAutumnEndMonthValid, setIsAutumnEndMonthValid] =
+    useState<boolean>(true);
   const [autumnMonths, setAutumnMonths] = useState<Date[]>(
     userViewModel.getAutumnMonths()
   );
-  const [isAutumnMonthsValid, setIsAutumnMonthsValid] = useState<boolean>();
+  const [isAutumnMonthsValid, setIsAutumnMonthsValid] = useState<boolean>(true);
   const [earlyAutumnMonth, setEarlyAutumnMonth] = useState<Date>(
     userViewModel.getEarlyAutumnMonth()
   );
   const [isEarlyAutumnMonthValid, setIsEarlyAutumnMonthValid] =
-    useState<boolean>();
+    useState<boolean>(true);
 
   //Winter
   const [earlyWinterMonths, setEarlyWinterMonths] = useState<Date[]>(
     userViewModel.getEarlyWinterMonths()
   );
   const [isEarlyWinterMonthsValid, setIsEarlyWinterMonthsValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [winterStart, setWinterStart] = useState<Date>(
     userViewModel.getWinterStart()
   );
-  const [isWinterStartValid, setIsWinterStartValid] = useState<boolean>();
+  const [isWinterStartValid, setIsWinterStartValid] = useState<boolean>(true);
   const [winterEnd, setWinterEnd] = useState<Date>(userViewModel.winterEnd);
-  const [isWinterEndValid, setIsWinterEndValid] = useState<boolean>();
+  const [isWinterEndValid, setIsWinterEndValid] = useState<boolean>(true);
   const [earlyWinterStart, setEarlyWinterStart] = useState<Date>(
     userViewModel.getEarlyWinterStart()
   );
   const [isEarlyWinterStartValid, setIsEarlyWinterStartValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [earlyWinterEnd, setEarlyWinterEnd] = useState<Date>(
     userViewModel.getEarlyWinterEnd()
   );
-  const [isEarlyWinterEndValid, setIsEarlyWinterEndValid] = useState<boolean>();
+  const [isEarlyWinterEndValid, setIsEarlyWinterEndValid] =
+    useState<boolean>(true);
 
   //Summer
   const [summerStartMonth, setSummerStartMonth] = useState<Date>(
     userViewModel.getSummerStartMonth()
   );
   const [isSummerStartMonthValid, setIsSummerStartMonthValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [summerEndMonth, setSummerEndMonth] = useState<Date>(
     userViewModel.getSummerEndMonth()
   );
-  const [isSummerEndMonthValid, setIsSummerEndMonthValid] = useState<boolean>();
+  const [isSummerEndMonthValid, setIsSummerEndMonthValid] =
+    useState<boolean>(true);
   const [earlySummerEndMonth, setEarlySummerEndMonth] = useState<Date>(
     userViewModel.getEarlySummerEndMonth()
   );
   const [isEarlySummerEndMonthValid, setIsEarlySummerEndMonthValid] =
-    useState<boolean>();
+    useState<boolean>(true);
   const [earlySummerStartMonth, setEarlySummerStartMonth] = useState<Date>(
     userViewModel.getEarlySummerStartMonth()
   );
   const [isEarlySummerStartMonthValid, setIsEarlySummerStartMonthValid] =
-    useState<boolean>();
+    useState<boolean>(true);
 
   const getSaveAction = (parameterName: NotificationType) => {
     const actions = {
@@ -711,6 +717,32 @@ const ModalContent = (props: ModalContentProps) => {
     setCalendarModalVisible(false);
   };
 
+  const handleModifyTextInput = (
+    input: string,
+    setTextInput: React.Dispatch<React.SetStateAction<string>>,
+    setIsValidFunc: React.Dispatch<React.SetStateAction<boolean>>,
+    minVal: number = 1,
+    maxVal: number = 999,
+    minChars: number = 1,
+    maxChars: number = 5
+  ) => {
+    if (Number.isNaN(Number(input))) {
+      if (input[0] === "-") {
+        setTextInput(input);
+      } else if (input[input.length - 1] === ".") {
+        setTextInput(input);
+      }
+    } else {
+      setTextInput(input);
+    }
+
+    if (isValidNumber(input, minChars, maxChars, minVal, maxVal)) {
+      setIsValidFunc(true);
+    } else {
+      setIsValidFunc(false);
+    }
+  };
+
   const renderContent = () => {
     switch (parameterName) {
       case NotificationType.Weather:
@@ -724,7 +756,13 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold wind speed")}
               value={thresholdWindSpeedStrong.toString()}
               error={!isThresholdWindSpeedStrongValid}
-              onChangeText={(text) => setThresholdWindSpeedStrong(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -739,7 +777,14 @@ const ModalContent = (props: ModalContentProps) => {
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
               error={!isThresholdTemperatureMaxValid}
-              onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureMax,
+                  setIsThresholdTemperatureMaxValid,
+                  -99
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -869,6 +914,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -880,6 +932,13 @@ const ModalContent = (props: ModalContentProps) => {
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
                 setThresholdTemperatureOptimal(Number(text))
+              }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
               }
               keyboardType="numeric"
             />
@@ -936,6 +995,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdTemperatureMin.toString()}
               error={!isThresholdTemperatureMinValid}
               onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -969,6 +1035,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdTemperatureMin.toString()}
               error={!isThresholdTemperatureMinValid}
               onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1131,6 +1204,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdWeightDecrease.toString()}
               error={!isThresholdWeightDecreaseValid}
               onChangeText={(text) => setThresholdWeightDecrease(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1141,6 +1221,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={productionPeriodDays.toString()}
               error={!isProductionPeriodDaysValid}
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1158,6 +1245,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdExitCountHigh.toString()}
               error={!isThresholdExitCountHighValid}
               onChangeText={(text) => setThresholdExitCountHigh(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1175,6 +1269,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdExitCountLow.toString()}
               error={!isThresholdExitCountLowValid}
               onChangeText={(text) => setThresholdExitCountLow(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1194,6 +1295,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={productionPeriodDays.toString()}
               error={!isProductionPeriodDaysValid}
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1205,6 +1313,13 @@ const ModalContent = (props: ModalContentProps) => {
               error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
                 setProductionPeriodThreshold(Number(text))
+              }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
               }
               keyboardType="numeric"
             />
@@ -1274,6 +1389,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1285,6 +1407,13 @@ const ModalContent = (props: ModalContentProps) => {
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
                 setThresholdTemperatureOptimal(Number(text))
+              }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
               }
               keyboardType="numeric"
             />
@@ -1341,6 +1470,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1352,6 +1488,13 @@ const ModalContent = (props: ModalContentProps) => {
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
                 setThresholdTemperatureOptimal(Number(text))
+              }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
               }
               keyboardType="numeric"
             />
@@ -1411,6 +1554,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdWeightIncrease.toString()}
               error={!isThresholdWeightIncreaseValid}
               onChangeText={(text) => setThresholdWeightIncrease(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1430,6 +1580,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={productionPeriodDays.toString()}
               error={!isProductionPeriodDaysValid}
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1441,6 +1598,13 @@ const ModalContent = (props: ModalContentProps) => {
               error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
                 setProductionPeriodThreshold(Number(text))
+              }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
               }
               keyboardType="numeric"
             />
@@ -1506,6 +1670,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1517,6 +1688,13 @@ const ModalContent = (props: ModalContentProps) => {
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
                 setThresholdTemperatureOptimal(Number(text))
+              }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
               }
               keyboardType="numeric"
             />
@@ -1573,6 +1751,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1584,6 +1769,13 @@ const ModalContent = (props: ModalContentProps) => {
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
                 setThresholdTemperatureOptimal(Number(text))
+              }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
               }
               keyboardType="numeric"
             />
@@ -1715,6 +1907,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdWeightIncrease.toString()}
               error={!isThresholdWeightIncreaseValid}
               onChangeText={(text) => setThresholdWeightIncrease(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1734,6 +1933,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={productionPeriodDays.toString()}
               error={!isProductionPeriodDaysValid}
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1745,6 +1951,13 @@ const ModalContent = (props: ModalContentProps) => {
               error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
                 setProductionPeriodThreshold(Number(text))
+              }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
               }
               keyboardType="numeric"
             />
@@ -1761,6 +1974,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdTemperatureMax.toString()}
               error={!isThresholdTemperatureMaxValid}
               onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1898,6 +2118,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdMaxTempInHive.toString()}
               error={!isThresholdMaxTempInHiveValid}
               onChangeText={(text) => setThresholdMaxTempInHive(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={8} />
@@ -1917,6 +2144,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdMinTempInHive.toString()}
               error={!isThresholdMinTempInHiveValid}
               onChangeText={(text) => setThresholdMinTempInHive(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1932,6 +2166,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdTemperatureMax.toString()}
               error={!isThresholdTemperatureMaxValid}
               onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1947,6 +2188,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdTemperatureMin.toString()}
               error={!isThresholdTemperatureMinValid}
               onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1964,6 +2212,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdHumidityMax.toString()}
               error={!isThresholdHumidityMaxValid}
               onChangeText={(text) => setThresholdHumidityMax(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1981,6 +2236,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdHumidityMin.toString()}
               error={!isThresholdHumidityMinValid}
               onChangeText={(text) => setThresholdHumidityMin(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -2048,6 +2310,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdExitCountHigh.toString()}
               error={!isThresholdExitCountHighValid}
               onChangeText={(text) => setThresholdExitCountHigh(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
           </View>
@@ -2070,6 +2339,13 @@ const ModalContent = (props: ModalContentProps) => {
               error={!isThresholdWeightDecreaseEarlySpringValid}
               onChangeText={(text) =>
                 setThresholdWeightDecreaseEarlySpring(Number(text))
+              }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
               }
               keyboardType="numeric"
             />
@@ -2130,6 +2406,13 @@ const ModalContent = (props: ModalContentProps) => {
               onChangeText={(text) =>
                 setThresholdWeightDecreaseInAutumn(Number(text))
               }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -2187,6 +2470,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={productionPeriodDays.toString()}
               error={!isProductionPeriodDaysValid}
               onChangeText={(text) => setProductionPeriodDays(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -2198,6 +2488,13 @@ const ModalContent = (props: ModalContentProps) => {
               error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
                 setProductionPeriodThreshold(Number(text))
+              }
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
               }
               keyboardType="numeric"
             />
@@ -2216,6 +2513,13 @@ const ModalContent = (props: ModalContentProps) => {
               value={thresholdExitCountLow.toString()}
               error={!isThresholdExitCountLowValid}
               onChangeText={(text) => setThresholdExitCountLow(Number(text))}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
           </View>
