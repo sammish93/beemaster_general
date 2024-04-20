@@ -131,7 +131,7 @@ class UserViewModel {
     @observable productionPeriodThreshold: number = 5.0;
 
     //Expected to be integer
-    @observable thresholdExitCountHigh: number = 30_000;
+    @observable thresholdExitCountHigh: number = 24000;
     @observable thresholdExitCountLow: number = 2000;
 
     // Expected to be decimal number
@@ -142,7 +142,7 @@ class UserViewModel {
     @observable thresholdMinTempInHive: number = 34.0;
     @observable thresholdMaxTempInHive: number = 36.0;
 
-    @observable thresholdWindSpeedStrong: number = 4.0;
+    @observable thresholdWindSpeedStrong: number = 5.0;
     @observable thresholdWindSpeedLow: number = 2.5;
 
     //number in %
@@ -156,35 +156,35 @@ class UserViewModel {
     @observable autumnMonths: Date[] = [
         new Date(this.currentYear, 9 - 1, 1), // 1. september
         new Date(this.currentYear, 10 - 1, 1), // 1. oktober
-        new Date(this.currentYear, 11 - 1, 1) // 1. november
+        new Date(this.currentYear, 11 - 1, 30) // 1. november
     ];
     @observable earlyWinterMonths: Date[] = [
         new Date(this.currentYear, 10 - 1, 1), // 1. oct
-        new Date(this.currentYear, 11 - 1, 1), // 1. nov
+        new Date(this.currentYear, 11 - 1, 30), // 1. nov
     ];
     @observable earlySpringMonths: Date[] = [
         new Date(this.currentYear, 2 - 1, 1), // 1. Feb
         new Date(this.currentYear, 3 - 1, 1), // 1. mars
     ];
     //- alle er benyttet i funksjonene
-    @observable lateSpringStartMonth: Date = new Date(this.currentYear, 6 - 1, 1); // Juni 1
+    @observable lateSpringStartMonth: Date = new Date(this.currentYear, 4 - 1, 1); // April 1
     @observable earlyAutumnMonth: Date = new Date(this.currentYear, 8 - 1, 2); // Aug 2
 
     @observable earlySpringStartMonth: Date = new Date(this.currentYear, 2 - 1, 1); // Feb 
     @observable earlySpringEndMonth: Date = new Date(this.currentYear, 5 - 1, 10); // May 10
     @observable earlySummerStartMonth: Date = new Date(this.currentYear, 5 - 1, 11); // mai 11
     @observable earlySummerEndMonth: Date = new Date(this.currentYear, 8 - 1, 1); // August 1
-    @observable earlyWinterStart: Date = new Date(this.currentYear, 10 - 1, 1); //oct 1 
+    @observable earlyWinterStart: Date = new Date(this.currentYear, 10 - 1, 31); //oct 31 
     @observable earlyWinterEnd: Date = new Date(this.currentYear, 1 - 1, 31);// Jan 31 
 
     @observable springStartMonth: Date = new Date(this.currentYear, 3 - 1, 1); // March 1
-    @observable springEndMonth: Date = new Date(this.currentYear, 5 - 1, 31); // May 1
+    @observable springEndMonth: Date = new Date(this.currentYear, 5 - 1, 31); // May 31
 
     @observable summerStartMonth: Date = new Date(this.currentYear, 6 - 1, 1); // June 1
-    @observable summerEndMonth: Date = new Date(this.currentYear, 8 - 1, 31); // Auguse 31
+    @observable summerEndMonth: Date = new Date(this.currentYear, 8 - 1, 31); // Aug 31
 
     @observable autumnStartMonth: Date = new Date(this.currentYear, 9 - 1, 1); // September 1
-    @observable autumnEndMonth: Date = new Date(this.currentYear, 9 - 1, 30); // End of september.
+    @observable autumnEndMonth: Date = new Date(this.currentYear, 11 - 1, 30); // End of nov.
 
     @observable winterStart: Date = new Date(this.currentYear, 12 - 1, 1); //December 1 
     @observable winterEnd: Date = new Date(this.currentYear, 2 - 1, 28); //February 28  
