@@ -13,7 +13,7 @@ import { MobXProviderContext } from "mobx-react";
 import DatePickerModal from "./DatePickerModal";
 import { VerticalSpacer } from "../Spacers";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import { ScrollView, View } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import { NotificationType } from "@/constants/Notifications";
 import locales from "@/constants/localisation/calendar";
 import Toast from "react-native-toast-message";
@@ -21,6 +21,18 @@ import { toastCrossPlatform } from "../ToastCustom";
 import styles from "@/assets/styles";
 import CalendarModal from "./CalendarModal";
 import MonthModal from "./MonthModal";
+import { isValidString } from "@/domain/validation/stringValidation";
+import { isValidNumber } from "@/domain/validation/numberValidation";
+import {
+  convertBeeCountFromDbFormat,
+  convertBeeCountToDbFormat,
+  convertTempFromDbFormat,
+  convertTempToDbFormat,
+  convertWeightFromDbFormat,
+  convertWeightToDbFormat,
+  convertWindSpeedFromDbFormat,
+  convertWindSpeedToDbFormat,
+} from "@/domain/measurementConverter";
 
 interface ModalContentProps {
   onClose: () => void;
@@ -46,247 +58,655 @@ const ModalContent = (props: ModalContentProps) => {
   const userViewModel = useContext(MobXProviderContext).userViewModel;
 
   LocaleConfig.locales = locales;
-
   LocaleConfig.defaultLocale = userViewModel.i18n.locale;
+
+  const [errorValidationMessage, setIsErrorValidationMessage] =
+    useState<string>("");
+  const [isValid, setValid] = useState<boolean>(false);
 
   //Thresholds weights
   const [thresholdWeightDecreaseInAutumn, setThresholdWeightDecreaseInAutumn] =
-    useState<number>(userViewModel.getThresholdWeightDecreaseInAutumn());
+    useState<string>(
+      convertWeightFromDbFormat(
+        userViewModel.getThresholdWeightDecreaseInAutumn(),
+        userViewModel.weightPreference
+      ).toString()
+    );
+  const [
+    isThresholdWeightDecreaseInAutumnValid,
+    setIsThresholdWeightDecreaseInAutumnValid,
+  ] = useState<boolean>(true);
   const [
     thresholdWeightDecreaseEarlySpring,
     setThresholdWeightDecreaseEarlySpring,
-  ] = useState<number>(userViewModel.getThresholdWeightDecreaseEarlySpring());
+  ] = useState<string>(
+    convertWeightFromDbFormat(
+      userViewModel.getThresholdWeightDecreaseEarlySpring(),
+      userViewModel.weightPreference
+    ).toString()
+  );
+  const [
+    isThresholdWeightDecreaseEarlySpringValid,
+    setIsThresholdWeightDecreaseEarlySpringValid,
+  ] = useState<boolean>(true);
   const [thresholdWeightDecrease, setThresholdWeightDecrease] =
-    useState<number>(userViewModel.getThresholdWeightDecrease());
+    useState<string>(
+      convertWeightFromDbFormat(
+        userViewModel.getThresholdWeightDecrease(),
+        userViewModel.weightPreference
+      ).toString()
+    );
+  const [isThresholdWeightDecreaseValid, setIsThresholdWeightDecreaseValid] =
+    useState<boolean>(true);
   const [thresholdWeightIncrease, setThresholdWeightIncrease] =
-    useState<number>(userViewModel.getThresholdWeightIncrease());
-  const [productionPeriodDays, setProductionPeriodDays] = useState<number>(
+    useState<string>(
+      convertWeightFromDbFormat(
+        userViewModel.getThresholdWeightIncrease(),
+        userViewModel.weightPreference
+      ).toString()
+    );
+  const [isThresholdWeightIncreaseValid, setIsThresholdWeightIncreaseValid] =
+    useState<boolean>(true);
+  const [productionPeriodDays, setProductionPeriodDays] = useState<string>(
     userViewModel.getProductionPeriodDays()
   );
+  const [isProductionPeriodDaysValid, setIsProductionPeriodDaysValid] =
+    useState<boolean>(true);
   const [productionPeriodThreshold, setProductionPeriodThreshold] =
-    useState<number>(userViewModel.getProductionPeriodThreshold());
+    useState<string>(userViewModel.getProductionPeriodThreshold());
+  const [
+    isProductionPeriodThresholdValid,
+    setIsProductionPeriodThresholdValid,
+  ] = useState<boolean>(true);
 
   //Exit
-  const [thresholdExitCountHigh, setThresholdExitCountHigh] = useState<number>(
-    userViewModel.getThresholdExitCountHigh()
+  const [thresholdExitCountHigh, setThresholdExitCountHigh] = useState<string>(
+    convertBeeCountFromDbFormat(
+      userViewModel.getThresholdExitCountHigh(),
+      userViewModel.beeCountPreference
+    ).toString()
   );
-  const [thresholdExitCountLow, setThresholdExitCountLow] = useState<number>(
-    userViewModel.getThresholdExitCountLow()
+  const [isThresholdExitCountHighValid, setIsThresholdExitCountHighValid] =
+    useState<boolean>(true);
+  const [thresholdExitCountLow, setThresholdExitCountLow] = useState<string>(
+    convertBeeCountFromDbFormat(
+      userViewModel.getThresholdExitCountLow(),
+      userViewModel.beeCountPreference
+    ).toString()
   );
+  const [isThresholdExitCountLowValid, setIsThresholdExitCountLowValid] =
+    useState<boolean>(true);
 
   //Temp
   const [thresholdTemperatureOptimal, setThresholdTemperatureOptimal] =
-    useState<number>(userViewModel.getThresholdTemperatureOptimal());
-
+    useState<string>(
+      convertTempFromDbFormat(
+        userViewModel.getThresholdTemperatureOptimal(),
+        userViewModel.temperaturePreference
+      ).toString()
+    );
+  const [
+    isThresholdTemperatureOptimalValid,
+    setIsThresholdTemperatureOptimalValid,
+  ] = useState<boolean>(true);
   const [thresholdTemperatureMax, setThresholdTemperatureMax] =
-    useState<number>(userViewModel.getThresholdTemperatureMax());
+    useState<string>(
+      convertTempFromDbFormat(
+        userViewModel.getThresholdTemperatureMax(),
+        userViewModel.temperaturePreference
+      ).toString()
+    );
+  const [isThresholdTemperatureMaxValid, setIsThresholdTemperatureMaxValid] =
+    useState<boolean>(true);
   const [thresholdTemperatureMin, setThresholdTemperatureMin] =
-    useState<number>(userViewModel.getThresholdTemperatureMin());
-
-  const [thresholdMinTempInHive, setThresholdMinTempInHive] = useState<number>(
-    userViewModel.getThresholdMinTempInHive()
+    useState<string>(
+      convertTempFromDbFormat(
+        userViewModel.getThresholdTemperatureMin(),
+        userViewModel.temperaturePreference
+      ).toString()
+    );
+  const [isThresholdTemperatureMinValid, setIsThresholdTemperatureMinValid] =
+    useState<boolean>(true);
+  const [thresholdMinTempInHive, setThresholdMinTempInHive] = useState<string>(
+    convertTempFromDbFormat(
+      userViewModel.getThresholdMinTempInHive(),
+      userViewModel.temperaturePreference
+    ).toString()
   );
-  const [thresholdMaxTempInHive, setThresholdMaxTempInHive] = useState<number>(
-    userViewModel.getThresholdMaxTempInHive()
+  const [isThresholdMinTempInHiveValid, setIsThresholdMinTempInHiveValid] =
+    useState<boolean>(true);
+  const [thresholdMaxTempInHive, setThresholdMaxTempInHive] = useState<string>(
+    convertTempFromDbFormat(
+      userViewModel.getThresholdMaxTempInHive(),
+      userViewModel.temperaturePreference
+    ).toString()
   );
+  const [isThresholdMaxTempInHiveValid, setIsThresholdMaxTempInHiveValid] =
+    useState<boolean>(true);
 
   //Windspeed
   const [thresholdWindSpeedStrong, setThresholdWindSpeedStrong] =
-    useState<number>(userViewModel.getThresholdWindSpeedStrong());
-  const [thresholdWindSpeedLow, setThresholdWindSpeedLow] = useState<number>(
-    userViewModel.getThresholdWindSpeedLow()
+    useState<string>(
+      convertWindSpeedFromDbFormat(
+        userViewModel.getThresholdWindSpeedStrong(),
+        userViewModel.windSpeedPreference
+      ).toString()
+    );
+  const [isThresholdWindSpeedStrongValid, setIsThresholdWindSpeedStrongValid] =
+    useState<boolean>(true);
+  const [thresholdWindSpeedLow, setThresholdWindSpeedLow] = useState<string>(
+    convertWindSpeedFromDbFormat(
+      userViewModel.getThresholdWindSpeedLow(),
+      userViewModel.windSpeedPreference
+    ).toString()
   );
+  const [isThresholdWindSpeedLowValid, setIsThresholdWindSpeedLowValid] =
+    useState<boolean>(true);
 
   //Humidity
-  const [thresholdHumidityMax, setThresholdHumidityMax] = useState<number>(
+  const [thresholdHumidityMax, setThresholdHumidityMax] = useState<string>(
     userViewModel.getThresholdHumidityMax()
   );
-  const [thresholdHumidityMin, setThresholdHumidityMin] = useState<number>(
+  const [isThresholdHumidityMaxValid, setIsThresholdHumidityMaxValid] =
+    useState<boolean>(true);
+  const [thresholdHumidityMin, setThresholdHumidityMin] = useState<string>(
     userViewModel.getThresholdHumidityMin()
   );
+  const [isThresholdHumidityMinValid, setIsThresholdHumidityMinValid] =
+    useState<boolean>(true);
 
   //Spring
   const [earlySpringStartMonth, setEarlySpringStartMonth] = useState<Date>(
     userViewModel.getEarlySpringStartMonth()
   );
+  const [isEarlySpringStartMonthValid, setIsEarlySpringStartMonthValid] =
+    useState<boolean>(true);
   const [earlySpringEndMonth, setEarlySpringEndMonth] = useState<Date>(
     userViewModel.getEarlySpringEndMonth()
   );
+  const [isEarlySpringEndMonthValid, setIsEarlySpringEndMonthValid] =
+    useState<boolean>(true);
   const [earlySpringMonths, setEarlySpringMonths] = useState<Date[]>(
     userViewModel.getEarlySpringMonths()
   );
+  const [isEarlySpringMonthsValid, setIsEarlySpringMonthsValid] =
+    useState<boolean>(true);
   const [lateSpringStartMonth, setLateSpringStartMonth] = useState<Date>(
     userViewModel.getLateSpringStartMonth()
   );
+  const [isLateSpringStartMonthValid, setIsLateSpringStartMonthValid] =
+    useState<boolean>(true);
   const [springStartMonth, setSpringStartMonth] = useState<Date>(
     userViewModel.getSpringStartMonth()
   );
+  const [isSpringStartMonthValid, setIsSpringStartMonthValid] =
+    useState<boolean>(true);
   const [springEndMonth, setSpringEndMonth] = useState<Date>(
     userViewModel.getSpringEndMonth()
   );
+  const [isSpringEndMonthValid, setIsSpringEndMonthValid] =
+    useState<boolean>(true);
 
   //Autumn
   const [autumnStartMonth, setAutumnStartMonth] = useState<Date>(
     userViewModel.getAutumnStartMonth()
   );
+  const [isAutumnStartMonthValid, setIsAutumnStartMonthValid] =
+    useState<boolean>(true);
   const [autumnEndMonth, setAutumnEndMonth] = useState<Date>(
     userViewModel.getAutumnEndMonth()
   );
+  const [isAutumnEndMonthValid, setIsAutumnEndMonthValid] =
+    useState<boolean>(true);
   const [autumnMonths, setAutumnMonths] = useState<Date[]>(
     userViewModel.getAutumnMonths()
   );
+  const [isAutumnMonthsValid, setIsAutumnMonthsValid] = useState<boolean>(true);
   const [earlyAutumnMonth, setEarlyAutumnMonth] = useState<Date>(
     userViewModel.getEarlyAutumnMonth()
   );
+  const [isEarlyAutumnMonthValid, setIsEarlyAutumnMonthValid] =
+    useState<boolean>(true);
 
   //Winter
   const [earlyWinterMonths, setEarlyWinterMonths] = useState<Date[]>(
     userViewModel.getEarlyWinterMonths()
   );
+  const [isEarlyWinterMonthsValid, setIsEarlyWinterMonthsValid] =
+    useState<boolean>(true);
   const [winterStart, setWinterStart] = useState<Date>(
     userViewModel.getWinterStart()
   );
+  const [isWinterStartValid, setIsWinterStartValid] = useState<boolean>(true);
   const [winterEnd, setWinterEnd] = useState<Date>(userViewModel.winterEnd);
+  const [isWinterEndValid, setIsWinterEndValid] = useState<boolean>(true);
   const [earlyWinterStart, setEarlyWinterStart] = useState<Date>(
     userViewModel.getEarlyWinterStart()
   );
+  const [isEarlyWinterStartValid, setIsEarlyWinterStartValid] =
+    useState<boolean>(true);
   const [earlyWinterEnd, setEarlyWinterEnd] = useState<Date>(
     userViewModel.getEarlyWinterEnd()
   );
+  const [isEarlyWinterEndValid, setIsEarlyWinterEndValid] =
+    useState<boolean>(true);
 
   //Summer
   const [summerStartMonth, setSummerStartMonth] = useState<Date>(
     userViewModel.getSummerStartMonth()
   );
+  const [isSummerStartMonthValid, setIsSummerStartMonthValid] =
+    useState<boolean>(true);
   const [summerEndMonth, setSummerEndMonth] = useState<Date>(
     userViewModel.getSummerEndMonth()
   );
+  const [isSummerEndMonthValid, setIsSummerEndMonthValid] =
+    useState<boolean>(true);
   const [earlySummerEndMonth, setEarlySummerEndMonth] = useState<Date>(
     userViewModel.getEarlySummerEndMonth()
   );
+  const [isEarlySummerEndMonthValid, setIsEarlySummerEndMonthValid] =
+    useState<boolean>(true);
   const [earlySummerStartMonth, setEarlySummerStartMonth] = useState<Date>(
     userViewModel.getEarlySummerStartMonth()
   );
+  const [isEarlySummerStartMonthValid, setIsEarlySummerStartMonthValid] =
+    useState<boolean>(true);
 
   const getSaveAction = (parameterName: NotificationType) => {
     const actions = {
       [NotificationType.Weather]: () => {
-        userViewModel.setThresholdWindSpeedStrong(thresholdWindSpeedStrong);
-        userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
+        if (
+          isThresholdWindSpeedStrongValid &&
+          isThresholdWindSpeedLowValid &&
+          isEarlyWinterMonthsValid &&
+          isWinterStartValid &&
+          isWinterEndValid &&
+          isEarlyWinterStartValid &&
+          isWinterEndValid &&
+          isEarlySpringMonthsValid &&
+          isEarlySpringStartMonthValid &&
+          isThresholdTemperatureMaxValid &&
+          isThresholdTemperatureMinValid &&
+          isThresholdTemperatureOptimalValid &&
+          isAutumnMonthsValid &&
+          isAutumnStartMonthValid &&
+          isAutumnEndMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+          setValid(true);
 
-        userViewModel.setEarlyWinterMonths(earlyWinterMonths);
-        userViewModel.setWinterStart(winterStart);
-        userViewModel.setWinterEnd(winterEnd);
-        userViewModel.setEarlyWinterStart(earlyWinterStart);
-        userViewModel.setEarlyWinterEnd(earlyWinterEnd);
+          userViewModel.setThresholdWindSpeedStrong(
+            convertWindSpeedToDbFormat(
+              Number(thresholdWindSpeedStrong),
+              userViewModel.windSpeedPreference
+            )
+          );
+          userViewModel.setThresholdWindSpeedLow(
+            convertWindSpeedToDbFormat(
+              Number(thresholdWindSpeedLow),
+              userViewModel.windSpeedPreference
+            )
+          );
 
-        userViewModel.setEarlySpringMonths(earlySpringMonths);
-        userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
+          userViewModel.setEarlyWinterMonths(earlyWinterMonths);
+          userViewModel.setWinterStart(winterStart);
+          userViewModel.setWinterEnd(winterEnd);
+          userViewModel.setEarlyWinterStart(earlyWinterStart);
+          userViewModel.setEarlyWinterEnd(earlyWinterEnd);
 
-        userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-        userViewModel.setThresholdTemperatureMin(thresholdTemperatureMin);
-        userViewModel.setThresholdTemperatureOptimal(
-          thresholdTemperatureOptimal
-        );
+          userViewModel.setEarlySpringMonths(earlySpringMonths);
+          userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
 
-        userViewModel.setAutumnMonths(autumnMonths);
-        userViewModel.setAutumnStartMonth(autumnStartMonth);
-        userViewModel.setAutumnEndMonth(autumnEndMonth);
+          userViewModel.setThresholdTemperatureMax(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMax),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setThresholdTemperatureMin(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMin),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setThresholdTemperatureOptimal(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureOptimal),
+              userViewModel.temperaturePreference
+            )
+          );
+
+          userViewModel.setAutumnMonths(autumnMonths);
+          userViewModel.setAutumnStartMonth(autumnStartMonth);
+          userViewModel.setAutumnEndMonth(autumnEndMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
       [NotificationType.PossibleSwarm]: () => {
-        userViewModel.setThresholdWeightDecrease(thresholdWeightDecrease);
-        userViewModel.setThresholdExitCountHigh(thresholdExitCountHigh);
-        userViewModel.setThresholdExitCountLow(thresholdExitCountLow);
-        userViewModel.setProductionPeriodDays(productionPeriodDays);
-        userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
-        userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
-        userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
+        if (
+          isThresholdWeightDecreaseValid &&
+          isThresholdExitCountHighValid &&
+          isThresholdExitCountLowValid &&
+          isProductionPeriodDaysValid &&
+          isProductionPeriodThresholdValid &&
+          isLateSpringStartMonthValid &&
+          isEarlySummerEndMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+          setValid(true);
+
+          userViewModel.setThresholdWeightDecrease(
+            convertWeightToDbFormat(
+              Number(thresholdWeightDecrease),
+              userViewModel.weightPreference
+            )
+          );
+          userViewModel.setThresholdExitCountHigh(
+            convertBeeCountToDbFormat(
+              Number(thresholdExitCountHigh),
+              userViewModel.beeCountPreference
+            )
+          );
+          userViewModel.setThresholdExitCountLow(
+            convertBeeCountToDbFormat(
+              Number(thresholdExitCountLow),
+              userViewModel.beeCountPreference
+            )
+          );
+          userViewModel.setProductionPeriodDays(Number(productionPeriodDays));
+          userViewModel.setProductionPeriodThreshold(
+            Number(productionPeriodThreshold)
+          );
+          userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
+          userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
 
       [NotificationType.ConsiderFeeding]: () => {
-        userViewModel.setThresholdWeightDecreaseEarlySpring(
-          thresholdWeightDecreaseEarlySpring
-        );
-        userViewModel.setThresholdWindSpeedStrong(thresholdWindSpeedStrong);
-        userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
-        userViewModel.setEarlySpringEndMonth(earlySpringEndMonth);
-        userViewModel.setEarlySpringMonths(earlySpringMonths);
-        userViewModel.setEarlyWinterMonths(earlyWinterMonths);
-        userViewModel.setEarlyWinterStart(earlyWinterStart);
-        userViewModel.setWinterStart(winterStart);
-        userViewModel.thresholdTemperatureMin(thresholdTemperatureMin);
-        userViewModel.setThresholdWeightDecreaseInAutumn(
-          thresholdWeightDecreaseInAutumn
-        );
-        userViewModel.setAutumnStartMonth(autumnStartMonth);
-        userViewModel.setAutumnEndMonth(autumnEndMonth);
-        userViewModel.setAutumnMonths(autumnMonths);
-        userViewModel.setProductionPeriodDays(productionPeriodDays);
-        userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
-        userViewModel.setThresholdExitCountLow(thresholdExitCountLow);
-        userViewModel.setSpringStartMonth(springStartMonth);
-        userViewModel.setSpringStartMonth(springEndMonth);
+        if (
+          isThresholdWeightDecreaseEarlySpringValid &&
+          isThresholdWindSpeedStrongValid &&
+          isEarlySpringStartMonthValid &&
+          isEarlySpringEndMonthValid &&
+          isEarlySpringMonthsValid &&
+          isEarlyWinterMonthsValid &&
+          isEarlyWinterStartValid &&
+          isWinterStartValid &&
+          isThresholdTemperatureMinValid &&
+          isThresholdWeightDecreaseInAutumnValid &&
+          isAutumnStartMonthValid &&
+          isAutumnEndMonthValid &&
+          isAutumnMonthsValid &&
+          isProductionPeriodDaysValid &&
+          isProductionPeriodThresholdValid &&
+          isThresholdExitCountLowValid &&
+          isSpringStartMonthValid &&
+          isSpringEndMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+          setValid(true);
+
+          userViewModel.setThresholdWeightDecreaseEarlySpring(
+            thresholdWeightDecreaseEarlySpring
+          );
+          userViewModel.setThresholdWindSpeedStrong(
+            convertWindSpeedToDbFormat(
+              Number(thresholdWindSpeedStrong),
+              userViewModel.windSpeedPreference
+            )
+          );
+          userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
+          userViewModel.setEarlySpringEndMonth(earlySpringEndMonth);
+          userViewModel.setEarlySpringMonths(earlySpringMonths);
+          userViewModel.setEarlyWinterMonths(earlyWinterMonths);
+          userViewModel.setEarlyWinterStart(earlyWinterStart);
+          userViewModel.setWinterStart(winterStart);
+          userViewModel.setThresholdTemperatureMin(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMin),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setThresholdWeightDecreaseInAutumn(
+            convertWeightToDbFormat(
+              Number(thresholdWeightDecreaseInAutumn),
+              userViewModel.weightPreference
+            )
+          );
+          userViewModel.setAutumnStartMonth(autumnStartMonth);
+          userViewModel.setAutumnEndMonth(autumnEndMonth);
+          userViewModel.setAutumnMonths(autumnMonths);
+          userViewModel.setProductionPeriodDays(Number(productionPeriodDays));
+          userViewModel.setProductionPeriodThreshold(
+            Number(productionPeriodThreshold)
+          );
+          userViewModel.setThresholdExitCountLow(
+            convertBeeCountToDbFormat(
+              Number(thresholdExitCountLow),
+              userViewModel.beeCountPreference
+            )
+          );
+          userViewModel.setSpringStartMonth(springStartMonth);
+          userViewModel.setSpringEndMonth(springEndMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
       [NotificationType.HoneyHarvest]: () => {
-        userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-        userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
-        userViewModel.setSummerStartMonth(summerStartMonth);
-        userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
-        userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
-        userViewModel.setAutumnEndMonth(autumnEndMonth);
-        userViewModel.setProductionPeriodDays(productionPeriodDays);
-        userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
-        userViewModel.setThresholdWeightIncrease(thresholdWeightIncrease);
-        userViewModel.setThresholdTemperatureOptimal(
-          thresholdTemperatureOptimal
-        );
-        userViewModel.setSummerEndMonth(summerEndMonth);
+        if (
+          isThresholdTemperatureMaxValid &&
+          isThresholdWindSpeedLowValid &&
+          isSummerStartMonthValid &&
+          isEarlyAutumnMonthValid &&
+          isEarlySpringStartMonthValid &&
+          isAutumnEndMonthValid &&
+          isProductionPeriodDaysValid &&
+          isProductionPeriodThresholdValid &&
+          isThresholdWeightIncreaseValid &&
+          isThresholdTemperatureOptimalValid &&
+          isSummerEndMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+          setValid(true);
+
+          userViewModel.setThresholdTemperatureMax(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMax),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setThresholdWindSpeedLow(
+            convertWindSpeedToDbFormat(
+              Number(thresholdWindSpeedLow),
+              userViewModel.windSpeedPreference
+            )
+          );
+          userViewModel.setSummerStartMonth(summerStartMonth);
+          userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
+          userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
+          userViewModel.setAutumnEndMonth(autumnEndMonth);
+          userViewModel.setProductionPeriodDays(Number(productionPeriodDays));
+          userViewModel.setProductionPeriodThreshold(
+            Number(productionPeriodThreshold)
+          );
+          userViewModel.setThresholdWeightIncrease(
+            convertWeightToDbFormat(
+              Number(thresholdWeightIncrease),
+              userViewModel.weightPreference
+            )
+          );
+          userViewModel.setThresholdTemperatureOptimal(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureOptimal),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setSummerEndMonth(summerEndMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
       [NotificationType.Maintenance]: () => {
-        userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
-        userViewModel.setAutumnEndMonth(autumnEndMonth);
-        userViewModel.setThresholdWindSpeedLow(thresholdWindSpeedLow);
-        userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-        userViewModel.setSummerStartMonth(summerStartMonth);
-        userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
-        userViewModel.setThresholdTemperatureOptimal(
-          thresholdTemperatureOptimal
-        );
-        userViewModel.setEarlySummerStartMonth(earlySummerStartMonth);
-        userViewModel.setSpringStartMonth(springStartMonth);
-        userViewModel.setSpringStartMonth(springEndMonth);
+        if (
+          isEarlySpringStartMonthValid &&
+          isAutumnEndMonthValid &&
+          isThresholdWindSpeedLowValid &&
+          isThresholdTemperatureMaxValid &&
+          isSummerStartMonthValid &&
+          isEarlyAutumnMonthValid &&
+          isThresholdTemperatureOptimalValid &&
+          isEarlySummerStartMonthValid &&
+          isSpringStartMonthValid &&
+          isSpringEndMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+          setValid(true);
+
+          userViewModel.setEarlySpringStartMonth(earlySpringStartMonth);
+          userViewModel.setAutumnEndMonth(autumnEndMonth);
+          userViewModel.setThresholdWindSpeedLow(
+            convertWindSpeedToDbFormat(
+              Number(thresholdWindSpeedLow),
+              userViewModel.windSpeedPreference
+            )
+          );
+          userViewModel.setThresholdTemperatureMax(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMax),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setSummerStartMonth(summerStartMonth);
+          userViewModel.setEarlyAutumnMonth(earlyAutumnMonth);
+          userViewModel.setThresholdTemperatureOptimal(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureOptimal),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setEarlySummerStartMonth(earlySummerStartMonth);
+          userViewModel.setSpringStartMonth(springStartMonth);
+          userViewModel.setSpringEndMonth(springEndMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
 
       [NotificationType.ConsiderExpanding]: () => {
-        userViewModel.setThresholdWeightIncrease(thresholdWeightIncrease);
-        userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-        userViewModel.setProductionPeriodDays(productionPeriodDays);
-        userViewModel.setProductionPeriodThreshold(productionPeriodThreshold);
-        userViewModel.setEarlySummerStartMonth(earlySummerStartMonth);
-        userViewModel.setSpringStartMonth(springStartMonth);
-        userViewModel.setSpringStartMonth(springEndMonth);
-        userViewModel.setSummerEndMonth(summerEndMonth);
-        userViewModel.setSummerStartMonth(summerStartMonth);
+        if (
+          isThresholdWeightIncreaseValid &&
+          isThresholdTemperatureMaxValid &&
+          isProductionPeriodDaysValid &&
+          isProductionPeriodThresholdValid &&
+          isEarlySummerStartMonthValid &&
+          isSpringStartMonthValid &&
+          isSpringEndMonthValid &&
+          isSummerEndMonthValid &&
+          isSummerStartMonthValid
+        ) {
+          setIsErrorValidationMessage("");
+          setValid(true);
+
+          userViewModel.setThresholdWeightIncrease(
+            convertWeightToDbFormat(
+              Number(thresholdWeightIncrease),
+              userViewModel.weightPreference
+            )
+          );
+          userViewModel.setThresholdTemperatureMax(
+            convertTempToDbFormat(
+              Number(thresholdTemperatureMax),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setProductionPeriodDays(Number(productionPeriodDays));
+          userViewModel.setProductionPeriodThreshold(
+            Number(productionPeriodThreshold)
+          );
+          userViewModel.setEarlySummerStartMonth(earlySummerStartMonth);
+          userViewModel.setSpringStartMonth(springStartMonth);
+          userViewModel.setSpringEndMonth(springEndMonth);
+          userViewModel.setSummerEndMonth(summerEndMonth);
+          userViewModel.setSummerStartMonth(summerStartMonth);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
 
       [NotificationType.CheckHive]: () => {
-        userViewModel.setThresholdMinTempInHive(thresholdMinTempInHive);
-        userViewModel.setThresholdMaxTempInHive(thresholdMaxTempInHive);
+        if (
+          isThresholdMinTempInHiveValid &&
+          isThresholdMaxTempInHiveValid &&
+          isLateSpringStartMonthValid &&
+          isEarlySummerEndMonthValid &&
+          isEarlySpringMonthsValid &&
+          isThresholdTemperatureMaxValid &&
+          isThresholdTemperatureMinValid &&
+          isThresholdHumidityMaxValid &&
+          isThresholdHumidityMinValid &&
+          isThresholdExitCountHighValid &&
+          isWinterEndValid &&
+          isEarlyWinterMonthsValid &&
+          isAutumnMonthsValid &&
+          isEarlySpringMonthsValid &&
+          isEarlyWinterEndValid
+        ) {
+          setIsErrorValidationMessage("");
+          setValid(true);
 
-        userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
-        userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
-        userViewModel.earlySpringMonths(earlySpringMonths);
-        userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
-        userViewModel.setThresholdTemperatureMin(thresholdTemperatureMin);
+          userViewModel.setThresholdMinTempInHive(
+            convertTempToDbFormat(
+              Number(thresholdMinTempInHive),
+              userViewModel.temperaturePreference
+            )
+          );
+          userViewModel.setThresholdMaxTempInHive(
+            convertTempToDbFormat(
+              Number(thresholdMaxTempInHive),
+              userViewModel.temperaturePreference
+            )
+          );
 
-        userViewModel.setThresholdHumidityMax(thresholdHumidityMax);
-        userViewModel.setThresholdHumidityMin(thresholdHumidityMin);
-        userViewModel.setThresholdExitCountHigh(thresholdExitCountHigh);
-        userViewModel.setWinterEnd(winterEnd);
-        userViewModel.setEarlyWinterMonths(earlyWinterMonths);
-        userViewModel.setAutumnMonths(autumnMonths);
-        userViewModel.setEarlySpringMonths(earlySpringMonths);
-        userViewModel.setEarlyWinterEnd(earlyWinterEnd);
+          userViewModel.setLateSpringStartMonth(lateSpringStartMonth);
+          userViewModel.setEarlySummerEndMonth(earlySummerEndMonth);
+          userViewModel.setEarlySpringMonths(earlySpringMonths);
+          userViewModel.setThresholdTemperatureMax(thresholdTemperatureMax);
+          userViewModel.setThresholdTemperatureMin(thresholdTemperatureMin);
+
+          userViewModel.setThresholdHumidityMax(Number(thresholdHumidityMax));
+          userViewModel.setThresholdHumidityMin(Number(thresholdHumidityMin));
+          userViewModel.setThresholdExitCountHigh(
+            convertBeeCountToDbFormat(
+              Number(thresholdExitCountHigh),
+              userViewModel.beeCountPreference
+            )
+          );
+          userViewModel.setWinterEnd(winterEnd);
+          userViewModel.setEarlyWinterMonths(earlyWinterMonths);
+          userViewModel.setAutumnMonths(autumnMonths);
+          userViewModel.setEarlySpringMonths(earlySpringMonths);
+          userViewModel.setEarlyWinterEnd(earlyWinterEnd);
+        } else {
+          setIsErrorValidationMessage(
+            userViewModel.i18n.t("notification param error message")
+          );
+        }
       },
       [NotificationType.CustomReminder]: () => {},
     };
@@ -294,6 +714,8 @@ const ModalContent = (props: ModalContentProps) => {
   };
 
   const handleSave = () => {
+    setValid(false);
+
     if (parameterName !== undefined) {
       const action = getSaveAction(parameterName);
       if (action) {
@@ -304,8 +726,15 @@ const ModalContent = (props: ModalContentProps) => {
     } else {
       console.log("parameterName is undefined");
     }
-    props.onClose();
   };
+
+  // Since changing a state is asynchronous it's best to close the modal via an useEffect, otherwise
+  // it sometimes doesn't trigger and requires 2 button presses.
+  useEffect(() => {
+    if (isValid) {
+      props.onClose();
+    }
+  }, [isValid]);
 
   //One month
   const [datePickerVisible, setDatePickerVisible] = useState(false);
@@ -483,6 +912,32 @@ const ModalContent = (props: ModalContentProps) => {
     setCalendarModalVisible(false);
   };
 
+  const handleModifyTextInput = (
+    input: string,
+    setTextInput: React.Dispatch<React.SetStateAction<string>>,
+    setIsValidFunc: React.Dispatch<React.SetStateAction<boolean>>,
+    minVal: number = 1,
+    maxVal: number = 999,
+    minChars: number = 1,
+    maxChars: number = 5
+  ) => {
+    if (Number.isNaN(Number(input))) {
+      if (input[0] === "-") {
+        setTextInput(input);
+      } else if (input[input.length - 1] === ".") {
+        setTextInput(input);
+      }
+    } else {
+      setTextInput(input);
+    }
+
+    if (isValidNumber(input, minChars, maxChars, minVal, maxVal)) {
+      setIsValidFunc(true);
+    } else {
+      setIsValidFunc(false);
+    }
+  };
+
   const renderContent = () => {
     switch (parameterName) {
       case NotificationType.Weather:
@@ -495,7 +950,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold wind speed")}
               value={thresholdWindSpeedStrong.toString()}
-              onChangeText={(text) => setThresholdWindSpeedStrong(Number(text))}
+              error={!isThresholdWindSpeedStrongValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedStrong,
+                  setIsThresholdWindSpeedStrongValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -509,7 +971,15 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
-              onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
+              error={!isThresholdTemperatureMaxValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureMax,
+                  setIsThresholdTemperatureMaxValid,
+                  -99
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -522,56 +992,49 @@ const ModalContent = (props: ModalContentProps) => {
               )}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn months")}
-              value={autumnMonths
-                .map((date) =>
-                  date.toLocaleDateString(userViewModel.i18n.locale)
-                )
-                .join(", ")}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
-              onPress={() => openCalendarModal("autumnMonths")}
-            >
-              {userViewModel.i18n.t("set autumn months")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early winter months")}
-              value={earlyWinterMonths
-                .map((date) =>
-                  date.toLocaleDateString(userViewModel.i18n.locale)
-                )
-                .join(", ")}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity onPress={() => openCalendarModal("autumnMonths")}>
+              <TextInput
+                label={userViewModel.i18n.t("autumn months")}
+                value={autumnMonths
+                  .map((date) =>
+                    date.toLocaleDateString(userViewModel.i18n.locale)
+                  )
+                  .join(", ")}
+                error={!isAutumnMonthsValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => openCalendarModal("earlyWinterMonths")}
             >
-              {userViewModel.i18n.t("set early winter months")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring months")}
-              value={earlySpringMonths
-                .map((date) =>
-                  date.toLocaleDateString(userViewModel.i18n.locale)
-                )
-                .join(", ")}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early winter months")}
+                value={earlyWinterMonths
+                  .map((date) =>
+                    date.toLocaleDateString(userViewModel.i18n.locale)
+                  )
+                  .join(", ")}
+                error={!isEarlyWinterMonthsValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => openCalendarModal("earlySpringMonths")}
             >
-              {userViewModel.i18n.t("set early spring months")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early spring months")}
+                value={earlySpringMonths
+                  .map((date) =>
+                    date.toLocaleDateString(userViewModel.i18n.locale)
+                  )
+                  .join(", ")}
+                error={!isEarlySpringMonthsValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -582,43 +1045,38 @@ const ModalContent = (props: ModalContentProps) => {
               )}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn start month")}
-              value={autumnStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set autumn start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("autumn start month")}
+                value={autumnStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set autumn end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("autumn end month")}
+                value={autumnEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -632,7 +1090,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              error={!isThresholdWindSpeedLowValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedLow,
+                  setIsThresholdWindSpeedLowValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -641,49 +1106,50 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold for optimal temperature"
               )}
               value={thresholdTemperatureOptimal.toString()}
+              error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureOptimal,
+                  setIsThresholdTemperatureOptimalValid,
+                  -99
+                )
               }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set early spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early spring start month")}
+                value={earlySpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set autumn end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("autumn end month")}
+                value={autumnEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -695,26 +1161,33 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
-              onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
+              error={!isThresholdTemperatureMinValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureMin,
+                  setIsThresholdTemperatureMinValid,
+                  -99
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("winter start month")}
-              value={winterStart.toLocaleDateString(userViewModel.i18n.locale)}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("winterStart");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set winter start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("winter start month")}
+                value={winterStart.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isWinterStartValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -726,26 +1199,31 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
-              onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
+              error={!isThresholdTemperatureMinValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureMin,
+                  setIsThresholdTemperatureMinValid,
+                  -99
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("winter end month")}
-              value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("winterEnd");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set winter end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("winter end month")}
+                value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
+                error={!isWinterEndValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -754,24 +1232,21 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is early winter starting")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early winter start month")}
-              value={earlyWinterStart.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlyWinterStart");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set early winter start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early winter start month")}
+                value={earlyWinterStart.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlyWinterStartValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -780,43 +1255,38 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is currently spring season")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("spring start month")}
-              value={springStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("spring end month")}
-              value={springEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("spring start month")}
+                value={springStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set spring end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("spring end month")}
+                value={springEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
           </View>
         );
 
@@ -829,43 +1299,38 @@ const ModalContent = (props: ModalContentProps) => {
               )}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("late spring start month")}
-              value={lateSpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("lateSpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set late spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early summer start month")}
-              value={earlySummerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("late spring start month")}
+                value={lateSpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isLateSpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set early summer start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early summer start month")}
+                value={earlySummerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -881,7 +1346,14 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for weight decrease"
               )}
               value={thresholdWeightDecrease.toString()}
-              onChangeText={(text) => setThresholdWeightDecrease(Number(text))}
+              error={!isThresholdWeightDecreaseValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWeightDecrease,
+                  setIsThresholdWeightDecreaseValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -890,7 +1362,14 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number of days for production period"
               )}
               value={productionPeriodDays.toString()}
-              onChangeText={(text) => setProductionPeriodDays(Number(text))}
+              error={!isProductionPeriodDaysValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setProductionPeriodDays,
+                  setIsProductionPeriodDaysValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -906,7 +1385,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for high exit count")}
               value={thresholdExitCountHigh.toString()}
-              onChangeText={(text) => setThresholdExitCountHigh(Number(text))}
+              error={!isThresholdExitCountHighValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdExitCountHigh,
+                  setIsThresholdExitCountHighValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -922,7 +1408,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low exit count")}
               value={thresholdExitCountLow.toString()}
-              onChangeText={(text) => setThresholdExitCountLow(Number(text))}
+              error={!isThresholdExitCountLowValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdExitCountLow,
+                  setIsThresholdExitCountLowValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -940,7 +1433,14 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number of days for production period"
               )}
               value={productionPeriodDays.toString()}
-              onChangeText={(text) => setProductionPeriodDays(Number(text))}
+              error={!isProductionPeriodDaysValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setProductionPeriodDays,
+                  setIsProductionPeriodDaysValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -949,8 +1449,13 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for production period"
               )}
               value={productionPeriodThreshold.toString()}
+              error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
-                setProductionPeriodThreshold(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setProductionPeriodThreshold,
+                  setIsProductionPeriodThresholdValid
+                )
               }
               keyboardType="numeric"
             />
@@ -964,43 +1469,38 @@ const ModalContent = (props: ModalContentProps) => {
               )}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("late spring start month")}
-              value={lateSpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("lateSpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set late spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early summer end month")}
-              value={earlySummerEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("late spring start month")}
+                value={lateSpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isLateSpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set early summer end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early summer end month")}
+                value={earlySummerEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySummerEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
           </View>
         );
 
@@ -1016,7 +1516,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              error={!isThresholdWindSpeedLowValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedLow,
+                  setIsThresholdWindSpeedLowValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1025,47 +1532,50 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold for optimal temperature"
               )}
               value={thresholdTemperatureOptimal.toString()}
+              error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureOptimal,
+                  setIsThresholdTemperatureOptimalValid,
+                  -99
+                )
               }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early autumn month")}
-              value={earlyAutumnMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlyAutumnMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early autumn month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early autumn month")}
+                value={earlyAutumnMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlyAutumnMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("summer start month")}
+                value={summerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1079,7 +1589,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              error={!isThresholdWindSpeedLowValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedLow,
+                  setIsThresholdWindSpeedLowValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1088,48 +1605,50 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold for optimal temperature"
               )}
               value={thresholdTemperatureOptimal.toString()}
+              error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureOptimal,
+                  setIsThresholdTemperatureOptimalValid,
+                  -99
+                )
               }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early spring start month")}
+                value={earlySpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {" "}
-              {userViewModel.i18n.t("set autumn end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("autumn end month")}
+                value={autumnEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1145,7 +1664,14 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for weight increase"
               )}
               value={thresholdWeightIncrease.toString()}
-              onChangeText={(text) => setThresholdWeightIncrease(Number(text))}
+              error={!isThresholdWeightIncreaseValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWeightIncrease,
+                  setIsThresholdWeightIncreaseValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1163,7 +1689,14 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number of days for production period"
               )}
               value={productionPeriodDays.toString()}
-              onChangeText={(text) => setProductionPeriodDays(Number(text))}
+              error={!isProductionPeriodDaysValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setProductionPeriodDays,
+                  setIsProductionPeriodDaysValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1172,8 +1705,13 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for production period"
               )}
               value={productionPeriodThreshold.toString()}
+              error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
-                setProductionPeriodThreshold(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setProductionPeriodThreshold,
+                  setIsProductionPeriodThresholdValid
+                )
               }
               keyboardType="numeric"
             />
@@ -1185,41 +1723,38 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for summer season")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("summer end month")}
-              value={summerEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("summer start month")}
+                value={summerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("summer end month")}
+                value={summerEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
           </View>
         );
 
@@ -1235,7 +1770,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              error={!isThresholdWindSpeedLowValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedLow,
+                  setIsThresholdWindSpeedLowValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1244,47 +1786,50 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold for optimal temperature"
               )}
               value={thresholdTemperatureOptimal.toString()}
+              error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureOptimal,
+                  setIsThresholdTemperatureOptimalValid,
+                  -99
+                )
               }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early spring start month")}
+                value={earlySpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set autumn end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("autumn end month")}
+                value={autumnEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1298,7 +1843,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low wind speed")}
               value={thresholdWindSpeedLow.toString()}
-              onChangeText={(text) => setThresholdWindSpeedLow(Number(text))}
+              error={!isThresholdWindSpeedLowValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWindSpeedLow,
+                  setIsThresholdWindSpeedLowValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1307,47 +1859,50 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold for optimal temperature"
               )}
               value={thresholdTemperatureOptimal.toString()}
+              error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
-                setThresholdTemperatureOptimal(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureOptimal,
+                  setIsThresholdTemperatureOptimalValid,
+                  -99
+                )
               }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early autumn month")}
-              value={earlyAutumnMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("summer start month")}
+                value={summerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlyAutumnMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early autumn month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early autumn month")}
+                value={earlyAutumnMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlyAutumnMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1356,23 +1911,21 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is early summer starting")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early summer start month")}
-              value={earlySummerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early summer start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early summer start month")}
+                value={earlySummerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1381,41 +1934,38 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert to check if it's spring")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("spring start month")}
-              value={springStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("spring end month")}
-              value={springEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("spring start month")}
+                value={springStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set spring end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("spring end month")}
+                value={springEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
           </View>
         );
 
@@ -1433,7 +1983,14 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for weight increase"
               )}
               value={thresholdWeightIncrease.toString()}
-              onChangeText={(text) => setThresholdWeightIncrease(Number(text))}
+              error={!isThresholdWeightIncreaseValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdWeightIncrease,
+                  setIsThresholdWeightIncreaseValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1451,7 +2008,14 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number of days for production period"
               )}
               value={productionPeriodDays.toString()}
-              onChangeText={(text) => setProductionPeriodDays(Number(text))}
+              error={!isProductionPeriodDaysValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setProductionPeriodDays,
+                  setIsProductionPeriodDaysValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1460,8 +2024,13 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for production period"
               )}
               value={productionPeriodThreshold.toString()}
+              error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
-                setProductionPeriodThreshold(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setProductionPeriodThreshold,
+                  setIsProductionPeriodThresholdValid
+                )
               }
               keyboardType="numeric"
             />
@@ -1476,7 +2045,15 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
-              onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
+              error={!isThresholdTemperatureMaxValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureMax,
+                  setIsThresholdTemperatureMaxValid,
+                  -99
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1487,23 +2064,21 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is early summer starting")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early summer start month")}
-              value={earlySummerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early summer start month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early summer start month")}
+                value={earlySummerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1512,41 +2087,38 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is spring season")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("spring start month")}
-              value={springStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("spring end month")}
-              value={springEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("spring start month")}
+                value={springStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set spring end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("spring end month")}
+                value={springEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSpringEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1555,41 +2127,38 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for summer season")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("summer start month")}
-              value={summerStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("summer end month")}
-              value={summerEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("summer start month")}
+                value={summerStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("summerEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set summer end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("summer end month")}
+                value={summerEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isSummerEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
           </View>
         );
 
@@ -1607,7 +2176,15 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold max temperature for hive"
               )}
               value={thresholdMaxTempInHive.toString()}
-              onChangeText={(text) => setThresholdMaxTempInHive(Number(text))}
+              error={!isThresholdMaxTempInHiveValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdMaxTempInHive,
+                  setIsThresholdMaxTempInHiveValid,
+                  -99
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={8} />
@@ -1625,7 +2202,15 @@ const ModalContent = (props: ModalContentProps) => {
                 "set threshold minimum temperature for hive"
               )}
               value={thresholdMinTempInHive.toString()}
-              onChangeText={(text) => setThresholdMinTempInHive(Number(text))}
+              error={!isThresholdMinTempInHiveValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdMinTempInHive,
+                  setIsThresholdMinTempInHiveValid,
+                  -99
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1639,7 +2224,15 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold max temperature")}
               value={thresholdTemperatureMax.toString()}
-              onChangeText={(text) => setThresholdTemperatureMax(Number(text))}
+              error={!isThresholdTemperatureMaxValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureMax,
+                  setIsThresholdTemperatureMaxValid,
+                  -99
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1653,7 +2246,15 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold temperature minimum")}
               value={thresholdTemperatureMin.toString()}
-              onChangeText={(text) => setThresholdTemperatureMin(Number(text))}
+              error={!isThresholdTemperatureMinValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdTemperatureMin,
+                  setIsThresholdTemperatureMinValid,
+                  -99
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1669,7 +2270,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("threshold max humidity")}
               value={thresholdHumidityMax.toString()}
-              onChangeText={(text) => setThresholdHumidityMax(Number(text))}
+              error={!isThresholdHumidityMaxValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdHumidityMax,
+                  setIsThresholdHumidityMaxValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1685,7 +2293,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("threshold min humidity")}
               value={thresholdHumidityMin.toString()}
-              onChangeText={(text) => setThresholdHumidityMin(Number(text))}
+              error={!isThresholdHumidityMinValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdHumidityMin,
+                  setIsThresholdHumidityMinValid
+                )
+              }
               keyboardType="numeric"
             />
 
@@ -1696,23 +2311,21 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is early winter ending")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early winter end month")}
-              value={earlyWinterEnd.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlyWinterEnd");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early winter end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early winter end month")}
+                value={earlyWinterEnd.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlyWinterEndValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1721,21 +2334,19 @@ const ModalContent = (props: ModalContentProps) => {
               {userViewModel.i18n.t("alert for is winter ending")}
             </Text>
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("winter end month")}
-              value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("winterEnd");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set winter end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("winter end month")}
+                value={winterEnd.toLocaleDateString(userViewModel.i18n.locale)}
+                error={!isWinterEndValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1749,7 +2360,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for high exit count")}
               value={thresholdExitCountHigh.toString()}
-              onChangeText={(text) => setThresholdExitCountHigh(Number(text))}
+              error={!isThresholdExitCountHighValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdExitCountHigh,
+                  setIsThresholdExitCountHighValid
+                )
+              }
               keyboardType="numeric"
             />
           </View>
@@ -1769,47 +2387,49 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for thresholdvalue for weight decrease"
               )}
               value={thresholdWeightDecreaseEarlySpring.toString()}
+              error={!isThresholdWeightDecreaseEarlySpringValid}
               onChangeText={(text) =>
-                setThresholdWeightDecreaseEarlySpring(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setThresholdWeightDecreaseEarlySpring,
+                  setIsThresholdWeightDecreaseEarlySpringValid
+                )
               }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring start month")}
-              value={earlySpringStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early spring start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("early spring end month")}
-              value={earlySpringEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("early spring start month")}
+                value={earlySpringStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySpringStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set early spring end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("early spring end month")}
+                value={earlySpringEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isEarlySpringEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1825,47 +2445,49 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for weight decrease"
               )}
               value={thresholdWeightDecreaseInAutumn.toString()}
+              error={!isThresholdWeightDecreaseInAutumnValid}
               onChangeText={(text) =>
-                setThresholdWeightDecreaseInAutumn(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setThresholdWeightDecreaseInAutumn,
+                  setIsThresholdWeightDecreaseInAutumnValid
+                )
               }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn start month")}
-              value={autumnStartMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnStartMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set autumn start month")}
-            </Button>
-            <VerticalSpacer size={12} />
-            <TextInput
-              label={userViewModel.i18n.t("autumn end month")}
-              value={autumnEndMonth.toLocaleDateString(
-                userViewModel.i18n.locale
-              )}
-              editable={false}
-            />
-            <VerticalSpacer size={4} />
-            <Button
-              mode="contained"
+              <TextInput
+                label={userViewModel.i18n.t("autumn start month")}
+                value={autumnStartMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnStartMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
+
+            <VerticalSpacer size={8} />
+            <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
                 setDatePickerVisible(true);
               }}
             >
-              {userViewModel.i18n.t("set autumn end month")}
-            </Button>
+              <TextInput
+                label={userViewModel.i18n.t("autumn end month")}
+                value={autumnEndMonth.toLocaleDateString(
+                  userViewModel.i18n.locale
+                )}
+                error={!isAutumnEndMonthValid}
+                editable={false}
+              />
+            </TouchableOpacity>
 
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
@@ -1881,7 +2503,14 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number of days for production period"
               )}
               value={productionPeriodDays.toString()}
-              onChangeText={(text) => setProductionPeriodDays(Number(text))}
+              error={!isProductionPeriodDaysValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setProductionPeriodDays,
+                  setIsProductionPeriodDaysValid
+                )
+              }
               keyboardType="numeric"
             />
             <VerticalSpacer size={4} />
@@ -1890,8 +2519,13 @@ const ModalContent = (props: ModalContentProps) => {
                 "set number for threshold value for production period"
               )}
               value={productionPeriodThreshold.toString()}
+              error={!isProductionPeriodThresholdValid}
               onChangeText={(text) =>
-                setProductionPeriodThreshold(Number(text))
+                handleModifyTextInput(
+                  text,
+                  setProductionPeriodThreshold,
+                  setIsProductionPeriodThresholdValid
+                )
               }
               keyboardType="numeric"
             />
@@ -1908,7 +2542,14 @@ const ModalContent = (props: ModalContentProps) => {
             <TextInput
               label={userViewModel.i18n.t("set threshold for low exit count")}
               value={thresholdExitCountLow.toString()}
-              onChangeText={(text) => setThresholdExitCountLow(Number(text))}
+              error={!isThresholdExitCountLowValid}
+              onChangeText={(text) =>
+                handleModifyTextInput(
+                  text,
+                  setThresholdExitCountLow,
+                  setIsThresholdExitCountLowValid
+                )
+              }
               keyboardType="numeric"
             />
           </View>
@@ -1948,7 +2589,22 @@ const ModalContent = (props: ModalContentProps) => {
 
       <VerticalSpacer size={12} />
 
-      {/*TODO: Save button should be under each threshold-value choice*/}
+      {errorValidationMessage ? (
+        <>
+          <Text
+            style={{
+              ...theme.fonts.bodyLarge,
+              flex: 1,
+              textAlign: "center",
+              color: theme.colors.error,
+            }}
+          >
+            {errorValidationMessage}
+          </Text>
+          <VerticalSpacer size={4} />
+        </>
+      ) : null}
+
       <Button mode="contained" onPress={handleSave}>
         {userViewModel.i18n.t("save")}
       </Button>
