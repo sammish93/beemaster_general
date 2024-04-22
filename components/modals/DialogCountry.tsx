@@ -44,11 +44,11 @@ const DialogModal = ({ hideDialog, countryCode }: DialogCountryProps) => {
       >
         <Dialog.Icon icon="alert" />
         <Dialog.Title style={{ textAlign: "center" }}>
-          Additional Action Required
+          {userViewModel.i18n.t("additional action required")}
         </Dialog.Title>
         <Dialog.Content>
           <Text style={theme.fonts.titleMedium} accessibilityRole="header">
-            Would you like to change the default notification parameters?
+            {userViewModel.i18n.t("country modal heading")}
           </Text>
         </Dialog.Content>
         <Dialog.ScrollArea
@@ -56,11 +56,7 @@ const DialogModal = ({ hideDialog, countryCode }: DialogCountryProps) => {
         >
           <ScrollView style={styles(theme).overlayScrollView}>
             <Text style={theme.fonts.bodyMedium}>
-              By changing the default notification parameters to the newly
-              selected country the application will be able to give you more
-              accurate feedback regarding notifications such as early snow
-              forecasted in autumn months, ideal times to harvest honey in your
-              region, as well as much more.
+              {userViewModel.i18n.t("country modal description")}
             </Text>
           </ScrollView>
         </Dialog.ScrollArea>

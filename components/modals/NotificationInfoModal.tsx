@@ -51,23 +51,15 @@ const ModalContent = (props: ModalContentProps) => {
       </View>
       <View>
         <Text style={theme.fonts.bodyLarge}>
-          Toggle specific notifications on and off. You can toggle global
-          notifications for every one of your hives on the settings screen.
+          {userViewModel.i18n.t("notification info 1")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Tip: Do you wish to turn off a specific notification for only a single
-          hive? You can keep that notification enabled on the settings screen
-          while disabling it on said hive's settings screen. You'll still
-          receive notifications of that type for all of your other hives.
+          {userViewModel.i18n.t("notification info 2")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Don't agree that wind speeds of 10 meters per second are strong winds?
-          You can change parameters! Click on the 'Customise' button for each
-          notification type in order to adjust specific parameters. All future
-          notifications will take into account these adjustments in order to
-          provide you with a tailor-made experience.
+          {userViewModel.i18n.t("notification info 3")}
         </Text>
       </View>
     </>

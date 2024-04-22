@@ -51,41 +51,31 @@ const ModalContent = (props: ModalContentProps) => {
       </View>
       <View>
         <Text style={theme.fonts.bodyLarge}>
-          This screen contains functionality that allows you to further
-          customise the application to fit your needs.
+          {userViewModel.i18n.t("settings info 1")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Switch between light and dark colour schemes by pressing the switch.
+          {userViewModel.i18n.t("settings info 2")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Change your language by choosing a supported language via a dropdown
-          menu. This also influences how dates and times are displayed.
+          {userViewModel.i18n.t("settings info 3")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Note: Changing your country of residence will influence when you will
-          receive notifications. Setting your country of residence to a country
-          in the southern hemisphere will influence notifications that take
-          seasons into account. These parameters can be further customised.
+          {userViewModel.i18n.t("settings info 4")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Adjust your measurement preferences. Switch between celsius,
-          fahrenheit, and kelvins, as well as much more.
+          {userViewModel.i18n.t("settings info 5")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Toggle application permissions on and off. The application can still
-          be used with all permissioned switched off, but some functionality
-          such as using your current location when repositioning a hive will be
-          unavailable.
+          {userViewModel.i18n.t("settings info 6")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Receive notifications for various platforms such as push
-          notifications, SMS messages, or emails.
+          {userViewModel.i18n.t("settings info 7")}
         </Text>
       </View>
     </>

@@ -827,9 +827,7 @@ const ModalContent = (props: ModalContentProps) => {
         };
       } else {
         // TODO - Add mobile implementation.
-        alert(
-          "You can only select a maximum of 2 dates. Unselect another date first."
-        );
+        alert(userViewModel.i18n.t("you can only select a maximum of 2 dates"));
         return;
       }
     }
