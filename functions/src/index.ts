@@ -21,6 +21,8 @@ admin.initializeApp();
  * }
  */
 export const addWeightData = onRequest(async (request, response) => {
+  const LIMIT = 30;
+
   if (request.method !== "POST") {
     response.status(405).send("Only 'POST' method allowed!");
     return;
@@ -42,6 +44,13 @@ export const addWeightData = onRequest(async (request, response) => {
       .status(400)
       .send("Missing fields in request - userId, hiveId, weight.");
     return;
+  }
+
+  if (userId.length > LIMIT || hiveId.length > LIMIT) {
+    response
+      .status(400)
+      .send("Input data is to long!");
+      return;
   }
 
   // Timestamp in ISO 8601-format.
