@@ -87,45 +87,45 @@ export const addWeightData = onRequest(async (request, response) => {
 /**
  * Retrieves the hive ID assigned to a specific sensor.
  *
- * It handles GET requests to fetch the hive ID associated with a given sensor. 
- * It´s intended for use by microcontrollers that need to dynamically determine 
+ * It handles GET requests to fetch the hive ID associated with a given sensor.
+ * It´s intended for use by microcontrollers that need to dynamically determine
  * the target hive for data submissions, especially when sensors are moved between hives.
  */
 export const getHiveId = onRequest(async (request, response) => {
   const LIMIT = 30;
-  const userId = request.query.userId;
-  const sensorId = request.query.sensorId;
+  const { userId, sensorId } = request.query;
 
   if (!sensorId || !userId) {
-    response.status(400).send("Sensor and user IDs are required!");
-    return;
+    return response.status(400).send("Sensor and user IDs are required!");
   }
 
   if (sensorId.length > LIMIT || userId.length > LIMIT) {
-    response.status(400).send("Input data is to long!");
-    return;
+    return response.status(400).send("Input data is to long!");
   }
 
   try {
-    const sensorAssignmentRef = admin
-      .firestore()
-      .collection("users")
-      .doc(userId)
+    const userRef = admin.firestore().collection("users").doc(`${userId}`);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      return response.status(404).send("User not found.");
+    }
+
+    const sensorRef = userRef
       .collection("sensorAssignments")
-      .doc(sensorId);
+      .doc(`${sensorId}`);
+    const sensorDoc = await sensorRef.get();
 
-    const assignmentDoc = await sensorAssignmentRef.get();
-    if (!assignmentDoc.exists()) {
-      response.status(404).send("Sensor document not found.");
-    }
-    else {
-      const hiveId = assignmentDoc.data()?.hiveId;
-      if (hiveId) 
-        response.json({ status: 200, data: hiveId });
-      else 
-        response.json({ status: 404, message: "HiveId not found." });
+    if (!sensorDoc.exists) {
+      return response.status(404).send("Sensor document not found.");
     }
 
+    const hiveId = sensorDoc.data().hiveId;
+    if (!hiveId) {
+      return response.status(404).send("HiveId not found.");
+    }
+
+    return response.status(200).json({ hiveId });
   } catch (error) {
     console.error("Error in getting sensor assignment: ", error);
     response.status(500).send("Internal server error.");
