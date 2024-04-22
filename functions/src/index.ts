@@ -53,6 +53,13 @@ export const addWeightData = onRequest(async (request, response) => {
       return;
   }
 
+  if (!isValidAlphanumeric(userId) || !isValidAlphanumeric(hiveId)) {
+    response
+      .status(400)
+      .send("Invalid ID format; IDs must be alphanumeric!");
+      return;
+  }
+
   // Timestamp in ISO 8601-format.
   const timeNow = admin.firestore.Timestamp.now();
   const date = timeNow.toDate(); // Convert to javascript date object.
@@ -80,3 +87,8 @@ export const addWeightData = onRequest(async (request, response) => {
     response.status(500).send("Error writing document to db");
   }
 });
+
+const isValidAlphanumeric = (str: string): boolean => {
+  const pattern = /^[a-zA-Z0-9]+$/
+  return pattern.test(str);
+}
