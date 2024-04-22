@@ -80,7 +80,42 @@ export const addWeightData = onRequest(async (request, response) => {
     response.json({ result: `Weight data added with ID: ${docRef.id}` });
   } catch (error) {
     console.error("Error writing document: ", error);
-    response.status(500).send("Error writing document to db");
+    response.status(500).send("Internal server error.");
+  }
+});
+
+export const getHiveId = onRequest(async (request, response) => {
+  const userId = request.query.userId;
+  const sensorId = request.query.sensorId;
+
+  if (!sensorId || !userId) {
+    response.status(400).send("Sensor and user IDs are required!");
+    return;
+  }
+
+  try {
+    const sensorAssignmentRef = admin
+      .firestore()
+      .collection("users")
+      .doc(userId)
+      .collection("sensorAssignments")
+      .doc(sensorId);
+
+    const assignmentDoc = await sensorAssignmentRef.get();
+    if (!assignmentDoc.exists()) {
+      response.status(404).send("Sensor document not found.");
+    }
+    else {
+      const hiveId = assignmentDoc.data()?.hiveId;
+      if (hiveId) 
+        response.json({ status: 200, data: hiveId });
+      else 
+        response.json({ status: 404, message: "HiveId not found." });
+    }
+
+  } catch (error) {
+    console.error("Error in getting sensor assignment: ", error);
+    response.status(500).send("Internal server error.");
   }
 });
 
