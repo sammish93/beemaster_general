@@ -194,6 +194,10 @@ class UserViewModel {
         this.userId = val;
     }
 
+    @action public getUserId = (): string => {
+        return this.userId;
+    }
+
     @action public setTheme = (theme: string): void => {
         // TODO DB - Update user's theme preference in DB.
         this.theme = theme;
