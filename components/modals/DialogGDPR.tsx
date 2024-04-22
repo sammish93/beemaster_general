@@ -1,13 +1,13 @@
-import * as React from "react"
-import { Button, Dialog, Portal, Text } from "react-native-paper"
-import { ScrollView, Platform } from "react-native"
-import styles from "@/assets/styles"
-import { useTheme } from "react-native-paper"
-import { VerticalSpacer } from "../Spacers"
+import * as React from "react";
+import { Button, Dialog, Portal, Text } from "react-native-paper";
+import { ScrollView, Platform } from "react-native";
+import styles from "@/assets/styles";
+import { useTheme } from "react-native-paper";
+import { VerticalSpacer } from "../Spacers";
 
 interface DialogGDPRProps {
-  hideDialog: () => void
-  onConsent: (consent: boolean) => void
+  hideDialog: () => void;
+  onConsent: (consent: boolean) => void;
 }
 
 /**
@@ -18,8 +18,8 @@ interface DialogGDPRProps {
  */
 
 const DialogGDPR = ({ hideDialog, onConsent }: DialogGDPRProps) => {
-  return <DialogModal hideDialog={hideDialog} onConsent={onConsent} />
-}
+  return <DialogModal hideDialog={hideDialog} onConsent={onConsent} />;
+};
 
 /**
  * `MobileModal` component renders the GDPR dialog specifically designed for mobile platforms.
@@ -29,16 +29,16 @@ const DialogGDPR = ({ hideDialog, onConsent }: DialogGDPRProps) => {
  */
 
 const DialogModal = ({ hideDialog, onConsent }: DialogGDPRProps) => {
-  const theme = useTheme()
+  const theme = useTheme();
   const handleAccept = () => {
-    onConsent(true)
-    hideDialog()
-  }
+    onConsent(true);
+    hideDialog();
+  };
 
   const handleCancel = () => {
-    onConsent(false)
-    hideDialog()
-  }
+    onConsent(false);
+    hideDialog();
+  };
 
   return (
     <Portal>
@@ -120,7 +120,7 @@ const DialogModal = ({ hideDialog, onConsent }: DialogGDPRProps) => {
         </Dialog.Actions>
       </Dialog>
     </Portal>
-  )
-}
+  );
+};
 
-export default DialogGDPR
+export default DialogGDPR;
