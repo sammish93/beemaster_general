@@ -1257,11 +1257,12 @@ const ModalContent = (props: ModalContentProps) => {
             <Divider
               style={{
                 backgroundColor: theme.colors.outline,
-                alignSelf: "center",
               }}
             />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is early winter starting")}
             </Text>
             <VerticalSpacer size={4} />
@@ -1285,11 +1286,12 @@ const ModalContent = (props: ModalContentProps) => {
             <Divider
               style={{
                 backgroundColor: theme.colors.outline,
-                alignSelf: "center",
               }}
             />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is currently spring season")}
             </Text>
             <VerticalSpacer size={4} />
@@ -2080,7 +2082,7 @@ const ModalContent = (props: ModalContentProps) => {
               style={{
                 ...theme.fonts.bodyLarge,
                 flex: 1,
-                alignItems: "center",
+                alignSelf: "center",
               }}
             >
               {userViewModel.i18n.t(
