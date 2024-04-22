@@ -590,6 +590,7 @@ class UserViewModel {
   public getEarlyWinterEnd = (): Date => {
     return this.earlyWinterEnd;
   };
+
   @action signInWithGoogleWeb = async () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({
