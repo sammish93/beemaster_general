@@ -1018,7 +1018,7 @@ const ModalContent = (props: ModalContentProps) => {
                 editable={false}
               />
             </TouchableOpacity>
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => openCalendarModal("earlyWinterMonths")}
             >
@@ -1034,7 +1034,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => openCalendarModal("earlySpringMonths")}
             >
@@ -1077,7 +1077,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
@@ -1154,7 +1154,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
@@ -1309,7 +1309,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
@@ -1355,7 +1355,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerStartMonth");
@@ -1559,7 +1559,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerEndMonth");
@@ -1638,7 +1638,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("summerStartMonth");
@@ -1715,7 +1715,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
@@ -1831,7 +1831,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("summerEndMonth");
@@ -1910,7 +1910,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
@@ -1987,7 +1987,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("earlyAutumnMonth");
@@ -2054,7 +2054,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
@@ -2223,7 +2223,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
@@ -2265,7 +2265,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("summerEndMonth");
@@ -2571,7 +2571,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringEndMonth");
@@ -2631,7 +2631,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
