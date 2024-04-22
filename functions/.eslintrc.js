@@ -27,5 +27,6 @@ module.exports = {
     "import/no-unresolved": 0,
     indent: ["error", 2],
     "prettier/prettier": "error",
+    "@typescript-eslint/no-var-requires": "off",
   },
 };

@@ -1,5 +1,5 @@
-import { onRequest } from "firebase-functions/v2/https";
-import * as admin from "firebase-admin";
+const { onRequest } = require("firebase-functions/v2/https");
+const admin = require("firebase-admin");
 
 admin.initializeApp();
 
@@ -47,17 +47,13 @@ export const addWeightData = onRequest(async (request, response) => {
   }
 
   if (userId.length > LIMIT || hiveId.length > LIMIT) {
-    response
-      .status(400)
-      .send("Input data is to long!");
-      return;
+    response.status(400).send("Input data is to long!");
+    return;
   }
 
   if (!isValidAlphanumeric(userId) || !isValidAlphanumeric(hiveId)) {
-    response
-      .status(400)
-      .send("Invalid ID format; IDs must be alphanumeric!");
-      return;
+    response.status(400).send("Invalid ID format; IDs must be alphanumeric!");
+    return;
   }
 
   // Timestamp in ISO 8601-format.
@@ -88,7 +84,8 @@ export const addWeightData = onRequest(async (request, response) => {
   }
 });
 
+// Checks that user and hive id only contains alphanumeric characters.
 const isValidAlphanumeric = (str: string): boolean => {
-  const pattern = /^[a-zA-Z0-9]+$/
+  const pattern = /^[a-zA-Z0-9]+$/;
   return pattern.test(str);
-}
+};
