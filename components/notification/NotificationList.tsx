@@ -23,6 +23,7 @@ const NotificationList = ({
   notifications,
 }: NotificationListProps) => {
   const { hiveViewModel } = useContext(MobXProviderContext);
+  const { userViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
   const [parentWidth, setParentWidth] = useState(0);
   const screenWidth = Dimensions.get("window").width;
@@ -46,7 +47,7 @@ const NotificationList = ({
         numColumns={1}
         ListEmptyComponent={
           <Text style={theme.fonts.bodyLarge}>
-            No new notifications
+            {userViewModel.i18n.t("no new notifications")}
             {/*TODO Refresh Button */}
           </Text>
         }

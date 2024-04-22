@@ -4,6 +4,8 @@ import { ScrollView, Platform } from "react-native";
 import styles from "@/assets/styles";
 import { useTheme } from "react-native-paper";
 import { VerticalSpacer } from "../Spacers";
+import { MobXProviderContext } from "mobx-react";
+import { useContext } from "react";
 
 interface DialogGDPRProps {
   hideDialog: () => void;
@@ -29,6 +31,7 @@ const DialogGDPR = ({ hideDialog }: DialogGDPRProps) => {
 
 const DialogModal = ({ hideDialog }: DialogGDPRProps) => {
   const theme = useTheme();
+  const { userViewModel } = useContext(MobXProviderContext);
 
   return (
     <Portal>
@@ -39,11 +42,11 @@ const DialogModal = ({ hideDialog }: DialogGDPRProps) => {
       >
         <Dialog.Icon icon="alert" />
         <Dialog.Title style={{ textAlign: "center" }}>
-          Welcome to the Beemaster General App
+          {userViewModel.i18n.t("gdpr modal title")}
         </Dialog.Title>
         <Dialog.Content>
           <Text style={theme.fonts.titleMedium} accessibilityRole="header">
-            GDPR Information and Terms of Use
+            {userViewModel.i18n.t("gdpr modal header")}
           </Text>
         </Dialog.Content>
         <Dialog.ScrollArea
@@ -51,44 +54,35 @@ const DialogModal = ({ hideDialog }: DialogGDPRProps) => {
         >
           <ScrollView style={styles(theme).overlayScrollView}>
             <Text style={theme.fonts.bodyMedium}>
-              • Data controller: Group/HiØ
+              {userViewModel.i18n.t("gdpr modal description 1")}
             </Text>
             <VerticalSpacer size={12} />
             <Text style={theme.fonts.bodyMedium}>
-              • The purpose of the processing of personal data: Clearly explain
-              why you collect personal data, for example to improve services,
-              customize the user experience, or for marketing purposes.{" "}
+              {userViewModel.i18n.t("gdpr modal description 2")}
             </Text>
             <VerticalSpacer size={12} />
             <Text style={theme.fonts.bodyMedium}>
-              • Legal basis for the processing:....
+              {userViewModel.i18n.t("gdpr modal description 3")}
             </Text>
             <VerticalSpacer size={12} />
             <Text style={theme.fonts.bodyMedium}>
-              • Third parties who may receive personal data: such as
-              subcontractors, cloud services, marketing partners, etc.
+              {userViewModel.i18n.t("gdpr modal description 4")}
             </Text>
             <VerticalSpacer size={12} />
             <Text style={theme.fonts.bodyMedium}>
-              • Storage period: Describe how long the personal data will be
-              stored.
+              {userViewModel.i18n.t("gdpr modal description 5")}
             </Text>
             <VerticalSpacer size={12} />
             <Text style={theme.fonts.bodyMedium}>
-              • The rights of the data subject: Inform users about their rights
-              under GDPR, such as the right to request access to, correction or
-              deletion of the personal data stored about them, the right to
-              object to processing, and the right to data portability.
+              {userViewModel.i18n.t("gdpr modal description 6")}
             </Text>
             <VerticalSpacer size={12} />
             <Text style={theme.fonts.bodyMedium}>
-              • The right to withdraw consent:....
+              {userViewModel.i18n.t("gdpr modal description 7")}
             </Text>
             <VerticalSpacer size={12} />
             <Text style={theme.fonts.bodyMedium}>
-              • The right to lodge a complaint with a supervisory authority:
-              Provide information on how and to whom users can complain if they
-              believe the processing of their personal data violates GDPR.
+              {userViewModel.i18n.t("gdpr modal description 8")}
             </Text>
           </ScrollView>
         </Dialog.ScrollArea>

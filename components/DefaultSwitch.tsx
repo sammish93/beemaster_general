@@ -74,6 +74,7 @@ const DefaultSwitchComponent = ({ type }: PermissionSwitchProps) => {
         </Text>
         <Switch
           value={getState()}
+          disabled={type === "email" || type === "sms"}
           onValueChange={() => {
             setIsSwitchOn(!isSwitchOn);
             updateState();

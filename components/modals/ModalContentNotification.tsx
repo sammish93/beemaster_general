@@ -827,9 +827,7 @@ const ModalContent = (props: ModalContentProps) => {
         };
       } else {
         // TODO - Add mobile implementation.
-        alert(
-          "You can only select a maximum of 2 dates. Unselect another date first."
-        );
+        alert(userViewModel.i18n.t("you can only select a maximum of 2 dates"));
         return;
       }
     }
@@ -943,12 +941,20 @@ const ModalContent = (props: ModalContentProps) => {
       case NotificationType.Weather:
         return (
           <View>
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{
+                ...theme.fonts.bodyLarge,
+                flex: 1,
+                alignSelf: "center",
+              }}
+            >
               {userViewModel.i18n.t("alert for strong wind forecast")}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold wind speed")}
+              label={`${userViewModel.i18n.t("set threshold wind speed")} (
+                ${userViewModel.windSpeedPreference}
+              )`}
               value={thresholdWindSpeedStrong.toString()}
               error={!isThresholdWindSpeedStrongValid}
               onChangeText={(text) =>
@@ -964,12 +970,16 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for consistently high temperature")}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold max temperature")}
+              label={`${userViewModel.i18n.t("set threshold max temperature")} (
+               ${userViewModel.temperaturePreference}
+              )`}
               value={thresholdTemperatureMax.toString()}
               error={!isThresholdTemperatureMaxValid}
               onChangeText={(text) =>
@@ -986,7 +996,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for is 'snow' forecasted during specific seasons"
               )}
@@ -1004,7 +1016,7 @@ const ModalContent = (props: ModalContentProps) => {
                 editable={false}
               />
             </TouchableOpacity>
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => openCalendarModal("earlyWinterMonths")}
             >
@@ -1020,7 +1032,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => openCalendarModal("earlySpringMonths")}
             >
@@ -1039,7 +1051,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for is 'snow' forecasted during autumn"
               )}
@@ -1061,7 +1075,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
@@ -1081,14 +1095,18 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for ideal bee weather between early spring and end autumn"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold for low wind speed")}
+              label={`${userViewModel.i18n.t(
+                "set threshold for low wind speed"
+              )} (${userViewModel.windSpeedPreference})`}
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) =>
@@ -1102,9 +1120,9 @@ const ModalContent = (props: ModalContentProps) => {
             />
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set threshold for optimal temperature"
-              )}
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdTemperatureOptimal.toString()}
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
@@ -1134,7 +1152,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
@@ -1154,12 +1172,16 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is winter starting")}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold temperature minimum")}
+              label={`${userViewModel.i18n.t(
+                "set threshold temperature minimum"
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdTemperatureMin.toString()}
               error={!isThresholdTemperatureMinValid}
               onChangeText={(text) =>
@@ -1192,12 +1214,16 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is winter ending")}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold temperature minimum")}
+              label={`${userViewModel.i18n.t(
+                "set threshold temperature minimum"
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdTemperatureMin.toString()}
               error={!isThresholdTemperatureMinValid}
               onChangeText={(text) =>
@@ -1226,9 +1252,15 @@ const ModalContent = (props: ModalContentProps) => {
             </TouchableOpacity>
 
             <VerticalSpacer size={8} />
-            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <Divider
+              style={{
+                backgroundColor: theme.colors.outline,
+              }}
+            />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is early winter starting")}
             </Text>
             <VerticalSpacer size={4} />
@@ -1249,9 +1281,15 @@ const ModalContent = (props: ModalContentProps) => {
             </TouchableOpacity>
 
             <VerticalSpacer size={8} />
-            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <Divider
+              style={{
+                backgroundColor: theme.colors.outline,
+              }}
+            />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is currently spring season")}
             </Text>
             <VerticalSpacer size={4} />
@@ -1271,7 +1309,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
@@ -1293,7 +1331,9 @@ const ModalContent = (props: ModalContentProps) => {
       case NotificationType.PossibleSwarm:
         return (
           <View>
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert between late spring and early summer"
               )}
@@ -1315,7 +1355,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerStartMonth");
@@ -1333,18 +1373,24 @@ const ModalContent = (props: ModalContentProps) => {
             </TouchableOpacity>
 
             <VerticalSpacer size={8} />
-            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <Divider
+              style={{
+                backgroundColor: theme.colors.outline,
+              }}
+            />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for hive weight decreases significantly"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set number for threshold value for weight decrease"
-              )}
+              )} (${userViewModel.weightPreference})`}
               value={thresholdWeightDecrease.toString()}
               error={!isThresholdWeightDecreaseValid}
               onChangeText={(text) =>
@@ -1374,16 +1420,24 @@ const ModalContent = (props: ModalContentProps) => {
             />
 
             <VerticalSpacer size={8} />
-            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <Divider
+              style={{
+                backgroundColor: theme.colors.outline,
+              }}
+            />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert to check if many bees have exited the hive"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold for high exit count")}
+              label={`${userViewModel.i18n.t(
+                "set threshold for high exit count"
+              )} (${userViewModel.beeCountPreference})`}
               value={thresholdExitCountHigh.toString()}
               error={!isThresholdExitCountHighValid}
               onChangeText={(text) =>
@@ -1397,16 +1451,24 @@ const ModalContent = (props: ModalContentProps) => {
             />
 
             <VerticalSpacer size={8} />
-            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <Divider
+              style={{
+                backgroundColor: theme.colors.outline,
+              }}
+            />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for have few bees been exited the hive"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold for low exit count")}
+              label={`${userViewModel.i18n.t(
+                "set threshold for low exit count"
+              )} (${userViewModel.beeCountPreference})`}
               value={thresholdExitCountLow.toString()}
               error={!isThresholdExitCountLowValid}
               onChangeText={(text) =>
@@ -1420,9 +1482,15 @@ const ModalContent = (props: ModalContentProps) => {
             />
 
             <VerticalSpacer size={8} />
-            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <Divider
+              style={{
+                backgroundColor: theme.colors.outline,
+              }}
+            />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for total weight decrease over a period"
               )}
@@ -1461,9 +1529,15 @@ const ModalContent = (props: ModalContentProps) => {
             />
 
             <VerticalSpacer size={8} />
-            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <Divider
+              style={{
+                backgroundColor: theme.colors.outline,
+              }}
+            />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for possible swarming based on defined season"
               )}
@@ -1485,7 +1559,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySummerEndMonth");
@@ -1507,14 +1581,18 @@ const ModalContent = (props: ModalContentProps) => {
       case NotificationType.HoneyHarvest:
         return (
           <View>
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for ideal bee weather between summer and early autumn"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold for low wind speed")}
+              label={`${userViewModel.i18n.t(
+                "set threshold for low wind speed"
+              )} (${userViewModel.windSpeedPreference})`}
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) =>
@@ -1528,9 +1606,9 @@ const ModalContent = (props: ModalContentProps) => {
             />
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set threshold for optimal temperature"
-              )}
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdTemperatureOptimal.toString()}
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
@@ -1560,7 +1638,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("summerStartMonth");
@@ -1580,14 +1658,18 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for ideal bee weather between early spring and end autumn"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold for low wind speed")}
+              label={`${userViewModel.i18n.t(
+                "set threshold for low wind speed"
+              )} (${userViewModel.windSpeedPreference})`}
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) =>
@@ -1601,9 +1683,9 @@ const ModalContent = (props: ModalContentProps) => {
             />
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set threshold for optimal temperature"
-              )}
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdTemperatureOptimal.toString()}
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
@@ -1633,7 +1715,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
@@ -1653,16 +1735,18 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for significant increase in hive weight"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set number for threshold value for weight increase"
-              )}
+              )} (${userViewModel.weightPreference})`}
               value={thresholdWeightIncrease.toString()}
               error={!isThresholdWeightIncreaseValid}
               onChangeText={(text) =>
@@ -1676,9 +1760,15 @@ const ModalContent = (props: ModalContentProps) => {
             />
 
             <VerticalSpacer size={8} />
-            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <Divider
+              style={{
+                backgroundColor: theme.colors.outline,
+              }}
+            />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for total weight increase over a period"
               )}
@@ -1719,7 +1809,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for summer season")}
             </Text>
             <VerticalSpacer size={4} />
@@ -1739,7 +1831,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("summerEndMonth");
@@ -1761,14 +1853,18 @@ const ModalContent = (props: ModalContentProps) => {
       case NotificationType.Maintenance:
         return (
           <View>
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for ideal bee weather between early spring and end autumn"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold for low wind speed")}
+              label={`${userViewModel.i18n.t(
+                "set threshold for low wind speed"
+              )} (${userViewModel.windSpeedPreference})`}
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) =>
@@ -1782,9 +1878,9 @@ const ModalContent = (props: ModalContentProps) => {
             />
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set threshold for optimal temperature"
-              )}
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdTemperatureOptimal.toString()}
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
@@ -1814,7 +1910,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
@@ -1834,14 +1930,18 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for ideal bee weather between summer and early autumn"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold for low wind speed")}
+              label={`${userViewModel.i18n.t(
+                "set threshold for low wind speed"
+              )} (${userViewModel.windSpeedPreference})`}
               value={thresholdWindSpeedLow.toString()}
               error={!isThresholdWindSpeedLowValid}
               onChangeText={(text) =>
@@ -1855,9 +1955,9 @@ const ModalContent = (props: ModalContentProps) => {
             />
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set threshold for optimal temperature"
-              )}
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdTemperatureOptimal.toString()}
               error={!isThresholdTemperatureOptimalValid}
               onChangeText={(text) =>
@@ -1887,7 +1987,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("earlyAutumnMonth");
@@ -1907,7 +2007,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is early summer starting")}
             </Text>
             <VerticalSpacer size={4} />
@@ -1930,7 +2032,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert to check if it's spring")}
             </Text>
             <VerticalSpacer size={4} />
@@ -1950,7 +2054,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
@@ -1972,16 +2076,22 @@ const ModalContent = (props: ModalContentProps) => {
       case NotificationType.ConsiderExpanding:
         return (
           <View>
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{
+                ...theme.fonts.bodyLarge,
+                flex: 1,
+                alignSelf: "center",
+              }}
+            >
               {userViewModel.i18n.t(
                 "alert for significant increase in hive weigh"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set number for threshold value for weight increase"
-              )}
+              )} (${userViewModel.weightPreference})`}
               value={thresholdWeightIncrease.toString()}
               error={!isThresholdWeightIncreaseValid}
               onChangeText={(text) =>
@@ -1997,7 +2107,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for total weight increase over a period"
               )}
@@ -2038,12 +2150,16 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for consistently high temperature")}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold max temperature")}
+              label={`${userViewModel.i18n.t(
+                "set threshold max temperature"
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdTemperatureMax.toString()}
               error={!isThresholdTemperatureMaxValid}
               onChangeText={(text) =>
@@ -2060,7 +2176,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is early summer starting")}
             </Text>
             <VerticalSpacer size={4} />
@@ -2083,7 +2201,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is spring season")}
             </Text>
             <VerticalSpacer size={4} />
@@ -2103,7 +2223,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("springEndMonth");
@@ -2123,7 +2243,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for summer season")}
             </Text>
             <VerticalSpacer size={4} />
@@ -2143,7 +2265,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("summerEndMonth");
@@ -2165,16 +2287,18 @@ const ModalContent = (props: ModalContentProps) => {
       case NotificationType.CheckHive:
         return (
           <View>
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert to check if hive temperature is too warm"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set threshold max temperature for hive"
-              )}
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdMaxTempInHive.toString()}
               error={!isThresholdMaxTempInHiveValid}
               onChangeText={(text) =>
@@ -2191,16 +2315,18 @@ const ModalContent = (props: ModalContentProps) => {
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
 
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert to check if hive temperature is too cold"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set threshold minimum temperature for hive"
-              )}
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdMinTempInHive.toString()}
               error={!isThresholdMinTempInHiveValid}
               onChangeText={(text) =>
@@ -2215,14 +2341,22 @@ const ModalContent = (props: ModalContentProps) => {
             />
 
             <VerticalSpacer size={8} />
-            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <Divider
+              style={{
+                backgroundColor: theme.colors.outline,
+              }}
+            />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for consistently high temperature")}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold max temperature")}
+              label={`${userViewModel.i18n.t(
+                "set threshold max temperature"
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdTemperatureMax.toString()}
               error={!isThresholdTemperatureMaxValid}
               onChangeText={(text) =>
@@ -2239,12 +2373,16 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for consistently low temperature")}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold temperature minimum")}
+              label={`${userViewModel.i18n.t(
+                "set threshold temperature minimum"
+              )} (${userViewModel.temperaturePreference})`}
               value={thresholdTemperatureMin.toString()}
               error={!isThresholdTemperatureMinValid}
               onChangeText={(text) =>
@@ -2261,14 +2399,16 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert to check if humidity in hive is above maximum threshold"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("threshold max humidity")}
+              label={`${userViewModel.i18n.t("threshold max humidity")} (%)`}
               value={thresholdHumidityMax.toString()}
               error={!isThresholdHumidityMaxValid}
               onChangeText={(text) =>
@@ -2282,16 +2422,23 @@ const ModalContent = (props: ModalContentProps) => {
             />
 
             <VerticalSpacer size={8} />
-            <Divider style={{ backgroundColor: theme.colors.outline }} />
+            <Divider
+              style={{
+                backgroundColor: theme.colors.outline,
+                alignSelf: "center",
+              }}
+            />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert to check if humidity in hive is below minimum threshold"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("threshold min humidity")}
+              label={`${userViewModel.i18n.t("threshold min humidity")} (%)`}
               value={thresholdHumidityMin.toString()}
               error={!isThresholdHumidityMinValid}
               onChangeText={(text) =>
@@ -2307,7 +2454,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is early winter ending")}
             </Text>
             <VerticalSpacer size={4} />
@@ -2330,7 +2479,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t("alert for is winter ending")}
             </Text>
             <VerticalSpacer size={4} />
@@ -2351,14 +2502,18 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert to check if many bees have exited the hive"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold for high exit count")}
+              label={`${userViewModel.i18n.t(
+                "set threshold for high exit count"
+              )} (${userViewModel.beeCountPreference})`}
               value={thresholdExitCountHigh.toString()}
               error={!isThresholdExitCountHighValid}
               onChangeText={(text) =>
@@ -2376,16 +2531,18 @@ const ModalContent = (props: ModalContentProps) => {
       case NotificationType.ConsiderFeeding:
         return (
           <View>
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for hive weight decrease in early spring"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set number for thresholdvalue for weight decrease"
-              )}
+              )} (${userViewModel.weightPreference})`}
               value={thresholdWeightDecreaseEarlySpring.toString()}
               error={!isThresholdWeightDecreaseEarlySpringValid}
               onChangeText={(text) =>
@@ -2414,7 +2571,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("earlySpringEndMonth");
@@ -2434,16 +2591,18 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for hive weight decreases in autumn"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t(
+              label={`${userViewModel.i18n.t(
                 "set number for threshold value for weight decrease"
-              )}
+              )} (${userViewModel.weightPreference})`}
               value={thresholdWeightDecreaseInAutumn.toString()}
               error={!isThresholdWeightDecreaseInAutumnValid}
               onChangeText={(text) =>
@@ -2472,7 +2631,7 @@ const ModalContent = (props: ModalContentProps) => {
               />
             </TouchableOpacity>
 
-            <VerticalSpacer size={8} />
+            <VerticalSpacer size={4} />
             <TouchableOpacity
               onPress={() => {
                 setActiveField("autumnEndMonth");
@@ -2492,7 +2651,9 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for total weight decrease over a period"
               )}
@@ -2533,14 +2694,18 @@ const ModalContent = (props: ModalContentProps) => {
             <VerticalSpacer size={8} />
             <Divider style={{ backgroundColor: theme.colors.outline }} />
             <VerticalSpacer size={8} />
-            <Text style={{ ...theme.fonts.bodyLarge, flex: 1 }}>
+            <Text
+              style={{ ...theme.fonts.bodyLarge, flex: 1, alignSelf: "center" }}
+            >
               {userViewModel.i18n.t(
                 "alert for have few bees been exited the hive"
               )}
             </Text>
             <VerticalSpacer size={4} />
             <TextInput
-              label={userViewModel.i18n.t("set threshold for low exit count")}
+              label={`${userViewModel.i18n.t(
+                "set threshold for low exit count"
+              )} (${userViewModel.beeCountPreference})`}
               value={thresholdExitCountLow.toString()}
               error={!isThresholdExitCountLowValid}
               onChangeText={(text) =>

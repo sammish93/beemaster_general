@@ -118,8 +118,8 @@ class UserViewModel {
     // Allows the user to customise which notifications can trigger by a background tasker operation.
     @observable notificationPreferences: NotificationPreference = notificationPreferences;
     @observable mobileNotifications: boolean = true;
-    @observable smsNotifications: boolean = true;
-    @observable emailNotifications: boolean = true;
+    @observable smsNotifications: boolean = false;
+    @observable emailNotifications: boolean = false;
 
     // Expected to be decimal number
     @observable thresholdWeightDecreaseInAutumn: number = 2.0;

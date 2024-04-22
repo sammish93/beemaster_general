@@ -51,25 +51,19 @@ const ModalContent = (props: ModalContentProps) => {
       </View>
       <View>
         <Text style={theme.fonts.bodyLarge}>
-          Missed an important notification because your phone was switched off?
-          This screen is intended to display all of your important
-          notifications.
+          {userViewModel.i18n.t("update info 1")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Click on the 'Seen' button to dismiss the notification as being marked
-          as read.
+          {userViewModel.i18n.t("update info 2")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Click on the notification card to visit the hive screen that the
-          notification pertains to.
+          {userViewModel.i18n.t("update info 3")}
         </Text>
         <VerticalSpacer size={20} />
         <Text style={theme.fonts.bodyLarge}>
-          Want to disable a specific type of notification for only a single one
-          of your hives? Click the 'Mute' button so that you no longer receive
-          notifications of that type for said hive.
+          {userViewModel.i18n.t("update info 4")}
         </Text>
       </View>
     </>
