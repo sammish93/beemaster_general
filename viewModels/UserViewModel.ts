@@ -69,9 +69,13 @@ class UserViewModel {
     onAuthStateChanged(auth, (user) => {
       runInAction(() => {
         if (user) {
-          this.userId = user.uid
+          this.setUserId(user.uid)
+          console.log(
+            "onAuthStateChanged: User is signed in with UID:",
+            user.uid
+          )
         } else {
-          this.userId = ""
+          this.setUserId("")
         }
         this.authInitialized = true
       })
@@ -136,6 +140,7 @@ class UserViewModel {
   @observable i18n
   @observable userId = ""
   @observable theme = "light"
+
   // Permissions.
   @observable isLocationEnabled = false
   @observable isCameraEnabled = false
@@ -626,7 +631,7 @@ class UserViewModel {
           const newUser = {
             id: user.uid,
             email: user.email,
-            isAnonymous: false,
+            isAnonymous: user.isAnonymous,
             mobileNr: null,
             notificationPreference: notificationPreferences,
             notificationTypePreference: notificationTypePreferences,
@@ -654,6 +659,8 @@ class UserViewModel {
   @action logout = async () => {
     try {
       await signOut(auth)
+      this.clear()
+
       console.log("user signed out")
     } catch (error) {
       console.error("Error signing out: ", error)
@@ -664,6 +671,8 @@ class UserViewModel {
   // Useful for when a user logs out.
   @action public clear = (): void => {
     this.userId = ""
+    this.gdprConsent = false
+    this.currentCountry = ""
     //this.theme = "light"; // reset theme on logout
   }
 
@@ -710,7 +719,7 @@ class UserViewModel {
     // UserID isn't present in the dummy data because we already have live data
     const userDataFromDatabase = {
       theme: "light",
-      currentCountry: "NO",
+      currentCountry: "",
 
       temperaturePreference: TemperatureMeasurement.Celsius,
       precipitationPreference: PrecipitationMeasurement.Millimeters,

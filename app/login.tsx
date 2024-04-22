@@ -31,6 +31,7 @@ const LoginScreen = () => {
   const [isSignUp, setIsSignUp] = useState(false)
   const { signUpError } = userViewModel
   const [showGDPRDialog, setShowGDPRDialog] = useState(false)
+  const [showCountryDialog, setShowCountryDialog] = useState(false)
   const [currentAuthMethod, setCurrentAuthMethod] = useState("")
 
   const handleEmailChange = (email: string) => {
@@ -50,6 +51,7 @@ const LoginScreen = () => {
     setPasswordError("")
     userViewModel.clearSignUpError()
     setShowGDPRDialog(false)
+    setShowCountryDialog(false)
   }, [isSignUp, userViewModel])
 
   console.log(`Platform.OS: ${Platform.OS}`)
@@ -91,14 +93,18 @@ const LoginScreen = () => {
   }
 
   const handleAuthProcess = (method: string) => {
-    setCurrentAuthMethod(method)
     console.log("sign in method: ", method)
-    console.log("gdpr ", userViewModel.gdprConsent)
-    if (!userViewModel.gdprConsent || !userViewModel.userId) {
+    if (!userViewModel.gdprConsent) {
+      console.log("GDPR consent not given, showing GDPR dialog.")
       setShowGDPRDialog(true)
-    } else {
-      proceedWithAuthentication(method)
+      setCurrentAuthMethod(method)
+
+      return
     }
+
+    console.log("Proceeding with authentication method: ", method)
+    setShowCountryDialog(!userViewModel.currentCountry)
+    proceedWithAuthentication(method)
   }
 
   const proceedWithAuthentication = (method: string) => {
@@ -114,6 +120,11 @@ const LoginScreen = () => {
         break
       default:
         console.error("Invalid authentication method")
+    }
+
+    if (!userViewModel.currentCountry) {
+      setShowCountryDialog(true)
+    } else {
     }
   }
 
@@ -264,6 +275,12 @@ const LoginScreen = () => {
           <DialogGDPR
             hideDialog={() => setShowGDPRDialog(false)}
             onConsent={handleGdprConsent}
+          />
+        )}
+        {showCountryDialog && (
+          <DialogCountry
+            hideDialog={() => setShowCountryDialog(false)}
+            countryCode={userViewModel.currentCountry}
           />
         )}
       </ScrollView>
