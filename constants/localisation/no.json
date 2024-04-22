@@ -418,5 +418,8 @@
 "update info 2": "Klikk på 'Sett som lest'-knappen for å avvise varselet som blir merket som lest.",
 "update info 3": "Klikk på varselkortet for å besøke kubeskjermen som varselet gjelder.",
 "update info 4": "Vil du deaktivere en spesifikk type varsel for bare en av dine kuber? Klikk på 'Demp'-knappen slik at du ikke lenger mottar varsler av den typen for nevnte kube.",
-"no new notifications": "Ingen nye varsler."
+"no new notifications": "Ingen nye varsler.",
+"sensor id": "Sensor-ID",
+  "the provided sensor id does not exist": "Den oppgitte sensor-IDen eksisterer ikke.",
+  "this sensor is already registered": "Denne sensoren er allerede registrert til denne kuben."
 }

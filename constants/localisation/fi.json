@@ -151,7 +151,7 @@
   "delete hive": "Durb Narâk",
   "do you wish to delete this hive permanently": "Gimbatul durb-olog Narâk",
   "manage sensors": "Thrak Krampûrz",
-  "add weight sensor": "Gar-shâ Thrak Krampûr",
+  "add sensor": "Gar-shâ Thrak Krampûr",
   "add temperature sensor": "Gar-shâ Lûkûrz Krampûr",
   "add humidity sensor": "Gar-shâ Dhûmûrz Krampûr",
   "add bee count sensor": "Gar-shâ Narâkûrz Krampûr",
@@ -417,5 +417,8 @@
   "update info 2": "Gimbub thrak Narâkûrz.",
   "update info 3": "Gimbub Narâkûrz kramp Narâk thrak Narâkûrz.",
   "update info 4": "Want snaga type Narâkûrz snaga Narâk? Gimbub thrak Narâkûrz Narâk.",
-  "no new notifications": "Narâkûrz."
+  "no new notifications": "Narâkûrz.",
+  "sensor id": "Krampûr Nazg",
+  "the provided sensor id does not exist": "Gimbub Krampûr Nazg durbatulûk.",
+  "this sensor is already registered": "Snaga Krampûr tharkûn Narâk."
 }

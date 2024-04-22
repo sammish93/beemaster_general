@@ -418,5 +418,8 @@
   "update info 2": "Click on the 'Seen' button to dismiss the notification as being marked as read.",
   "update info 3": "Click on the notification card to visit the hive screen that the notification pertains to.",
   "update info 4": "Want to disable a specific type of notification for only a single one of your hives? Click the 'Mute' button so that you no longer receive notifications of that type for said hive.",
-  "no new notifications": "No new notifications."
+  "no new notifications": "No new notifications.",
+  "sensor id": "Sensor ID",
+  "the provided sensor id does not exist": "The provided sensor ID does not exists.",
+  "this sensor is already registered": "This sensor is already registered to this hive."
 }
