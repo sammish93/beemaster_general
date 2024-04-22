@@ -84,12 +84,25 @@ export const addWeightData = onRequest(async (request, response) => {
   }
 });
 
+/**
+ * Retrieves the hive ID assigned to a specific sensor.
+ *
+ * It handles GET requests to fetch the hive ID associated with a given sensor. 
+ * It´s intended for use by microcontrollers that need to dynamically determine 
+ * the target hive for data submissions, especially when sensors are moved between hives.
+ */
 export const getHiveId = onRequest(async (request, response) => {
+  const LIMIT = 30;
   const userId = request.query.userId;
   const sensorId = request.query.sensorId;
 
   if (!sensorId || !userId) {
     response.status(400).send("Sensor and user IDs are required!");
+    return;
+  }
+
+  if (sensorId.length > LIMIT || userId.length > LIMIT) {
+    response.status(400).send("Input data is to long!");
     return;
   }
 
