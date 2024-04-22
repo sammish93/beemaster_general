@@ -123,11 +123,11 @@ export const customDarkTheme: MD3Theme = {
     colors: {
       primary: "rgb(231, 195, 73)",
       onPrimary: "rgb(60, 47, 0)",
-      primaryContainer: "rgb(86, 69, 0)",
-      onPrimaryContainer: "rgb(255, 224, 129)",
+      primaryContainer: "rgb(77, 64, 32)",      // Darker and more grey, muted olive
+      onPrimaryContainer: "rgb(255, 249, 224)",
       secondary: "rgb(214, 201, 80)",
       onSecondary: "rgb(54, 49, 0)",
-      secondaryContainer: "rgb(78, 72, 0)",
+      secondaryContainer: "rgb(92, 78, 52)",
       onSecondaryContainer: "rgb(243, 229, 105)",
       tertiary: "rgb(129, 217, 151)",
       onTertiary: "rgb(0, 57, 25)",

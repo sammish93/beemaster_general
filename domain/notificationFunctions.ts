@@ -70,7 +70,7 @@ export const isWarmerEachDayInSpring = (temperatures: number[]): boolean => {
     const currentDate = new Date();
     const currentDay = currentDate.getDate();
     const springStart = userViewModel.springStartMonth.getDate();
-    const springEnd = userViewModel.springStartMonth.getDate();
+    const springEnd = userViewModel.springEndMonth.getDate();
 
     if (currentDay < springStart || currentDay > springEnd) {
         return false;

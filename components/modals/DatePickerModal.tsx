@@ -6,6 +6,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { MobXProviderContext } from "mobx-react";
+import styles from "@/assets/styles";
 
 const DateTimePickerModal = ({
   onConfirm,
@@ -61,35 +62,37 @@ const DateTimePickerModal = ({
   };
 
   // Web-version: Dropdown
-  if (Platform.OS === "web") {
-    return (
-      <View
+  // Sam commented out the mobile implementation - the web version is simple enough and very easy to
+  // use, and the mobile version wasn't appearing on Android.
+  return (
+    <List.Section theme={theme}>
+      <List.Accordion
+        title={selectedMonth}
+        expanded={expanded}
+        description={expanded ? userViewModel.i18n.t("select a month") : ""}
+        descriptionStyle={theme.fonts.bodySmall}
+        descriptionNumberOfLines={5}
+        onPress={() => setExpanded(!expanded)}
+        left={(props) => <List.Icon {...props} icon="calendar" />}
         style={{
-          maxWidth: 250,
-          marginLeft: "auto",
-          marginRight: "auto",
-          marginTop: 20,
+          borderRadius: 20,
+          backgroundColor: theme.colors.background,
         }}
+        theme={{ ...theme, colors: { background: "transparent" } }}
       >
-        <List.Section theme={theme}>
-          <List.Accordion
-            title={selectedMonth}
-            expanded={expanded}
-            onPress={() => setExpanded(!expanded)}
-            left={(props) => <List.Icon {...props} icon="calendar" />}
-          >
-            {monthNames.map((name, index) => (
-              <List.Item
-                key={index}
-                title={userViewModel.i18n.t(`months.${name}`)}
-                onPress={() => handleSelecMonth(index)}
-              />
-            ))}
-          </List.Accordion>
-        </List.Section>
-      </View>
-    );
-  } else if (show) {
+        {monthNames.map((name, index) => (
+          <List.Item
+            key={index}
+            style={{ borderRadius: 20 }}
+            title={userViewModel.i18n.t(`months.${name}`)}
+            onPress={() => handleSelecMonth(index)}
+          />
+        ))}
+      </List.Accordion>
+    </List.Section>
+  );
+
+  /*else if (show) {
     // Mobileversion:  DateTimePicker
     return (
       show && (
@@ -103,10 +106,8 @@ const DateTimePickerModal = ({
           />
         </View>
       )
-    );
-  } else {
-    return null;
-  }
+    ); 
+    */
 };
 
 export default DateTimePickerModal;

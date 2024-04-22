@@ -183,7 +183,6 @@ const SettingsScreen = () => {
             {uniqueLanguageOptions.map((language) => (
               <List.Item
                 style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-                theme={{ colors: { background: "blue" } }}
                 title={userViewModel.i18n.t(language.name)}
                 titleStyle={theme.fonts.bodyLarge}
                 key={language.code}
@@ -219,7 +218,6 @@ const SettingsScreen = () => {
             {uniqueCountryOptions.map((country) => (
               <List.Item
                 style={{ ...styles(theme).settingsItem, borderRadius: 20 }}
-                theme={{ colors: { background: "blue" } }}
                 title={userViewModel.i18n.t(country.name)}
                 titleStyle={theme.fonts.bodyLarge}
                 key={country.code}

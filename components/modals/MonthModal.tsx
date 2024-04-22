@@ -1,28 +1,40 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTheme } from "react-native-paper";
 import { Button, TextInput, IconButton, Text } from "react-native-paper";
-import { Platform, View } from "react-native";
+import { Platform, ScrollView, View } from "react-native";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { BottomModal, OverlayModal } from "./Modals";
 import { VerticalSpacer } from "../Spacers";
 import { MobXProviderContext } from "mobx-react";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "../ToastCustom";
+import MapRelocate from "../MapRelocate";
+import { usePermissionManager } from "@/domain/permissionManager";
+import { LatLng } from "react-native-maps";
+import { isValidString } from "@/domain/validation/stringValidation";
+import styles from "@/assets/styles";
+import { Calendar } from "react-native-calendars";
+import { MarkedDates } from "react-native-calendars/src/types";
+import DatePickerModal from "./DatePickerModal";
 
-interface UpdateInfoModalProps {
+interface MonthModalProps {
   isOverlayModalVisible: boolean;
   onClose: () => void;
+  onConfirm: (date: Date) => void;
 }
 
 interface ModalContentProps {
   onClose: () => void;
+  onConfirm: (date: Date) => void;
 }
 
-const UpdateInfoModal = (props: UpdateInfoModalProps) => {
+const MonthModal = (props: MonthModalProps) => {
   return (
     <OverlayModal
       isOverlayModalVisible={props.isOverlayModalVisible}
       onClose={props.onClose}
     >
-      <ModalContent onClose={props.onClose} />
+      <ModalContent onClose={props.onClose} onConfirm={props.onConfirm} />
     </OverlayModal>
   );
 };
@@ -41,7 +53,7 @@ const ModalContent = (props: ModalContentProps) => {
         }}
       >
         <Text style={{ ...theme.fonts.headlineSmall, flex: 1 }}>
-          {userViewModel.i18n.t("information")}
+          {userViewModel.i18n.t("select a month without full stop")}
         </Text>
         <IconButton
           icon="close"
@@ -49,25 +61,11 @@ const ModalContent = (props: ModalContentProps) => {
           onPress={props.onClose}
         />
       </View>
-      <View>
-        <Text style={theme.fonts.bodyLarge}>
-          {userViewModel.i18n.t("update info 1")}
-        </Text>
-        <VerticalSpacer size={20} />
-        <Text style={theme.fonts.bodyLarge}>
-          {userViewModel.i18n.t("update info 2")}
-        </Text>
-        <VerticalSpacer size={20} />
-        <Text style={theme.fonts.bodyLarge}>
-          {userViewModel.i18n.t("update info 3")}
-        </Text>
-        <VerticalSpacer size={20} />
-        <Text style={theme.fonts.bodyLarge}>
-          {userViewModel.i18n.t("update info 4")}
-        </Text>
-      </View>
+      <ScrollView style={styles(theme).overlayScrollView}>
+        <DatePickerModal onConfirm={props.onConfirm} />
+      </ScrollView>
     </>
   );
 };
 
-export default UpdateInfoModal;
+export default MonthModal;
