@@ -28,7 +28,14 @@ export const addWeightData = onRequest(async (request, response) => {
 
   const userId = request.body.userId;
   const hiveId = request.body.hiveId;
-  const weightData = request.body.weight;
+  const weightData = parseFloat(request.body.weight);
+
+  if (isNaN(weightData)) {
+    response
+      .status(400)
+      .send("Invalid weight value; must be a number, not a string!");
+    return;
+  }
 
   if (!userId || !hiveId || !weightData) {
     response
