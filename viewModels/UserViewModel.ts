@@ -1,3 +1,4 @@
+import { notificationPreferences } from "./../data/userData";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import * as Localization from "expo-localization";
 import { I18n } from "i18n-js";
@@ -36,9 +37,9 @@ import {
 } from "@/constants/Notifications";
 import { notificationTypePreferences } from "@/data/notificationData";
 import { LocationObject, LocationObjectCoords } from "expo-location";
-import { doc, collection, setDoc, getDoc } from "firebase/firestore";
+import { doc, collection, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { User } from "@/models";
-import { notificationPreferences, preferences } from "@/data/userData";
+import { preferences } from "@/data/userData";
 import { Appearance } from "react-native";
 
 class UserViewModel {
@@ -720,7 +721,12 @@ class UserViewModel {
       email: email,
       isAnonymous: isAnonymous,
       mobileNr: null,
-      notificationPreferences: notificationTypePreferences,
+      notificationTypePreferences: notificationTypePreferences,
+      notificationPreferences: {
+        email: this.emailNotifications,
+        mobile: this.mobileNotifications,
+        sms: this.smsNotifications,
+      },
       preferences: {
         country: this.currentCountry,
         language: this.currentLanguage,
@@ -776,34 +782,36 @@ class UserViewModel {
     thresholdHumidityMin: 70.0,
     thresholdHumidityMax: 95.0,
     autumnMonths: [
-      new Date(this.currentYear, 8, 1).toISOString(),
-      new Date(this.currentYear, 9, 1).toISOString(),
-      new Date(this.currentYear, 10, 30).toISOString(),
+      Timestamp.fromDate(new Date(this.currentYear, 8, 1)),
+      Timestamp.fromDate(new Date(this.currentYear, 9, 1)),
+      Timestamp.fromDate(new Date(this.currentYear, 10, 30)),
     ],
     earlyWinterMonths: [
-      new Date(this.currentYear, 9, 1).toISOString(),
-      new Date(this.currentYear, 10, 30).toISOString(),
+      Timestamp.fromDate(new Date(this.currentYear, 9, 1)),
+      Timestamp.fromDate(new Date(this.currentYear, 10, 30)),
     ],
     earlySpringMonths: [
-      new Date(this.currentYear, 1, 1).toISOString(),
-      new Date(this.currentYear, 2, 1).toISOString(),
+      Timestamp.fromDate(new Date(this.currentYear, 1, 1)),
+      Timestamp.fromDate(new Date(this.currentYear, 2, 1)),
     ],
-    lateSpringStartMonth: new Date(this.currentYear, 3, 1).toISOString(),
-    earlyAutumnMonth: new Date(this.currentYear, 7, 2).toISOString(),
-    earlySpringStartMonth: new Date(this.currentYear, 1, 1).toISOString(),
-    earlySpringEndMonth: new Date(this.currentYear, 4, 10).toISOString(),
-    earlySummerStartMonth: new Date(this.currentYear, 4, 11).toISOString(),
-    earlySummerEndMonth: new Date(this.currentYear, 7, 1).toISOString(),
-    earlyWinterStart: new Date(this.currentYear, 9, 31).toISOString(),
-    earlyWinterEnd: new Date(this.currentYear, 0, 31).toISOString(),
-    springStartMonth: new Date(this.currentYear, 2, 1).toISOString(),
-    springEndMonth: new Date(this.currentYear, 4, 31).toISOString(),
-    summerStartMonth: new Date(this.currentYear, 5, 1).toISOString(),
-    summerEndMonth: new Date(this.currentYear, 7, 31).toISOString(),
-    autumnStartMonth: new Date(this.currentYear, 8, 1).toISOString(),
-    autumnEndMonth: new Date(this.currentYear, 10, 30).toISOString(),
-    winterStart: new Date(this.currentYear, 11, 1).toISOString(),
-    winterEnd: new Date(this.currentYear, 1, 28).toISOString(),
+    lateSpringStartMonth: Timestamp.fromDate(new Date(this.currentYear, 3, 1)),
+    earlyAutumnMonth: Timestamp.fromDate(new Date(this.currentYear, 7, 2)),
+    earlySpringStartMonth: Timestamp.fromDate(new Date(this.currentYear, 1, 1)),
+    earlySpringEndMonth: Timestamp.fromDate(new Date(this.currentYear, 4, 10)),
+    earlySummerStartMonth: Timestamp.fromDate(
+      new Date(this.currentYear, 4, 11)
+    ),
+    earlySummerEndMonth: Timestamp.fromDate(new Date(this.currentYear, 7, 1)),
+    earlyWinterStart: Timestamp.fromDate(new Date(this.currentYear, 9, 31)),
+    earlyWinterEnd: Timestamp.fromDate(new Date(this.currentYear, 0, 31)),
+    springStartMonth: Timestamp.fromDate(new Date(this.currentYear, 2, 1)),
+    springEndMonth: Timestamp.fromDate(new Date(this.currentYear, 4, 31)),
+    summerStartMonth: Timestamp.fromDate(new Date(this.currentYear, 5, 1)),
+    summerEndMonth: Timestamp.fromDate(new Date(this.currentYear, 7, 31)),
+    autumnStartMonth: Timestamp.fromDate(new Date(this.currentYear, 8, 1)),
+    autumnEndMonth: Timestamp.fromDate(new Date(this.currentYear, 10, 30)),
+    winterStart: Timestamp.fromDate(new Date(this.currentYear, 11, 1)),
+    winterEnd: Timestamp.fromDate(new Date(this.currentYear, 1, 28)),
   };
 
   //TODO logout and auth connect
@@ -837,125 +845,46 @@ class UserViewModel {
    * UserViewModel.fetchUserParametersFromDatabase();
    */
 
-  @action fetchUserParametersFromDatabase() {
+  @action fetchUserParametersFromDatabase = async () => {
     // TODO DB - Read from DB.
     // Dummy data for now- Parameters who is not defined under, uses default parameters.
     // UserID isn't present in the dummy data because we already have live data
-    const userDataFromDatabase = {
-      theme: this.theme,
-      currentCountry: this.currentCountry,
-      temperaturePreference: TemperatureMeasurement.Celsius,
-      precipitationPreference: PrecipitationMeasurement.Millimeters,
-      windSpeedPreference: WindSpeedMeasurement.MetersPerSecond,
-      weightPreference: this.weightPreference,
-      beeCountPreference: BeeCountMeasurement.PerMinute,
+    if (!this.userId) {
+      console.error("No user ID available to fetch data.");
+      return; // Or handle the user not being set more gracefully
+    }
 
-      thresholdWeightDecreaseInAutumn: 1.0,
-      thresholdWeightDecreaseEarlySpring: 1.0,
-      thresholdWeightDecrease: 2.5,
-      thresholdWeightIncrease: 2.5,
+    try {
+      const userRef = doc(db, "users", this.userId);
+      const docSnap = await getDoc(userRef);
 
-      thresholdExitCountHigh: 40_000,
-      thresholdExitCountLow: 4_000,
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        console.log("reading user", userData);
 
-      thresholdTemperatureMin: 8.0,
-      thresholdTemperatureMax: 45.0,
-      thresholdTemperatureOptimal: 25.0,
+        runInAction(() => {
+          // Assuming userData fields map directly to observable properties
+          this.gdprConsent = userData.gdprConsent;
+          this.currentCountry = userData.preferences?.country;
+          this.currentLanguage =
+            userData.preferences?.language || this.i18n.locale;
+          this.theme = userData.preferences?.theme || "light";
+          this.isCameraEnabled = userData.permissions?.isCameraEnabled;
+          this.isLocationEnabled = userData.permissions?.isLocationEnabled;
+          this.isMediaEnabled = userData.permissions?.isMediaEnabled;
+          this.notificationParameters = userData.notificationParameters;
+          this.mobileNotifications = userData.notificationPreferences?.mobile;
+          this.smsNotifications = userData.notificationPreferences?.sms;
 
-      thresholdMinTempInHive: 32.0,
-      thresholdMaxTempInHive: 38.0,
-
-      thresholdWindSpeedLow: 3.5,
-
-      thresholdHumidityMin: 60.0,
-      thresholdHumidityMax: 85.0,
-
-      earlyWinterMonths: [
-        new Date(this.currentYear, 10 - 1, 1), // 1. okt
-        new Date(this.currentYear, 11 - 1, 1), // 1. nov
-      ],
-      earlySpringMonths: [
-        new Date(this.currentYear, 3 - 1, 1), // 1. mars
-        new Date(this.currentYear, 4 - 1, 1), // 1. april
-      ],
-      autumnMonths: [
-        new Date(this.currentYear, 9 - 1, 1), // 1. september
-        new Date(this.currentYear, 10 - 1, 1), // 1. oktober
-      ],
-
-      earlyAutumnMonth: new Date(this.currentYear, 8 - 1, 1),
-      autumnStartMonth: new Date(this.currentYear, 9 - 1, 1),
-      autumnEndMonth: new Date(this.currentYear, 10 - 1, 1),
-
-      summerStartMonth: new Date(this.currentYear, 6 - 1, 1),
-      summerEndMonth: new Date(this.currentYear, 8 - 1, 1),
-
-      winterStart: new Date(this.currentYear, 11 - 1, 1),
-      winterEnd: new Date(this.currentYear, 2 - 1, 28),
-
-      earlySpringStartMonth: new Date(this.currentYear, 3 - 1, 1),
-      earlySpringEndMonth: new Date(this.currentYear, 5 - 1, 1),
-      lateSpringStartMonth: new Date(this.currentYear, 6 - 1, 1),
-
-      springStartMonth: new Date(this.currentYear, 3 - 1, 1),
-      springEndMonth: new Date(this.currentYear, 5 - 1, 31),
-
-      earlySummerStartMonth: new Date(this.currentYear, 5 - 1, 11),
-      earlySummerEndMonth: new Date(this.currentYear, 7 - 1, 1),
-      earlyWinterStart: new Date(this.currentYear, 10 - 1, 1),
-      earlyWinterEnd: new Date(this.currentYear, 1 - 1, 31),
-    };
-
-    console.log("threshold ", this.thresholdWindSpeedLow);
-    this.setTheme(userDataFromDatabase.theme);
-    this.setCountry(userDataFromDatabase.currentCountry);
-
-    this.setTemperaturePreference(userDataFromDatabase.temperaturePreference);
-    this.setPrecipitationPreference(
-      userDataFromDatabase.precipitationPreference
-    );
-    this.setWindSpeedPreference(userDataFromDatabase.windSpeedPreference);
-    this.setWeightPreference(userDataFromDatabase.weightPreference);
-
-    this.setThresholdWeightDecreaseInAutumn(
-      userDataFromDatabase.thresholdWeightDecreaseInAutumn
-    );
-    this.setThresholdWeightDecreaseEarlySpring(
-      userDataFromDatabase.thresholdWeightDecreaseEarlySpring
-    );
-    this.setThresholdWeightDecrease(
-      userDataFromDatabase.thresholdWeightDecrease
-    );
-    this.setThresholdWeightIncrease(
-      userDataFromDatabase.thresholdWeightIncrease
-    );
-
-    this.setThresholdTemperatureOptimal(
-      userDataFromDatabase.thresholdTemperatureOptimal
-    );
-
-    this.setThresholdWindSpeedLow(userDataFromDatabase.thresholdWindSpeedLow);
-
-    this.setThresholdExitCountHigh(userDataFromDatabase.thresholdExitCountHigh);
-    this.setThresholdExitCountLow(userDataFromDatabase.thresholdExitCountLow);
-
-    this.setThresholdHumidityMax(userDataFromDatabase.thresholdHumidityMax);
-    this.setThresholdHumidityMin(userDataFromDatabase.thresholdHumidityMin);
-
-    this.setEarlySpringStartMonth(userDataFromDatabase.earlySpringStartMonth);
-    this.setEarlySpringEndMonth(userDataFromDatabase.earlySpringEndMonth);
-    this.setEarlySpringMonths(userDataFromDatabase.earlySpringMonths);
-    this.setLateSpringStartMonth(userDataFromDatabase.lateSpringStartMonth);
-
-    this.setEarlyAutumnMonth(userDataFromDatabase.earlyAutumnMonth);
-    this.setAutumnStartMonth(userDataFromDatabase.autumnStartMonth);
-    this.setAutumnEndMonth(userDataFromDatabase.autumnEndMonth);
-    this.setAutumnMonths(userDataFromDatabase.autumnMonths);
-
-    this.setEarlySummerEndMonth(userDataFromDatabase.earlySummerEndMonth);
-    this.setSummerStartMonth(userDataFromDatabase.summerStartMonth);
-    this.setEarlyWinterMonths(userDataFromDatabase.earlyWinterMonths);
-  }
+          // Set other fields as necessary
+        });
+      } else {
+        console.log("No user data available.");
+      }
+    } catch (error) {
+      console.error("Error fetching user from database:", error);
+    }
+  };
 }
 
 export default new UserViewModel();
