@@ -718,24 +718,12 @@ class UserViewModel {
         email,
         password
       );
-      const newUser: User = {
-        id: result.user.uid,
-        email: email,
-        isAnonymous: false,
-        mobileNr: null,
-        notificationPreference: notificationPreferences,
-        notificationTypePreference: notificationTypePreferences,
-        preferences: {
-          language: this.currentLanguage,
-          country: this.currentCountry,
-          theme: this.theme,
-        },
-        simplifiedView: true,
-        gdprConsent: this.gdprConsent,
-        filters: [],
-      };
 
-      await this.createUserDocument(newUser);
+      await this.createUserWithConfig(
+        result.user.uid,
+        result.user.isAnonymous,
+        email
+      );
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         console.error("Email is already in use");
@@ -753,61 +741,65 @@ class UserViewModel {
     }
   };
 
-  @action createUserDocument = async (user: User): Promise<void> => {
-    const userRef = doc(collection(db, "users"), user.id);
-    try {
-      await setDoc(userRef, user, { merge: true });
-      console.log("User document created successfully.");
-    } catch (error) {
-      console.error("Error creating user document: ", error);
-    }
-  };
-
   @action signInAnonymously = async () => {
     try {
       const result = await signInAnonymously(auth);
       const user = result.user;
 
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(userRef);
-        if (!docSnap.exists()) {
-          const newUser = {
-            id: user.uid,
-            email: user.email,
-            isAnonymous: user.isAnonymous,
-            mobileNr: null,
-            notificationPreference: notificationPreferences,
-            notificationTypePreference: notificationTypePreferences,
-            preferences: {
-              country: this.currentCountry,
-              language: this.currentLanguage,
-              theme: this.theme,
-            },
-            premissions: {
-              isCameraEnabled: this.isCameraEnabled,
-              isLocationEnabled: this.isLocationEnabled,
-              isMediaEnabled: this.isMediaEnabled,
-            },
-            measurementsPreferences: {
-              temperature: this.temperaturePreference,
-              weight: this.weightPreference,
-              precipitation: this.precipitationPreference,
-              windSpeed: this.windSpeedPreference,
-              beeCount: this.beeCountPreference,
-            },
-            simplifiedView: true,
-            gdprConsent: this.gdprConsent,
-            filters: [],
-          };
-          await this.createUserDocument(newUser);
-          console.log("New user document created for anonymous.");
-        } else {
-          console.log("Existing anonymous user logged in.");
-        }
-      }
+      await this.createUserWithConfig(
+        result.user.uid,
+        result.user.isAnonymous,
+        result.user.email
+      );
+      console.log("New user document created for anonymous.");
     } catch (error) {
       console.error("Error signing in anonymously: ", error);
+    }
+  };
+
+  @action createUserWithConfig = async (
+    uid: string,
+    isAnonymous: boolean,
+    email: string | null
+  ) => {
+    const defaults = {
+      id: uid,
+      email: email,
+      isAnonymous: isAnonymous,
+      mobileNr: null,
+      notificationPreferences: notificationTypePreferences,
+      preferences: {
+        country: this.currentCountry,
+        language: this.currentLanguage,
+        theme: this.theme,
+      },
+      permissions: {
+        isCameraEnabled: this.isCameraEnabled,
+        isLocationEnabled: this.isLocationEnabled,
+        isMediaEnabled: this.isMediaEnabled,
+      },
+      measurementsPreferences: {
+        temperature: this.temperaturePreference,
+        weight: this.weightPreference,
+        precipitation: this.precipitationPreference,
+        windSpeed: this.windSpeedPreference,
+        beeCount: this.beeCountPreference,
+      },
+      simplifiedView: true,
+      gdprConsent: this.gdprConsent,
+      filters: [],
+    };
+
+    try {
+      const userRef = doc(db, "users", uid);
+      await setDoc(userRef, defaults, { merge: true });
+      console.log(
+        `User document created successfully for ${
+          isAnonymous ? "anonymous" : "regular"
+        } user.`
+      );
+    } catch (error) {
+      console.error("Error creating user document: ", error);
     }
   };
 
@@ -870,7 +862,7 @@ class UserViewModel {
       thresholdMinTempInHive: 32.0,
       thresholdMaxTempInHive: 38.0,
 
-      thresholdWindSpeedLow: 1.5,
+      thresholdWindSpeedLow: 3.5,
 
       thresholdHumidityMin: 60.0,
       thresholdHumidityMax: 85.0,
@@ -911,6 +903,7 @@ class UserViewModel {
       earlyWinterEnd: new Date(this.currentYear, 1 - 1, 31),
     };
 
+    console.log("threshold ", this.thresholdWindSpeedLow);
     this.setTheme(userDataFromDatabase.theme);
     this.setCountry(userDataFromDatabase.currentCountry);
 
