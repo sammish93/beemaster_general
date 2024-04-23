@@ -611,8 +611,6 @@ class UserViewModel {
     }
   };
 
-  // Clears all the data in this view model.
-  // Useful for when a user logs out.
   @action signInWithGoogleNative = async () => {
     if (Platform.OS !== "web") {
       const { GoogleSignin } = await import(
@@ -740,6 +738,7 @@ class UserViewModel {
         windSpeed: this.windSpeedPreference,
         beeCount: this.beeCountPreference,
       },
+      notificationParameters: { ...this.notificationParameters },
       simplifiedView: true,
       gdprConsent: this.gdprConsent,
       filters: [],
@@ -756,6 +755,55 @@ class UserViewModel {
     } catch (error) {
       console.error("Error creating user document: ", error);
     }
+  };
+
+  notificationParameters = {
+    thresholdWeightDecreaseInAutumn: 2.0,
+    thresholdWeightDecreaseEarlySpring: 2.0,
+    thresholdWeightDecrease: 2.0,
+    thresholdWeightIncrease: 2.0,
+    productionPeriodDays: 7,
+    productionPeriodThreshold: 5.0,
+    thresholdExitCountHigh: 24000,
+    thresholdExitCountLow: 2000,
+    thresholdTemperatureMin: 10.0,
+    thresholdTemperatureMax: 40.0,
+    thresholdTemperatureOptimal: 20.0,
+    thresholdMinTempInHive: 34.0,
+    thresholdMaxTempInHive: 36.0,
+    thresholdWindSpeedStrong: 5.0,
+    thresholdWindSpeedLow: 2.5,
+    thresholdHumidityMin: 70.0,
+    thresholdHumidityMax: 95.0,
+    autumnMonths: [
+      new Date(this.currentYear, 8, 1).toISOString(),
+      new Date(this.currentYear, 9, 1).toISOString(),
+      new Date(this.currentYear, 10, 30).toISOString(),
+    ],
+    earlyWinterMonths: [
+      new Date(this.currentYear, 9, 1).toISOString(),
+      new Date(this.currentYear, 10, 30).toISOString(),
+    ],
+    earlySpringMonths: [
+      new Date(this.currentYear, 1, 1).toISOString(),
+      new Date(this.currentYear, 2, 1).toISOString(),
+    ],
+    lateSpringStartMonth: new Date(this.currentYear, 3, 1).toISOString(),
+    earlyAutumnMonth: new Date(this.currentYear, 7, 2).toISOString(),
+    earlySpringStartMonth: new Date(this.currentYear, 1, 1).toISOString(),
+    earlySpringEndMonth: new Date(this.currentYear, 4, 10).toISOString(),
+    earlySummerStartMonth: new Date(this.currentYear, 4, 11).toISOString(),
+    earlySummerEndMonth: new Date(this.currentYear, 7, 1).toISOString(),
+    earlyWinterStart: new Date(this.currentYear, 9, 31).toISOString(),
+    earlyWinterEnd: new Date(this.currentYear, 0, 31).toISOString(),
+    springStartMonth: new Date(this.currentYear, 2, 1).toISOString(),
+    springEndMonth: new Date(this.currentYear, 4, 31).toISOString(),
+    summerStartMonth: new Date(this.currentYear, 5, 1).toISOString(),
+    summerEndMonth: new Date(this.currentYear, 7, 31).toISOString(),
+    autumnStartMonth: new Date(this.currentYear, 8, 1).toISOString(),
+    autumnEndMonth: new Date(this.currentYear, 10, 30).toISOString(),
+    winterStart: new Date(this.currentYear, 11, 1).toISOString(),
+    winterEnd: new Date(this.currentYear, 1, 28).toISOString(),
   };
 
   //TODO logout and auth connect
