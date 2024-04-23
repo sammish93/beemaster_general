@@ -764,12 +764,12 @@ class UserViewModel {
   };
 
   notificationParameters = {
-    thresholdWeightDecreaseInAutumn: 2.0,
+    thresholdWeightDecreaseInAutumn: this.thresholdWeightDecreaseInAutumn,
     thresholdWeightDecreaseEarlySpring: 2.0,
     thresholdWeightDecrease: 2.0,
     thresholdWeightIncrease: 2.0,
     productionPeriodDays: 7,
-    productionPeriodThreshold: 5.0,
+    productionPeriodThreshold: this.productionPeriodThreshold,
     thresholdExitCountHigh: 24000,
     thresholdExitCountLow: 2000,
     thresholdTemperatureMin: 10.0,
@@ -777,7 +777,7 @@ class UserViewModel {
     thresholdTemperatureOptimal: 20.0,
     thresholdMinTempInHive: 34.0,
     thresholdMaxTempInHive: 36.0,
-    thresholdWindSpeedStrong: 5.0,
+    thresholdWindSpeedStrong: this.thresholdWindSpeedStrong,
     thresholdWindSpeedLow: 2.5,
     thresholdHumidityMin: 70.0,
     thresholdHumidityMax: 95.0,
@@ -892,6 +892,11 @@ class UserViewModel {
           this.emailNotifications = userData.notificationPreferences?.email;
 
           this.notificationPreferences = userData.notificationTypePreferences;
+          this.notificationParameters.thresholdWindSpeedStrong =
+            userData.notificationParameters.thresholdWindSpeedStrong;
+          console.log(this.thresholdWindSpeedStrong);
+          console.log(this.notificationParameters.thresholdWindSpeedStrong);
+          console.log(userData.notificationParameters.thresholdWindSpeedStrong);
         });
       } else {
         console.log("No user data available.");
