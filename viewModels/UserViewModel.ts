@@ -39,6 +39,7 @@ import { LocationObject, LocationObjectCoords } from "expo-location";
 import { doc, collection, setDoc, getDoc } from "firebase/firestore";
 import { User } from "@/models";
 import { notificationPreferences, preferences } from "@/data/userData";
+import { Appearance } from "react-native";
 
 class UserViewModel {
   constructor() {
@@ -53,13 +54,14 @@ class UserViewModel {
     this.i18n.locale = Localization.locale;
     this.i18n.enableFallback = true;
     this.initializeAuthListener();
+    this.theme = Appearance.getColorScheme() || "light";
 
     // Manually change the language:
     //this.i18n.locale = "no";
   }
 
   @observable currentLanguage: string | null = null;
-  @observable currentCountry: string | null = null;
+  @observable currentCountry = "NO";
   @observable authInitialized = false;
   @observable dateFormat: string = "DD/MM/YYYY";
   @observable locale = Localization.locale;
@@ -667,6 +669,7 @@ class UserViewModel {
                 language: this.currentLanguage,
                 theme: this.theme,
               },
+
               simplifiedView: true,
               gdprConsent: this.gdprConsent,
               filters: [],
@@ -781,6 +784,18 @@ class UserViewModel {
               language: this.currentLanguage,
               theme: this.theme,
             },
+            premissions: {
+              isCameraEnabled: this.isCameraEnabled,
+              isLocationEnabled: this.isLocationEnabled,
+              isMediaEnabled: this.isMediaEnabled,
+            },
+            measurementsPreferences: {
+              temperature: this.temperaturePreference,
+              weight: this.weightPreference,
+              precipitation: this.precipitationPreference,
+              windSpeed: this.windSpeedPreference,
+              beeCount: this.beeCountPreference,
+            },
             simplifiedView: true,
             gdprConsent: this.gdprConsent,
             filters: [],
@@ -817,33 +832,6 @@ class UserViewModel {
     //this.theme = "light"; // reset theme on logout
   };
 
-  @action public updateLocaleSettings = () => {
-    // Not too sure about the point of this function outside of debugging.
-    let regionCode: string;
-    if (Platform.OS === "web") {
-      regionCode = Localization.locale;
-    } else {
-      const locales = Localization.getLocales();
-      const userLocale = locales[0];
-      regionCode = userLocale.regionCode || "";
-    }
-    console.log("Region Code:", regionCode);
-    const locales = Localization.getLocales();
-    const userLocale = locales[0];
-    const userLanguage = userLocale.languageCode;
-    console.log("Language Code:", userLanguage);
-
-    const languageOption = availableLanguages.find(
-      (lang) => lang.code === userLanguage && lang.isEnabled
-    );
-    const countryOption = availableCountries.find(
-      (country) => country.code === regionCode && country.isEnabled
-    );
-
-    this.currentLanguage = languageOption ? languageOption.name : null;
-    this.currentCountry = countryOption ? countryOption.name : null;
-  };
-
   /**
    * Fetches user parameters from the database.
    * For now, it uses dummy data.
@@ -859,13 +847,12 @@ class UserViewModel {
     // Dummy data for now- Parameters who is not defined under, uses default parameters.
     // UserID isn't present in the dummy data because we already have live data
     const userDataFromDatabase = {
-      theme: "light",
-      currentCountry: "",
-
+      theme: this.theme,
+      currentCountry: this.currentCountry,
       temperaturePreference: TemperatureMeasurement.Celsius,
       precipitationPreference: PrecipitationMeasurement.Millimeters,
       windSpeedPreference: WindSpeedMeasurement.MetersPerSecond,
-      weightPreference: WeightMeasurement.Kilograms,
+      weightPreference: this.weightPreference,
       beeCountPreference: BeeCountMeasurement.PerMinute,
 
       thresholdWeightDecreaseInAutumn: 1.0,

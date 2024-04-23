@@ -1,18 +1,18 @@
-import { useNavigation } from "expo-router"
-import { View, ScrollView, Pressable } from "react-native"
-import { observer, MobXProviderContext } from "mobx-react"
-import { useEffect, useState, useContext } from "react"
-import { Button, useTheme, Text, TextInput } from "react-native-paper"
-import styles from "@/assets/styles"
-import { SafeAreaView } from "react-native-safe-area-context"
-import StatusBarCustom from "@/components/StatusBarCustom"
-import * as React from "react"
-import DialogGDPR from "@/components/modals/DialogGDPR"
-import DialogCountry from "@/components/modals/DialogCountry"
+import { useNavigation } from "expo-router";
+import { View, ScrollView, Pressable } from "react-native";
+import { observer, MobXProviderContext } from "mobx-react";
+import { useEffect, useState, useContext } from "react";
+import { Button, useTheme, Text, TextInput } from "react-native-paper";
+import styles from "@/assets/styles";
+import { SafeAreaView } from "react-native-safe-area-context";
+import StatusBarCustom from "@/components/StatusBarCustom";
+import * as React from "react";
+import DialogGDPR from "@/components/modals/DialogGDPR";
+import DialogCountry from "@/components/modals/DialogCountry";
 //import React from "react";
-import { Platform } from "react-native"
-import { VerticalSpacer } from "@/components/Spacers"
-import { ScreenWidth } from "@/constants/Dimensions"
+import { Platform } from "react-native";
+import { VerticalSpacer } from "@/components/Spacers";
+import { ScreenWidth } from "@/constants/Dimensions";
 
 // TODO add the GDPR and cleanup code
 // TODO add strings to localisation
@@ -21,122 +21,116 @@ import { ScreenWidth } from "@/constants/Dimensions"
 // Write default params based on country. Write default language based on device language.
 // Write default light/dark mode based on device theme.
 const LoginScreen = () => {
-  const theme = useTheme()
-  const navigation = useNavigation()
-  const { userViewModel } = useContext(MobXProviderContext)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [emailError, setEmailError] = useState("")
-  const [passwordError, setPasswordError] = useState("")
-  const [isSignUp, setIsSignUp] = useState(false)
-  const { signUpError } = userViewModel
-  const [showGDPRDialog, setShowGDPRDialog] = useState(false)
-  const [showCountryDialog, setShowCountryDialog] = useState(false)
-  const [currentAuthMethod, setCurrentAuthMethod] = useState("")
+  const theme = useTheme();
+  const navigation = useNavigation();
+  const { userViewModel } = useContext(MobXProviderContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+  const { signUpError } = userViewModel;
+  const [showGDPRDialog, setShowGDPRDialog] = useState(false);
+  const [showCountryDialog, setShowCountryDialog] = useState(false);
+  const [currentAuthMethod, setCurrentAuthMethod] = useState("");
 
   const handleEmailChange = (email: string) => {
-    setEmail(email)
-    if (emailError) setEmailError("")
-    userViewModel.clearSignUpError()
-  }
+    setEmail(email);
+    if (emailError) setEmailError("");
+    userViewModel.clearSignUpError();
+  };
 
   const handlePasswordChange = (password: string) => {
-    setPassword(password)
-    if (passwordError) setPasswordError("")
-    userViewModel.clearSignUpError()
-  }
+    setPassword(password);
+    if (passwordError) setPasswordError("");
+    userViewModel.clearSignUpError();
+  };
 
   useEffect(() => {
-    setEmailError("")
-    setPasswordError("")
-    userViewModel.clearSignUpError()
-    setShowGDPRDialog(false)
-    setShowCountryDialog(false)
-  }, [isSignUp, userViewModel])
+    setEmailError("");
+    setPasswordError("");
+    userViewModel.clearSignUpError();
+    setShowGDPRDialog(false);
+    setShowCountryDialog(false);
+  }, [isSignUp, userViewModel]);
 
-  console.log(`Platform.OS: ${Platform.OS}`)
+  console.log(`Platform.OS: ${Platform.OS}`);
   const handleGoogleSignIn = () => {
     if (Platform.OS === "web") {
-      console.log("web signin")
-      userViewModel.signInWithGoogleWeb()
+      console.log("web signin");
+      userViewModel.signInWithGoogleWeb();
     } else {
-      console.log("native sign in started log")
+      console.log("native sign in started log");
 
-      userViewModel.signInWithGoogleNative()
+      userViewModel.signInWithGoogleNative();
     }
-  }
+  };
 
   const handleEmailSignIn = () => {
     if (!email.trim()) {
-      setEmailError("Please enter your email")
-      return
+      setEmailError("Please enter your email");
+      return;
     }
     if (!password.trim()) {
-      setPasswordError("Please enter your password")
-      return
+      setPasswordError("Please enter your password");
+      return;
     }
 
     if (password.length < 6) {
-      setPasswordError("Password must be at least 6 characters long")
-      return
+      setPasswordError("Password must be at least 6 characters long");
+      return;
     }
 
     if (isSignUp) {
-      userViewModel.signUpWithEmail(email, password)
+      userViewModel.signUpWithEmail(email, password);
     } else {
-      userViewModel.signInWithEmail(email, password)
+      userViewModel.signInWithEmail(email, password);
     }
-  }
+  };
 
   const handleAnonymousSignIn = () => {
-    userViewModel.signInAnonymously()
-  }
+    userViewModel.signInAnonymously();
+  };
 
   const handleAuthProcess = (method: string) => {
-    console.log("sign in method: ", method)
+    console.log("sign in method: ", method);
     if (!userViewModel.gdprConsent) {
-      console.log("GDPR consent not given, showing GDPR dialog.")
-      setShowGDPRDialog(true)
-      setCurrentAuthMethod(method)
+      console.log("GDPR consent not given, showing GDPR dialog.");
+      setShowGDPRDialog(true);
+      setCurrentAuthMethod(method);
 
-      return
+      return;
     }
 
-    console.log("Proceeding with authentication method: ", method)
-    setShowCountryDialog(!userViewModel.currentCountry)
-    proceedWithAuthentication(method)
-  }
+    console.log("Proceeding with authentication method: ", method);
+    proceedWithAuthentication(method);
+  };
 
   const proceedWithAuthentication = (method: string) => {
     switch (method) {
       case "email":
-        handleEmailSignIn()
-        break
+        handleEmailSignIn();
+        break;
       case "google":
-        handleGoogleSignIn()
-        break
+        handleGoogleSignIn();
+        break;
       case "anonymous":
-        handleAnonymousSignIn()
-        break
+        handleAnonymousSignIn();
+        break;
       default:
-        console.error("Invalid authentication method")
+        console.error("Invalid authentication method");
     }
-
-    if (!userViewModel.currentCountry) {
-      setShowCountryDialog(true)
-    } else {
-    }
-  }
+  };
 
   const handleGdprConsent = (consent: boolean) => {
-    setShowGDPRDialog(false)
+    setShowGDPRDialog(false);
     if (consent) {
-      userViewModel.setGdprConsent(true)
-      proceedWithAuthentication(currentAuthMethod)
+      userViewModel.setGdprConsent(true);
+      proceedWithAuthentication(currentAuthMethod);
     } else {
-      console.log("GDPR consent was not given.")
+      console.log("GDPR consent was not given.");
     }
-  }
+  };
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -277,15 +271,9 @@ const LoginScreen = () => {
             onConsent={handleGdprConsent}
           />
         )}
-        {showCountryDialog && (
-          <DialogCountry
-            hideDialog={() => setShowCountryDialog(false)}
-            countryCode={userViewModel.currentCountry}
-          />
-        )}
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default observer(LoginScreen)
+export default observer(LoginScreen);
