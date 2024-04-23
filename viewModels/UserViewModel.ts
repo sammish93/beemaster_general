@@ -1,3 +1,4 @@
+import { notificationTypePreferences } from "./../data/notificationData";
 import { notificationPreferences } from "./../data/userData";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import * as Localization from "expo-localization";
@@ -35,7 +36,6 @@ import {
   NotificationTypePreference,
   NotificationType,
 } from "@/constants/Notifications";
-import { notificationTypePreferences } from "@/data/notificationData";
 import { LocationObject, LocationObjectCoords } from "expo-location";
 import { doc, collection, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { User } from "@/models";
@@ -814,6 +814,10 @@ class UserViewModel {
     winterEnd: Timestamp.fromDate(new Date(this.currentYear, 1, 28)),
   };
 
+  permissions = {
+    email: this.emailNotifications,
+  };
+
   //TODO logout and auth connect
   @action logout = async () => {
     try {
@@ -863,20 +867,31 @@ class UserViewModel {
         console.log("reading user", userData);
 
         runInAction(() => {
-          // Assuming userData fields map directly to observable properties
           this.gdprConsent = userData.gdprConsent;
-          this.currentCountry = userData.preferences?.country;
+
+          this.theme = userData.preferences?.theme || "light";
           this.currentLanguage =
             userData.preferences?.language || this.i18n.locale;
-          this.theme = userData.preferences?.theme || "light";
+          this.currentCountry = userData.preferences?.country;
+
+          this.temperaturePreference =
+            userData.measurementsPreferences.temperature;
+          this.weightPreference = userData.measurementsPreferences.weight;
+          this.precipitationPreference =
+            userData.measurementsPreferences.precipitation;
+          this.windSpeedPreference = userData.measurementsPreferences.windSpeed;
+          this.beeCountPreference = userData.measurementsPreferences.beeCount;
+          //permissions
           this.isCameraEnabled = userData.permissions?.isCameraEnabled;
           this.isLocationEnabled = userData.permissions?.isLocationEnabled;
           this.isMediaEnabled = userData.permissions?.isMediaEnabled;
-          this.notificationParameters = userData.notificationParameters;
+          //notification preferences
+
           this.mobileNotifications = userData.notificationPreferences?.mobile;
           this.smsNotifications = userData.notificationPreferences?.sms;
+          this.emailNotifications = userData.notificationPreferences?.email;
 
-          // Set other fields as necessary
+          this.notificationPreferences = userData.notificationTypePreferences;
         });
       } else {
         console.log("No user data available.");
