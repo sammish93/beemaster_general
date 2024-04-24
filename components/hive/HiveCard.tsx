@@ -27,6 +27,11 @@ import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "../ToastCustom";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import AddFiltersToHiveModal from "../modals/AddFiltersToHiveModal";
+import {
+  convertBeeCountToDbFormat,
+  convertTempFromDbFormat,
+  convertWeightFromDbFormat,
+} from "@/domain/measurementConverter";
 
 // Assures that only the string "100%" can be passed.
 type maxWidthString = "100%";
@@ -155,7 +160,7 @@ const HiveCard = ({
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {forecast?.currentForecast.windSpeed}{" "}
+              {forecast?.currentForecast.windSpeed.toString().slice(0, 5)}{" "}
               {userViewModel.windSpeedPreference}
             </Text>
           </View>
@@ -180,7 +185,7 @@ const HiveCard = ({
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {forecast?.currentForecast.temperature}{" "}
+              {forecast?.currentForecast.temperature.toString().slice(0, 5)}{" "}
               {userViewModel.temperaturePreference}
             </Text>
           </View>
@@ -205,7 +210,7 @@ const HiveCard = ({
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {forecast?.currentForecast.precipitation}{" "}
+              {forecast?.currentForecast.precipitation.toString().slice(0, 5)}{" "}
               {userViewModel.precipitationPreference}
             </Text>
           </View>
@@ -241,7 +246,12 @@ const HiveCard = ({
                 ellipsizeMode="tail"
               >
                 {item.weight
-                  ? `${item.weight} ${userViewModel.weightPreference}`
+                  ? `${convertWeightFromDbFormat(
+                      item.weight,
+                      userViewModel.weightPreference
+                    )
+                      .toString()
+                      .slice(0, 5)} ${userViewModel.weightPreference}`
                   : "N/A"}
               </Text>
             </View>
@@ -267,7 +277,12 @@ const HiveCard = ({
                 ellipsizeMode="tail"
               >
                 {item.temperature
-                  ? `${item.temperature} ${userViewModel.temperaturePreference}`
+                  ? `${convertTempFromDbFormat(
+                      item.temperature,
+                      userViewModel.temperaturePreference
+                    )
+                      .toString()
+                      .slice(0, 5)} ${userViewModel.temperaturePreference}`
                   : "N/A"}
               </Text>
             </View>
@@ -292,7 +307,9 @@ const HiveCard = ({
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {item.humidity ? `${item.humidity} %` : "N/A"}
+                {item.humidity
+                  ? `${item.humidity.toString().slice(0, 5)} %`
+                  : "N/A"}
               </Text>
             </View>
 
@@ -316,7 +333,14 @@ const HiveCard = ({
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {item.beeCount ? `${item.beeCount} p/m` : "N/A"}
+                {item.beeCount
+                  ? `${convertBeeCountToDbFormat(
+                      item.beeCount,
+                      userViewModel.beeCountPreference
+                    )
+                      .toString()
+                      .slice(0, 5)} ${userViewModel.beeCountPreference}`
+                  : "N/A"}
               </Text>
             </View>
           </View>
