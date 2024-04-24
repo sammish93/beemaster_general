@@ -375,12 +375,36 @@ class UserViewModel {
   @action public setThresholdTemperatureOptimal = (value: number): void => {
     this.thresholdTemperatureOptimal = value;
   };
-  @action public setThresholdTemperatureMin = (value: number): void => {
+  @action public setThresholdTemperatureMin = async (
+    value: number
+  ): Promise<void> => {
     this.thresholdTemperatureMin = value;
+    await this.saveThresholdWindSpeedStrong(value);
   };
+  async saveThresholdWindSpeedStrong(newThreshold: number) {
+    try {
+      const userRef = doc(db, "users", this.userId);
+      await setDoc(
+        userRef,
+        {
+          notificationParameters: {
+            thresholdWindSpeedStrong: this.thresholdWindSpeedStrong,
+          },
+        },
+        { merge: true }
+      );
+      console.log("Threshold wind speed strong updated successfully.");
+    } catch (error) {
+      console.error(
+        "Failed to update threshold wind speed strong in database:",
+        error
+      );
+    }
+  }
   @action public setThresholdTemperatureMax = (value: number): void => {
     this.thresholdTemperatureMax = value;
   };
+
   @action public setThresholdMinTempInHive = (value: number): void => {
     this.thresholdMinTempInHive = value;
   };
@@ -751,7 +775,9 @@ class UserViewModel {
         windSpeed: this.windSpeedPreference,
         beeCount: this.beeCountPreference,
       },
-      notificationParameters: { ...this.notificationParameters },
+      notificationParameters: {
+        ...this.notificationParameters,
+      },
       isDetailedView: false,
       gdprConsent: this.gdprConsent,
       filters: [],
