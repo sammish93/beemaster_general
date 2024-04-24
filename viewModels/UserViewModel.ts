@@ -255,6 +255,7 @@ class UserViewModel {
 
   @action public setLocationPermission = (val: boolean): void => {
     this.isLocationEnabled = val;
+    this.updatePermissionsInDatabase();
   };
 
   @action public getLocationPermission = (): boolean => {
@@ -263,6 +264,7 @@ class UserViewModel {
 
   @action public setCameraPermission = (val: boolean): void => {
     this.isCameraEnabled = val;
+    this.updatePermissionsInDatabase();
   };
 
   @action public getCameraPermission = (): boolean => {
@@ -271,6 +273,7 @@ class UserViewModel {
 
   @action public setMediaPermission = (val: boolean): void => {
     this.isMediaEnabled = val;
+    this.updatePermissionsInDatabase();
   };
 
   @action public getMediaPermission = (): boolean => {
@@ -306,10 +309,8 @@ class UserViewModel {
   };
 
   @action toggleNotificationPreference(type: NotificationType): void {
-    // TODO DB - Update user's notification preference in DB. There are several notification types.
-    // You should update only the type that's given as a parameter and make it the opposite of the
-    // existing value.
     this.notificationPreferences[type] = !this.notificationPreferences[type];
+    this.updateNotificationPreference();
   }
 
   @action toggleMobileNotifications(): void {
@@ -949,6 +950,22 @@ class UserViewModel {
     }
   }
 
+  private updateNotificationPreference(): void {
+    try {
+      const userRef = doc(db, "users", this.userId);
+      setDoc(
+        userRef,
+        { notificationTypePreferences: this.notificationPreferences },
+        { merge: true }
+      );
+    } catch (error) {
+      console.error(
+        "Error updating notification preferences in the database: ",
+        error
+      );
+    }
+  }
+
   @action updateMeasurementPreferences = async (
     temperaturePreference: TemperatureMeasurement,
     weightPreference: WeightMeasurement,
@@ -985,6 +1002,31 @@ class UserViewModel {
         "Error updating measurement preferences in the database: ",
         error
       );
+    }
+  };
+
+  @action updatePermissionsInDatabase = async () => {
+    if (!this.userId) {
+      console.error("No user ID available to update permissions.");
+      return;
+    }
+
+    try {
+      const userRef = doc(db, "users", this.userId);
+      await setDoc(
+        userRef,
+        {
+          permissions: {
+            isCameraEnabled: this.isCameraEnabled,
+            isLocationEnabled: this.isLocationEnabled,
+            isMediaEnabled: this.isMediaEnabled,
+          },
+        },
+        { merge: true }
+      );
+      console.log("Permissions updated in the database.");
+    } catch (error) {
+      console.error("Error updating permissions in the database: ", error);
     }
   };
 }
