@@ -44,7 +44,6 @@ const HomeScreen = () => {
   const bottomSheetAddFilterModalRef = useRef<BottomSheetModal>(null);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const { hiveViewModel } = useContext(MobXProviderContext);
-  // TODO DB - Read user's isDetailedView Value from DB.
   const [isDetailedView, setIsDetailedView] = useState(false);
   const [filterList, setFilterList] = useState<string[]>([]);
   const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(
@@ -241,6 +240,9 @@ const HomeScreen = () => {
 
       hiveViewModel.fetchHives();
       hiveViewModel.fetchFilters();
+      userViewModel.fetchIsDetailedView().then(() => {
+        setIsDetailedView(userViewModel.isDetailedView);
+      });
     } else {
       Toast.show(
         toastCrossPlatform({
@@ -296,8 +298,10 @@ const HomeScreen = () => {
               >
                 <Switch
                   value={isDetailedView}
-                  // TODO DB - Update user's isDetailedView value in DB.
-                  onValueChange={() => setIsDetailedView(!isDetailedView)}
+                  onValueChange={(newIsDetailedView) => {
+                    setIsDetailedView(newIsDetailedView);
+                    userViewModel.updateIsDetailedView(newIsDetailedView);
+                  }}
                 />
                 <HorizontalSpacer size={8} />
                 <Text style={theme.fonts.bodyLarge}>

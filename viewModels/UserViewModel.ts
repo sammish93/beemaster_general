@@ -154,6 +154,8 @@ class UserViewModel {
   @observable userId = "";
   @observable theme = "";
 
+  @observable isDetailedView = false;
+
   // Permissions.
   @observable isLocationEnabled = false;
   @observable isCameraEnabled = false;
@@ -751,7 +753,7 @@ class UserViewModel {
         beeCount: this.beeCountPreference,
       },
       notificationParameters: { ...this.notificationParameters },
-      simplifiedView: true,
+      isDetailedView: false,
       gdprConsent: this.gdprConsent,
       filters: [],
     };
@@ -1060,8 +1062,6 @@ class UserViewModel {
   };
   @action deleteUserAccount = async () => {
     try {
-      // 1. Delete the user account from Fi const user = auth.currentUser;
-
       if (this.userId) {
         const userRef = doc(db, "users", this.userId);
         await deleteDoc(userRef);
@@ -1071,18 +1071,42 @@ class UserViewModel {
         await user.delete();
       }
 
-      // 2. Delete the user document from Firestore
-      if (this.userId) {
-        const userRef = doc(db, "users", this.userId);
-        await deleteDoc(userRef);
-      }
-
-      // Clear user-related data in the view model
       this.clear();
 
       console.log("User account deleted successfully.");
     } catch (error) {
       console.error("Error deleting user account:", error);
+    }
+  };
+  @action fetchIsDetailedView = async () => {
+    try {
+      console.log("fetching detailedvie");
+      const userRef = doc(db, "users", this.userId);
+      const docSnap = await getDoc(userRef);
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        runInAction(() => {
+          this.isDetailedView = userData.isDetailedView ?? false;
+        });
+      } else {
+        console.error("No user data found.");
+      }
+    } catch (error) {
+      console.error("Error fetching isDetailedView from database:", error);
+    }
+  };
+
+  @action updateIsDetailedView = async (newIsDetailedView: boolean) => {
+    this.isDetailedView = newIsDetailedView;
+    try {
+      const userRef = doc(db, "users", this.userId);
+      await setDoc(
+        userRef,
+        { isSimplifiedView: newIsDetailedView },
+        { merge: true }
+      );
+    } catch (error) {
+      console.error("Error updating isDetailedView in the database:", error);
     }
   };
 }
