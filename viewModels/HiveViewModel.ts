@@ -15,6 +15,8 @@ import {
   updateDoc,
   deleteDoc,
   arrayUnion,
+  arrayRemove,
+  writeBatch,
 } from "firebase/firestore";
 import {
   NotificationTypePreference,
@@ -266,6 +268,48 @@ class HiveViewModel {
       console.log("Filter already exists in the selected hive");
     }
   }
+
+  @action removeFilter = async (filter: string) => {
+    runInAction(() => {
+      this.filters = this.filters.filter((item) => item !== filter);
+      this.hives = this.hives.map((hive) => ({
+        ...hive,
+        filters: hive.filters.filter((hiveFilter) => hiveFilter !== filter),
+      }));
+    });
+
+    await this.updateFiltersInBothUserAndHive(filter);
+  };
+
+  updateFiltersInBothUserAndHive = async (filterToRemove: string) => {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error("User not logged in");
+      return;
+    }
+    const userRef = doc(db, "users", userId);
+    const batch = writeBatch(db);
+
+    batch.update(userRef, {
+      filters: arrayRemove(filterToRemove),
+    });
+
+    this.hives
+      .filter((hive) => hive.filters.includes(filterToRemove))
+      .forEach((hive) => {
+        const hiveRef = doc(db, "hives", hive.id);
+        batch.update(hiveRef, {
+          filters: arrayRemove(filterToRemove),
+        });
+      });
+
+    try {
+      await batch.commit();
+      console.log("Successfully removed filter from user and hives.");
+    } catch (error) {
+      console.error("Failed to remove filter from Firestore:", error);
+    }
+  };
 
   @action numberOfFilters() {
     return this.filters.length;
