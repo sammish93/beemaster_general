@@ -286,8 +286,8 @@ const HomeScreen = () => {
         <LoadingScreen />
       ) : (
         <>
-          <View style={{ ...styles(theme).main, paddingBottom: 0 }}>
-            <ScrollView>
+          <ScrollView>
+            <View style={{ ...styles(theme).main, paddingBottom: 0 }}>
               <View
                 style={{
                   flexDirection: "row",
@@ -376,16 +376,16 @@ const HomeScreen = () => {
                 hives={filteredHiveList}
                 onPressModal={handleOpenAddFiltersToHiveModal}
               />
-            </ScrollView>
-            <Button
-              icon="plus"
-              mode="contained"
-              onPress={handleOpenAddHiveModal}
-              style={{ margin: 4 }}
-            >
-              {userViewModel.i18n.t("add new hive")}
-            </Button>
-          </View>
+            </View>
+          </ScrollView>
+          <Button
+            icon="plus"
+            mode="contained"
+            onPress={handleOpenAddHiveModal}
+            style={{ margin: 4 }}
+          >
+            {userViewModel.i18n.t("add new hive")}
+          </Button>
         </>
       )}
       <AddHiveModal
