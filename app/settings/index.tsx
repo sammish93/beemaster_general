@@ -369,7 +369,8 @@ const SettingsScreen = () => {
               ]}
               mode="contained"
               onPress={() => {
-                //TODO: DB - Add functionality to delete a user account
+                //TODO: add a modal to ask the user if they are sure to delete before deleting
+                userViewModel.deleteUserAccount();
               }}
             >
               <Text

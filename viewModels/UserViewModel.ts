@@ -37,7 +37,14 @@ import {
   NotificationType,
 } from "@/constants/Notifications";
 import { LocationObject, LocationObjectCoords } from "expo-location";
-import { doc, collection, setDoc, getDoc, Timestamp } from "firebase/firestore";
+import {
+  doc,
+  collection,
+  setDoc,
+  getDoc,
+  Timestamp,
+  deleteDoc,
+} from "firebase/firestore";
 import { NotificationParameters, User } from "@/models";
 import { preferences } from "@/data/userData";
 import { Appearance } from "react-native";
@@ -132,6 +139,7 @@ class UserViewModel {
       case CountryEnum.UnitedKingdom:
         if (changeDefaultVariables) {
           // TODO Default variables for UK.
+          await this.updateUserPreferences();
         }
 
         break;
@@ -144,7 +152,7 @@ class UserViewModel {
   // Localisation
   @observable i18n;
   @observable userId = "";
-  @observable theme = "light";
+  @observable theme = "";
 
   // Permissions.
   @observable isLocationEnabled = false;
@@ -251,7 +259,6 @@ class UserViewModel {
   };
 
   @action public setTheme = (theme: string): void => {
-    // TODO DB - Update user's theme preference in DB.
     this.theme = theme;
     this.updateUserPreferences();
   };
@@ -769,7 +776,7 @@ class UserViewModel {
     thresholdWeightIncrease: 2.0,
     productionPeriodDays: 7,
     productionPeriodThreshold: 5.0,
-    thresholdExitCountHigh: 26000,
+    thresholdExitCountHigh: 24000,
     thresholdExitCountLow: 2000,
     thresholdTemperatureMin: 10.0,
     thresholdTemperatureMax: 40.0,
@@ -778,7 +785,7 @@ class UserViewModel {
     thresholdMaxTempInHive: 36.0,
     thresholdWindSpeedStrong: 5,
     thresholdWindSpeedLow: 2.5,
-    thresholdHumidityMin: 79.0,
+    thresholdHumidityMin: 70.0,
     thresholdHumidityMax: 95.0,
     autumnMonths: [
       Timestamp.fromDate(new Date(this.currentYear, 8, 1)),
@@ -888,7 +895,7 @@ class UserViewModel {
         runInAction(() => {
           this.gdprConsent = userData.gdprConsent;
 
-          this.theme = userData.preferences?.theme;
+          this.theme = userData.preferences?.theme || "light";
           this.currentLanguage =
             userData.preferences?.language || this.i18n.locale;
           this.currentCountry = userData.preferences?.country;
@@ -1035,45 +1042,47 @@ class UserViewModel {
   @action updateUserPreferences = async () => {
     try {
       const userRef = doc(db, "users", this.userId);
-
-      // Prepare preferences data
-      let preferencesData: {
-        language: string | null;
-        theme: string;
-        country?: string; // Make country optional
-      } = {
-        language: this.currentLanguage,
-        theme: this.theme,
-      };
-
-      // Check if the country is being updated
-      if (this.currentCountry !== undefined) {
-        preferencesData.country = this.currentCountry;
-
-        // Prepare update data with notificationParameters included
-        let updateData: {
-          preferences: typeof preferencesData;
-          notificationParameters?: any;
-        } = {
-          preferences: preferencesData,
-          notificationParameters: this.notificationParameters, // Only added when country changes
-        };
-
-        await setDoc(userRef, updateData, { merge: true });
-      } else {
-        // Prepare update data without notificationParameters
-        let updateData: {
-          preferences: typeof preferencesData;
-        } = {
-          preferences: preferencesData,
-        };
-
-        await setDoc(userRef, updateData, { merge: true });
-      }
-
+      await setDoc(
+        userRef,
+        {
+          preferences: {
+            country: this.currentCountry,
+            language: this.currentLanguage,
+            theme: this.theme,
+          },
+        },
+        { merge: true }
+      );
       console.log("User preferences updated in the database.");
     } catch (error) {
       console.error("Error updating user preferences in the database: ", error);
+    }
+  };
+  @action deleteUserAccount = async () => {
+    try {
+      // 1. Delete the user account from Fi const user = auth.currentUser;
+
+      if (this.userId) {
+        const userRef = doc(db, "users", this.userId);
+        await deleteDoc(userRef);
+      }
+      const user = auth.currentUser;
+      if (user) {
+        await user.delete();
+      }
+
+      // 2. Delete the user document from Firestore
+      if (this.userId) {
+        const userRef = doc(db, "users", this.userId);
+        await deleteDoc(userRef);
+      }
+
+      // Clear user-related data in the view model
+      this.clear();
+
+      console.log("User account deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting user account:", error);
     }
   };
 }
