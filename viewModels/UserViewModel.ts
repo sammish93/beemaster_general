@@ -89,7 +89,7 @@ class UserViewModel {
     this.gdprConsent = consent;
   };
 
-  @action public setLanguage = (langCode: string): void => {
+  @action public setLanguage = async (langCode: string): Promise<void> => {
     // TODO DB - Write language to DB
 
     let newLocale = "en";
@@ -112,18 +112,20 @@ class UserViewModel {
       this.currentLanguage = newLocale;
       this.i18n.locale = newLocale;
     });
+    await this.updateUserPreferences();
   };
 
-  @action public setCountry = (
+  @action public setCountry = async (
     countryCode: string,
     changeDefaultVariables: boolean = false
-  ): void => {
+  ): Promise<void> => {
     // TODO DB - Write country to DB.
     this.currentCountry = countryCode;
     switch (countryCode) {
       case CountryEnum.Norway:
         if (changeDefaultVariables) {
           // TODO Default variables for Norway.
+          await this.updateUserPreferences();
         }
 
         break;
@@ -251,6 +253,7 @@ class UserViewModel {
   @action public setTheme = (theme: string): void => {
     // TODO DB - Update user's theme preference in DB.
     this.theme = theme;
+    this.updateUserPreferences();
   };
 
   @action public setLocationPermission = (val: boolean): void => {
@@ -766,7 +769,7 @@ class UserViewModel {
     thresholdWeightIncrease: 2.0,
     productionPeriodDays: 7,
     productionPeriodThreshold: 5.0,
-    thresholdExitCountHigh: 24000,
+    thresholdExitCountHigh: 26000,
     thresholdExitCountLow: 2000,
     thresholdTemperatureMin: 10.0,
     thresholdTemperatureMax: 40.0,
@@ -775,7 +778,7 @@ class UserViewModel {
     thresholdMaxTempInHive: 36.0,
     thresholdWindSpeedStrong: 5,
     thresholdWindSpeedLow: 2.5,
-    thresholdHumidityMin: 70.0,
+    thresholdHumidityMin: 79.0,
     thresholdHumidityMax: 95.0,
     autumnMonths: [
       Timestamp.fromDate(new Date(this.currentYear, 8, 1)),
@@ -885,7 +888,7 @@ class UserViewModel {
         runInAction(() => {
           this.gdprConsent = userData.gdprConsent;
 
-          this.theme = userData.preferences?.theme || "light";
+          this.theme = userData.preferences?.theme;
           this.currentLanguage =
             userData.preferences?.language || this.i18n.locale;
           this.currentCountry = userData.preferences?.country;
@@ -1027,6 +1030,50 @@ class UserViewModel {
       console.log("Permissions updated in the database.");
     } catch (error) {
       console.error("Error updating permissions in the database: ", error);
+    }
+  };
+  @action updateUserPreferences = async () => {
+    try {
+      const userRef = doc(db, "users", this.userId);
+
+      // Prepare preferences data
+      let preferencesData: {
+        language: string | null;
+        theme: string;
+        country?: string; // Make country optional
+      } = {
+        language: this.currentLanguage,
+        theme: this.theme,
+      };
+
+      // Check if the country is being updated
+      if (this.currentCountry !== undefined) {
+        preferencesData.country = this.currentCountry;
+
+        // Prepare update data with notificationParameters included
+        let updateData: {
+          preferences: typeof preferencesData;
+          notificationParameters?: any;
+        } = {
+          preferences: preferencesData,
+          notificationParameters: this.notificationParameters, // Only added when country changes
+        };
+
+        await setDoc(userRef, updateData, { merge: true });
+      } else {
+        // Prepare update data without notificationParameters
+        let updateData: {
+          preferences: typeof preferencesData;
+        } = {
+          preferences: preferencesData,
+        };
+
+        await setDoc(userRef, updateData, { merge: true });
+      }
+
+      console.log("User preferences updated in the database.");
+    } catch (error) {
+      console.error("Error updating user preferences in the database: ", error);
     }
   };
 }
