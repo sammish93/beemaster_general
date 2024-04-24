@@ -174,8 +174,8 @@ class UserViewModel {
   @observable notificationPreferences: NotificationTypePreference =
     notificationTypePreferences;
   @observable mobileNotifications: boolean = true;
-  @observable smsNotifications: boolean = true;
-  @observable emailNotifications: boolean = true;
+  @observable smsNotifications: boolean = false;
+  @observable emailNotifications: boolean = false;
 
   // Expected to be decimal number
   @observable thresholdWeightDecreaseInAutumn: number = 2.0;
@@ -327,17 +327,16 @@ class UserViewModel {
 
   @action toggleMobileNotifications(): void {
     this.mobileNotifications = !this.mobileNotifications;
-    this.updateNotificationPreferencesInDatabase();
+    this.updateNotificationPreferencesMobile();
   }
 
   @action toggleSmsNotifications(): void {
     this.smsNotifications = !this.smsNotifications;
-    this.updateNotificationPreferencesInDatabase();
+    this.updateNotificationPreferencesSms();
   }
 
   @action toggleEmailNotifications(): void {
     this.emailNotifications = !this.emailNotifications;
-    this.updateNotificationPreferencesInDatabase();
   }
 
   // TODO DB - These will all have to be in the DB eventually.
@@ -934,7 +933,7 @@ class UserViewModel {
       console.error("Error fetching user from database:", error);
     }
   };
-  private updateNotificationPreferencesInDatabase(): void {
+  private updateNotificationPreferencesMobile(): void {
     if (!this.userId) {
       console.error("No user ID available to update notification preferences.");
       return;
@@ -947,8 +946,30 @@ class UserViewModel {
         {
           notificationPreferences: {
             mobile: this.mobileNotifications,
+          },
+        },
+        { merge: true }
+      );
+    } catch (error) {
+      console.error(
+        "Error updating notification preferences in the database: ",
+        error
+      );
+    }
+  }
+  private updateNotificationPreferencesSms(): void {
+    if (!this.userId) {
+      console.error("No user ID available to update notification preferences.");
+      return;
+    }
+
+    try {
+      const userRef = doc(db, "users", this.userId);
+      setDoc(
+        userRef,
+        {
+          notificationPreferences: {
             sms: this.smsNotifications,
-            email: this.emailNotifications,
           },
         },
         { merge: true }
