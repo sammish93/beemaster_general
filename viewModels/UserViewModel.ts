@@ -892,7 +892,6 @@ class UserViewModel {
 
       if (docSnap.exists()) {
         const userData = docSnap.data();
-        console.log("reading user", userData);
 
         runInAction(() => {
           this.gdprConsent = userData.gdprConsent;
@@ -1080,7 +1079,6 @@ class UserViewModel {
   };
   @action fetchIsDetailedView = async () => {
     try {
-      console.log("fetching detailedvie");
       const userRef = doc(db, "users", this.userId);
       const docSnap = await getDoc(userRef);
       if (docSnap.exists()) {
