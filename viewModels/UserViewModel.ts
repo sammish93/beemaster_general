@@ -318,18 +318,18 @@ class UserViewModel {
   }
 
   @action toggleMobileNotifications(): void {
-    // TODO DB - Update user's notification method in DB.
     this.mobileNotifications = !this.mobileNotifications;
+    this.updateNotificationPreferencesInDatabase();
   }
 
   @action toggleSmsNotifications(): void {
-    // TODO DB - Update user's notification method in DB.
     this.smsNotifications = !this.smsNotifications;
+    this.updateNotificationPreferencesInDatabase();
   }
 
   @action toggleEmailNotifications(): void {
-    // TODO DB - Update user's notification method in DB.
     this.emailNotifications = !this.emailNotifications;
+    this.updateNotificationPreferencesInDatabase();
   }
 
   // TODO DB - These will all have to be in the DB eventually.
@@ -927,6 +927,32 @@ class UserViewModel {
       console.error("Error fetching user from database:", error);
     }
   };
+  private updateNotificationPreferencesInDatabase(): void {
+    if (!this.userId) {
+      console.error("No user ID available to update notification preferences.");
+      return;
+    }
+
+    try {
+      const userRef = doc(db, "users", this.userId);
+      setDoc(
+        userRef,
+        {
+          notificationPreferences: {
+            mobile: this.mobileNotifications,
+            sms: this.smsNotifications,
+            email: this.emailNotifications,
+          },
+        },
+        { merge: true }
+      );
+    } catch (error) {
+      console.error(
+        "Error updating notification preferences in the database: ",
+        error
+      );
+    }
+  }
 }
 
 export default new UserViewModel();
