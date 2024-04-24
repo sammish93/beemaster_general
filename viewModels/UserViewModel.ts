@@ -38,7 +38,7 @@ import {
 } from "@/constants/Notifications";
 import { LocationObject, LocationObjectCoords } from "expo-location";
 import { doc, collection, setDoc, getDoc, Timestamp } from "firebase/firestore";
-import { User } from "@/models";
+import { NotificationParameters, User } from "@/models";
 import { preferences } from "@/data/userData";
 import { Appearance } from "react-native";
 
@@ -764,12 +764,12 @@ class UserViewModel {
   };
 
   notificationParameters = {
-    thresholdWeightDecreaseInAutumn: this.thresholdWeightDecreaseInAutumn,
+    thresholdWeightDecreaseInAutumn: 2.0,
     thresholdWeightDecreaseEarlySpring: 2.0,
     thresholdWeightDecrease: 2.0,
     thresholdWeightIncrease: 2.0,
     productionPeriodDays: 7,
-    productionPeriodThreshold: this.productionPeriodThreshold,
+    productionPeriodThreshold: 5.0,
     thresholdExitCountHigh: 24000,
     thresholdExitCountLow: 2000,
     thresholdTemperatureMin: 10.0,
@@ -777,7 +777,7 @@ class UserViewModel {
     thresholdTemperatureOptimal: 20.0,
     thresholdMinTempInHive: 34.0,
     thresholdMaxTempInHive: 36.0,
-    thresholdWindSpeedStrong: this.thresholdWindSpeedStrong,
+    thresholdWindSpeedStrong: 5,
     thresholdWindSpeedLow: 2.5,
     thresholdHumidityMin: 70.0,
     thresholdHumidityMax: 95.0,
@@ -812,6 +812,27 @@ class UserViewModel {
     autumnEndMonth: Timestamp.fromDate(new Date(this.currentYear, 10, 30)),
     winterStart: Timestamp.fromDate(new Date(this.currentYear, 11, 1)),
     winterEnd: Timestamp.fromDate(new Date(this.currentYear, 1, 28)),
+  };
+  @action public setNotificationParameters = (
+    params: NotificationParameters
+  ) => {
+    Object.keys(params).forEach((key) => {
+      if (this.hasOwnProperty(key) && key in params) {
+        const value = params[key];
+
+        if (value && typeof value.toDate === "function") {
+          this[key] = value.toDate();
+        } else if (
+          Array.isArray(value) &&
+          value.length > 0 &&
+          typeof value[0].toDate === "function"
+        ) {
+          this[key] = value.map((v) => v.toDate());
+        } else {
+          this[key] = value;
+        }
+      }
+    });
   };
 
   permissions = {
@@ -851,11 +872,10 @@ class UserViewModel {
 
   @action fetchUserParametersFromDatabase = async () => {
     // TODO DB - Read from DB.
-    // Dummy data for now- Parameters who is not defined under, uses default parameters.
-    // UserID isn't present in the dummy data because we already have live data
+
     if (!this.userId) {
       console.error("No user ID available to fetch data.");
-      return; // Or handle the user not being set more gracefully
+      return;
     }
 
     try {
@@ -892,8 +912,10 @@ class UserViewModel {
           this.emailNotifications = userData.notificationPreferences?.email;
 
           this.notificationPreferences = userData.notificationTypePreferences;
-          this.notificationParameters.thresholdWindSpeedStrong =
-            userData.notificationParameters.thresholdWindSpeedStrong;
+
+          if (userData.notificationParameters) {
+            this.setNotificationParameters(userData.notificationParameters);
+          }
           console.log(this.thresholdWindSpeedStrong);
           console.log(this.notificationParameters.thresholdWindSpeedStrong);
           console.log(userData.notificationParameters.thresholdWindSpeedStrong);
