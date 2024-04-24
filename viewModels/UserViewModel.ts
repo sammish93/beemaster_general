@@ -281,32 +281,27 @@ class UserViewModel {
   @action public setTemperaturePreference = (
     prefence: TemperatureMeasurement
   ): void => {
-    // TODO DB - Update user's temperature preference in DB.
     this.temperaturePreference = prefence;
   };
 
   @action public setPrecipitationPreference = (
     prefence: PrecipitationMeasurement
   ): void => {
-    // TODO DB - Update user's precipitation preference in DB.
     this.precipitationPreference = prefence;
   };
 
   @action public setWindSpeedPreference = (
     prefence: WindSpeedMeasurement
   ): void => {
-    // TODO DB - Update user's wind speed preference in DB.
     this.windSpeedPreference = prefence;
   };
 
   @action public setWeightPreference = (prefence: WeightMeasurement): void => {
-    // TODO DB - Update user's weight preference in DB.
     this.weightPreference = prefence;
   };
   @action public setBeeCountPreference = (
     prefence: BeeCountMeasurement
   ): void => {
-    // TODO DB - Update user's weight preference in DB.
     this.beeCountPreference = prefence;
   };
 
@@ -953,6 +948,45 @@ class UserViewModel {
       );
     }
   }
+
+  @action updateMeasurementPreferences = async (
+    temperaturePreference: TemperatureMeasurement,
+    weightPreference: WeightMeasurement,
+    precipitationPreference: PrecipitationMeasurement,
+    windSpeedPreference: WindSpeedMeasurement,
+    beeCountPreference: BeeCountMeasurement
+  ) => {
+    runInAction(() => {
+      this.temperaturePreference = temperaturePreference;
+      this.weightPreference = weightPreference;
+      this.precipitationPreference = precipitationPreference;
+      this.windSpeedPreference = windSpeedPreference;
+      this.beeCountPreference = beeCountPreference;
+    });
+
+    try {
+      const userRef = doc(db, "users", this.userId);
+      await setDoc(
+        userRef,
+        {
+          measurementsPreferences: {
+            temperature: temperaturePreference,
+            weight: weightPreference,
+            precipitation: precipitationPreference,
+            windSpeed: windSpeedPreference,
+            beeCount: beeCountPreference,
+          },
+        },
+        { merge: true }
+      );
+      console.log("Measurement preferences updated in the database.");
+    } catch (error) {
+      console.error(
+        "Error updating measurement preferences in the database: ",
+        error
+      );
+    }
+  };
 }
 
 export default new UserViewModel();
