@@ -358,7 +358,7 @@ class UserViewModel {
   };
   @action public setThresholdWeightIncrease = (value: number): void => {
     this.thresholdWeightIncrease = value;
-    this.setThreshold("tresholdWeightIncrease", value);
+    this.setThreshold("thresholdWeightIncrease", value);
   };
   @action public setProductionPeriodDays = (value: number): void => {
     this.productionPeriodDays = value;
@@ -434,32 +434,10 @@ class UserViewModel {
     this.setThreshold("thresholdMaxTempInHive", value);
   };
 
-  async saveThresholdWindSpeedStrong(newThreshold: number) {
-    try {
-      const userRef = doc(db, "users", this.userId);
-      await setDoc(
-        userRef,
-        {
-          notificationParameters: {
-            thresholdWindSpeedStrong: this.thresholdWindSpeedStrong,
-          },
-        },
-        { merge: true }
-      );
-      console.log("Threshold wind speed strong updated successfully.");
-    } catch (error) {
-      console.error(
-        "Failed to update threshold wind speed strong in database:",
-        error
-      );
-    }
-  }
-
   //Windspeed
   @action public setThresholdWindSpeedStrong = (value: number): void => {
     this.thresholdWindSpeedStrong = value;
-    // this.setThreshold("thresholdWindSpeedStrong", value);
-    this.saveThresholdWindSpeedStrong(value);
+    this.setThreshold("thresholdWindSpeedStrong", value);
   };
   @action public setThresholdWindSpeedLow = (value: number): void => {
     this.thresholdWindSpeedLow = value;
@@ -479,75 +457,90 @@ class UserViewModel {
   //Spring
   @action public setLateSpringStartMonth = (value: Date): void => {
     this.lateSpringStartMonth = value;
+    this.saveValue("springStartMonth", value);
   };
 
   @action public setEarlySpringMonths = (value: Date[]): void => {
     this.earlySpringMonths = value;
+    this.saveValue("earlySpringMonths", value);
   };
 
   @action public setEarlySpringStartMonth = (month: Date): void => {
     this.earlySpringStartMonth = month;
+    this.saveValue("earlySpringStartMonth", month);
   };
 
   @action public setEarlySpringEndMonth = (month: Date): void => {
     this.earlySpringEndMonth = month;
+    this.saveValue("earlySpringEndMonth", month);
   };
   @action public setSpringStartMonth = (value: Date): void => {
     this.springStartMonth = value;
+    this.saveValue("springStartMonth", value);
   };
   @action public setSpringEndMonth = (value: Date): void => {
     this.springEndMonth = value;
+    this.saveValue("springEndMonth", value);
   };
 
   //Summer
   @action public setEarlySummerStartMonth = (value: Date): void => {
     this.earlySummerStartMonth = value;
+    this.saveValue("earlySummerStartMonth", value);
   };
   @action public setEarlySummerEndMonth = (value: Date): void => {
     this.earlySummerEndMonth = value;
+    this.saveValue("earlySummerEndMonth", value);
   };
   @action public setSummerStartMonth = (value: Date): void => {
     this.summerStartMonth = value;
+    this.saveValue("summerStartMonth", value);
   };
   @action public setSummerEndMonth = (value: Date): void => {
     this.summerEndMonth = value;
+    this.saveValue("summerEndMonth", value);
   };
 
   //Autumn
   @action public setAutumnStartMonth = (month: Date): void => {
     this.autumnStartMonth = month;
+    this.saveValue("autumnStartMonth", month);
   };
 
   @action public setAutumnEndMonth = (month: Date): void => {
     this.autumnEndMonth = month;
+    this.saveValue("autumnEndMonth", month);
   };
 
   @action public setAutumnMonths = (value: Date[]): void => {
     this.autumnMonths = value;
+    this.saveValue("autumnMonths", value);
   };
   @action public setEarlyAutumnMonth = (value: Date): void => {
     this.earlyAutumnMonth = value;
+    this.saveValue("earlyAutumnMonth", value);
   };
 
   //Winter
   @action public setEarlyWinterMonths = (value: Date[]): void => {
     this.earlyWinterMonths = value;
+    this.saveValue("earlyWinterMonths", value);
   };
   @action public setWinterStart = (value: Date): void => {
     this.winterStart = value;
-    // this.saveValue("winterStart", value);
+    this.saveValue("winterStart", value);
   };
   @action public setWinterEnd = (value: Date): void => {
     this.winterEnd = value;
-    // this.saveValue("winterEnd", value);
+    this.saveValue("winterEnd", value);
   };
   @action public setEarlyWinterStart = (value: Date): void => {
     this.earlyWinterStart = value;
-    // this.saveValue("earlyWinterStart", value);
+    this.saveValue("earlyWinterStart", value);
   };
   @action public setEarlyWinterEnd = (value: Date): void => {
     this.earlyWinterEnd = value;
-    //this.saveValue("earlyWinterEnd", value);
+    this.saveValue("earlyWinterEnd", value);
   };
   @action public setValue<T>(key: string, value: T): void {
     this[key] = value;
@@ -930,6 +923,8 @@ class UserViewModel {
     winterStart: Timestamp.fromDate(new Date(this.currentYear, 11, 1)),
     winterEnd: Timestamp.fromDate(new Date(this.currentYear, 1, 28)),
   };
+
+  //Used for reading the notificationParameters from DB
   @action public setNotificationParameters = (
     params: NotificationParameters
   ) => {
