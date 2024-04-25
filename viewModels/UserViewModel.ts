@@ -385,36 +385,6 @@ class UserViewModel {
     this.setThreshold("thresholdTemperatureOptimal", value);
   };
 
-  [key: string]: any;
-  @action public setThreshold = async (
-    thresholdName: string,
-    value: number
-  ): Promise<void> => {
-    this[thresholdName] = value;
-
-    await this.updateThreshold(thresholdName, value);
-  };
-
-  async updateThreshold(thresholdName: string, newThreshold: number) {
-    try {
-      const userRef = doc(db, "users", this.userId);
-      await setDoc(
-        userRef,
-        {
-          notificationParameters: {
-            [thresholdName]: newThreshold,
-          },
-        },
-        { merge: true }
-      );
-      console.log(`Threshold ${thresholdName} updated successfully.`);
-    } catch (error) {
-      console.error(
-        `Failed to update threshold ${thresholdName} in database:`,
-        error
-      );
-    }
-  }
   @action public setThresholdTemperatureMin = (value: number): void => {
     this.thresholdTemperatureMin = value;
     this.setThreshold("thresholdTemperatureMin", value);
@@ -542,38 +512,6 @@ class UserViewModel {
     this.earlyWinterEnd = value;
     this.saveValue("earlyWinterEnd", value);
   };
-  @action public setValue<T>(key: string, value: T): void {
-    this[key] = value;
-    this.saveValue(key, value);
-  }
-
-  private async saveValue(key: string, value: any) {
-    try {
-      const userRef = doc(db, "users", this.userId);
-
-      const updateData = {
-        notificationParameters: {
-          [key]: this.prepareValueForFirestore(value),
-        },
-      };
-      await setDoc(userRef, updateData, { merge: true });
-      console.log(`${key} updated successfully.`);
-    } catch (error) {
-      console.error(`Failed to update ${key} in database:`, error);
-    }
-  }
-
-  private prepareValueForFirestore(value: any): any {
-    if (value instanceof Date) {
-      return Timestamp.fromDate(value);
-    } else if (
-      Array.isArray(value) &&
-      value.every((item) => item instanceof Date)
-    ) {
-      return value.map((date) => Timestamp.fromDate(date));
-    }
-    return value;
-  }
 
   // Getters - don't need to be read from the DB.
   // Weight
@@ -1233,6 +1171,70 @@ class UserViewModel {
       console.error("Error updating isDetailedView in the database:", error);
     }
   };
+
+  [key: string]: any;
+  @action public setThreshold = async (
+    thresholdName: string,
+    value: number
+  ): Promise<void> => {
+    this[thresholdName] = value;
+
+    await this.updateThreshold(thresholdName, value);
+  };
+
+  async updateThreshold(thresholdName: string, newThreshold: number) {
+    try {
+      const userRef = doc(db, "users", this.userId);
+      await setDoc(
+        userRef,
+        {
+          notificationParameters: {
+            [thresholdName]: newThreshold,
+          },
+        },
+        { merge: true }
+      );
+      console.log(`Threshold ${thresholdName} updated successfully.`);
+    } catch (error) {
+      console.error(
+        `Failed to update threshold ${thresholdName} in database:`,
+        error
+      );
+    }
+  }
+
+  @action public setValue<T>(key: string, value: T): void {
+    this[key] = value;
+    this.saveValue(key, value);
+  }
+
+  private async saveValue(key: string, value: any) {
+    try {
+      const userRef = doc(db, "users", this.userId);
+
+      const updateData = {
+        notificationParameters: {
+          [key]: this.prepareValueForFirestore(value),
+        },
+      };
+      await setDoc(userRef, updateData, { merge: true });
+      console.log(`${key} updated successfully.`);
+    } catch (error) {
+      console.error(`Failed to update ${key} in database:`, error);
+    }
+  }
+
+  private prepareValueForFirestore(value: any): any {
+    if (value instanceof Date) {
+      return Timestamp.fromDate(value);
+    } else if (
+      Array.isArray(value) &&
+      value.every((item) => item instanceof Date)
+    ) {
+      return value.map((date) => Timestamp.fromDate(date));
+    }
+    return value;
+  }
 }
 
 export default new UserViewModel();
