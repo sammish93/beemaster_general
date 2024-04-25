@@ -30,6 +30,9 @@ import {
   signInAnonymously,
   signInWithCredential,
   onAuthStateChanged,
+  EmailAuthProvider,
+  getAuth,
+  linkWithCredential,
 } from "firebase/auth";
 import { WEB_CLIENT_ID } from "@env";
 import {
@@ -44,6 +47,7 @@ import {
   getDoc,
   Timestamp,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { NotificationParameters, User } from "@/models";
 import { preferences } from "@/data/userData";
@@ -669,11 +673,15 @@ class UserViewModel {
     try {
       console.log("signin with web");
       const result = await signInWithPopup(auth, provider);
-      await this.createUserWithConfig(
-        result.user.uid,
-        result.user.isAnonymous,
-        result.user.email
-      );
+      const userRef = doc(db, "users", result.user.uid);
+      const userDoc = await getDoc(userRef);
+      if (!userDoc.exists()) {
+        await this.createUserWithConfig(
+          result.user.uid,
+          result.user.isAnonymous,
+          result.user.email
+        );
+      }
     } catch (error) {
       console.error("Error signing in with Google: ", error);
     }
@@ -695,12 +703,15 @@ class UserViewModel {
         const googleCredential = GoogleAuthProvider.credential(idToken);
         const result = await signInWithCredential(auth, googleCredential);
 
-        await this.createUserWithConfig(
-          result.user.uid,
-          result.user.isAnonymous,
-          result.user.email
-        );
-        console.log("New user document created for Google sign-in.");
+        const userRef = doc(db, "users", result.user.uid);
+        const userDoc = await getDoc(userRef);
+        if (!userDoc.exists()) {
+          await this.createUserWithConfig(
+            result.user.uid,
+            result.user.isAnonymous,
+            result.user.email
+          );
+        }
       } catch (error) {
         console.error("Error signing in with Google(Native): ", error);
       }
@@ -722,6 +733,57 @@ class UserViewModel {
           this.signUpError = "An error occurred during sign in";
         });
       }
+    }
+  };
+  @action upgradeAccountWithEmail = async (email: string, password: string) => {
+    const auth = getAuth();
+    const credential = EmailAuthProvider.credential(email, password);
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const result = await linkWithCredential(user, credential);
+        console.log(
+          "Anonymous account successfully upgraded to email/password."
+        );
+
+        // Assuming this.createUserWithConfig updates user configuration in your Firestore or equivalent.
+        await this.createUserWithConfig(
+          result.user.uid,
+          false, // User is no longer anonymous
+          result.user.email
+        );
+      } else {
+        console.error("No user is currently signed in.");
+      }
+    } catch (error) {
+      console.error("Failed to upgrade anonymous account: ", error);
+      if (error.code === "auth/email-already-in-use") {
+        console.error("Email is already in use");
+        runInAction(() => {
+          this.signUpError = "Email is already in use";
+        });
+      } else {
+        runInAction(() => {
+          this.signUpError = "An error occurred during account upgrade";
+        });
+      }
+    }
+  };
+  @action updateUserAccountData = async (
+    uid: string,
+    isAnonymous: boolean,
+    email: string
+  ) => {
+    const userRef = doc(db, "users", uid);
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+      await updateDoc(userRef, {
+        isAnonymous: isAnonymous,
+        email: email,
+      });
+      console.log("User data updated after upgrading account.");
+    } else {
+      await this.createUserWithConfig(uid, isAnonymous, email);
     }
   };
 
@@ -999,6 +1061,7 @@ class UserViewModel {
           this.currentLanguage =
             userData.preferences?.language || this.i18n.locale;
           this.currentCountry = userData.preferences?.country;
+          this.isAnonymous = userData.isAnonymous;
 
           this.temperaturePreference =
             userData.measurementsPreferences.temperature;
@@ -1022,7 +1085,7 @@ class UserViewModel {
           if (userData.notificationParameters) {
             this.setNotificationParameters(userData.notificationParameters);
           }
-          console.log(this.thresholdWindSpeedStrong);
+          console.log("anonymous: ", this.isAnonymous);
           console.log(this.notificationParameters.thresholdWindSpeedStrong);
           console.log(userData.notificationParameters.thresholdWindSpeedStrong);
         });
@@ -1292,6 +1355,7 @@ class UserViewModel {
     }
     return value;
   }
+  @observable isAnonymous = auth.currentUser?.isAnonymous;
 }
 
 export default new UserViewModel();
