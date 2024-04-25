@@ -344,88 +344,114 @@ class UserViewModel {
   //Weight
   @action public setThresholdWeightDecreaseInAutumn = (value: number): void => {
     this.thresholdWeightDecreaseInAutumn = value;
+    this.setThreshold("thresholdWeightDecreaseInAutumn", value);
   };
   @action public setThresholdWeightDecreaseEarlySpring = (
     value: number
   ): void => {
     this.thresholdWeightDecreaseEarlySpring = value;
+    this.setThreshold("thresholdWeightDecreaseEarlySpring", value);
   };
   @action public setThresholdWeightDecrease = (value: number): void => {
     this.thresholdWeightDecrease = value;
+    this.setThreshold("thresholdWeightDecrease", value);
   };
   @action public setThresholdWeightIncrease = (value: number): void => {
     this.thresholdWeightIncrease = value;
+    this.setThreshold("tresholdWeightIncrease", value);
   };
   @action public setProductionPeriodDays = (value: number): void => {
     this.productionPeriodDays = value;
+    this.setThreshold("productionPeriodDays", value);
   };
   @action public setProductionPeriodThreshold = (value: number): void => {
     this.productionPeriodThreshold = value;
+    this.setThreshold("productionPeriodThreshold", value);
   };
 
   //CountExit
   @action public setThresholdExitCountHigh = (value: number): void => {
     this.thresholdExitCountHigh = value;
+    this.setThreshold("thresholdExitCountHigh", value);
   };
   @action public setThresholdExitCountLow = (value: number): void => {
     this.thresholdExitCountLow = value;
+    this.setThreshold("thresholdExitCountLow", value);
   };
 
   //Temperatures
   @action public setThresholdTemperatureOptimal = (value: number): void => {
     this.thresholdTemperatureOptimal = value;
+    this.setThreshold("thresholdTemperatureOptimal", value);
   };
-  @action public setThresholdTemperatureMin = async (
+
+  [key: string]: any;
+  @action public setThreshold = async (
+    thresholdName: string,
     value: number
   ): Promise<void> => {
-    this.thresholdTemperatureMin = value;
-    await this.saveThresholdWindSpeedStrong(value);
+    this[thresholdName] = value;
+
+    await this.updateThreshold(thresholdName, value);
   };
-  async saveThresholdWindSpeedStrong(newThreshold: number) {
+
+  async updateThreshold(thresholdName: string, newThreshold: number) {
     try {
       const userRef = doc(db, "users", this.userId);
       await setDoc(
         userRef,
         {
           notificationParameters: {
-            thresholdWindSpeedStrong: this.thresholdWindSpeedStrong,
+            [thresholdName]: newThreshold,
           },
         },
         { merge: true }
       );
-      console.log("Threshold wind speed strong updated successfully.");
+      console.log(`Threshold ${thresholdName} updated successfully.`);
     } catch (error) {
       console.error(
-        "Failed to update threshold wind speed strong in database:",
+        `Failed to update threshold ${thresholdName} in database:`,
         error
       );
     }
   }
+  @action public setThresholdTemperatureMin = (value: number): void => {
+    this.thresholdTemperatureMin = value;
+    this.setThreshold("thresholdTemperatureMin", value);
+  };
+
   @action public setThresholdTemperatureMax = (value: number): void => {
     this.thresholdTemperatureMax = value;
+    this.setThreshold("thresholdTemperatureMax", value);
   };
 
   @action public setThresholdMinTempInHive = (value: number): void => {
     this.thresholdMinTempInHive = value;
+    this.setThreshold("thresholdMinTempInHive", value);
   };
   @action public setThresholdMaxTempInHive = (value: number): void => {
     this.thresholdMaxTempInHive = value;
+    this.setThreshold("thresholdMaxTempInHive", value);
   };
 
   //Windspeed
   @action public setThresholdWindSpeedStrong = (value: number): void => {
     this.thresholdWindSpeedStrong = value;
+    this.setThreshold("thresholdWindSpeedStrong", value);
   };
   @action public setThresholdWindSpeedLow = (value: number): void => {
     this.thresholdWindSpeedLow = value;
+    this.setThreshold("thresholdWindSpeedLow", value);
   };
 
   //Humidity
   @action public setThresholdHumidityMax = (value: number): void => {
     this.thresholdHumidityMax = value;
+    this.setThreshold("thresholdHumidityMax", value);
   };
   @action public setThresholdHumidityMin = (value: number): void => {
     this.thresholdHumidityMin = value;
+    this.setThreshold("thresholdHumidityMin", value);
   };
 
   //Spring
