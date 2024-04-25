@@ -97,8 +97,6 @@ class UserViewModel {
   };
 
   @action public setLanguage = async (langCode: string): Promise<void> => {
-    // TODO DB - Write language to DB
-
     let newLocale = "en";
     switch (langCode) {
       case LanguageEnum.BritishEnglish:
@@ -126,26 +124,51 @@ class UserViewModel {
     countryCode: string,
     changeDefaultVariables: boolean = false
   ): Promise<void> => {
-    // TODO DB - Write country to DB.
     this.currentCountry = countryCode;
-    switch (countryCode) {
-      case CountryEnum.Norway:
-        if (changeDefaultVariables) {
-          // TODO Default variables for Norway.
-          await this.updateUserPreferences();
-        }
+    let newNotificationParameters;
 
-        break;
-      case CountryEnum.UnitedKingdom:
-        if (changeDefaultVariables) {
-          // TODO Default variables for UK.
-          await this.updateUserPreferences();
-        }
+    if (changeDefaultVariables) {
+      switch (countryCode) {
+        case CountryEnum.Norway:
+          newNotificationParameters = this.notificationParameters;
 
-        break;
+          break;
+        case CountryEnum.UnitedKingdom:
+          newNotificationParameters = this.notificationParametersUK;
 
-      default:
-        null;
+          break;
+        default:
+          newNotificationParameters = this.notificationParameters;
+          break;
+      }
+
+      try {
+        const userRef = doc(db, "users", this.userId);
+        await setDoc(
+          userRef,
+          {
+            preferences: {
+              country: this.currentCountry,
+            },
+
+            notificationParameters: newNotificationParameters,
+          },
+          { merge: true }
+        );
+
+        console.log(
+          `Country and notification settings updated to ${this.currentCountry}`
+        );
+      } catch (error) {
+        console.error(
+          "Error updating user document with new country settings: ",
+          error
+        );
+      }
+    } else {
+      console.log(
+        `Country set to ${this.currentCountry} but no changes were made to default variables.`
+      );
     }
   };
 
@@ -338,8 +361,6 @@ class UserViewModel {
   @action toggleEmailNotifications(): void {
     this.emailNotifications = !this.emailNotifications;
   }
-
-  // TODO DB - These will all have to be in the DB eventually.
 
   //Weight
   @action public setThresholdWeightDecreaseInAutumn = (value: number): void => {
@@ -862,6 +883,57 @@ class UserViewModel {
     winterEnd: Timestamp.fromDate(new Date(this.currentYear, 1, 28)),
   };
 
+  notificationParametersUK = {
+    thresholdWeightDecreaseInAutumn: 15.0,
+    thresholdWeightDecreaseEarlySpring: 50.0,
+    thresholdWeightDecrease: 2.0,
+    thresholdWeightIncrease: 2.0,
+    productionPeriodDays: 7,
+    productionPeriodThreshold: 5.0,
+    thresholdExitCountHigh: 24000,
+    thresholdExitCountLow: 2000,
+    thresholdTemperatureMin: 10.0,
+    thresholdTemperatureMax: 40.0,
+    thresholdTemperatureOptimal: 20.0,
+    thresholdMinTempInHive: 34.0,
+    thresholdMaxTempInHive: 36.0,
+    thresholdWindSpeedStrong: 5,
+    thresholdWindSpeedLow: 2.5,
+    thresholdHumidityMin: 70.0,
+    thresholdHumidityMax: 95.0,
+    autumnMonths: [
+      Timestamp.fromDate(new Date(this.currentYear, 8, 1)),
+      Timestamp.fromDate(new Date(this.currentYear, 9, 1)),
+      Timestamp.fromDate(new Date(this.currentYear, 10, 30)),
+    ],
+    earlyWinterMonths: [
+      Timestamp.fromDate(new Date(this.currentYear, 9, 1)),
+      Timestamp.fromDate(new Date(this.currentYear, 10, 30)),
+    ],
+    earlySpringMonths: [
+      Timestamp.fromDate(new Date(this.currentYear, 1, 1)),
+      Timestamp.fromDate(new Date(this.currentYear, 2, 1)),
+    ],
+    lateSpringStartMonth: Timestamp.fromDate(new Date(this.currentYear, 3, 1)),
+    earlyAutumnMonth: Timestamp.fromDate(new Date(this.currentYear, 7, 2)),
+    earlySpringStartMonth: Timestamp.fromDate(new Date(this.currentYear, 1, 1)),
+    earlySpringEndMonth: Timestamp.fromDate(new Date(this.currentYear, 4, 10)),
+    earlySummerStartMonth: Timestamp.fromDate(
+      new Date(this.currentYear, 4, 11)
+    ),
+    earlySummerEndMonth: Timestamp.fromDate(new Date(this.currentYear, 7, 1)),
+    earlyWinterStart: Timestamp.fromDate(new Date(this.currentYear, 9, 31)),
+    earlyWinterEnd: Timestamp.fromDate(new Date(this.currentYear, 0, 31)),
+    springStartMonth: Timestamp.fromDate(new Date(this.currentYear, 2, 1)),
+    springEndMonth: Timestamp.fromDate(new Date(this.currentYear, 4, 31)),
+    summerStartMonth: Timestamp.fromDate(new Date(this.currentYear, 5, 1)),
+    summerEndMonth: Timestamp.fromDate(new Date(this.currentYear, 7, 31)),
+    autumnStartMonth: Timestamp.fromDate(new Date(this.currentYear, 8, 1)),
+    autumnEndMonth: Timestamp.fromDate(new Date(this.currentYear, 10, 30)),
+    winterStart: Timestamp.fromDate(new Date(this.currentYear, 11, 1)),
+    winterEnd: Timestamp.fromDate(new Date(this.currentYear, 1, 28)),
+  };
+
   //Used for reading the notificationParameters from DB
   @action public setNotificationParameters = (
     params: NotificationParameters
@@ -888,8 +960,6 @@ class UserViewModel {
   permissions = {
     email: this.emailNotifications,
   };
-
-  //TODO logout and auth connect
   @action logout = async () => {
     try {
       await signOut(auth);
@@ -909,20 +979,7 @@ class UserViewModel {
     this.currentCountry = "";
     //this.theme = "light"; // reset theme on logout
   };
-
-  /**
-   * Fetches user parameters from the database.
-   * For now, it uses dummy data.
-   * @example
-   * // Usage example:
-   * // Call this method when you need to fetch and update
-   * // user parameters from the database.
-   * UserViewModel.fetchUserParametersFromDatabase();
-   */
-
   @action fetchUserParametersFromDatabase = async () => {
-    // TODO DB - Read from DB.
-
     if (!this.userId) {
       console.error("No user ID available to fetch data.");
       return;
