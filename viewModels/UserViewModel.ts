@@ -745,12 +745,10 @@ class UserViewModel {
         console.log(
           "Anonymous account successfully upgraded to email/password."
         );
-
-        // Assuming this.createUserWithConfig updates user configuration in your Firestore or equivalent.
-        await this.createUserWithConfig(
+        await this.updateUserAccountData(
           result.user.uid,
-          false, // User is no longer anonymous
-          result.user.email
+          result.user.isAnonymous,
+          (email = email)
         );
       } else {
         console.error("No user is currently signed in.");
