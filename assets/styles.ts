@@ -26,8 +26,8 @@ const styles = (theme?: MD3Theme) => {
       marginHorizontal: "auto",
     },
     main: {
-      flex: 1,
-      justifyContent: "center",
+      flex: 1, 
+      justifyContent: "flex-start", // "center" will create a bug here!
       width: screenWidth > ScreenWidth.Expanded ? ScreenWidth.Expanded : "100%",
       marginHorizontal: "auto",
       backgroundColor: dynamicTheme.colors.surfaceVariant,
