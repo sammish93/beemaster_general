@@ -330,16 +330,18 @@ const SettingsScreen = () => {
               margin: 8,
             }}
           >
-            <Button
-              style={styles(theme).settingsButton}
-              mode="contained"
-              onPress={() => {
-                //TODO DB - Add functionality to register an anonymous account.
-                //Only show if user is anonymous.
-              }}
-            >
-              {userViewModel.i18n.t("register email")}
-            </Button>
+            {userViewModel.isAnonymous && (
+              <Button
+                style={styles(theme).settingsButton}
+                mode="contained"
+                onPress={() => {
+                  //TODO DB - Add functionality to register an anonymous account.
+                  //Only show if user is anonymous.
+                }}
+              >
+                {userViewModel.i18n.t("register email")}
+              </Button>
+            )}
 
             <FileDownloader
               jsonString={createJSON()}
