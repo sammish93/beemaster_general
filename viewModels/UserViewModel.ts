@@ -434,10 +434,32 @@ class UserViewModel {
     this.setThreshold("thresholdMaxTempInHive", value);
   };
 
+  async saveThresholdWindSpeedStrong(newThreshold: number) {
+    try {
+      const userRef = doc(db, "users", this.userId);
+      await setDoc(
+        userRef,
+        {
+          notificationParameters: {
+            thresholdWindSpeedStrong: this.thresholdWindSpeedStrong,
+          },
+        },
+        { merge: true }
+      );
+      console.log("Threshold wind speed strong updated successfully.");
+    } catch (error) {
+      console.error(
+        "Failed to update threshold wind speed strong in database:",
+        error
+      );
+    }
+  }
+
   //Windspeed
   @action public setThresholdWindSpeedStrong = (value: number): void => {
     this.thresholdWindSpeedStrong = value;
-    this.setThreshold("thresholdWindSpeedStrong", value);
+    // this.setThreshold("thresholdWindSpeedStrong", value);
+    this.saveThresholdWindSpeedStrong(value);
   };
   @action public setThresholdWindSpeedLow = (value: number): void => {
     this.thresholdWindSpeedLow = value;
@@ -513,16 +535,52 @@ class UserViewModel {
   };
   @action public setWinterStart = (value: Date): void => {
     this.winterStart = value;
+    // this.saveValue("winterStart", value);
   };
   @action public setWinterEnd = (value: Date): void => {
     this.winterEnd = value;
+    // this.saveValue("winterEnd", value);
   };
   @action public setEarlyWinterStart = (value: Date): void => {
     this.earlyWinterStart = value;
+    // this.saveValue("earlyWinterStart", value);
   };
   @action public setEarlyWinterEnd = (value: Date): void => {
     this.earlyWinterEnd = value;
+    //this.saveValue("earlyWinterEnd", value);
   };
+  @action public setValue<T>(key: string, value: T): void {
+    this[key] = value;
+    this.saveValue(key, value);
+  }
+
+  private async saveValue(key: string, value: any) {
+    try {
+      const userRef = doc(db, "users", this.userId);
+
+      const updateData = {
+        notificationParameters: {
+          [key]: this.prepareValueForFirestore(value),
+        },
+      };
+      await setDoc(userRef, updateData, { merge: true });
+      console.log(`${key} updated successfully.`);
+    } catch (error) {
+      console.error(`Failed to update ${key} in database:`, error);
+    }
+  }
+
+  private prepareValueForFirestore(value: any): any {
+    if (value instanceof Date) {
+      return Timestamp.fromDate(value);
+    } else if (
+      Array.isArray(value) &&
+      value.every((item) => item instanceof Date)
+    ) {
+      return value.map((date) => Timestamp.fromDate(date));
+    }
+    return value;
+  }
 
   // Getters - don't need to be read from the DB.
   // Weight
