@@ -110,11 +110,29 @@ class NotificationViewModel {
     }
   }
 
-  @action markNotificationsAsRead() {
-    // TODO DB - update all notifications for a single user by setting all isRead values to true.
-    this.notifications.forEach((notification) => {
-      notification.isRead = true;
-    });
+  @action async markNotificationsAsRead() {
+    const userId = auth.currentUser?.uid;
+    if (userId) {
+      this.notifications.forEach(async (notification) => {
+        notification.isRead = true;
+
+        const notificationRef = doc(
+          db,
+          `users/${userId}/notifications/${notification.id}`
+        );
+
+        try {
+          await updateDoc(notificationRef, {
+            isRead: true,
+          });
+        } catch (error) {
+          console.error(
+            "Error marking notification as read in Firestore:",
+            error
+          );
+        }
+      });
+    }
   }
 
   @action getUnreadNotificationAmount() {
