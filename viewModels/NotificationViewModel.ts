@@ -25,6 +25,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  addDoc,
 } from "firebase/firestore";
 
 class NotificationViewModel {
@@ -73,9 +74,29 @@ class NotificationViewModel {
     this.notifications = notifications;
   }
 
-  @action addNotification(notification: HiveNotification) {
+  @action async addNotification(notification: HiveNotification) {
     // TODO DB - Write to DB.
     this.notifications = [...this.notifications, notification];
+    const userId = auth.currentUser?.uid;
+    if (userId) {
+      const notificationsRef = collection(db, `users/${userId}/notifications`);
+
+      try {
+        // Add the notification document to the Firestore collection
+        await addDoc(notificationsRef, {
+          hiveId: notification.hiveId,
+          notificationType: notification.notificationType,
+          message: notification.message,
+          isRead: notification.isRead,
+          timestamp: notification.timestamp,
+          // Add other fields as needed
+        });
+
+        console.log("Notification added to Firestore successfully");
+      } catch (error) {
+        console.error("Error adding notification to Firestore:", error);
+      }
+    }
   }
 
   @action getNotificationFromId(
