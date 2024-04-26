@@ -75,7 +75,6 @@ class NotificationViewModel {
   }
 
   @action async addNotification(notification: HiveNotification) {
-    // TODO DB - Write to DB.
     this.notifications = [...this.notifications, notification];
     const userId = auth.currentUser?.uid;
     if (userId) {
@@ -89,7 +88,6 @@ class NotificationViewModel {
           message: notification.message,
           isRead: notification.isRead,
           timestamp: notification.timestamp,
-          // Add other fields as needed
         });
 
         console.log("Notification added to Firestore successfully");
