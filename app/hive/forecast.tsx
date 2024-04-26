@@ -44,7 +44,6 @@ const HiveForecastScreen = () => {
   const hiveId = hiveViewModel.getSelectedHive().id;
   const selectedHive = hiveViewModel.getSelectedHive();
 
-  const [data, setData] = useState("");
   const [detailedForecast, setDetailedForecast] =
     useState<WeeklyDetailedForecast>();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
@@ -63,12 +62,6 @@ const HiveForecastScreen = () => {
         );
 
         const rainfall = calculateDailyRainfall(data, getForecastDateFormat(2));
-
-        //setData(
-        //  `Temperature in 2 days time at 18:00: ${thing.hourlyForecasts["18HundredHours"].temperature} °C, and the daily rainfall is: ${rainfall}mm.`
-        //);
-
-        setData("Retrieved forecast!");
         setDetailedForecast(weeklyDetailedForecast);
       } catch (error) {
         setData("Error retrieving data");
@@ -101,8 +94,6 @@ const HiveForecastScreen = () => {
         <ScrollView>
           <View style={styles(theme).main}>
             <Text style={theme.fonts.titleLarge}>Hive Forecast</Text>
-            <Text style={theme.fonts.bodyLarge}>Hive ID: {hiveId}</Text>
-            <Text style={theme.fonts.bodySmall}>{data}</Text>
             {detailedForecast ? (
               <>
                 <VerticalSpacer size={8} />
