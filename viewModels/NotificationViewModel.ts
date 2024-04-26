@@ -24,6 +24,7 @@ import {
   where,
   doc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 class NotificationViewModel {
@@ -84,25 +85,31 @@ class NotificationViewModel {
   }
 
   @action async modifyNotification(notification: HiveNotification) {
-    // TODO DB - Update notification in DB based on its id. If isRead value = true then potentially
-    // delete the notification from the DB. Storage is cheap though.. might not be important to
-    // actually delete.
     const noteIndex = this.notifications.findIndex(
       (notificationObject) => notificationObject.id === notification.id
     );
+
     if (noteIndex !== -1) {
       this.notifications[noteIndex] = notification;
       const userId = auth.currentUser?.uid;
+
       if (userId) {
         const notificationRef = doc(
           db,
           `users/${userId}/notifications/${notification.id}`
         );
+
         try {
           await updateDoc(notificationRef, {
             isRead: notification.isRead,
           });
-          console.log("notifications update successfully", notification.id);
+          console.log("Notification updated successfully", notification.id);
+
+          // Check if isRead is true, then delete the notification
+          if (notification.isRead) {
+            await deleteDoc(notificationRef);
+            console.log("Notification deleted successfully", notification.id);
+          }
         } catch (error) {
           console.error("Error updating notification in Firestore:", error);
         }
