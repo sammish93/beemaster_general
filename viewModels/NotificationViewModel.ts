@@ -17,15 +17,20 @@ import { Platform } from "react-native";
 import { notifications } from "@/data/notificationData";
 import { HiveNotification } from "@/models/notification";
 import { auth, db } from "@/firebaseConfig";
-import { getDocs, collection, query, where } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 
 class NotificationViewModel {
   notifications: HiveNotification[] = [];
 
   constructor() {
     makeAutoObservable(this);
-    // TODO DB - Get unread notifications from DB.
-    // Right now the notifications are displayed using dummy data.
   }
 
   @action async fetchNotifications() {
@@ -52,9 +57,7 @@ class NotificationViewModel {
             notificationType: data.notificationType,
             message: data.message,
             isRead: data.isRead,
-            timestamp: data.timestamp
-              ? new Date(data.timestamp.seconds * 1000)
-              : new Date(),
+            timestamp: new Date(data.timeStamp.seconds * 1000),
           } as HiveNotification;
         });
         console.log("Loaded notifications: ", this.notifications);
@@ -80,7 +83,7 @@ class NotificationViewModel {
     return this.notifications.find((item) => item.id === notificationId);
   }
 
-  @action modifyNotification(notification: HiveNotification) {
+  @action async modifyNotification(notification: HiveNotification) {
     // TODO DB - Update notification in DB based on its id. If isRead value = true then potentially
     // delete the notification from the DB. Storage is cheap though.. might not be important to
     // actually delete.
@@ -89,6 +92,21 @@ class NotificationViewModel {
     );
     if (noteIndex !== -1) {
       this.notifications[noteIndex] = notification;
+      const userId = auth.currentUser?.uid;
+      if (userId) {
+        const notificationRef = doc(
+          db,
+          `users/${userId}/notifications/${notification.id}`
+        );
+        try {
+          await updateDoc(notificationRef, {
+            isRead: notification.isRead,
+          });
+          console.log("notifications update successfully", notification.id);
+        } catch (error) {
+          console.error("Error updating notification in Firestore:", error);
+        }
+      }
     }
   }
 
