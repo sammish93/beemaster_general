@@ -52,7 +52,6 @@ const UpdatesScreen = () => {
     setNotifications(notificationViewModel.notifications);
   }, [notificationViewModel.notifications]);
 
-  useEffect(() => {});
   return (
     <SafeAreaView style={styles(theme).container}>
       <StatusBarCustom />
