@@ -20,6 +20,7 @@ import {
   limit,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import {
   NotificationTypePreference,
@@ -28,15 +29,22 @@ import {
 import { notificationTypePreferences } from "@/data/notificationData";
 import hive from "@/app/hive";
 import { removeHive } from "@/utils/hiveUtils";
+import { SensorDataList, SensorInterval } from "@/models/sensor";
+import { WeightMeasurement } from "@/constants/Measurements";
 
 class HiveViewModel {
   hives: HiveModel[] = [];
   filters: string[] = [];
   selectedHive?: HiveModel;
   selectedNote?: HiveNote;
+  sensorWeight?: SensorDataList;
 
   constructor() {
     makeAutoObservable(this);
+    this.sensorWeight = {
+      sensorData: [],
+      measurement: WeightMeasurement.Kilograms,
+    };
   }
 
   @action async fetchFilters() {
@@ -141,6 +149,56 @@ class HiveViewModel {
         });
       }
     });
+  }
+
+  @action async fetchWeightDataForLast12Days(hiveId: string) {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error("User not logged in");
+      return;
+    }
+
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 12);
+
+    try {
+      const weightsRef = collection(
+        db,
+        `users/${userId}/hives/${hiveId}/weightReading`
+      );
+      const queryWeights = query(
+        weightsRef,
+        where("date", ">=", Timestamp.fromDate(startDate)),
+        orderBy("date", "desc")
+      );
+
+      const querySnapshot = await getDocs(queryWeights);
+      const sensorData = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          timestamp: data.date.toDate(),
+          value: data.weight,
+        };
+      });
+
+      const sensorDataList: SensorDataList = {
+        sensorData: sensorData,
+        measurement: WeightMeasurement.Kilograms,
+      };
+
+      runInAction(() => {
+        this.sensorWeight = sensorDataList;
+      });
+
+      console.log("the sensor sweight", this.sensorWeight);
+
+      console.log(
+        "Fetched and transformed weight data for the last 12 days: ",
+        sensorDataList
+      );
+    } catch (error) {
+      console.error("Error fetching weight data: ", error);
+    }
   }
 
   @action async addHive(hive: HiveModel) {

@@ -189,6 +189,12 @@ const HiveScreen = () => {
   }, [selectedHive?.id, isFocused]);
 
   useEffect(() => {
+    if (selectedHive && selectedHive.id) {
+      hiveViewModel.fetchWeightDataForLast12Days(selectedHive.id);
+    }
+  }, [selectedHive?.id]);
+
+  useEffect(() => {
     setSelectedHive(hiveViewModel.getSelectedHive());
   }, [isFocused]);
   useEffect(() => {
@@ -292,7 +298,7 @@ const HiveScreen = () => {
                   </Text>
                   <VerticalSpacer size={8} />
                   <SensorGraph
-                    sensorDataList={weightSensorData}
+                    sensorDataList={hiveViewModel.sensorWeight}
                     isDecimal={true}
                     colourScheme="blue"
                     onClick={handleOpenHistoricalSensorModal}
