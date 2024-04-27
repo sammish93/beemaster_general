@@ -17,6 +17,9 @@ import {
   arrayUnion,
   arrayRemove,
   writeBatch,
+  limit,
+  orderBy,
+  query,
 } from "firebase/firestore";
 import {
   NotificationTypePreference,
@@ -61,26 +64,47 @@ class HiveViewModel {
       const querySnapshot = await getDocs(
         collection(db, `users/${userId}/hives`)
       );
-      runInAction(() => {
-        const hives = querySnapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            name: data.hiveName,
-            filters: data.hiveFilter,
-            latLng: data.latLng,
-            // TODO DB - read notes, preferences, queen, and the latest sensor reading from DB.
-            // Right now they are all dummy data.
-            notes: [],
-            preferences: data.notificationTypePreference,
-            temperature: 4,
-            weight: 5,
-            humidity: 78,
-            beeCount: 48,
-            queen: { id: "abc123queenbee", dateOfBirth: new Date(Date.now()) },
-          } as HiveModel;
-        });
 
+      const hivePromises = querySnapshot.docs.map(async (doc) => {
+        const data = doc.data();
+        const hiveId = doc.id;
+
+        // Fetch the latest daily weight for this hive
+        const weightQuery = query(
+          collection(db, `users/${userId}/hives/${hiveId}/dailyWeights`),
+          orderBy("date", "desc"),
+          limit(1)
+        );
+        const weightSnapshot = await getDocs(weightQuery);
+        let latestWeight = null;
+
+        if (!weightSnapshot.empty) {
+          const weightData = weightSnapshot.docs[0].data();
+          latestWeight = weightData.dailyWeight;
+          console.log("Weight Data:", weightData);
+          console.log("latest weight", latestWeight);
+        } else {
+          console.log(`No weight data found for hive ${hiveId}`);
+        }
+
+        return {
+          id: hiveId,
+          name: data.hiveName,
+          filters: data.hiveFilter,
+          latLng: data.latLng,
+          notes: [],
+          preferences: data.notificationTypePreference,
+          temperature: 4,
+          weight: latestWeight,
+          humidity: 78,
+          beeCount: 48,
+          queen: { id: "abc123queenbee", dateOfBirth: new Date(Date.now()) },
+        } as HiveModel;
+      });
+
+      const hives = await Promise.all(hivePromises);
+
+      runInAction(() => {
         this.hives = hives;
       });
 
