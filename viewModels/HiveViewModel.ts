@@ -169,7 +169,7 @@ class HiveViewModel {
       const queryWeights = query(
         weightsRef,
         where("date", ">=", Timestamp.fromDate(startDate)),
-        orderBy("date", "desc")
+        orderBy("date", "asc")
       );
 
       const querySnapshot = await getDocs(queryWeights);
