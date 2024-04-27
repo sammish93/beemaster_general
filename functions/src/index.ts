@@ -69,12 +69,12 @@ export const addWeightData = onRequest(async (request, response) => {
       .doc(userId)
       .collection("hives")
       .doc(hiveId)
-      .collection("weightReading");
+      .collection("weightReadings");
 
     // Add the new weight reading with a Firestore-generated ID in the subcollection.
     const docRef = await weightReadingsRef.add({
       weight: weightData,
-      date: timeStamp,
+      date: timeNow,
     });
 
     response.json({ result: `Weight data added with ID: ${docRef.id}` });
