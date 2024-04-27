@@ -27,7 +27,6 @@ const LoginScreen = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const { signUpError } = userViewModel;
   const [showGDPRDialog, setShowGDPRDialog] = useState(false);
-  const [showCountryDialog, setShowCountryDialog] = useState(false);
   const [currentAuthMethod, setCurrentAuthMethod] = useState("");
 
   const predefinedEmail = LOG_IN_EMAIL;
@@ -55,7 +54,6 @@ const LoginScreen = () => {
     setPasswordError("");
     userViewModel.clearSignUpError();
     setShowGDPRDialog(false);
-    setShowCountryDialog(false);
   }, [isSignUp, userViewModel]);
 
   console.log(`Platform.OS: ${Platform.OS}`);
