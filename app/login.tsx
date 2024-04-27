@@ -13,13 +13,9 @@ import DialogCountry from "@/components/modals/DialogCountry";
 import { Platform } from "react-native";
 import { VerticalSpacer } from "@/components/Spacers";
 import { ScreenWidth } from "@/constants/Dimensions";
+import { LOG_IN_EMAIL, LOG_IN_PASSWORD } from "@env";
 
-// TODO add the GDPR and cleanup code
 // TODO add strings to localisation
-// The login loop should be show GDPR agreement, if agree then they can click login buttons.
-// authenticate username and password, if new account then allow them to select a country.
-// Write default params based on country. Write default language based on device language.
-// Write default light/dark mode based on device theme.
 const LoginScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
@@ -33,6 +29,14 @@ const LoginScreen = () => {
   const [showGDPRDialog, setShowGDPRDialog] = useState(false);
   const [showCountryDialog, setShowCountryDialog] = useState(false);
   const [currentAuthMethod, setCurrentAuthMethod] = useState("");
+
+  const predefinedEmail = LOG_IN_EMAIL;
+  const predefinedPassword = LOG_IN_PASSWORD;
+
+  const fillCredentials = () => {
+    setEmail(predefinedEmail);
+    setPassword(predefinedPassword);
+  };
 
   const handleEmailChange = (email: string) => {
     setEmail(email);
@@ -208,6 +212,11 @@ const LoginScreen = () => {
             {signUpError}
           </Text>
         )}
+        <VerticalSpacer size={12} />
+        <Button icon="key" mode="contained" onPress={fillCredentials}>
+          Fill Credentials
+        </Button>
+        <VerticalSpacer size={8} />
         {isSignUp ? (
           <>
             <Button
