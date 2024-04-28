@@ -736,7 +736,6 @@ class UserViewModel {
     }
   };
   @action upgradeAccountWithEmail = async (email: string, password: string) => {
-    const auth = getAuth();
     const credential = EmailAuthProvider.credential(email, password);
     try {
       const user = auth.currentUser;
