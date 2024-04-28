@@ -2,6 +2,7 @@ import { HiveModel } from "@/models/hiveModel";
 import { convertTemperature } from "./measurementConverter";
 import { TemperatureMeasurement } from "@/constants/Measurements";
 import userViewModel from "@/viewModels/UserViewModel";
+import { NumberToHumanSizeOptions } from "i18n-js";
 
 /**
  * Checks if the current date is between late spring and early summer,
@@ -183,7 +184,7 @@ export const doesHiveWeightDecreaseInEarlySpring = (
  * feeding to prepare for winter.
  * @notification ConsiderFeeding - Triggers a 'ConsiderFeeding' notification if a significant decrease in
  * hive weight is detected during the autumn, suggesting that bees may require additional feeding.
- * @param weights An array of HiveModel objects, each containing information about a single hive's conditions over time.
+ * @param weights An array of weights, each containing information about a single hive's conditions over time.
  * @returns A boolean value indicating whether the weight of any hive decreases significantly during the
  * autumn period, as defined by the user's preferences in UserViewModel.
  */
@@ -585,22 +586,22 @@ export const doesHiveWeightDecreaseSignificantly = (
  * @notification PossibleSwarm - Additionally triggers a 'PossibleSwarm' notification if the significant
  * decrease in weight suggests the bees might be preparing to swarm,
  * signaling the beekeeper to inspect the hive for further signs and to consider interventions.
- * @param hives Array of HiveModel objects, representing the hive's conditions over the specified production period.
+ * @param weights Array of HiveModel objects, representing the hive's conditions over the specified production period.
  * @returns A boolean indicating whether the total weight loss over the period.
  */
 
 export const shouldConsiderFeedingBasedOnWeightDecrease = (
-  hives: HiveModel[]
+  weights: number[]
 ): boolean => {
-  if (hives.length < userViewModel.productionPeriodDays) {
+  if (weights.length !== userViewModel.productionPeriodDays) {
     return false;
   }
 
   let totalWeightChange = 0;
 
-  for (let i = 1; i < hives.length; i++) {
-    const currentWeight = hives[i].weight ?? 0;
-    const previousWeight = hives[i - 1].weight ?? 0;
+  for (let i = 1; i < weights.length; i++) {
+    const currentWeight = weights[i];
+    const previousWeight = weights[i - 1];
     let dailyChange = previousWeight - currentWeight;
     totalWeightChange += dailyChange;
   }
