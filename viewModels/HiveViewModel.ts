@@ -38,6 +38,7 @@ class HiveViewModel {
   selectedHive?: HiveModel;
   selectedNote?: HiveNote;
   sensorWeight?: SensorDataList;
+  weightSensorDataExpanded?: SensorDataList;
 
   constructor() {
     makeAutoObservable(this);
@@ -194,6 +195,56 @@ class HiveViewModel {
 
       console.log(
         "Fetched and transformed weight data for the last 12 days: ",
+        sensorDataList
+      );
+    } catch (error) {
+      console.error("Error fetching weight data: ", error);
+    }
+  }
+
+  @action async fetchWeightDataForLast30Days(hiveId: string) {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error("User not logged in");
+      return;
+    }
+
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 12);
+
+    try {
+      const weightsRef = collection(
+        db,
+        `users/${userId}/hives/${hiveId}/weightReading`
+      );
+      const queryWeights = query(
+        weightsRef,
+        where("date", ">=", Timestamp.fromDate(startDate)),
+        orderBy("date", "asc")
+      );
+
+      const querySnapshot = await getDocs(queryWeights);
+      const sensorData = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          timestamp: data.date.toDate(),
+          value: data.weight,
+        };
+      });
+
+      const sensorDataList: SensorDataList = {
+        sensorData: sensorData,
+        measurement: WeightMeasurement.Kilograms,
+      };
+
+      runInAction(() => {
+        this.weightSensorDataExpanded = sensorDataList;
+      });
+
+      console.log("the sensor sweight", this.weightSensorDataExpanded);
+
+      console.log(
+        "Fetched and transformed weight data for the last 30 days: ",
         sensorDataList
       );
     } catch (error) {

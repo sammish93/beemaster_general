@@ -136,7 +136,7 @@ const HiveScreen = () => {
   const handleOpenHistoricalSensorModal = () => {
     // TODO DB - Swap out dummy data with full sensor history. Might be worth adding a parameter here
     // to specify which sensor ID to retrieve from.
-    setHistoricalSensorData(weightSensorDataExpanded);
+    setHistoricalSensorData(hiveViewModel.weightSensorDataExpanded);
     setHistoricalSensorModalVisible(true);
   };
 
@@ -177,6 +177,7 @@ const HiveScreen = () => {
   useEffect(() => {
     if (isFocused && selectedHive) {
       hiveViewModel.fetchWeightDataForLast12Days(selectedHive.id);
+      hiveViewModel.fetchWeightDataForLast30Days(selectedHive.id);
       hiveViewModel
         .fetchNotesForHive(selectedHive.id)
         .then(() => {
