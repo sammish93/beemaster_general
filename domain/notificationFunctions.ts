@@ -149,13 +149,13 @@ export const isHiveTooCold = (hives: HiveModel[]): boolean => {
  *
  * @notification ConsiderFeeding - This function can trigger a 'ConsiderFeeding' notification when a significant
  * weight decrease is detected in the early spring.
- * @param hives Array of HiveModel objects, each containing information about a single hive's conditions.
+ * @param weights Array of HiveModel objects, each containing information about a single hive's conditions.
  * @returns A boolean indicating whether any hive decreases in weight significantly during early spring, as defined
  * by the user. This function uses the threshold for significant weight decrease, early spring start month,
  * and end month from the user's preferences in UserViewModel.
  */
 export const doesHiveWeightDecreaseInEarlySpring = (
-  hives: HiveModel[]
+  weights: number[]
 ): boolean => {
   const {
     thresholdWeightDecreaseEarlySpring,
@@ -166,15 +166,11 @@ export const doesHiveWeightDecreaseInEarlySpring = (
   const startMonth = earlySpringStartMonth.getMonth();
   const endMonth = earlySpringEndMonth.getMonth();
 
-  //TODO fix
   if (currentMonth >= startMonth && currentMonth <= endMonth) {
-    for (let i = 1; i < hives.length; i++) {
-      if (hives[i].weight !== undefined && hives[i - 1].weight !== undefined) {
-        const weightDecrease =
-          (hives[i - 1].weight ?? 0) - (hives[i].weight ?? 0);
-        if (weightDecrease >= thresholdWeightDecreaseEarlySpring) {
-          return true;
-        }
+    for (let i = 1; i < weights.length; i++) {
+      const weightDecrease = weights[i - 1] - weights[i];
+      if (weightDecrease >= thresholdWeightDecreaseEarlySpring) {
+        return true;
       }
     }
   }
@@ -197,8 +193,6 @@ export const doesHiveWeightDecreaseInAutumn = (weights: number[]): boolean => {
   const currentMonth = new Date().getMonth();
   const startMonth = autumnStartMonth.getMonth();
   const endMonth = autumnEndMonth.getMonth();
-
-  //TODO: fix
 
   if (currentMonth >= startMonth && currentMonth <= endMonth) {
     for (let i = 1; i < weights.length; i++) {
@@ -497,25 +491,16 @@ export const isIdealBeeWeatherBetweenSummerAndEarlyAutumn = (
 export const doesHiveWeightIncreaseSignificantly = (
   weights: number[]
 ): boolean => {
-  if (weights.length < userViewModel.productionPeriodDays) {
-    console.error(
-      "Insufficient data: The number of hive observations does not cover the production period."
-    );
+  if (weights.length !== userViewModel.productionPeriodDays) {
     return false;
   }
-
   for (let i = 1; i < weights.length; i++) {
-    if (
-      weights[i].weight !== undefined &&
-      weights[i - 1].weight !== undefined
-    ) {
-      const weightIncrease =
-        (weights[i].weight ?? 0) - (weights[i - 1].weight ?? 0);
-      if (weightIncrease >= userViewModel.thresholdWeightIncrease) {
-        return true;
-      }
+    const weightIncrease = weights[i] - weights[i - 1];
+    if (weightIncrease >= userViewModel.thresholdWeightIncrease) {
+      return true;
     }
   }
+
   return false;
 };
 
@@ -537,21 +522,21 @@ export const doesHiveWeightIncreaseSignificantly = (
  * @notification ConsiderExpanding - Indicates that the hive may be becoming too crowded due to a significant
  * increase in weight, suggesting the need to consider expanding the hive.
  * @notification HoneyHarvest
- * @param hives Array of HiveModel objects, representing the hive's conditions over the specified production period.
+ * @param weights Array of HiveModel objects, representing the hive's conditions over the specified production period.
  * @returns A boolean indicating whether the hive weight gain over the period suggests the need to consider expansion.
  */
 export const shouldConsiderHiveExpansionBasedOnWeightIncrease = (
-  hives: HiveModel[]
+  weights: number[]
 ): boolean => {
-  if (hives.length < userViewModel.productionPeriodDays) {
+  if (weights.length !== userViewModel.productionPeriodDays) {
     return false;
   }
 
   let totalWeightChange = 0;
 
-  for (let i = 1; i < hives.length; i++) {
-    const currentWeight = hives[i].weight ?? 0;
-    const previousWeight = hives[i - 1].weight ?? 0;
+  for (let i = 1; i < weights.length; i++) {
+    const currentWeight = weights[i];
+    const previousWeight = weights[i - 1];
     let dailyChange = currentWeight - previousWeight;
     totalWeightChange += dailyChange;
   }
@@ -567,26 +552,24 @@ export const shouldConsiderHiveExpansionBasedOnWeightIncrease = (
  *
  * @notification PossibleSwarm - Triggers a 'PossibleSwarm' notification if a significant decrease in weight is observed,
  * signaling the beekeeper to inspect the hive for signs of swarming.
- * @param hives Array of HiveModel objects, representing the hive's conditions over a series of observations.
+ * @param weights Array of HiveModel objects, representing the hive's conditions over a series of observations.
  * @returns A boolean indicating whether there's been a significant decrease in hive weight between any
  * two consecutive observations.
  */
 export const doesHiveWeightDecreaseSignificantly = (
-  hives: HiveModel[]
+  weights: number[]
 ): boolean => {
-  if (hives.length < userViewModel.productionPeriodDays) {
+  if (weights.length !== userViewModel.productionPeriodDays) {
     return false;
   }
 
-  for (let i = 1; i < hives.length; i++) {
-    if (hives[i].weight !== undefined && hives[i - 1].weight !== undefined) {
-      const weightDecrease =
-        (hives[i - 1].weight ?? 0) - (hives[i].weight ?? 0);
-      if (weightDecrease >= userViewModel.thresholdWeightDecrease) {
-        return true;
-      }
+  for (let i = 1; i < weights.length; i++) {
+    const weightDecrease = weights[i - 1] - weights[i];
+    if (weightDecrease >= userViewModel.thresholdWeightDecrease) {
+      return true;
     }
   }
+
   return false;
 };
 
