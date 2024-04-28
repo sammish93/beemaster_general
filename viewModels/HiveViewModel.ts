@@ -253,11 +253,6 @@ class HiveViewModel {
   }
 
   @action async addHive(hive: HiveModel) {
-    /*
-        TODO DB - Write this hive to DB. Not sure exactly about the hiveId field. Should firebase 
-        generate it?
-        
-        */
     const userId = auth.currentUser?.uid;
     if (!userId) {
       console.error("User not logged in");
