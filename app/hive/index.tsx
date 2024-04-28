@@ -176,6 +176,7 @@ const HiveScreen = () => {
 
   useEffect(() => {
     if (isFocused && selectedHive) {
+      hiveViewModel.fetchWeightDataForLast12Days(selectedHive.id);
       hiveViewModel
         .fetchNotesForHive(selectedHive.id)
         .then(() => {
@@ -187,12 +188,6 @@ const HiveScreen = () => {
         });
     }
   }, [selectedHive?.id, isFocused]);
-
-  useEffect(() => {
-    if (selectedHive && selectedHive.id) {
-      hiveViewModel.fetchWeightDataForLast12Days(selectedHive.id);
-    }
-  }, [selectedHive?.id]);
 
   useEffect(() => {
     setSelectedHive(hiveViewModel.getSelectedHive());
