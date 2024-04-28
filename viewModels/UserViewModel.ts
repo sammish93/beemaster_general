@@ -1060,6 +1060,7 @@ class UserViewModel {
             userData.preferences?.language || this.i18n.locale;
           this.currentCountry = userData.preferences?.country;
           this.isAnonymous = userData.isAnonymous;
+          this.isDetailedView = userData.isDetailedView;
 
           this.temperaturePreference =
             userData.measurementsPreferences.temperature;
@@ -1094,6 +1095,7 @@ class UserViewModel {
       console.error("Error fetching user from database:", error);
     }
   };
+
   private updateNotificationPreferencesMobile(): void {
     if (!this.userId) {
       console.error("No user ID available to update notification preferences.");
@@ -1282,7 +1284,7 @@ class UserViewModel {
       const userRef = doc(db, "users", this.userId);
       await setDoc(
         userRef,
-        { isSimplifiedView: newIsDetailedView },
+        { isDetailedView: newIsDetailedView },
         { merge: true }
       );
     } catch (error) {
