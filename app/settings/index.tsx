@@ -121,6 +121,10 @@ const SettingsScreen = () => {
     );
   };
 
+  const handleRegisterEmail = () => {
+    navigation.navigate("upgrade");
+  };
+
   useEffect(() => {
     userViewModel.fetchUserParametersFromDatabase();
     //userViewModel.updateLocaleSettings();
@@ -334,10 +338,7 @@ const SettingsScreen = () => {
               <Button
                 style={styles(theme).settingsButton}
                 mode="contained"
-                onPress={() => {
-                  //TODO DB - Add functionality to register an anonymous account.
-                  //Only show if user is anonymous.
-                }}
+                onPress={handleRegisterEmail}
               >
                 {userViewModel.i18n.t("register email")}
               </Button>

@@ -12,6 +12,7 @@ import HiveScanPage from "@/app/toolbox/hiveScan";
 import UpdatesPage from "@/app/updates";
 import SettingsPage from "@/app/settings";
 import LoginPage from "@/app/login";
+import UpgradeScreen from "@/app/upgrade";
 
 const Stack = createNativeStackNavigator();
 
@@ -218,6 +219,14 @@ export const SettingsStack = (props: StackProps) => (
       options={{
         title: "Settings",
         headerShown: props.headerShown ? props.headerShown : false,
+      }}
+    />
+    <Stack.Screen
+      name="upgrade"
+      component={UpgradeScreen}
+      options={{
+        title: "Upgrade",
+        headerShown: false,
       }}
     />
     {/* Add other screens specific to the "settings" tab here */}
