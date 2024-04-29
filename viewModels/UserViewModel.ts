@@ -67,7 +67,7 @@ class UserViewModel {
     this.i18n.locale = Localization.locale;
     this.i18n.enableFallback = true;
     this.initializeAuthListener();
-    this.initializeTheme();
+    this.initializePreferences();
 
     // Manually change the language:
     //this.i18n.locale = "no";
@@ -122,6 +122,9 @@ class UserViewModel {
       this.currentLanguage = newLocale;
       this.i18n.locale = newLocale;
     });
+    console.log(" local lang", newLocale);
+    await AsyncStorage.setItem("language", newLocale);
+
     await this.updateUserPreferences();
   };
 
@@ -175,17 +178,32 @@ class UserViewModel {
         `Country set to ${this.currentCountry} but no changes were made to default variables.`
       );
     }
+    await AsyncStorage.setItem("country", this.currentCountry);
   };
 
-  @action initializeTheme = async () => {
+  @action initializePreferences = async () => {
     try {
-      const storedTheme = await AsyncStorage.getItem("theme");
-      console.log("Loaded theme from storage:", storedTheme);
+      const [storedTheme, storedLanguage, storedCountry] = await Promise.all([
+        AsyncStorage.getItem("theme"),
+        AsyncStorage.getItem("language"),
+        AsyncStorage.getItem("country"),
+      ]);
+
+      console.log(
+        "Loaded preferences from storage:",
+        storedTheme,
+        storedLanguage,
+        storedCountry
+      );
+
       runInAction(() => {
         this.theme = storedTheme || "light";
+        this.currentLanguage = storedLanguage || "en-GB";
+        this.currentCountry = storedCountry || "NO";
+        this.i18n.locale = this.currentLanguage;
       });
     } catch (error) {
-      console.error("Failed to load theme from AsyncStorage:", error);
+      console.error("Failed to load preferences from AsyncStorage:", error);
     }
   };
 
@@ -860,6 +878,9 @@ class UserViewModel {
     isAnonymous: boolean,
     email: string | null
   ) => {
+    if (this.currentLanguage === null) {
+      this.currentLanguage = "en-GB";
+    }
     const defaults = {
       id: uid,
       email: email,
@@ -1104,6 +1125,7 @@ class UserViewModel {
           console.log("anonymous: ", this.isAnonymous);
           console.log(this.notificationParameters.thresholdWindSpeedStrong);
           console.log(userData.notificationParameters.thresholdWindSpeedStrong);
+          console.log("userData:", userData);
         });
       } else {
         console.log("No user data available.");
