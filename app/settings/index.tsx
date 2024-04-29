@@ -27,6 +27,7 @@ import {
 } from "@/constants/LocaleEnums";
 import FileDownloader from "@/components/FileDownloader";
 import DialogCountry from "@/components/modals/DialogCountry";
+import DialogDeleteAccountConfirmation from "@/components/modals/DialogDeleteAccountConfirmation";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -41,9 +42,12 @@ const SettingsScreen = () => {
   const [expandedAccordion, setExpandedAccordion] = useState<string | null>(
     null
   );
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
+
+  const hideDeleteDialog = () => setDeleteDialogVisible(false);
 
   const hideCountryDialog = () => {
     setShowCountryDialog(false);
@@ -129,6 +133,11 @@ const SettingsScreen = () => {
     userViewModel.fetchUserParametersFromDatabase();
     //userViewModel.updateLocaleSettings();
   }, [userViewModel]);
+
+  const deleteUserAccount = () => {
+    userViewModel.deleteUserAccount();
+    setDeleteDialogVisible(false);
+  };
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -372,8 +381,9 @@ const SettingsScreen = () => {
               ]}
               mode="contained"
               onPress={() => {
-                //TODO: add a modal to ask the user if they are sure to delete before deleting
-                userViewModel.deleteUserAccount();
+                {
+                  setDeleteDialogVisible(true);
+                }
               }}
             >
               <Text
@@ -403,6 +413,11 @@ const SettingsScreen = () => {
           countryCode={countryCode}
         />
       ) : null}
+      <DialogDeleteAccountConfirmation
+        isVisible={deleteDialogVisible}
+        onDismiss={hideDeleteDialog}
+        onConfirm={deleteUserAccount}
+      />
     </SafeAreaView>
   );
 };
