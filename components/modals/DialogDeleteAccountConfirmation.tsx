@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Dialog, Portal, Button, Text } from "react-native-paper";
+import { Dialog, Portal, Button, Text, useTheme } from "react-native-paper";
 import { MobXProviderContext } from "mobx-react";
 
 interface DialogDeleteConfirmationProps {
@@ -12,18 +12,19 @@ const DialogDeleteAccountConfirmation = ({
   onDismiss,
   onConfirm,
 }: DialogDeleteConfirmationProps) => {
+  const theme = useTheme();
   const { userViewModel } = useContext(MobXProviderContext);
 
   return (
     <Portal>
       <Dialog visible={isVisible} onDismiss={onDismiss}>
-        <Dialog.Title>
-          {userViewModel.i18n.t("delete_account_confirmation")}
+        <Dialog.Title style={{ textAlign: "center" }}>
+          {userViewModel.i18n.t("Delete Account Confirmation")}
         </Dialog.Title>
         <Dialog.Content>
-          <Text>
+          <Text style={theme.fonts.titleMedium}>
             {userViewModel.i18n.t(
-              "Are you sure you want to delete your account"
+              "Are you sure you want to delete your account?"
             )}
           </Text>
         </Dialog.Content>
