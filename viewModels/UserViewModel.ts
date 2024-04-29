@@ -52,6 +52,7 @@ import {
 import { NotificationParameters, User } from "@/models";
 import { preferences } from "@/data/userData";
 import { Appearance } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class UserViewModel {
   constructor() {
@@ -66,7 +67,7 @@ class UserViewModel {
     this.i18n.locale = Localization.locale;
     this.i18n.enableFallback = true;
     this.initializeAuthListener();
-    this.theme = Appearance.getColorScheme() || "light";
+    this.initializeTheme();
 
     // Manually change the language:
     //this.i18n.locale = "no";
@@ -176,10 +177,22 @@ class UserViewModel {
     }
   };
 
+  @action initializeTheme = async () => {
+    try {
+      const storedTheme = await AsyncStorage.getItem("theme");
+      console.log("Loaded theme from storage:", storedTheme);
+      runInAction(() => {
+        this.theme = storedTheme || "light";
+      });
+    } catch (error) {
+      console.error("Failed to load theme from AsyncStorage:", error);
+    }
+  };
+
   // Localisation
   @observable i18n;
   @observable userId = "";
-  @observable theme = "";
+  @observable theme = "light";
 
   @observable isDetailedView = false;
 
@@ -287,9 +300,14 @@ class UserViewModel {
     return this.userId;
   };
 
-  @action public setTheme = (theme: string): void => {
-    this.theme = theme;
-    this.updateUserPreferences();
+  @action setTheme = async (theme: string) => {
+    try {
+      this.theme = theme;
+      await AsyncStorage.setItem("theme", theme);
+      this.updateUserPreferences();
+    } catch (error) {
+      console.error("Failed to save theme to AsyncStorage:", error);
+    }
   };
 
   @action public setLocationPermission = (val: boolean): void => {
