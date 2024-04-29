@@ -8,7 +8,7 @@ Welcome to the Beemaster General project repository. Follow these instructions t
 - Node.js and npm
 - Visual Studio Code (recommended)
 - An Android or iOS emulator (recommended)
-- Note: A Mac is required to compile the iOS application. The Android application can be compiled on both Windows and Mac operating systems.
+- Note: A Mac is required to compile the iOS application. Both the Web and Android application can be compiled on both Windows and Mac operating systems.
 - Note: Admin rights may be required for Visual Studio Code and shell commands on some systems.
 
 ## Setup Instructions
@@ -50,6 +50,6 @@ To launch the development build, use one of the following commands:
 or
 ```npx expo run:ios```
 
-From there on you can select whether to launch the application on the web, or on an Android or iOS device. Setting a path for an emulator varies based on your local machine. More information can be found [here](https://docs.expo.dev/workflow/android-studio-emulator/) or [here](https://docs.expo.dev/workflow/ios-simulator/)
+From there on you can select whether to launch the application on the web, or on an Android or iOS device. Setting a path for an emulator varies based on your local machine. More information can be found [here](https://docs.expo.dev/workflow/android-studio-emulator/) or [here](https://docs.expo.dev/workflow/ios-simulator/).
 
 Note: The iOS application may have additional steps.
