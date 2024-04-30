@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Text, View, Platform } from "react-native";
 import { Switch, useTheme } from "react-native-paper";
-import { MobXProviderContext } from "mobx-react";
+import { MobXProviderContext, observer } from "mobx-react";
 import { usePermissionManager } from "../domain/permissionManager";
 import { VerticalSpacer } from "./Spacers";
 import styles from "@/assets/styles";
@@ -36,7 +36,12 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
       default:
         setPermissionValue(false);
     }
-  }, [userViewModel]);
+  }, [
+    userViewModel.locationPermission,
+    userViewModel.cameraPermission,
+    userViewModel.mediaPermission,
+    type,
+  ]);
 
   const translateType = (type: PermissionType): string => {
     switch (type) {
@@ -106,4 +111,4 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
   );
 };
 
-export default PermissionSwitch;
+export default observer(PermissionSwitch);
