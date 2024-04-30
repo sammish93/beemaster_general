@@ -51,7 +51,7 @@ const SensorGraph = (props: SensorGraphProps) => {
   */
 
   const data = props.sensorDataList.sensorData.map((dataPoint) => ({
-    x: dateTimeFormatter(dataPoint.timestamp, userViewModel.locale),
+    x: dataPoint.timestamp,
     y: dataPoint.value,
     label: dataPoint.value,
   }));

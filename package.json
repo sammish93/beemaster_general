@@ -72,7 +72,6 @@
     "react-dom": "18.2.0",
     "react-native": "0.73.4",
     "react-native-calendars": "^1.1304.1",
-    "react-native-chart-kit": "^6.12.0",
     "react-native-dotenv": "^3.4.10",
     "react-native-gesture-handler": "~2.14.0",
     "react-native-maps": "^1.12.0",
