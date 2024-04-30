@@ -332,6 +332,12 @@ class UserViewModel {
     this.isLocationEnabled = val;
     this.updatePermissionsInDatabase();
   };
+  @action
+  public setNotificationPreferences(
+    notificationTypePreferences: NotificationTypePreference
+  ): void {
+    this.notificationPreferences = notificationTypePreferences;
+  }
 
   @action public getLocationPermission = (): boolean => {
     return this.isLocationEnabled;
@@ -383,9 +389,41 @@ class UserViewModel {
     this.beeCountPreference = prefence;
   };
 
-  @action toggleNotificationPreference(type: NotificationType): void {
-    this.notificationPreferences[type] = !this.notificationPreferences[type];
-    this.updateNotificationPreference();
+  @action async toggleNotificationPreference(
+    type: NotificationType
+  ): Promise<void> {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error("User not logged in");
+      return;
+    }
+
+    const userRef = doc(db, `users/${userId}`);
+
+    const docSnapshot = await getDoc(userRef);
+    if (docSnapshot.exists()) {
+      const userData = docSnapshot.data();
+      const currentPreferences = userData.notificationTypePreferences || {};
+
+      currentPreferences[type] = !currentPreferences[type];
+
+      try {
+        await updateDoc(userRef, {
+          notificationTypePreferences: currentPreferences,
+        });
+        console.log(
+          "Notification preferences updated successfully for the user"
+        );
+
+        runInAction(() => {
+          this.notificationPreferences = currentPreferences;
+        });
+      } catch (error) {
+        console.error("Error updating notification preferences:", error);
+      }
+    } else {
+      console.error("User document does not exist");
+    }
   }
 
   @action toggleMobileNotifications(): void {
@@ -700,7 +738,9 @@ class UserViewModel {
   public getEarlyWinterEnd = (): Date => {
     return this.earlyWinterEnd;
   };
-
+  public getNotificationPreferences(): NotificationTypePreference {
+    return this.notificationPreferences;
+  }
   @action signInWithGoogleWeb = async () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({
@@ -887,16 +927,8 @@ class UserViewModel {
       isAnonymous: isAnonymous,
       mobileNr: null,
       notificationTypePreferences: notificationTypePreferences,
-      notificationPreferences: {
-        email: this.emailNotifications,
-        mobile: this.mobileNotifications,
-        sms: this.smsNotifications,
-      },
-      preferences: {
-        country: this.currentCountry,
-        language: this.currentLanguage,
-        theme: this.theme,
-      },
+      notificationPreferences: notificationPreferences,
+      preferences: preferences,
       permissions: {
         isCameraEnabled: this.isCameraEnabled,
         isLocationEnabled: this.isLocationEnabled,
@@ -1077,6 +1109,7 @@ class UserViewModel {
     this.currentCountry = "";
     //this.theme = "light"; // reset theme on logout
   };
+
   @action fetchUserParametersFromDatabase = async () => {
     if (!this.userId) {
       console.error("No user ID available to fetch data.");
@@ -1088,7 +1121,7 @@ class UserViewModel {
       const docSnap = await getDoc(userRef);
 
       if (docSnap.exists()) {
-        const userData = docSnap.data();
+        const userData = docSnap.data() as User;
 
         runInAction(() => {
           this.gdprConsent = userData.gdprConsent;
@@ -1096,7 +1129,7 @@ class UserViewModel {
           this.theme = userData.preferences?.theme || "light";
           this.currentLanguage =
             userData.preferences?.language || this.i18n.locale;
-          this.currentCountry = userData.preferences?.country;
+          this.currentCountry = userData.preferences.currentCountry;
           this.isAnonymous = userData.isAnonymous;
           this.isDetailedView = userData.isDetailedView;
 
@@ -1117,15 +1150,14 @@ class UserViewModel {
           this.smsNotifications = userData.notificationPreferences?.sms;
           this.emailNotifications = userData.notificationPreferences?.email;
 
-          this.notificationPreferences = userData.notificationTypePreferences;
+          this.notificationPreferences =
+            userData.notificationTypePreferences || {};
 
           if (userData.notificationParameters) {
             this.setNotificationParameters(userData.notificationParameters);
           }
-          console.log("anonymous: ", this.isAnonymous);
-          console.log(this.notificationParameters.thresholdWindSpeedStrong);
-          console.log(userData.notificationParameters.thresholdWindSpeedStrong);
-          console.log("userData:", userData);
+          console.log("preferences", userData.notificationTypePreferences);
+          console.log("this pref:", this.notificationPreferences);
         });
       } else {
         console.log("No user data available.");
@@ -1187,7 +1219,7 @@ class UserViewModel {
   private updateNotificationPreference(): void {
     try {
       const userRef = doc(db, "users", this.userId);
-      setDoc(
+      updateDoc(
         userRef,
         { notificationTypePreferences: this.notificationPreferences },
         { merge: true }
@@ -1270,7 +1302,7 @@ class UserViewModel {
         userRef,
         {
           preferences: {
-            country: this.currentCountry,
+            currentCountry: this.currentCountry,
             language: this.currentLanguage,
             theme: this.theme,
           },

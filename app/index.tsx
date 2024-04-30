@@ -254,7 +254,14 @@ const HomeScreen = () => {
     }
 
     setLoadingScreen(false);
-  }, [userViewModel.authInitialized]);
+  }, [
+    userViewModel.authInitialized,
+    userViewModel.weightPreference,
+    userViewModel.temperaturePreference,
+    userViewModel.windSpeedPreference,
+    userViewModel.precipitationPreference,
+    userViewModel.beeCountPreference,
+  ]);
 
   useEffect(() => {
     if (isConnected.isConnected?.valueOf() === false) {
