@@ -5,6 +5,7 @@ import { MobXProviderContext } from "mobx-react";
 import { useContext } from "react";
 import { VerticalSpacer } from "./Spacers";
 import { NotificationType } from "@/constants/Notifications";
+import { reaction } from "mobx";
 
 interface NotificationSwitchProps {
   type: NotificationType;
@@ -34,6 +35,17 @@ const NotificationSwitchComponent = ({
 
     setIsSwitchOn(!isSwitchOn);
   };
+
+  React.useEffect(() => {
+    const dispose = reaction(
+      () => userViewModel.notificationPreferences[type],
+      (newPreference) => {
+        setIsSwitchOn(newPreference);
+      }
+    );
+
+    return () => dispose();
+  }, [userViewModel, type]);
 
   return (
     <Switch
