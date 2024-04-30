@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { View } from "react-native";
-import { Button, FAB, useTheme } from "react-native-paper";
+import { FAB, useTheme } from "react-native-paper";
 import { MobXProviderContext } from "mobx-react";
 import {
   VictoryLine,
@@ -9,7 +9,7 @@ import {
   VictoryTooltip,
   VictoryAxis,
   VictoryLabel,
-} from "victory-native";
+} from "victory";
 import { SensorDataList } from "@/models/sensor";
 import {
   dateTimeFormatter,
@@ -51,7 +51,7 @@ const SensorGraph = (props: SensorGraphProps) => {
   */
 
   const data = props.sensorDataList.sensorData.map((dataPoint) => ({
-    x: dataPoint.timestamp,
+    x: dateTimeFormatter(dataPoint.timestamp, userViewModel.locale),
     y: dataPoint.value,
     label: dataPoint.value,
   }));
@@ -102,7 +102,19 @@ const SensorGraph = (props: SensorGraphProps) => {
         }
       >
         <VictoryLine
-          labelComponent={<VictoryTooltip renderInPortal={false} />}
+          labelComponent={
+            <VictoryTooltip
+              style={{
+                fontSize: theme.fonts.bodySmall.fontSize,
+                fontFamily: theme.fonts.bodySmall.fontFamily,
+                fontWeight: theme.fonts.bodySmall.fontWeight,
+                fill: theme.colors.onPrimaryContainer,
+              }}
+              flyoutStyle={{
+                fill: theme.colors.primaryContainer,
+              }}
+            />
+          }
           data={data}
           style={{
             data: {
