@@ -76,7 +76,7 @@ describe('Conversion functions to database format', () => {
   
     describe('Weight conversions to grams', () => {
         it('converts kilograms to grams', () => {
-            expect(convertWeightToDbFormat(1, WeightMeasurement.Kilograms)).toBe(0.001);
+            expect(convertWeightToDbFormat(1, WeightMeasurement.Kilograms)).toBe(1000);
         });
     
         it('converts ounces to grams', () => {
@@ -116,11 +116,11 @@ describe('Conversion functions to database format', () => {
   
     describe('Bee count conversions to per second', () => {
         it('converts per minute to per second', () => {
-            expect(convertBeeCountToDbFormat(60, BeeCountMeasurement.PerMinute)).toBe(3600);
+            expect(convertBeeCountToDbFormat(3600, BeeCountMeasurement.PerMinute)).toBe(60);
         });
     
         it('converts per hour to per second', () => {
-            expect(convertBeeCountToDbFormat(1, BeeCountMeasurement.PerHour)).toBe(3600);
+            expect(convertBeeCountToDbFormat(3600, BeeCountMeasurement.PerHour)).toBe(1);
         });
     
         it('returns per second when current format is default', () => {
@@ -182,11 +182,11 @@ describe('Conversion functions from database format', () => {
 
     describe('Bee count conversions from per second', () => {
         it('converts per second to per minute', () => {
-            expect(convertBeeCountFromDbFormat(1, BeeCountMeasurement.PerMinute)).toBeCloseTo(0.0166667);
+            expect(convertBeeCountFromDbFormat(0.0166667, BeeCountMeasurement.PerMinute)).toBeCloseTo(1);
         });
 
         it('converts per second to per hour', () => {
-            expect(convertBeeCountFromDbFormat(1, BeeCountMeasurement.PerHour)).toBeCloseTo(0.000277778);
+            expect(convertBeeCountFromDbFormat(0.000277778, BeeCountMeasurement.PerHour)).toBeCloseTo(1);
         });
 
         it('returns per second when user preference is default', () => {

@@ -78,7 +78,7 @@ export const convertTempToDbFormat = (temperature: number, currentFormat: Temper
 export const convertWeightToDbFormat = (weight: number, currentFormat: WeightMeasurement): number => {
     switch (currentFormat) {
         case WeightMeasurement.Kilograms:
-            return weight / 1000;
+            return weight * 1000;
         case WeightMeasurement.Ounces:
             return weight * 28.34952;
         case WeightMeasurement.Pounds:
@@ -118,9 +118,9 @@ export const convertWindSpeedToDbFormat = (windSpeed: number, currentFormat: Win
 export const convertBeeCountToDbFormat = (count: number, currentFormat: BeeCountMeasurement): number => {
     switch (currentFormat) {
         case BeeCountMeasurement.PerMinute:
-            return count * 60;
+            return count / 60;
         case BeeCountMeasurement.PerHour:
-            return count * 3600;
+            return count / 3600;
         default:
           return count;
       }
@@ -190,9 +190,9 @@ export const convertWindSpeedFromDbFormat = (windSpeed: number, userPreference: 
 export const convertBeeCountFromDbFormat = (count: number, userPreference: BeeCountMeasurement): number => {
     switch (userPreference) {
         case BeeCountMeasurement.PerMinute:
-            return count / 60;
+            return count * 60;
         case BeeCountMeasurement.PerHour:
-            return count / 3600;
+            return count * 3600;
         default:
             return count;
     }
