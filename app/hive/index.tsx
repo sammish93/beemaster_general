@@ -78,6 +78,8 @@ const HiveScreen = () => {
     useState<SensorDataList>();
   const [addNoteToHiveModalVisible, setAddNoteToHiveModalVisible] =
     useState(false);
+  const [sensorWeight, setSensorWeight] = useState<SensorDataList>();
+
   const bottomSheetAddNoteToHiveModalRef = useRef<BottomSheetModal>(null);
   const [modifyNoteModalVisible, setModifyNoteModalVisible] = useState(false);
   const bottomSheetModifyNoteModalRef = useRef<BottomSheetModal>(null);
@@ -176,17 +178,20 @@ const HiveScreen = () => {
 
   useEffect(() => {
     if (isFocused && selectedHive) {
-      hiveViewModel.fetchWeightDataForLast12Days(selectedHive.id);
-      hiveViewModel.fetchWeightDataForLast30Days(selectedHive.id);
-      hiveViewModel
-        .fetchNotesForHive(selectedHive.id)
-        .then(() => {
-          console.log("Notes fetched for hive: ", selectedHive.id);
+      const fetchData = async () => {
+        await hiveViewModel.fetchWeightDataForLast12Days(selectedHive.id);
+        setSensorWeight(hiveViewModel.sensorWeight);
+        await hiveViewModel.fetchWeightDataForLast30Days(selectedHive.id);
+        try {
+          await hiveViewModel.fetchNotesForHive(selectedHive.id);
           setNotes([...hiveViewModel.getSelectedHive().notes]);
-        })
-        .catch((error) => {
+          console.log("Notes fetched for hive: ", selectedHive.id);
+        } catch (error) {
           console.error("Failed to fetch notes: ", error);
-        });
+        }
+      };
+
+      fetchData();
     }
   }, [selectedHive?.id, isFocused]);
 
@@ -293,12 +298,23 @@ const HiveScreen = () => {
                     {userViewModel.i18n.t("weight")}
                   </Text>
                   <VerticalSpacer size={8} />
-                  <SensorGraph
-                    sensorDataList={hiveViewModel.sensorWeight}
-                    isDecimal={true}
-                    colourScheme="blue"
-                    onClick={handleOpenHistoricalSensorModal}
-                  />
+                  {sensorWeight ? (
+                    <SensorGraph
+                      sensorDataList={sensorWeight}
+                      isDecimal={true}
+                      colourScheme="blue"
+                      onClick={handleOpenHistoricalSensorModal}
+                    />
+                  ) : (
+                    <Text
+                      style={{
+                        ...theme.fonts.headlineSmall,
+                        textAlign: "center",
+                      }}
+                    >
+                      Loading weight data...
+                    </Text>
+                  )}
                   <VerticalSpacer size={4} />
                   <Button
                     mode="contained"
@@ -463,12 +479,23 @@ const HiveScreen = () => {
                   {userViewModel.i18n.t("weight")}
                 </Text>
                 <VerticalSpacer size={8} />
-                <SensorGraph
-                  sensorDataList={weightSensorData}
-                  isDecimal={true}
-                  colourScheme="blue"
-                  onClick={handleOpenHistoricalSensorModal}
-                />
+                {sensorWeight ? (
+                  <SensorGraph
+                    sensorDataList={sensorWeight}
+                    isDecimal={true}
+                    colourScheme="blue"
+                    onClick={handleOpenHistoricalSensorModal}
+                  />
+                ) : (
+                  <Text
+                    style={{
+                      ...theme.fonts.headlineSmall,
+                      textAlign: "center",
+                    }}
+                  >
+                    Loading weight data...
+                  </Text>
+                )}
                 <VerticalSpacer size={4} />
                 <Button
                   mode="contained"

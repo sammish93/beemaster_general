@@ -42,10 +42,6 @@ class HiveViewModel {
 
   constructor() {
     makeAutoObservable(this);
-    this.sensorWeight = {
-      sensorData: [],
-      measurement: WeightMeasurement.Kilograms,
-    };
   }
 
   @action async fetchFilters() {
@@ -70,6 +66,7 @@ class HiveViewModel {
   @action async fetchHives() {
     try {
       const userId = auth.currentUser?.uid;
+      console.log("this id:", userId);
       const querySnapshot = await getDocs(
         collection(db, `users/${userId}/hives`)
       );
@@ -80,7 +77,7 @@ class HiveViewModel {
 
         // Fetch the latest daily weight for this hive
         const weightQuery = query(
-          collection(db, `users/${userId}/hives/${hiveId}/dailyWeights`),
+          collection(db, `users/${userId}/hives/${hiveId}/weightReading`),
           orderBy("date", "desc"),
           limit(1)
         );
@@ -89,7 +86,7 @@ class HiveViewModel {
 
         if (!weightSnapshot.empty) {
           const weightData = weightSnapshot.docs[0].data();
-          latestWeight = weightData.dailyWeight;
+          latestWeight = weightData.weight;
           console.log("Weight Data:", weightData);
           console.log("latest weight", latestWeight);
         } else {
@@ -177,14 +174,14 @@ class HiveViewModel {
       const sensorData = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
-          timestamp: data.date.toDate(),
+          timestamp: data.date.toDate().toISOString(),
           value: data.weight,
         };
       });
 
       const sensorDataList: SensorDataList = {
         sensorData: sensorData,
-        measurement: WeightMeasurement.Kilograms,
+        measurement: WeightMeasurement.Grams,
       };
 
       runInAction(() => {
@@ -227,14 +224,14 @@ class HiveViewModel {
       const sensorData = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
-          timestamp: data.date.toDate(),
+          timestamp: data.date.toDate().toISOString(),
           value: data.weight,
         };
       });
 
       const sensorDataList: SensorDataList = {
         sensorData: sensorData,
-        measurement: WeightMeasurement.Kilograms,
+        measurement: WeightMeasurement.Grams,
       };
 
       runInAction(() => {
