@@ -1271,6 +1271,45 @@ class UserViewModel {
     }
   };
 
+  @action getMeasurementPreferences = async () => {
+    const userRef = doc(db, "users", this.userId);
+    try {
+      const docSnap = await getDoc(userRef);
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        if (userData && userData.measurementsPreferences) {
+          const { temperature, weight, precipitation, windSpeed, beeCount } =
+            userData.measurementsPreferences;
+
+          runInAction(() => {
+            (this.temperaturePreference =
+              temperature || TemperatureMeasurement.Celsius),
+              (this.weightPreference = weight || WeightMeasurement.Grams),
+              (this.precipitationPreference =
+                precipitation || PrecipitationMeasurement.Millimeters),
+              (this.windSpeedPreference =
+                windSpeed || WindSpeedMeasurement.MetersPerSecond),
+              (this.beeCountPreference =
+                beeCount || BeeCountMeasurement.PerMinute);
+          });
+          console.log("UserData:", userData);
+          console.log(
+            "Measurement preferences:",
+            userData.measurementsPreferences
+          );
+
+          console.log("Measurement preferences retrieved successfully.");
+        } else {
+          console.log("No measurement preferences found for the user.");
+        }
+      } else {
+        console.log("User document does not exist.");
+      }
+    } catch (error) {
+      console.error("Error retrieving measurement preferences: ", error);
+    }
+  };
+
   @action updatePermissionsInDatabase = async () => {
     if (!this.userId) {
       console.error("No user ID available to update permissions.");

@@ -243,6 +243,7 @@ const HomeScreen = () => {
       userViewModel.fetchIsDetailedView().then(() => {
         setIsDetailedView(userViewModel.isDetailedView);
       });
+      userViewModel.getMeasurementPreferences();
     } else {
       Toast.show(
         toastCrossPlatform({
@@ -254,14 +255,7 @@ const HomeScreen = () => {
     }
 
     setLoadingScreen(false);
-  }, [
-    userViewModel.authInitialized,
-    userViewModel.weightPreference,
-    userViewModel.temperaturePreference,
-    userViewModel.windSpeedPreference,
-    userViewModel.precipitationPreference,
-    userViewModel.beeCountPreference,
-  ]);
+  }, [userViewModel.authInitialized]);
 
   useEffect(() => {
     if (isConnected.isConnected?.valueOf() === false) {
