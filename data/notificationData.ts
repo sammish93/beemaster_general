@@ -98,5 +98,5 @@ export const notificationTypePreferences: NotificationTypePreference = {
   [NotificationType.Weather]: true,
   [NotificationType.CheckHive]: true,
   [NotificationType.PossibleSwarm]: true,
-  [NotificationType.CustomReminder]: true,
+  [NotificationType.CustomReminder]: false,
 };
