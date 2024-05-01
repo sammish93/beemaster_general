@@ -42,6 +42,8 @@ In the file `node_modules/expo-camera/build/useWebQRScanner.js`, comment out lin
 
 ```npx expo prebuild```
 
+Note: Users attempting to build an iOS project must additionally run the command ```npx pod-install``` in order to install the CocoaPods dependency.
+
 6. **Run the Project**
 
 To launch the development build, use one of the following commands:
