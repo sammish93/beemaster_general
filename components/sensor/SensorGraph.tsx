@@ -15,6 +15,17 @@ import {
   dateTimeFormatter,
   dateTimeToTimeFormatter,
 } from "@/domain/dateTimeFormatter";
+import {
+  convertBeeCountFromDbFormat,
+  convertTempFromDbFormat,
+  convertWeightFromDbFormat,
+} from "@/domain/measurementConverter";
+import {
+  BeeCountMeasurement,
+  HumidityMeasurement,
+  TemperatureMeasurement,
+  WeightMeasurement,
+} from "@/constants/Measurements";
 
 interface SensorGraphProps {
   sensorDataList: SensorDataList;
@@ -50,10 +61,46 @@ const SensorGraph = (props: SensorGraphProps) => {
   );
   */
 
+  const convertValue = (value: number): number => {
+    const measurement = props.sensorDataList.measurement;
+    if (measurement === "g") {
+      return convertWeightFromDbFormat(value, userViewModel.weightPreference);
+    } else if (measurement === "°C") {
+      return convertTempFromDbFormat(
+        value,
+        userViewModel.temperaturePreference
+      );
+    } else if (measurement === "p/s") {
+      return convertBeeCountFromDbFormat(
+        value,
+        userViewModel.beeCountPreference
+      );
+    } else if (measurement === "%") {
+      return value;
+    }
+
+    return 0;
+  };
+
+  const getMeasurement = (): string => {
+    const measurement = props.sensorDataList.measurement;
+    if (measurement === "g") {
+      return userViewModel.weightPreference;
+    } else if (measurement === "°C") {
+      return userViewModel.temperaturePreference;
+    } else if (measurement === "p/s") {
+      return userViewModel.beeCountPreference;
+    } else if (measurement === "%") {
+      return "%";
+    }
+
+    return "";
+  };
+
   const data = props.sensorDataList.sensorData.map((dataPoint) => ({
     x: dataPoint.timestamp,
-    y: dataPoint.value,
-    label: dataPoint.value,
+    y: convertValue(dataPoint.value),
+    label: convertValue(dataPoint.value),
   }));
 
   // Note that the colours are bugged in web in the dev build. They work fine on mobile though.
@@ -128,7 +175,7 @@ const SensorGraph = (props: SensorGraphProps) => {
         />
         <VictoryAxis
           dependentAxis
-          tickFormat={(y) => `${y} ${props.sensorDataList.measurement}`}
+          tickFormat={(y) => `${y} ${getMeasurement()}`}
           style={{
             tickLabels: {
               ...theme.fonts.bodySmall,
