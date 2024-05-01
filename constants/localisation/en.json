@@ -422,6 +422,7 @@
   "sensor id": "Sensor ID",
   "the provided sensor id does not exist": "The provided sensor ID does not exists.",
   "this sensor is already registered": "This sensor is already registered to this hive.",
+  "historical data": "Historical Data",
   "Delete Account Confirmation": "Delete Account Confirmation",
   "Are you sure you want to delete your account?": "Are you sure you want to delete your account?"
 }

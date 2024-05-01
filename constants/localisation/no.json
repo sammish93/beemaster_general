@@ -422,6 +422,7 @@
   "sensor id": "Sensor-ID",
   "the provided sensor id does not exist": "Den oppgitte sensor-IDen eksisterer ikke.",
   "this sensor is already registered": "Denne sensoren er allerede registrert til denne kuben.",
+  "historical data": "Historiske Data",
   "Delete Account Confirmation": "",
   "Are you sure you want to delete your account?": "Er du sikker på at du vil slette kontoen din?"
 }

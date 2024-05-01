@@ -299,6 +299,13 @@ const HiveScreen = () => {
                     colourScheme="blue"
                     onClick={handleOpenHistoricalSensorModal}
                   />
+                  <VerticalSpacer size={4} />
+                  <Button
+                    mode="contained"
+                    onPress={handleOpenHistoricalSensorModal}
+                  >
+                    {userViewModel.i18n.t("historical data")}
+                  </Button>
                   <VerticalSpacer size={8} />
                   <Text
                     style={{
@@ -315,6 +322,13 @@ const HiveScreen = () => {
                     colourScheme="orange"
                     onClick={handleOpenHistoricalSensorModal}
                   />
+                  <VerticalSpacer size={4} />
+                  <Button
+                    mode="contained"
+                    onPress={handleOpenHistoricalSensorModal}
+                  >
+                    {userViewModel.i18n.t("historical data")}
+                  </Button>
                   <VerticalSpacer size={8} />
                   <Text
                     style={{
@@ -331,6 +345,13 @@ const HiveScreen = () => {
                     colourScheme="green"
                     onClick={handleOpenHistoricalSensorModal}
                   />
+                  <VerticalSpacer size={4} />
+                  <Button
+                    mode="contained"
+                    onPress={handleOpenHistoricalSensorModal}
+                  >
+                    {userViewModel.i18n.t("historical data")}
+                  </Button>
                   <VerticalSpacer size={8} />
                   <Text
                     style={{
@@ -346,6 +367,13 @@ const HiveScreen = () => {
                     colourScheme="violet"
                     onClick={handleOpenHistoricalSensorModal}
                   />
+                  <VerticalSpacer size={4} />
+                  <Button
+                    mode="contained"
+                    onPress={handleOpenHistoricalSensorModal}
+                  >
+                    {userViewModel.i18n.t("historical data")}
+                  </Button>
                 </View>
                 <HorizontalSpacer size={20} />
                 <View style={{ flex: 1 }}>
@@ -441,6 +469,13 @@ const HiveScreen = () => {
                   colourScheme="blue"
                   onClick={handleOpenHistoricalSensorModal}
                 />
+                <VerticalSpacer size={4} />
+                <Button
+                  mode="contained"
+                  onPress={handleOpenHistoricalSensorModal}
+                >
+                  {userViewModel.i18n.t("historical data")}
+                </Button>
                 <VerticalSpacer size={8} />
                 <Text
                   style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
@@ -454,6 +489,13 @@ const HiveScreen = () => {
                   colourScheme="orange"
                   onClick={handleOpenHistoricalSensorModal}
                 />
+                <VerticalSpacer size={4} />
+                <Button
+                  mode="contained"
+                  onPress={handleOpenHistoricalSensorModal}
+                >
+                  {userViewModel.i18n.t("historical data")}
+                </Button>
                 <VerticalSpacer size={8} />
                 <Text
                   style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
@@ -467,6 +509,13 @@ const HiveScreen = () => {
                   colourScheme="green"
                   onClick={handleOpenHistoricalSensorModal}
                 />
+                <VerticalSpacer size={4} />
+                <Button
+                  mode="contained"
+                  onPress={handleOpenHistoricalSensorModal}
+                >
+                  {userViewModel.i18n.t("historical data")}
+                </Button>
                 <VerticalSpacer size={8} />
                 <Text
                   style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
@@ -479,6 +528,13 @@ const HiveScreen = () => {
                   colourScheme="violet"
                   onClick={handleOpenHistoricalSensorModal}
                 />
+                <VerticalSpacer size={4} />
+                <Button
+                  mode="contained"
+                  onPress={handleOpenHistoricalSensorModal}
+                >
+                  {userViewModel.i18n.t("historical data")}
+                </Button>
                 <VerticalSpacer size={8} />
                 <Text
                   style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}

@@ -1,41 +1,35 @@
 import React, { useContext, useState } from "react";
 import { View } from "react-native";
-import { Button, FAB, useTheme } from "react-native-paper";
+import { FAB, useTheme } from "react-native-paper";
 import { MobXProviderContext } from "mobx-react";
-import {
-  VictoryLine,
-  VictoryChart,
-  VictoryVoronoiContainer,
-  VictoryTooltip,
-  VictoryAxis,
-  VictoryLabel,
-} from "victory-native";
 import { SensorDataList } from "@/models/sensor";
 import {
   dateTimeFormatter,
   dateTimeToTimeFormatter,
 } from "@/domain/dateTimeFormatter";
+import { ScrollView } from "react-native-virtualized-view";
+import { BeeCountMeasurement } from "@/constants/Measurements";
+import { VerticalSpacer } from "../Spacers";
 import {
-  convertBeeCountFromDbFormat,
-  convertTempFromDbFormat,
+  VictoryAxis,
+  VictoryChart,
+  VictoryLabel,
+  VictoryLine,
+  VictoryTooltip,
+  VictoryVoronoiContainer,
+} from "victory";
+import {
   convertWeightFromDbFormat,
+  convertTempFromDbFormat,
+  convertBeeCountFromDbFormat,
 } from "@/domain/measurementConverter";
-import {
-  BeeCountMeasurement,
-  HumidityMeasurement,
-  TemperatureMeasurement,
-  WeightMeasurement,
-} from "@/constants/Measurements";
 
-interface SensorGraphProps {
+interface SensorGraphExpandedProps {
   sensorDataList: SensorDataList;
-  // Enables a single decimal place for the horizontal labels (y axis).
-  isDecimal?: boolean;
   colourScheme?: string;
-  onClick: () => void;
 }
 
-const SensorGraph = (props: SensorGraphProps) => {
+const SensorGraphExpanded = (props: SensorGraphExpandedProps) => {
   const { userViewModel } = useContext(MobXProviderContext);
   const theme = useTheme();
 
@@ -52,7 +46,7 @@ const SensorGraph = (props: SensorGraphProps) => {
   /*
   // Makes a list for the vertical labels (x axis) based on the timestamp of each sensorData value.
   const labelList = props.sensorDataList.sensorData.map((dataPoint) => {
-    return dateTimeToTimeFormatter(dataPoint.timestamp, userViewModel.locale);
+    return dateTimeFormatter(dataPoint.timestamp, userViewModel.locale);
   });
 
   // Makes a list for the chart values based on the value of each sensorData value.
@@ -143,52 +137,70 @@ const SensorGraph = (props: SensorGraphProps) => {
         justifyContent: "space-between",
       }}
     >
-      <VictoryChart
-        containerComponent={
-          <VictoryVoronoiContainer label={(d) => `${d.label}`} />
-        }
-      >
-        <VictoryLine
-          labelComponent={<VictoryTooltip renderInPortal={false} />}
-          data={data}
-          style={{
-            data: {
-              stroke: theme.colors.primary,
-              strokeWidth: 3,
-            },
-          }}
-        />
-        <VictoryAxis
-          tickLabelComponent={<VictoryLabel angle={45} dx={20} />}
-          tickFormat={(x) =>
-            `${dateTimeToTimeFormatter(x, userViewModel.locale)}`
+      <ScrollView horizontal={true} style={{ flexGrow: 0 }}>
+        <VictoryChart
+          width={
+            parentDims.width > data.length * 100
+              ? parentDims.width
+              : data.length * 100
           }
-          style={{
-            tickLabels: {
-              ...theme.fonts.bodySmall,
-              fill: theme.colors.onBackground,
-            },
-            axis: {
-              stroke: theme.colors.onBackground,
-            },
-          }}
-        />
-        <VictoryAxis
-          dependentAxis
-          tickFormat={(y) => `${y} ${getMeasurement()}`}
-          style={{
-            tickLabels: {
-              ...theme.fonts.bodySmall,
-              fill: theme.colors.onBackground,
-            },
-            axis: {
-              stroke: theme.colors.onBackground,
-            },
-          }}
-        />
-      </VictoryChart>
+          containerComponent={
+            <VictoryVoronoiContainer label={(d) => `${d.label}`} />
+          }
+        >
+          <VictoryLine
+            labelComponent={
+              <VictoryTooltip
+                style={{
+                  fontSize: theme.fonts.bodySmall.fontSize,
+                  fontFamily: theme.fonts.bodySmall.fontFamily,
+                  fontWeight: theme.fonts.bodySmall.fontWeight,
+                  fill: theme.colors.onPrimaryContainer,
+                }}
+                flyoutStyle={{
+                  fill: theme.colors.primaryContainer,
+                }}
+              />
+            }
+            data={data}
+            style={{
+              data: {
+                stroke: theme.colors.primary,
+                strokeWidth: 3,
+              },
+            }}
+          />
+          <VictoryAxis
+            tickLabelComponent={<VictoryLabel angle={15} dx={50} />}
+            tickFormat={(x) => `${dateTimeFormatter(x, userViewModel.locale)}`}
+            style={{
+              tickLabels: {
+                ...theme.fonts.bodySmall,
+                fill: theme.colors.onBackground,
+              },
+              axis: {
+                stroke: theme.colors.onBackground,
+              },
+            }}
+          />
+          <VictoryAxis
+            dependentAxis
+            tickFormat={(y) => `${y} ${getMeasurement()}`}
+            style={{
+              tickLabels: {
+                ...theme.fonts.bodySmall,
+                fill: theme.colors.onBackground,
+              },
+              axis: {
+                stroke: theme.colors.onBackground,
+              },
+            }}
+          />
+        </VictoryChart>
+        <VerticalSpacer size={8} />
+      </ScrollView>
     </View>
   );
 };
 
-export default SensorGraph;
+export default SensorGraphExpanded;

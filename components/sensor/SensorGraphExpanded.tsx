@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { View } from "react-native";
 import { FAB, useTheme } from "react-native-paper";
 import { MobXProviderContext } from "mobx-react";
-import { LineChart } from "react-native-chart-kit";
 import { SensorDataList } from "@/models/sensor";
 import {
   dateTimeFormatter,
@@ -11,6 +10,19 @@ import {
 import { ScrollView } from "react-native-virtualized-view";
 import { BeeCountMeasurement } from "@/constants/Measurements";
 import { VerticalSpacer } from "../Spacers";
+import {
+  VictoryAxis,
+  VictoryChart,
+  VictoryLabel,
+  VictoryLine,
+  VictoryTooltip,
+  VictoryVoronoiContainer,
+} from "victory-native";
+import {
+  convertWeightFromDbFormat,
+  convertTempFromDbFormat,
+  convertBeeCountFromDbFormat,
+} from "@/domain/measurementConverter";
 
 interface SensorGraphExpandedProps {
   sensorDataList: SensorDataList;
@@ -31,6 +43,7 @@ const SensorGraphExpanded = (props: SensorGraphExpandedProps) => {
     setParentDims({ width, height });
   };
 
+  /*
   // Makes a list for the vertical labels (x axis) based on the timestamp of each sensorData value.
   const labelList = props.sensorDataList.sensorData.map((dataPoint) => {
     return dateTimeFormatter(dataPoint.timestamp, userViewModel.locale);
@@ -40,6 +53,49 @@ const SensorGraphExpanded = (props: SensorGraphExpandedProps) => {
   const dataList = props.sensorDataList.sensorData.map(
     (dataPoint) => dataPoint.value
   );
+  */
+
+  const convertValue = (value: number): number => {
+    const measurement = props.sensorDataList.measurement;
+    if (measurement === "g") {
+      return convertWeightFromDbFormat(value, userViewModel.weightPreference);
+    } else if (measurement === "°C") {
+      return convertTempFromDbFormat(
+        value,
+        userViewModel.temperaturePreference
+      );
+    } else if (measurement === "p/s") {
+      return convertBeeCountFromDbFormat(
+        value,
+        userViewModel.beeCountPreference
+      );
+    } else if (measurement === "%") {
+      return value;
+    }
+
+    return 0;
+  };
+
+  const getMeasurement = (): string => {
+    const measurement = props.sensorDataList.measurement;
+    if (measurement === "g") {
+      return userViewModel.weightPreference;
+    } else if (measurement === "°C") {
+      return userViewModel.temperaturePreference;
+    } else if (measurement === "p/s") {
+      return userViewModel.beeCountPreference;
+    } else if (measurement === "%") {
+      return "%";
+    }
+
+    return "";
+  };
+
+  const data = props.sensorDataList.sensorData.map((dataPoint) => ({
+    x: dataPoint.timestamp,
+    y: convertValue(dataPoint.value),
+    label: convertValue(dataPoint.value),
+  }));
 
   // Note that the colours are bugged in web in the dev build. They work fine on mobile though.
   // If several graphs are rendered on the same page then they all have the same colour (the
@@ -81,59 +137,54 @@ const SensorGraphExpanded = (props: SensorGraphExpandedProps) => {
         justifyContent: "space-between",
       }}
     >
-      <ScrollView horizontal={true}>
-        <LineChart
-          data={{
-            labels: labelList,
-            datasets: [
-              {
-                data: dataList,
-              },
-            ],
-          }}
+      <ScrollView horizontal={true} style={{ flexGrow: 0 }}>
+        <VictoryChart
           width={
-            parentDims.width > dataList.length * 100
+            parentDims.width > data.length * 100
               ? parentDims.width
-              : dataList.length * 100
+              : data.length * 100
           }
-          height={200}
-          yAxisLabel=""
-          yAxisSuffix={` ${props.sensorDataList.measurement}`}
-          yAxisInterval={1}
-          chartConfig={{
-            backgroundColor: theme.colors.background,
-            backgroundGradientFrom: getGradientFromForColourScheme(),
-            backgroundGradientTo: getGradientToForColourScheme(),
-            decimalPlaces:
-              props.sensorDataList.measurement ===
-                BeeCountMeasurement.PerHour ||
-              props.sensorDataList.measurement ===
-                BeeCountMeasurement.PerMinute ||
-              props.sensorDataList.measurement === BeeCountMeasurement.PerSecond
-                ? 0
-                : 1,
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            propsForDots: {
-              r: "6",
-              strokeWidth: "2",
-              stroke: "#ff9966",
-            },
-            propsForLabels: {
-              font: theme.fonts.bodySmall,
-            },
-            propsForVerticalLabels: {
-              dy: -5,
-              dx: -5,
-            },
-          }}
-          verticalLabelRotation={8}
-          bezier
-          style={{
-            ...theme.fonts.bodySmall,
-            borderRadius: 16,
-          }}
-        />
+          containerComponent={
+            <VictoryVoronoiContainer label={(d) => `${d.label}`} />
+          }
+        >
+          <VictoryLine
+            labelComponent={<VictoryTooltip renderInPortal={false} />}
+            data={data}
+            style={{
+              data: {
+                stroke: theme.colors.primary,
+                strokeWidth: 3,
+              },
+            }}
+          />
+          <VictoryAxis
+            tickLabelComponent={<VictoryLabel angle={15} dx={50} />}
+            tickFormat={(x) => `${dateTimeFormatter(x, userViewModel.locale)}`}
+            style={{
+              tickLabels: {
+                ...theme.fonts.bodySmall,
+                fill: theme.colors.onBackground,
+              },
+              axis: {
+                stroke: theme.colors.onBackground,
+              },
+            }}
+          />
+          <VictoryAxis
+            dependentAxis
+            tickFormat={(y) => `${y} ${getMeasurement()}`}
+            style={{
+              tickLabels: {
+                ...theme.fonts.bodySmall,
+                fill: theme.colors.onBackground,
+              },
+              axis: {
+                stroke: theme.colors.onBackground,
+              },
+            }}
+          />
+        </VictoryChart>
         <VerticalSpacer size={8} />
       </ScrollView>
     </View>
