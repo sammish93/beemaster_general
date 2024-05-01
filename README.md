@@ -100,7 +100,7 @@ Any notifications you receive (even while you're offline or logged out) will be 
 
 The settings screen includes functionality to further customise the application to the user. Here you can toggle the application's colour scheme between light and dark mode. Feel free to change the language of the application - the whole application contains translations for English and Norwegian, as well as date and time localisation for British English, American English, and Norwegian. Additionally, you can change your country to the United Kingdom or Norway. Changing your country gives you the option to reset the default notification parameters in order to reduce the time spent by the user setting up notifications. 
 
-Furthermore, you can change your desired measurement preferences. Do you prefer viewing hive weight sensor data as ounces instead of grams, or weather forecasts in Fahrenheit instead of Celsius? No problem - just choose a new value from the dropdown menu.
+Furthermore, you can change your desired measurement preferences. Do you prefer viewing hive weight sensor data as ounces instead of grams, or weather forecasts in Fahrenheit instead of Celsius? No problem - just choose a new value from the dropdown menu. All values in the application (including user input) automatically adjusts based on your measurement preferences.
 
 You can also manage your device permissions on this screen, together with toggling the notification method. As of now only mobile push notifications are supported. Additionally, global notification type toggles are available here, as described in action #6.
 
