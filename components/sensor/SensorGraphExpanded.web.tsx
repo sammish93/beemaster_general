@@ -17,7 +17,7 @@ import {
   VictoryLine,
   VictoryTooltip,
   VictoryVoronoiContainer,
-} from "victory-native";
+} from "victory";
 
 interface SensorGraphExpandedProps {
   sensorDataList: SensorDataList;
@@ -108,7 +108,19 @@ const SensorGraphExpanded = (props: SensorGraphExpandedProps) => {
           }
         >
           <VictoryLine
-            labelComponent={<VictoryTooltip renderInPortal={false} />}
+            labelComponent={
+              <VictoryTooltip
+                style={{
+                  fontSize: theme.fonts.bodySmall.fontSize,
+                  fontFamily: theme.fonts.bodySmall.fontFamily,
+                  fontWeight: theme.fonts.bodySmall.fontWeight,
+                  fill: theme.colors.onPrimaryContainer,
+                }}
+                flyoutStyle={{
+                  fill: theme.colors.primaryContainer,
+                }}
+              />
+            }
             data={data}
             style={{
               data: {
