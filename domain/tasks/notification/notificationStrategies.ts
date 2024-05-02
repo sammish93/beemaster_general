@@ -1,5 +1,6 @@
 import notificationViewModel from "@/viewModels/NotificationViewModel"
-import { Hive, User } from "@/models"
+import { User } from "@/models"
+import { HiveModel } from "@/models/hiveModel";
 import { NotificationType } from "@/constants/Notifications"
 import { sendNotification } from "./sendNotification"
 import {
@@ -21,9 +22,9 @@ import { createNotificationObject, logMessage } from "./notificationHelpers"
 import { WeatherData } from "@/models/weatherModel"
 
 interface Props {
-  user: User
-  hive: Hive
-  weatherData: WeatherData
+    user: User,
+    hive: HiveModel,
+    weatherData: WeatherData
 }
 
 /**
@@ -46,9 +47,9 @@ export const notificationStrategies = {
     ) {
       logMessage("checkHive", user, hive)
 
-      const message = `Drastic weather change detected near hive: ${hive.hiveName}. Consider checking the hive!`
+      const message = `Drastic weather change detected near hive: ${hive.name}. Consider checking the hive!`
       await sendNotification({
-        title: `Check Your Hive: ${hive.hiveName}`,
+        title: `Check Your Hive: ${hive.name}`,
         body: message,
       }).catch((error) => console.log(`Error sending notification: ${error}`))
 
@@ -64,17 +65,19 @@ export const notificationStrategies = {
     }
   },
 
-  considerExpanding: async ({ user, hive, weatherData }: Props) => {
-    // TODO: Swap with real values from db.
-    const dailyHiveWeights = [150, 152, 154, 155, 195]
-    if (doesHiveWeightIncreaseSignificantly(dailyHiveWeights)) {
-      logMessage("significant weight increase", user, hive)
+    considerExpanding: async ({ user, hive, weatherData }: Props) => {
 
-      const message = `Weight of hive: ${hive.hiveName} has increased significantly, consider expanding!`
-      await sendNotification({
-        title: "Significant Weight Increase Detected",
-        body: message,
-      }).catch((error) => console.log(`Error sending notification: ${error}`))
+
+        // TODO: Swap with real values from db.
+        const dailyHiveWeights = [150, 152, 154, 155, 156];
+        if (doesHiveWeightIncreaseSignificantly(dailyHiveWeights)) {
+            logMessage('significant weight increase', user, hive);
+
+            const message = `Weight of hive: ${hive.name} has increased significantly, consider expanding!`;
+            await sendNotification({
+                title: 'Significant Weight Increase Detected',
+                body: message
+            }).catch(error => console.log(`Error sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
         hive.id,
@@ -83,17 +86,15 @@ export const notificationStrategies = {
       )
     }
 
-    const weeklyTemperatures = getWeeklyTemperatureData(
-      weatherData.weeklyForecast
-    )
-    if (areTemperaturesConsistentlyWarm(weeklyTemperatures)) {
-      logMessage("warm trend", user, hive)
-
-      const message = `Its getting warm around ${hive.hiveName}. Consider expanding the hive.`
-      await sendNotification({
-        title: "Warm Trend Detected",
-        body: message,
-      }).catch((error) => console.log(`Error sending notification: ${error}`))
+        const weeklyTemperatures = getWeeklyTemperatureData(weatherData.weeklyForecast);
+        if (areTemperaturesConsistentlyWarm(weeklyTemperatures)) {
+            logMessage('warm trend', user, hive);
+            
+            const message = `Its getting warm around ${hive.name}. Consider expanding the hive.`;
+            await sendNotification({
+                title: 'Warm Trend Detected',
+                body: message
+            }).catch(error => console.log(`Error sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
         hive.id,
@@ -112,13 +113,11 @@ export const notificationStrategies = {
     if (doesHiveWeightDecreaseInEarlySpring(hiveWeights)) {
       logMessage("considerFeeding", user, hive)
 
-      const message = `Weight of hive: ${hive.hiveName} has decreased significantly this early spring. It might be a good time to consider feeding your bees.`
-      await sendNotification({
-        title: "Hive Weight Decrease In Early Spring",
-        body: message,
-      }).catch((error) =>
-        console.log(`Error in sending notification: ${error}`)
-      )
+            const message = `Weight of hive: ${hive.name} has decreased significantly this early spring. It might be a good time to consider feeding your bees.`;
+            await sendNotification({
+                title: 'Hive Weight Decrease In Early Spring',
+                body: message
+            }).catch(error => console.log(`Error in sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
         hive.id,
@@ -132,13 +131,11 @@ export const notificationStrategies = {
     if (doesHiveWeightDecreaseInAutumn(hiveWeights)) {
       logMessage("considerFeeding", user, hive)
 
-      const message = `Weight of hive: ${hive.hiveName} has decreased significantly this autumn. It might be a good time to consider feeding your bees.`
-      await sendNotification({
-        title: "Hive Weight Decrease In Autumn",
-        body: message,
-      }).catch((error) =>
-        console.log(`Error in sending notification: ${error}`)
-      )
+            const message = `Weight of hive: ${hive.name} has decreased significantly this autumn. It might be a good time to consider feeding your bees.`;
+            await sendNotification({
+                title: 'Hive Weight Decrease In Autumn',
+                body: message
+            }).catch(error => console.log(`Error in sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
         hive.id,
@@ -156,22 +153,17 @@ export const notificationStrategies = {
     // Gonna add 'createBeekeepingReminder' here.
   },
 
-  honeyHarvest: async ({ user, hive, weatherData }: Props) => {
-    const dailyWeatherConditions = getDailyWeatherConditionsFromHourly(
-      weatherData.dailyForecast
-    )
-    if (
-      isWarmDryLowWindDayBetweenSummerAndEarlyAutumn(dailyWeatherConditions)
-    ) {
-      logMessage("honeyHarvest", user, hive)
+    honeyHarvest: async ({ user, hive, weatherData}: Props) => {
+    
+        const dailyWeatherConditions = getDailyWeatherConditionsFromHourly(weatherData.dailyForecast);
+        if (isWarmDryLowWindDayBetweenSummerAndEarlyAutumn(dailyWeatherConditions)) {
+            logMessage('honeyHarvest', user, hive);
 
-      const message = `Today's forecast promises perfect conditions for honey harvesting at ${hive.hiveName} with warm temperatures, low humidity, and gentle breezes.`
-      await sendNotification({
-        title: `Ideal Weather for Honey Harvest at ${hive.hiveName}`,
-        body: message,
-      }).catch((error) =>
-        console.log(`Error in sending notification: ${error}`)
-      )
+            const message = `Today's forecast promises perfect conditions for honey harvesting at ${hive.name} with warm temperatures, low humidity, and gentle breezes.`;
+            await sendNotification({
+                title: `Ideal Weather for Honey Harvest at ${hive.name}`,
+                body: message
+            }).catch(error => console.log(`Error in sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
         hive.id,
@@ -204,11 +196,11 @@ export const notificationStrategies = {
     if (areTemperaturesConsistentlyWarm(weeklyTemperatures)) {
       logMessage("warm trend", user, hive)
 
-      const message = `Its getting warm around ${hive.hiveName}. Consider checking it out.`
-      await sendNotification({
-        title: "Warm Trend Detected",
-        body: message,
-      }).catch((error) => console.log(`Error sending notification: ${error}`))
+            const message = `Its getting warm around ${hive.name}. Consider checking it out.`;
+            await sendNotification({
+                title: 'Warm Trend Detected',
+                body: message
+            }).catch(error => console.log(`Error sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
         hive.id,
@@ -216,18 +208,18 @@ export const notificationStrategies = {
         message
       )
 
-      // TODO: Store in DB.
-    }
-
-    const weatherConditions = getWeatherConditions(weatherData.weeklyForecast)
-    if (isSnowForecast(weatherConditions)) {
-      logMessage("snow forecast", user, hive)
-
-      const message = `Snow is forecasted around hive ${hive.hiveName}.`
-      await sendNotification({
-        title: "Snow Forecast",
-        body: message,
-      }).catch((error) => console.log(`Error sending notification: ${error}`))
+            // TODO: Store in DB.
+        }
+        
+        const weatherConditions = getWeatherConditions(weatherData.weeklyForecast);
+        if (isSnowForecast(weatherConditions)) {
+            logMessage('snow forecast', user, hive);
+            
+            const message = `Snow is forecasted around hive ${hive.name}.`;
+            await sendNotification({
+                title: 'Snow Forecast',
+                body: message
+            }).catch(error => console.log(`Error sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
         hive.id,
@@ -242,11 +234,11 @@ export const notificationStrategies = {
     if (isWarmerEachDayInSpring(dailyTemperature)) {
       logMessage("warming trend in spring", user, hive)
 
-      const message = `A warming trend in spring is detected for hive ${hive.hiveName}`
-      await sendNotification({
-        title: "Warming Trend in Spring",
-        body: message,
-      }).catch((error) => console.log(`Error sending notification: ${error}`))
+            const message = `A warming trend in spring is detected for hive ${hive.name}`;
+            await sendNotification({
+                title: 'Warming Trend in Spring',
+                body: message
+            }).catch(error => console.log(`Error sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
         hive.id,
