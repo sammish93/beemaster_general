@@ -69,6 +69,7 @@ export const notificationStrategies = {
     
     // TODO: Swap with real values from db.
     const dailyHiveWeights = [150, 152, 154, 155, 156];
+    
     if (doesHiveWeightIncreaseSignificantly(dailyHiveWeights)) {
         logMessage('significant weight increase', user, hive);
 
