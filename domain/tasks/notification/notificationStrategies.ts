@@ -64,20 +64,19 @@ export const notificationStrategies = {
       await notificationViewModel.addNotification(notificationToStoreInDB)
     }
   },
+  
+  considerExpanding: async ({ user, hive, weatherData }: Props) => {
+    
+    // TODO: Swap with real values from db.
+    const dailyHiveWeights = [150, 152, 154, 155, 156];
+    if (doesHiveWeightIncreaseSignificantly(dailyHiveWeights)) {
+        logMessage('significant weight increase', user, hive);
 
-    considerExpanding: async ({ user, hive, weatherData }: Props) => {
-
-
-        // TODO: Swap with real values from db.
-        const dailyHiveWeights = [150, 152, 154, 155, 156];
-        if (doesHiveWeightIncreaseSignificantly(dailyHiveWeights)) {
-            logMessage('significant weight increase', user, hive);
-
-            const message = `Weight of hive: ${hive.name} has increased significantly, consider expanding!`;
-            await sendNotification({
-                title: 'Significant Weight Increase Detected',
-                body: message
-            }).catch(error => console.log(`Error sending notification: ${error}`));
+        const message = `Weight of hive: ${hive.name} has increased significantly, consider expanding!`;
+        await sendNotification({
+            title: 'Significant Weight Increase Detected',
+            body: message
+        }).catch(error => console.log(`Error sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
         hive.id,
@@ -86,23 +85,23 @@ export const notificationStrategies = {
       )
     }
 
-        const weeklyTemperatures = getWeeklyTemperatureData(weatherData.weeklyForecast);
-        if (areTemperaturesConsistentlyWarm(weeklyTemperatures)) {
-            logMessage('warm trend', user, hive);
+    const weeklyTemperatures = getWeeklyTemperatureData(weatherData.weeklyForecast);
+    if (areTemperaturesConsistentlyWarm(weeklyTemperatures)) {
+        logMessage('warm trend', user, hive);
             
-            const message = `Its getting warm around ${hive.name}. Consider expanding the hive.`;
-            await sendNotification({
-                title: 'Warm Trend Detected',
-                body: message
-            }).catch(error => console.log(`Error sending notification: ${error}`));
+        const message = `Its getting warm around ${hive.name}. Consider expanding the hive.`;
+        await sendNotification({
+            title: 'Warm Trend Detected',
+            body: message
+        }).catch(error => console.log(`Error sending notification: ${error}`));
+        
+        const notificationToStoreInDB = createNotificationObject(
+            hive.id,
+            NotificationType.ConsiderExpanding,
+            message
+        )
 
-      const notificationToStoreInDB = createNotificationObject(
-        hive.id,
-        NotificationType.ConsiderExpanding,
-        message
-      )
-
-      // TODO: Store in DB.
+        // TODO: Store in DB.
     }
   },
 
@@ -130,12 +129,12 @@ export const notificationStrategies = {
 
     if (doesHiveWeightDecreaseInAutumn(hiveWeights)) {
       logMessage("considerFeeding", user, hive)
-
-            const message = `Weight of hive: ${hive.name} has decreased significantly this autumn. It might be a good time to consider feeding your bees.`;
-            await sendNotification({
-                title: 'Hive Weight Decrease In Autumn',
-                body: message
-            }).catch(error => console.log(`Error in sending notification: ${error}`));
+      
+      const message = `Weight of hive: ${hive.name} has decreased significantly this autumn. It might be a good time to consider feeding your bees.`;
+        await sendNotification({
+            title: 'Hive Weight Decrease In Autumn',
+            body: message
+        }).catch(error => console.log(`Error in sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
         hive.id,
@@ -152,8 +151,8 @@ export const notificationStrategies = {
 
     // Gonna add 'createBeekeepingReminder' here.
   },
-
-    honeyHarvest: async ({ user, hive, weatherData}: Props) => {
+  
+  honeyHarvest: async ({ user, hive, weatherData}: Props) => {
     
         const dailyWeatherConditions = getDailyWeatherConditionsFromHourly(weatherData.dailyForecast);
         if (isWarmDryLowWindDayBetweenSummerAndEarlyAutumn(dailyWeatherConditions)) {
@@ -250,3 +249,8 @@ export const notificationStrategies = {
     }
   },
 }
+function isWarmDryLowWindDayBetweenSummerAndEarlyAutumn(dailyWeatherConditions: { temperature: number; humidity: number; windSpeed: number; }[]) {
+    throw new Error("Function not implemented.");
+    return false;
+}
+
