@@ -1,9 +1,9 @@
-import * as BackgroundFetch from "expo-background-fetch";
-import * as TaskManager from "expo-task-manager";
-import { getAllUsers, getUserHives } from "../db/operations";
-import { User } from "@/models/user";
-import { evaluateAndSendNotification } from "./notification/notificationLogic";
-import { Hive } from "@/models/hive";
+import * as BackgroundFetch from 'expo-background-fetch';
+import * as TaskManager from 'expo-task-manager';
+import { getAllUsers, getUserHives } from '../db/operations';
+import { User } from '@/models/user';
+import { evaluateAndSendNotification } from './notification/notificationLogic';
+import { HiveModel } from '@/models/hiveModel';
 
 const BG_TASK_NAME = "notification-task";
 
@@ -13,10 +13,10 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
     console.log(`BackgroundTask: ${BG_TASK_NAME} is running!`);
     const users = (await getAllUsers()) as User[];
 
-    for (const user of users) {
-      const hives = (await getUserHives(user.id)) as Hive[];
-      await evaluateAndSendNotification(user, hives);
-    }
+        for (const user of users) {
+            const hives = await getUserHives(user.id) as HiveModel[];
+            await evaluateAndSendNotification(user, hives);
+        }
 
     // Return a result to indicate completion.
     return BackgroundFetch.BackgroundFetchResult.NewData;
