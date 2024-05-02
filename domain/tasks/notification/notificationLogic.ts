@@ -4,7 +4,7 @@ import { fetchWeatherForHive } from "../weather/weatherDataFetch";
 import { processWeatherDataForHive } from "../weather/weatherDataProcessor";
 import { notificationStrategies } from "./notificationStrategies"; 
 import { HiveModel } from "@/models/hiveModel";
-import { transformToCamelCase } from "@/utils/stringUtils";
+import { transformToCamelCase } from "@/utils/stringUtils"; 
 
 interface NotificationPreference {
   email: boolean
@@ -12,9 +12,7 @@ interface NotificationPreference {
   sms: boolean
 }
 
-export const getActivatedPreferences = (
-  preferences: NotificationPreference
-) => {
+export const getActivatedPreferences = (preferences: NotificationPreference) => {
   const activated = Object.entries(preferences).filter(
     ([key, value]) => value === true
   )
@@ -32,7 +30,7 @@ export const evaluateAndSendNotification = async (user: User, hives: HiveModel[]
             const processedData = await processWeatherDataForHive(weatherData);
             
             // Get user and hive preferences.
-            const userPreference = user.notificationTypePreference;
+            const userPreference = user.notificationTypePreferences;
             const hivePreference = hive.preferences
 
             // Iterate over the strategies.
