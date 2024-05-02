@@ -1,8 +1,9 @@
 import { NotificationType } from "@/constants/Notifications";
-import { Hive, User } from "@/models";
+import { User } from "@/models";
+import { HiveModel } from "@/models/hiveModel";
 
 
-export const logMessage = (notificationType: string, user: User, hive: Hive) => {
+export const logMessage = (notificationType: string, user: User, hive: HiveModel) => {
     console.log(`Sending '${notificationType}' notification to ${user.email} for hive ${hive.id}`);
 }
 
