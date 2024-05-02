@@ -9,6 +9,8 @@ import {
 } from "@/constants/Measurements";
 import { NotificationTypePreference } from "@/constants/Notifications";
 
+import { NotificationPreference, NotificationType } from "@/constants/Notifications"
+
 export interface User {
   email: string | null;
   filters: string[];
