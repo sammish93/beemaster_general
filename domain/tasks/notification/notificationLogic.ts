@@ -1,8 +1,10 @@
-import { Hive } from "@/models/hive"
-import { User } from "@/models/user"
-import { fetchWeatherForHive } from "../weather/weatherDataFetch"
-import { processWeatherDataForHive } from "../weather/weatherDataProcessor"
-import { notificationStrategies } from "./notificationStrategies"
+
+import { User } from "@/models/user";
+import { fetchWeatherForHive } from "../weather/weatherDataFetch";
+import { processWeatherDataForHive } from "../weather/weatherDataProcessor";
+import { notificationStrategies } from "./notificationStrategies"; 
+import { HiveModel } from "@/models/hiveModel";
+import { transformToCamelCase } from "@/utils/stringUtils";
 
 interface NotificationPreference {
   email: boolean
@@ -19,47 +21,41 @@ export const getActivatedPreferences = (
   return Object.fromEntries(activated)
 }
 
-export const evaluateAndSendNotification = async (
-  user: User,
-  hives: Hive[]
-) => {
-  // Temporary solution - the other hives in the db is missing lots of fields.
-  const filteredHive = hives.filter(
-    (hive) => hive.id === "JJZf0Cc71rq1kMH4zGGT"
-  )
-  for (const hive of filteredHive) {
-    try {
-      // Get weather data for hive and process it.
-      const weatherData = await fetchWeatherForHive(hive)
-      const processedData = await processWeatherDataForHive(weatherData)
+export const evaluateAndSendNotification = async (user: User, hives: HiveModel[]) => {
 
-      // Get user and hive preferences.
-      const userPreference = user.notificationTypePreferences
-      const hivePreference = hive.notificationTypePreference
+    // Temporary solution - the other hives in the db is missing lots of fields.
+    const filteredHive = hives.filter(hive => hive.id === 'Es2njxWBdXky6zhu9UBZ');
+    for (const hive of filteredHive) {
+        try {
+            // Get weather data for hive and process it.
+            const weatherData = await fetchWeatherForHive(hive);
+            const processedData = await processWeatherDataForHive(weatherData);
+            
+            // Get user and hive preferences.
+            const userPreference = user.notificationTypePreference;
+            const hivePreference = hive.preferences
 
-      // Iterate over the strategies.
-      Object.keys(notificationStrategies).forEach((strategy) => {
-        const notificationType =
-          strategy as keyof typeof hive.notificationTypePreference
-        const userPref = userPreference[notificationType]
-        const hivePref = hivePreference[notificationType]
+            // Iterate over the strategies.
+            Object.keys(notificationStrategies).forEach(strategy => {
+                const notificationType = strategy as keyof typeof hive.preferences;
+                const userPref = userPreference[notificationType];
+                const hivePref = hivePreference[notificationType];
+            
+                // Check the user and hive preferences.
+                if (userPref && hivePref) {
 
-        // Check the user and hive preferences.
-        if (userPref && hivePref) {
-          const params = { user, hive, weatherData: processedData }
+                    const params = { user, hive, weatherData: processedData }
+                    const camelCased = transformToCamelCase(notificationType) as keyof typeof notificationStrategies;
 
-          // Execute strategy.
-          notificationStrategies[notificationType](params)
-        } else {
-          console.log(
-            `Notification ${notificationType} is turned off for both user and hive`
-          )
+                    // Execute strategy.
+                    notificationStrategies[camelCased](params);
+                }
+                else {
+                    console.log(`Notification ${notificationType} is turned off for both user and hive`);
+                }
+            });
+        } catch (error) {
+            console.error(`Error in processing hive ${hive.id} for user ${user.email}: ${error}`);
         }
-      })
-    } catch (error) {
-      console.error(
-        `Error in processing hive ${hive.id} for user ${user.email}: ${error}`
-      )
-    }
-  }
+    };
 }
