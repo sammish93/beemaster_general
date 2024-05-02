@@ -1,5 +1,3 @@
-import { Permissions } from "./user";
-import { MeasurementsPreference } from "";
 import {
   BeeCountMeasurement,
   PrecipitationMeasurement,
@@ -8,8 +6,6 @@ import {
   WindSpeedMeasurement,
 } from "@/constants/Measurements";
 import { NotificationTypePreference } from "@/constants/Notifications";
-
-import { NotificationPreference, NotificationType } from "@/constants/Notifications"
 
 export interface User {
   email: string | null;
