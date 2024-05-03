@@ -1,5 +1,3 @@
-import { Permissions } from "./user";
-import { MeasurementsPreference } from "";
 import {
   BeeCountMeasurement,
   PrecipitationMeasurement,
