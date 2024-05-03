@@ -58,7 +58,7 @@ Note: The iOS application may have additional steps.
 
 ## Recommended Actions
 
-Once you get the project up and running you'll be met with a login screen. Here you can register using a personal email, an existing google account, or an anonymous account. We recommend you click the button to fill in account details automatically (contained in the .env file locally) in order to log into an existing account filled with dummy data. Once you're logged in here are some actions that we recommend you perform in order to demonstrate key features of the application:
+Once you get the project up and running you'll be met with a login screen. Here you can register using a personal email, an existing google account, or an anonymous account. We recommend you click the button named 'Fill credentials' to fill in account details automatically (contained in the .env file locally) in order to log into an existing account filled with dummy data. Once you're logged in here are some actions that we recommend you perform in order to demonstrate key features of the application:
 
 1. **Create a hive**
 
