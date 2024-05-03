@@ -1,7 +1,7 @@
 import { notes } from "@/data/hiveData"
 import { HiveModel } from "@/models/hiveModel"
 import { Hive } from "@/models/hive"
-import { action, makeAutoObservable, runInAction } from "mobx"
+import { action, makeAutoObservable, observable, runInAction } from "mobx"
 import { filterData, hiveListData } from "../data/hiveData"
 import { HiveNote } from "@/models/note"
 import { auth, db } from "@/firebaseConfig"
@@ -21,6 +21,7 @@ import {
   orderBy,
   query,
   where,
+  onSnapshot,
 } from "firebase/firestore"
 import {
   NotificationTypePreference,
@@ -33,7 +34,7 @@ import { SensorDataList, SensorInterval } from "@/models/sensor"
 import { WeightMeasurement } from "@/constants/Measurements"
 
 class HiveViewModel {
-  hives: HiveModel[] = []
+  @observable hives: HiveModel[] = []
   filters: string[] = []
   selectedHive?: HiveModel
   selectedNote?: HiveNote
@@ -77,21 +78,29 @@ class HiveViewModel {
 
         // Fetch the latest daily weight for this hive
         const weightQuery = query(
-          collection(db, `users/${userId}/hives/${hiveId}/weightReading`),
+          collection(db, `users/${userId}/hives/${hiveId}/weightReadings`),
           orderBy("date", "desc"),
           limit(1)
         )
-        const weightSnapshot = await getDocs(weightQuery)
-        let latestWeight = null
 
-        if (!weightSnapshot.empty) {
-          const weightData = weightSnapshot.docs[0].data()
-          latestWeight = weightData.weight
-          console.log("Weight Data:", weightData)
-          console.log("latest weight", latestWeight)
-        } else {
-          console.log(`No weight data found for hive ${hiveId}`)
-        }
+        const weightUnsubscribe = onSnapshot(weightQuery, (snapshot) => {
+          if (!snapshot.empty) {
+            const weightData = snapshot.docs[0].data()
+            const latestWeight = weightData.weight
+            console.log("Weight Data:", weightData)
+            console.log("latest weight", latestWeight)
+
+            // Update the weight for this hive in the hives array
+            const index = this.hives.findIndex((hive) => hive.id === hiveId)
+            if (index !== -1) {
+              runInAction(() => {
+                this.hives[index].weight = latestWeight
+              })
+            }
+          } else {
+            console.log(`No weight data found for hive ${hiveId}`)
+          }
+        })
 
         return {
           id: hiveId,
@@ -101,7 +110,7 @@ class HiveViewModel {
           notes: [],
           preferences: data.notificationTypePreference,
           temperature: 4,
-          weight: latestWeight,
+          weight: 0,
           humidity: 78,
           beeCount: 48,
           queen: { id: "abc123queenbee", dateOfBirth: new Date(Date.now()) },
@@ -117,6 +126,14 @@ class HiveViewModel {
       console.log("Hives: ", this.hives)
     } catch (error) {
       console.error("Error fetching hives: ", error)
+    }
+  }
+  @action updateHive(hive: HiveModel) {
+    const existingHiveIndex = this.hives.findIndex((h) => h.id === hive.id)
+    if (existingHiveIndex !== -1) {
+      this.hives[existingHiveIndex] = hive
+    } else {
+      this.hives.push(hive)
     }
   }
 
@@ -157,12 +174,12 @@ class HiveViewModel {
     }
 
     const startDate = new Date()
-    startDate.setDate(startDate.getDate() - 12)
+    startDate.setDate(startDate.getDate() - 4)
 
     try {
       const weightsRef = collection(
         db,
-        `users/${userId}/hives/${hiveId}/weightReading`
+        `users/${userId}/hives/${hiveId}/weightReadings`
       )
       const queryWeights = query(
         weightsRef,
