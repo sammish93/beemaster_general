@@ -24,6 +24,7 @@ import {
   deleteDoc,
   addDoc,
   Timestamp,
+  onSnapshot,
 } from "firebase/firestore"
 
 class NotificationViewModel {
@@ -44,12 +45,8 @@ class NotificationViewModel {
     const unreadQuery = query(notificationsRef, where("isRead", "==", false))
 
     try {
-      const querySnapshot = await getDocs(unreadQuery)
-      if (querySnapshot.empty) {
-        console.log("No unread notifications found")
-      }
-      runInAction(() => {
-        this.notifications = querySnapshot.docs.map((doc) => {
+      const unsubscribe = onSnapshot(unreadQuery, (querySnapshot) => {
+        const notifications = querySnapshot.docs.map((doc) => {
           const data = doc.data()
           return {
             id: doc.id,
@@ -58,10 +55,15 @@ class NotificationViewModel {
             message: data.message,
             isRead: data.isRead,
             timestamp: new Date(data.timestamp.seconds * 1000),
-          } as HiveNotification
+          }
         })
-        console.log("Loaded notifications: ", this.notifications)
+        runInAction(() => {
+          this.notifications = notifications
+          console.log("Loaded notifications: ", this.notifications)
+        })
       })
+
+      return unsubscribe
     } catch (error) {
       console.error("Error fetching notifications:", error)
     }
