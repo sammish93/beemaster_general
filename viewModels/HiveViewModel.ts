@@ -40,6 +40,7 @@ class HiveViewModel {
   selectedNote?: HiveNote
   sensorWeight?: SensorDataList
   weightSensorDataExpanded?: SensorDataList
+  unsubscribeFunctions: (() => void)[] = []
 
   constructor() {
     makeAutoObservable(this)
@@ -102,6 +103,8 @@ class HiveViewModel {
           }
         })
 
+        this.unsubscribeFunctions.push(weightUnsubscribe)
+
         return {
           id: hiveId,
           name: data.hiveName,
@@ -126,14 +129,6 @@ class HiveViewModel {
       console.log("Hives: ", this.hives)
     } catch (error) {
       console.error("Error fetching hives: ", error)
-    }
-  }
-  @action updateHive(hive: HiveModel) {
-    const existingHiveIndex = this.hives.findIndex((h) => h.id === hive.id)
-    if (existingHiveIndex !== -1) {
-      this.hives[existingHiveIndex] = hive
-    } else {
-      this.hives.push(hive)
     }
   }
 
