@@ -23,7 +23,7 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import LoadingScreen from "@/components/LoadingScreen";
 import { NotificationType } from "@/constants/Notifications";
 import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
-import useBackgroundTask from "./hooks/useBackgroundTask";
+import useBackgroundTask from "../hooks/useBackgroundTask";
 import { startBackgroundTask } from "@/domain/tasks/notificationTask";
 import { isPlatformMobile } from "@/utils/identifyPlatform";
 
