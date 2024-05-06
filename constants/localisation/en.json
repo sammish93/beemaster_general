@@ -424,5 +424,6 @@
   "this sensor is already registered": "This sensor is already registered to this hive.",
   "historical data": "Historical Data",
   "Delete Account Confirmation": "Delete Account Confirmation",
-  "Are you sure you want to delete your account?": "Are you sure you want to delete your account?"
+  "Are you sure you want to delete your account?": "Are you sure you want to delete your account?",
+  "sensor is not registered": "There is no registered sensor for this hive."
 }

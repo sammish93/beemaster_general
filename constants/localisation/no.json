@@ -424,5 +424,6 @@
   "this sensor is already registered": "Denne sensoren er allerede registrert til denne kuben.",
   "historical data": "Historiske Data",
   "Delete Account Confirmation": "",
-  "Are you sure you want to delete your account?": "Er du sikker på at du vil slette kontoen din?"
+  "Are you sure you want to delete your account?": "Er du sikker på at du vil slette kontoen din?",
+  "sensor is not registered": "Det er ingen registrert sensor for denne bikuben."
 }
