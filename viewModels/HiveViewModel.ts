@@ -161,35 +161,30 @@ class HiveViewModel {
     })
   }
 
-  @action async fetchWeightDataForLast12Days(hiveId: string) {
+  @action async fetchLast12WeightReadings(hiveId: string) {
     const userId = auth.currentUser?.uid
     if (!userId) {
       console.error("User not logged in")
       return
     }
 
-    const startDate = new Date()
-    startDate.setDate(startDate.getDate() - 4)
-
     try {
       const weightsRef = collection(
         db,
         `users/${userId}/hives/${hiveId}/weightReadings`
       )
-      const queryWeights = query(
-        weightsRef,
-        where("date", ">=", Timestamp.fromDate(startDate)),
-        orderBy("date", "asc")
-      )
+      const queryWeights = query(weightsRef, orderBy("date", "desc"), limit(12))
 
       const querySnapshot = await getDocs(queryWeights)
-      const sensorData = querySnapshot.docs.map((doc) => {
-        const data = doc.data()
-        return {
-          timestamp: data.date.toDate().toISOString(),
-          value: data.weight,
-        }
-      })
+      const sensorData = querySnapshot.docs
+        .map((doc) => {
+          const data = doc.data()
+          return {
+            timestamp: data.date.toDate().toISOString(),
+            value: data.weight,
+          }
+        })
+        .reverse()
 
       const sensorDataList: SensorDataList = {
         sensorData: sensorData,
@@ -200,10 +195,12 @@ class HiveViewModel {
         this.sensorWeight = sensorDataList
       })
 
-      console.log("the sensor sweight", this.sensorWeight)
-
       console.log(
-        "Fetched and transformed weight data for the last 12 days: ",
+        "Sensor weight updated with the last 12 readings",
+        this.sensorWeight
+      )
+      console.log(
+        "Fetched and transformed the last 12 weight readings: ",
         sensorDataList
       )
     } catch (error) {
@@ -219,7 +216,7 @@ class HiveViewModel {
     }
 
     const startDate = new Date()
-    startDate.setDate(startDate.getDate() - 12)
+    startDate.setDate(startDate.getDate() - 30)
 
     try {
       const weightsRef = collection(
