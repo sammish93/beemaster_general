@@ -17,13 +17,14 @@ import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
-import { startBackgroundTask } from "@/domain/tasks/notificationTask";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import { useNetInfo } from "@react-native-community/netinfo";
 import LoadingScreen from "@/components/LoadingScreen";
 import { NotificationType } from "@/constants/Notifications";
 import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
+import useBackgroundTask from "./hooks/useBackgroundTask";
+import { startBackgroundTask } from "@/domain/tasks/notificationTask";
 import { useIsFocused } from "@react-navigation/native";
 
 const HomeScreen = () => {
@@ -45,18 +46,8 @@ const HomeScreen = () => {
   const [isDetailedView, setIsDetailedView] = useState(false);
   const [filterList, setFilterList] = useState<string[]>([]);
   const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(hiveViewModel.hives);
-
   // Register the background task on the startup of the app.
-  // To start the actualt task depends on the OS running the task.
-  useEffect(() => {
-    startBackgroundTask()
-      .then(() => {
-        console.log("Background task registered in HomeScreen!");
-      })
-      .catch((error) => {
-        console.error(`Error registering background task: ${error}`);
-      });
-  }, []);
+  useBackgroundTask({ startBackgroundTask });
 
   const handleAddHive = (
     hiveName: string,
