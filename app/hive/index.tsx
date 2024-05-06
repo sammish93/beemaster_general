@@ -1,153 +1,156 @@
-import { useNavigation } from "expo-router"
-import { Dimensions, Platform, TouchableOpacity, View } from "react-native"
-import { ScrollView } from "react-native-virtualized-view"
-import { observer, MobXProviderContext } from "mobx-react"
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
-import { useLocalSearchParams } from "expo-router"
-import { RouteProp, useIsFocused } from "@react-navigation/native"
-import { StackNavigationProp } from "@react-navigation/stack"
-import styles from "@/assets/styles"
-import { useTheme, Text, Button, Divider } from "react-native-paper"
-import TopBar from "@/components/TopBar"
-import { SafeAreaView } from "react-native-safe-area-context"
-import StatusBarCustom from "@/components/StatusBarCustom"
-import { fetchWeatherForecast } from "@/data/api/weatherApi"
+import { useNavigation } from "expo-router";
+import { Dimensions, Platform, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
+import { observer, MobXProviderContext } from "mobx-react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useLocalSearchParams } from "expo-router";
+import { RouteProp, useIsFocused } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import styles from "@/assets/styles";
+import { useTheme, Text, Button, Divider } from "react-native-paper";
+import TopBar from "@/components/TopBar";
+import { SafeAreaView } from "react-native-safe-area-context";
+import StatusBarCustom from "@/components/StatusBarCustom";
+import { fetchWeatherForecast } from "@/data/api/weatherApi";
 import {
   calculateDailyRainfall,
   deserialiseDailyForecast,
   deserialiseWeeklyDetailedForecast,
   deserialiseWeeklySimpleForecast,
   getForecastDateFormat,
-} from "@/domain/weatherForecastDeserialiser"
-import getWindDirectionIconFromAngle from "@/domain/windDirectionMapper"
+} from "@/domain/weatherForecastDeserialiser";
+import getWindDirectionIconFromAngle from "@/domain/windDirectionMapper";
 import {
   PrecipitationMeasurement,
   TemperatureMeasurement,
   WindSpeedMeasurement,
-} from "@/constants/Measurements"
-import Toast from "react-native-toast-message"
-import { toastCrossPlatform } from "@/components/ToastCustom"
-import LoadingScreen from "@/components/LoadingScreen"
-import { WeeklyDetailedForecast, WeeklySimpleForecast } from "@/models/forecast"
-import ForecastSummary from "@/components/forecast/ForecastSummary"
-import "@/assets/customScrollbar.css"
-import DetailedForecast from "@/components/forecast/DetailedForecast"
-import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers"
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons"
-import { LineChart } from "react-native-chart-kit"
-import SensorGraph from "@/components/sensor/SensorGraph"
+} from "@/constants/Measurements";
+import Toast from "react-native-toast-message";
+import { toastCrossPlatform } from "@/components/ToastCustom";
+import LoadingScreen from "@/components/LoadingScreen";
+import {
+  WeeklyDetailedForecast,
+  WeeklySimpleForecast,
+} from "@/models/forecast";
+import ForecastSummary from "@/components/forecast/ForecastSummary";
+import "@/assets/customScrollbar.css";
+import DetailedForecast from "@/components/forecast/DetailedForecast";
+import { HorizontalSpacer, VerticalSpacer } from "@/components/Spacers";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { LineChart } from "react-native-chart-kit";
+import SensorGraph from "@/components/sensor/SensorGraph";
 import {
   beeCountSensorData,
   humiditySensorData,
   temperatureSensorData,
   weightSensorData,
   weightSensorDataExpanded,
-} from "@/data/sensorData"
-import { BottomSheetModal } from "@gorhom/bottom-sheet"
-import AddNoteToHiveModal from "@/components/modals/AddNoteToHiveModal"
-import HiveNotes from "@/components/hive/HiveNotes"
-import { HiveNote } from "@/models/note"
-import ModifyNoteModal from "@/components/modals/ModifyNoteModal"
-import { ScreenWidth } from "@/constants/Dimensions"
-import HistoricalSensorModal from "@/components/modals/HistoricalSensorModal"
-import { SensorDataList } from "@/models/sensor"
-import Map from "@/components/Map"
-import { HiveModel } from "@/models/hiveModel"
-import HomeInfoModal from "@/components/modals/HomeInfoModal"
-import HiveInfoModal from "@/components/modals/HiveInfoModal"
+} from "@/data/sensorData";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import AddNoteToHiveModal from "@/components/modals/AddNoteToHiveModal";
+import HiveNotes from "@/components/hive/HiveNotes";
+import { HiveNote } from "@/models/note";
+import ModifyNoteModal from "@/components/modals/ModifyNoteModal";
+import { ScreenWidth } from "@/constants/Dimensions";
+import HistoricalSensorModal from "@/components/modals/HistoricalSensorModal";
+import { SensorDataList } from "@/models/sensor";
+import Map from "@/components/Map";
+import { HiveModel } from "@/models/hiveModel";
+import HomeInfoModal from "@/components/modals/HomeInfoModal";
+import HiveInfoModal from "@/components/modals/HiveInfoModal";
 
 // TODO Add queen bee display.
 const HiveScreen = () => {
-  const theme = useTheme()
-  const navigation = useNavigation()
-  const isFocused = useIsFocused()
-  const { userViewModel } = useContext(MobXProviderContext)
-  const { hiveViewModel } = useContext(MobXProviderContext)
-  const hiveId = hiveViewModel.getSelectedHive().id
+  const theme = useTheme();
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const { userViewModel } = useContext(MobXProviderContext);
+  const { hiveViewModel } = useContext(MobXProviderContext);
+  const hiveId = hiveViewModel.getSelectedHive().id;
   const [selectedHive, setSelectedHive] = useState<HiveModel>(
     hiveViewModel.getSelectedHive()
-  )
-  const [notes, setNotes] = useState<HiveNote[]>([])
-  const [forecast, setForecast] = useState<WeeklySimpleForecast>()
-  const [isLoadingScreen, setLoadingScreen] = useState(false)
-  const [infoModalVisible, setInfoModalVisible] = useState(false)
+  );
+  const [notes, setNotes] = useState<HiveNote[]>([]);
+  const [forecast, setForecast] = useState<WeeklySimpleForecast>();
+  const [isLoadingScreen, setLoadingScreen] = useState(false);
+  const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [historicalSensorData, setHistoricalSensorData] =
-    useState<SensorDataList>()
+    useState<SensorDataList>();
   const [addNoteToHiveModalVisible, setAddNoteToHiveModalVisible] =
-    useState(false)
-  const [sensorWeight, setSensorWeight] = useState<SensorDataList>()
+    useState(false);
+  const [sensorWeight, setSensorWeight] = useState<SensorDataList>();
 
-  const bottomSheetAddNoteToHiveModalRef = useRef<BottomSheetModal>(null)
-  const [modifyNoteModalVisible, setModifyNoteModalVisible] = useState(false)
-  const bottomSheetModifyNoteModalRef = useRef<BottomSheetModal>(null)
+  const bottomSheetAddNoteToHiveModalRef = useRef<BottomSheetModal>(null);
+  const [modifyNoteModalVisible, setModifyNoteModalVisible] = useState(false);
+  const bottomSheetModifyNoteModalRef = useRef<BottomSheetModal>(null);
   const [historicalSensorModalVisible, setHistoricalSensorModalVisible] =
-    useState(false)
-  const bottomSheetHistoricalSensorModalRef = useRef<BottomSheetModal>(null)
+    useState(false);
+  const bottomSheetHistoricalSensorModalRef = useRef<BottomSheetModal>(null);
 
   const handleAddNoteToHiveModalSheetPressOpen = useCallback(() => {
-    bottomSheetAddNoteToHiveModalRef.current?.present()
-  }, [])
+    bottomSheetAddNoteToHiveModalRef.current?.present();
+  }, []);
 
   const handleAddNoteToHiveModalSheetPressClose = useCallback(() => {
-    bottomSheetAddNoteToHiveModalRef.current?.dismiss()
-  }, [])
+    bottomSheetAddNoteToHiveModalRef.current?.dismiss();
+  }, []);
 
   const handleOpenAddNoteToHiveModal = () => {
     if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleAddNoteToHiveModalSheetPressOpen()
+      handleAddNoteToHiveModalSheetPressOpen();
     } else {
-      setAddNoteToHiveModalVisible(true)
+      setAddNoteToHiveModalVisible(true);
     }
-  }
+  };
 
   const handleCloseAddNoteToHiveModal = () => {
     if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleAddNoteToHiveModalSheetPressClose()
+      handleAddNoteToHiveModalSheetPressClose();
     } else {
-      setAddNoteToHiveModalVisible(false)
+      setAddNoteToHiveModalVisible(false);
     }
-  }
+  };
 
   const handleModifyNoteModalSheetPressOpen = useCallback(() => {
-    bottomSheetModifyNoteModalRef.current?.present()
-  }, [])
+    bottomSheetModifyNoteModalRef.current?.present();
+  }, []);
 
   const handleModifyNoteModalSheetPressClose = useCallback(() => {
-    bottomSheetModifyNoteModalRef.current?.dismiss()
-  }, [])
+    bottomSheetModifyNoteModalRef.current?.dismiss();
+  }, []);
 
   const handleOpenModifyNoteModal = () => {
     if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleModifyNoteModalSheetPressOpen()
+      handleModifyNoteModalSheetPressOpen();
     } else {
-      setModifyNoteModalVisible(true)
+      setModifyNoteModalVisible(true);
     }
-  }
+  };
 
   const handleCloseModifyNoteModal = () => {
     if (Platform.OS === "android" || Platform.OS === "ios") {
-      handleModifyNoteModalSheetPressClose()
+      handleModifyNoteModalSheetPressClose();
     } else {
-      setModifyNoteModalVisible(false)
+      setModifyNoteModalVisible(false);
     }
-  }
+  };
 
   const handleOpenHistoricalSensorModal = () => {
     // TODO DB - Swap out dummy data with full sensor history. Might be worth adding a parameter here
     // to specify which sensor ID to retrieve from.
-    setHistoricalSensorData(hiveViewModel.weightSensorDataExpanded)
-    setHistoricalSensorModalVisible(true)
-  }
+    setHistoricalSensorData(hiveViewModel.weightSensorDataExpanded);
+    setHistoricalSensorModalVisible(true);
+  };
 
   const handleCloseHistoricalSensorModal = () => {
-    setHistoricalSensorModalVisible(false)
-  }
+    setHistoricalSensorModalVisible(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoadingScreen(true)
-        const data = await fetchWeatherForecast(selectedHive.latLng)
+        setLoadingScreen(true);
+        const data = await fetchWeatherForecast(selectedHive.latLng);
 
         const weeklySimplyForecast = deserialiseWeeklySimpleForecast(
           data,
@@ -155,8 +158,8 @@ const HiveScreen = () => {
           userViewModel.precipitationPreference,
           userViewModel.windSpeedPreference,
           true
-        )
-        setForecast(weeklySimplyForecast)
+        );
+        setForecast(weeklySimplyForecast);
       } catch (error) {
         Toast.show(
           toastCrossPlatform({
@@ -164,56 +167,56 @@ const HiveScreen = () => {
             text: userViewModel.i18n.t("toast error retrieving forecast"),
             type: "error",
           })
-        )
+        );
       } finally {
-        setLoadingScreen(false)
+        setLoadingScreen(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (isFocused && selectedHive) {
       const fetchData = async () => {
-        await hiveViewModel.fetchLast12WeightReadings(selectedHive.id)
-        setSensorWeight(hiveViewModel.sensorWeight)
-        await hiveViewModel.fetchWeightDataForLast30Days(selectedHive.id)
+        await hiveViewModel.fetchLast12WeightReadings(selectedHive.id);
+        setSensorWeight(hiveViewModel.sensorWeight);
+        await hiveViewModel.fetchWeightDataForLast30Days(selectedHive.id);
         try {
-          await hiveViewModel.fetchNotesForHive(selectedHive.id)
-          setNotes([...hiveViewModel.getSelectedHive().notes])
-          console.log("Notes fetched for hive: ", selectedHive.id)
+          await hiveViewModel.fetchNotesForHive(selectedHive.id);
+          setNotes([...hiveViewModel.getSelectedHive().notes]);
+          console.log("Notes fetched for hive: ", selectedHive.id);
         } catch (error) {
-          console.error("Failed to fetch notes: ", error)
+          console.error("Failed to fetch notes: ", error);
         }
-      }
+      };
 
-      fetchData()
+      fetchData();
     }
-  }, [selectedHive?.id, isFocused])
+  }, [selectedHive?.id, isFocused]);
 
   useEffect(() => {
-    setSelectedHive(hiveViewModel.getSelectedHive())
-  }, [isFocused])
+    setSelectedHive(hiveViewModel.getSelectedHive());
+  }, [isFocused]);
   useEffect(() => {
     if (selectedHive.id) {
-      console.log("not pref Id : ", selectedHive.id)
-      hiveViewModel.fetchNotificationPreferencesForHive(selectedHive.id)
+      console.log("not pref Id : ", selectedHive.id);
+      hiveViewModel.fetchNotificationPreferencesForHive(selectedHive.id);
     }
-  }, [selectedHive.id])
+  }, [selectedHive.id]);
 
   // TODO Test. Consider refactoring to domain layer.
   // Sorting the notes so that the stickied notes appear on the top. Additionally, sorts based on timestamp
   // from newest first.
   const sortNotes = () => {
-    hiveViewModel.sortNotes()
+    hiveViewModel.sortNotes();
 
-    setNotes(hiveViewModel.getSelectedHive().notes)
-  }
+    setNotes(hiveViewModel.getSelectedHive().notes);
+  };
 
   useEffect(() => {
-    sortNotes()
-  }, [notes])
+    sortNotes();
+  }, [notes]);
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -237,7 +240,7 @@ const HiveScreen = () => {
           </TouchableOpacity>,
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("hive/settings")
+              navigation.navigate("hive/settings");
             }}
           >
             <MaterialCommunityIcons
@@ -275,7 +278,7 @@ const HiveScreen = () => {
                         }
                         windFormat={userViewModel.windSpeedPreference}
                         onPress={() => {
-                          navigation.navigate("hive/forecast")
+                          navigation.navigate("hive/forecast");
                         }}
                       />
                     </>
@@ -295,7 +298,8 @@ const HiveScreen = () => {
                     {userViewModel.i18n.t("weight")}
                   </Text>
                   <VerticalSpacer size={8} />
-                  {sensorWeight ? (
+                  {sensorWeight?.sensorData?.length &&
+                  sensorWeight.sensorData.length >= 0 ? (
                     <>
                       <SensorGraph
                         sensorDataList={sensorWeight}
@@ -504,7 +508,7 @@ const HiveScreen = () => {
                       }
                       windFormat={userViewModel.windSpeedPreference}
                       onPress={() => {
-                        navigation.navigate("hive/forecast")
+                        navigation.navigate("hive/forecast");
                       }}
                     />
                   </>
@@ -517,7 +521,8 @@ const HiveScreen = () => {
                   {userViewModel.i18n.t("weight")}
                 </Text>
                 <VerticalSpacer size={8} />
-                {sensorWeight ? (
+                {sensorWeight?.sensorData?.length &&
+                sensorWeight.sensorData.length >= 0 ? (
                   <>
                     <SensorGraph
                       sensorDataList={sensorWeight}
@@ -705,7 +710,7 @@ const HiveScreen = () => {
         onClose={() => setInfoModalVisible(false)}
       />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default observer(HiveScreen)
+export default observer(HiveScreen);
