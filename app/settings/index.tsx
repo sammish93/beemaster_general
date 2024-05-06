@@ -58,8 +58,18 @@ const SettingsScreen = () => {
     const jsonData = JSON.stringify(
       [
         {
-          name: "John Smith",
-          country: "Svíþjóð",
+          userId: userViewModel.userId,
+          country: userViewModel.currentCountry,
+          language: userViewModel.currentLanguage,
+          mobileNotificationsEnabled: userViewModel.mobileNotifications,
+          smsNotificationsEnabled: userViewModel.smsNotifications,
+          emailNotificationsEnabled: userViewModel.emailNotifications,
+          theme: userViewModel.theme,
+          temperaturePreference: userViewModel.temperaturePreference,
+          weightPreference: userViewModel.weightPreference,
+          precipitationPreference: userViewModel.precipitationPreference,
+          windSpeedPreference: userViewModel.windSpeedPreference,
+          beeCountPreference: userViewModel.beeCountPreference,
         },
       ],
       null,

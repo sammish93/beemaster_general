@@ -70,16 +70,18 @@ const LoginScreen = () => {
 
   const handleEmailSignIn = () => {
     if (!email.trim()) {
-      setEmailError("Please enter your email");
+      setEmailError(userViewModel.i18n.t("please enter your email"));
       return;
     }
     if (!password.trim()) {
-      setPasswordError("Please enter your password");
+      setPasswordError(userViewModel.i18n.t("please enter your password"));
       return;
     }
 
     if (password.length < 6) {
-      setPasswordError("Password must be at least 6 characters long");
+      setPasswordError(
+        userViewModel.i18n.t("password must be at least 6 characters long")
+      );
       return;
     }
 
@@ -150,11 +152,13 @@ const LoginScreen = () => {
             padding: 5,
           }}
         >
-          {isSignUp ? "Sign Up" : "Login"}
+          {isSignUp
+            ? userViewModel.i18n.t("sign up")
+            : userViewModel.i18n.t("login")}
         </Text>
         <TextInput
-          label="Email"
-          placeholder="Enter your email"
+          label={userViewModel.i18n.t("email")}
+          placeholder={userViewModel.i18n.t("enter your email")}
           value={email}
           onChangeText={handleEmailChange}
           mode="outlined"
@@ -176,8 +180,8 @@ const LoginScreen = () => {
           </Text>
         ) : null}
         <TextInput
-          label="Password"
-          placeholder="Enter your password"
+          label={userViewModel.i18n.t("password")}
+          placeholder={userViewModel.i18n.t("enter your password")}
           value={password}
           secureTextEntry
           onChangeText={handlePasswordChange}
@@ -253,7 +257,7 @@ const LoginScreen = () => {
               mode="contained"
               onPress={() => handleAuthProcess("anonymous")}
             >
-              Login Anonymously
+              {userViewModel.i18n.t("login anonymously")}
             </Button>
           </>
         )}
@@ -268,8 +272,8 @@ const LoginScreen = () => {
             }}
           >
             {isSignUp
-              ? "Already have an account? Sign in"
-              : "Don't have an account? Sign up"}
+              ? userViewModel.i18n.t("already have an account? sign in")
+              : userViewModel.i18n.t("dont have an account? sign up")}
           </Text>
         </Pressable>
         {showGDPRDialog && (

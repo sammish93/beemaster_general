@@ -425,5 +425,17 @@
   "historical data": "Historical Data",
   "Delete Account Confirmation": "Delete Account Confirmation",
   "Are you sure you want to delete your account?": "Are you sure you want to delete your account?",
-  "sensor is not registered": "There is no registered sensor for this hive."
+  "sensor is not registered": "There is no registered sensor for this hive.",
+  "please enter your email": "Please enter your email",
+  "please enter your password": "Please enter your password",
+  "password must be at least 6 characters long": "Password must be at least 6 characters long",
+  "sign up": "Sign Up",
+  "login": "Login",
+  "enter your email": "Enter your email",
+  "password": "Password",
+  "enter your password": "Enter your password",
+  "upgrade": "Upgrade",
+  "login anonymously": "Login Anonymously",
+  "already have an account? sign in": "Already have an account? Sign in",
+  "dont have an account? sign up": "Don't have an account? Sign up"
 }

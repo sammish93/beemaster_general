@@ -110,6 +110,14 @@ export const IndexStack = (props: StackProps) => (
         headerShown: props.headerShown ? props.headerShown : false,
       }}
     />
+    <Stack.Screen
+      name="upgrade"
+      component={UpgradeScreen}
+      options={{
+        title: "Upgrade",
+        headerShown: false,
+      }}
+    />
   </Stack.Navigator>
 );
 

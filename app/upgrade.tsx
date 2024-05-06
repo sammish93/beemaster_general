@@ -31,11 +31,11 @@ const UpgradeScreen = observer(() => {
 
   const handleUpgrade = () => {
     if (!email.trim()) {
-      setEmailError("Please enter your email");
+      setEmailError(userViewModel.i18n.t("please enter your email"));
       return;
     }
     if (!password.trim()) {
-      setPasswordError("Please enter your password");
+      setPasswordError(userViewModel.i18n.t("please enter your password"));
       return;
     }
 
@@ -61,8 +61,8 @@ const UpgradeScreen = observer(() => {
           Upgrade
         </Text>
         <TextInput
-          label="Email"
-          placeholder="Enter your email"
+          label={userViewModel.i18n.t("email")}
+          placeholder={userViewModel.i18n.t("enter your email")}
           value={email}
           onChangeText={handleEmailChange}
           mode="outlined"
@@ -84,8 +84,8 @@ const UpgradeScreen = observer(() => {
           </Text>
         ) : null}
         <TextInput
-          label="Password"
-          placeholder="Enter your password"
+          label={userViewModel.i18n.t("password")}
+          placeholder={userViewModel.i18n.t("enter your password")}
           value={password}
           secureTextEntry
           onChangeText={handlePasswordChange}
@@ -109,7 +109,7 @@ const UpgradeScreen = observer(() => {
         ) : null}
         <VerticalSpacer size={16} />
         <Button icon="lock-open" mode="contained" onPress={handleUpgrade}>
-          Upgrade
+          {userViewModel.i18n.t("upgrade")}
         </Button>
         <VerticalSpacer size={16} />
       </ScrollView>
