@@ -1,5 +1,5 @@
 import notificationViewModel from "@/viewModels/NotificationViewModel"
-import { User } from "@/models"
+import { HiveNotification, User } from "@/models"
 import { HiveModel } from "@/models/hiveModel";
 import { NotificationType } from "@/constants/Notifications"
 import { sendNotification } from "./sendNotification"
@@ -18,8 +18,9 @@ import {
   getWeatherConditions,
   getWeeklyTemperatureData,
 } from "../weather/weatherDataProcessor"
-import { createNotificationObject, logMessage } from "./notificationHelpers"
+import { NotificationObject, createNotificationObject, logMessage } from "./notificationHelpers"
 import { WeatherData } from "@/models/weatherModel"
+import { NotificationMessages } from "./notificationHelpers";
 
 interface Props {
     user: User,
@@ -37,31 +38,25 @@ interface Props {
  * honey harvesting.
  */
 export const notificationStrategies = {
+
   checkHive: async ({ user, hive, weatherData }: Props) => {
     const dailyTemperatures = getDailyTemperatureData(weatherData.dailyForecast)
     const dailyHumidities = getDailyHumidityData(weatherData.dailyForecast)
 
-    if (
-      areTemperaturesConsistentlyWarm(dailyTemperatures) ||
-      isWarmerEachDayInSpring(dailyTemperatures)
-    ) {
+    if (areTemperaturesConsistentlyWarm(dailyTemperatures) || isWarmerEachDayInSpring(dailyTemperatures)) {
       logMessage("checkHive", user, hive)
 
-      const message = `Drastic weather change detected near hive: ${hive.name}. Consider checking the hive!`
       await sendNotification({
         title: `Check Your Hive: ${hive.name}`,
-        body: message,
-      }).catch((error) => console.log(`Error sending notification: ${error}`))
-
-      const notificationToStoreInDB = {
-        hiveId: hive.id,
-        notificationType: NotificationType.CheckHive,
-        message: message,
-        isRead: false,
-        timestamp: new Date(),
-      }
-
-      await notificationViewModel.addNotification(notificationToStoreInDB)
+        body: NotificationMessages.CheckHive,
+      }).catch((error) => console.log(`Error sending notification: ${error}`));
+ 
+      const notification: HiveNotification = createNotificationObject(
+        hive.id, 
+        NotificationType.CheckHive, 
+        NotificationMessages.CheckHive  
+      );
+      await notificationViewModel.addNotification(notification); 
     }
   },
   
@@ -249,9 +244,5 @@ export const notificationStrategies = {
       // TODO: Store in DB.
     }
   },
-}
-function isWarmDryLowWindDayBetweenSummerAndEarlyAutumn(dailyWeatherConditions: { temperature: number; humidity: number; windSpeed: number; }[]) {
-    throw new Error("Function not implemented.");
-    return false;
 }
 

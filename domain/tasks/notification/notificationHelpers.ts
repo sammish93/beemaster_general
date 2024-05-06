@@ -1,18 +1,27 @@
 import { NotificationType } from "@/constants/Notifications";
 import { User } from "@/models";
 import { HiveModel } from "@/models/hiveModel";
+import { HiveNotification } from "@/models";
 
+
+export const NotificationMessages = {
+    CheckHive: `Drastic weather change detected. Consider checking the hive!`
+}
 
 export const logMessage = (notificationType: string, user: User, hive: HiveModel) => {
     console.log(`Sending '${notificationType}' notification to ${user.email} for hive ${hive.id}`);
 }
 
-export const createNotificationObject = (hiveId: string, notificationType: NotificationType, message: string) => {
+export const createNotificationObject = (
+    id: string, 
+    type: NotificationType, 
+    msg: string): HiveNotification => {
+
     return {
-        hiveId: hiveId,
-        notificationType: notificationType,
-        timeStamp: new Date(Date.now()),
+        hiveId: id,
+        notificationType: type,
+        message: msg,
         isRead: false,
-        message: message
+        timestamp: new Date()
     }
 }
