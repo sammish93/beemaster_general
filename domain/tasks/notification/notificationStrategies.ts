@@ -20,6 +20,7 @@ import {
 } from "../weather/weatherDataProcessor"
 import { createNotificationObject, logMessage, notificationMessages } from "./notificationHelpers"
 import { WeatherData } from "@/models/weatherModel"
+import { getSevenLastWeightReadings } from "@/domain/db/operations";
 
 interface Props {
     user: User,
@@ -57,17 +58,15 @@ export const notificationStrategies = {
   },
   
   considerExpanding: async ({ user, hive, weatherData }: Props) => {
+    const weightData = await getSevenLastWeightReadings(user.id, hive.id);
     
-    // TODO: Swap with real values from db.
-    const dailyHiveWeights = [150, 152, 154, 155, 156];
-    
-    if (doesHiveWeightIncreaseSignificantly(dailyHiveWeights)) {
+    if (doesHiveWeightIncreaseSignificantly(weightData)) {
         logMessage('significant weight increase', user, hive);
 
-        const message = `Weight of hive: ${hive.name} has increased significantly, consider expanding!`;
+        const message = notificationMessages(hive.name, NotificationType.ConsiderExpanding);
         await sendNotification({
             title: 'Significant Weight Increase Detected',
-            body: notificationMessages
+            body: message
         }).catch(error => console.log(`Error sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
