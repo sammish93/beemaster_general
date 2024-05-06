@@ -18,9 +18,8 @@ import {
   getWeatherConditions,
   getWeeklyTemperatureData,
 } from "../weather/weatherDataProcessor"
-import { NotificationObject, createNotificationObject, logMessage } from "./notificationHelpers"
+import { createNotificationObject, logMessage, notificationMessages } from "./notificationHelpers"
 import { WeatherData } from "@/models/weatherModel"
-import { NotificationMessages } from "./notificationHelpers";
 
 interface Props {
     user: User,
@@ -46,16 +45,13 @@ export const notificationStrategies = {
     if (areTemperaturesConsistentlyWarm(dailyTemperatures) || isWarmerEachDayInSpring(dailyTemperatures)) {
       logMessage("checkHive", user, hive)
 
+      const message = notificationMessages(hive.name, NotificationType.CheckHive);
       await sendNotification({
         title: `Check Your Hive: ${hive.name}`,
-        body: NotificationMessages.CheckHive,
+        body: message,
       }).catch((error) => console.log(`Error sending notification: ${error}`));
  
-      const notification: HiveNotification = createNotificationObject(
-        hive.id, 
-        NotificationType.CheckHive, 
-        NotificationMessages.CheckHive  
-      );
+      const notification = createNotificationObject(hive.id, NotificationType.CheckHive, message);
       await notificationViewModel.addNotification(notification); 
     }
   },
@@ -71,7 +67,7 @@ export const notificationStrategies = {
         const message = `Weight of hive: ${hive.name} has increased significantly, consider expanding!`;
         await sendNotification({
             title: 'Significant Weight Increase Detected',
-            body: message
+            body: notificationMessages
         }).catch(error => console.log(`Error sending notification: ${error}`));
 
       const notificationToStoreInDB = createNotificationObject(
