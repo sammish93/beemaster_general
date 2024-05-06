@@ -1,25 +1,25 @@
-import { useContext, useState } from "react";
-import { Checkbox, useTheme } from "react-native-paper";
-import { Button, TextInput, IconButton, Text } from "react-native-paper";
-import { Platform, View } from "react-native";
-import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
-import { BottomModal, OverlayModal } from "./Modals";
-import { HorizontalSpacer, VerticalSpacer } from "../Spacers";
-import { MobXProviderContext } from "mobx-react";
-import { HiveModel } from "@/models/hiveModel";
-import { HiveNote } from "@/models/note";
-import { isValidString } from "@/domain/validation/stringValidation";
+import { useContext, useState } from "react"
+import { Checkbox, useTheme } from "react-native-paper"
+import { Button, TextInput, IconButton, Text } from "react-native-paper"
+import { Platform, View } from "react-native"
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types"
+import { BottomModal, OverlayModal } from "./Modals"
+import { HorizontalSpacer, VerticalSpacer } from "../Spacers"
+import { MobXProviderContext } from "mobx-react"
+import { HiveModel } from "@/models/hiveModel"
+import { HiveNote } from "@/models/note"
+import { isValidString } from "@/domain/validation/stringValidation"
 
 interface AddNoteToHiveModalProps {
-  isOverlayModalVisible: boolean;
-  bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>;
-  onClose: () => void;
-  onAddNote: (notes: HiveNote[]) => void;
+  isOverlayModalVisible: boolean
+  bottomSheetModalRef: React.RefObject<BottomSheetModalMethods>
+  onClose: () => void
+  onAddNote: (notes: HiveNote[]) => void
 }
 
 interface ModalContentProps {
-  onClose: () => void;
-  onAddNote: (notes: HiveNote[]) => void;
+  onClose: () => void
+  onAddNote: (notes: HiveNote[]) => void
 }
 
 const AddNoteToHiveModal = (props: AddNoteToHiveModalProps) => {
@@ -33,7 +33,7 @@ const AddNoteToHiveModal = (props: AddNoteToHiveModalProps) => {
         >
           <ModalContent onClose={props.onClose} onAddNote={props.onAddNote} />
         </BottomModal>
-      );
+      )
     } else {
       return (
         <OverlayModal
@@ -43,55 +43,55 @@ const AddNoteToHiveModal = (props: AddNoteToHiveModalProps) => {
         >
           <ModalContent onClose={props.onClose} onAddNote={props.onAddNote} />
         </OverlayModal>
-      );
+      )
     }
-  })();
-};
+  })()
+}
 
 const ModalContent = (props: ModalContentProps) => {
-  const theme = useTheme();
-  const { userViewModel } = useContext(MobXProviderContext);
-  const { hiveViewModel } = useContext(MobXProviderContext);
-  const selectedHive = hiveViewModel.getSelectedHive();
-  const [sticky, setSticky] = useState<boolean>(false);
-  const [note, setNote] = useState<string>("");
-  const [isNoteValid, setIsNoteValid] = useState<boolean>();
-  const [noteErrorMessage, setNoteErrorMessage] = useState<string>("");
+  const theme = useTheme()
+  const { userViewModel } = useContext(MobXProviderContext)
+  const { hiveViewModel } = useContext(MobXProviderContext)
+  const selectedHive = hiveViewModel.getSelectedHive()
+  const [sticky, setSticky] = useState<boolean>(false)
+  const [note, setNote] = useState<string>("")
+  const [isNoteValid, setIsNoteValid] = useState<boolean>()
+  const [noteErrorMessage, setNoteErrorMessage] = useState<string>("")
 
   const handleModifyNote = (input: string) => {
-    setNote(input);
+    setNote(input)
 
     if (isValidString(input, 1, 256, true, true)) {
-      setIsNoteValid(true);
+      setIsNoteValid(true)
     } else {
-      setIsNoteValid(false);
+      setIsNoteValid(false)
     }
-  };
+  }
 
   const handleAddNewNote = () => {
     if (isNoteValid) {
-      const hive: HiveModel = hiveViewModel.selectedHive;
+      const hive: HiveModel = hiveViewModel.selectedHive
       const newNote: Omit<HiveNote, "id"> = {
         note: note,
         isSticky: sticky,
         timestamp: new Date(),
-      };
+      }
 
-      hiveViewModel.addNoteToSelectedHive(newNote);
+      hiveViewModel.addNoteToSelectedHive(newNote)
 
-      hiveViewModel.updateHive(hive);
+      // hiveViewModel.updateHive(hive);
 
       // Sorts notes
-      props.onAddNote(hiveViewModel.selectedHive.notes);
-      props.onClose();
+      props.onAddNote(hiveViewModel.selectedHive.notes)
+      props.onClose()
     } else {
-      setNoteErrorMessage(userViewModel.i18n.t("invalid note"));
+      setNoteErrorMessage(userViewModel.i18n.t("invalid note"))
     }
-  };
+  }
 
   const handleStickyCheckboxPress = (isSticky: boolean) => {
-    setSticky(isSticky);
-  };
+    setSticky(isSticky)
+  }
 
   return (
     <>
@@ -164,7 +164,7 @@ const ModalContent = (props: ModalContentProps) => {
         </Button>
       </View>
     </>
-  );
-};
+  )
+}
 
-export default AddNoteToHiveModal;
+export default AddNoteToHiveModal
