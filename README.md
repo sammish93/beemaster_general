@@ -8,8 +8,8 @@ Welcome to the Beemaster General project repository. Follow these instructions t
 - Node.js and npm
 - Visual Studio Code (recommended)
 - An Android or iOS emulator (recommended)
-- Note: A Mac is required to compile the iOS application. Both the Web and Android application can be compiled on both Windows and Mac operating systems.
-- Note: Admin rights may be required for Visual Studio Code and shell commands on some systems.
+- <em>Note: A Mac is required to compile the iOS application. Both the Web and Android application can be compiled on both Windows and Mac operating systems.</em>
+- <em>Note: Admin rights may be required for Visual Studio Code and shell commands on some systems.</em>
 
 ## Setup Instructions
 
@@ -42,7 +42,7 @@ In the file `node_modules/expo-camera/build/useWebQRScanner.js`, comment out lin
 
 ```npx expo prebuild```
 
-Note: Users attempting to build an iOS project must additionally run the command ```npx pod-install``` in order to install the CocoaPods dependency.
+**Important: Users attempting to build an iOS project must additionally run the command ```npx pod-install``` in order to install the CocoaPods dependency.**
 
 6. **Run the Project**
 
@@ -53,8 +53,6 @@ or
 ```npx expo run:ios```
 
 From there on you can select whether to launch the application on the web, or on an Android or iOS device. Setting a path for an emulator varies based on your local machine. More information can be found [here](https://docs.expo.dev/workflow/android-studio-emulator/) or [here](https://docs.expo.dev/workflow/ios-simulator/).
-
-Note: The iOS application may have additional steps.
 
 ## Recommended Actions
 
@@ -86,11 +84,17 @@ On the hive screen, click on the pencil icon located on the top bar (to the far 
 
 By clicking on the cogwheel icon next to the pencil icon you will be navigated to the hive settings screen. Here you can rename and relocate a hive, as well as add filters to said hive. Additionally, you can download historical hive data in JSON format, or delete the hive. 
 
-There also exists a section dedicated to notification types. Here you can toggle whether you will receive notifications of a specific type (e.g. weather-based notifications) for a specific hive. Furthermore, you can click the 'Customise' button in order to further adjust the parameters that determine whether a specific notification will be triggered. Note that if a hive has a specific notification type toggled on but has the same notification type toggled off on the settings screen (not the hive settings screen) then the user will fail to receive notifications unless enabled globally.
+There also exists a section dedicated to notification types. Here you can toggle whether you will receive notifications of a specific type (e.g. weather-based notifications) for a specific hive. Furthermore, you can click the 'Customise' button in order to further adjust the parameters that determine whether a specific notification will be triggered. 
+
+<em>Note that if a hive has a specific notification type toggled on but has the same notification type toggled off on the settings screen (not the hive settings screen) then the user will fail to receive notifications unless enabled globally.</em>
 
 7. **Manage sensors**
 
-  While you're on the hive settings screen you can click on the 'Manage sensors' button. From here you can view which sensors are registered to a specific hive. You can register a new sensor by entering a valid hive ID, as well deleting a sensor from that specific hive. Once added, you should see sensor data on the hive screen, as well as on a detailed card view on the home screen, providing that the hive has written a data reading to the database. Note that only one physical sensor exists as of now and, therefore, can only be registered to a single hive. The sensor in question has the ID 'weight-sensor-1'. 
+While you're on the hive settings screen you can click on the 'Manage sensors' button. From here you can view which sensors are registered to a specific hive. You can register a new sensor by entering a valid hive ID, as well deleting a sensor from that specific hive. Once added, you should see sensor data on the hive screen, as well as on a detailed card view on the home screen, providing that the hive has written a data reading to the database. 
+
+<em>Note that only one physical sensor exists as of now and, therefore, can only be registered to a single hive. The sensor in question has the ID 'weight-sensor-1'.</em>
+
+**Important: The only physical sensor prototype in existence is linked to the hive named 'Honey Bee' located on the dummy account contained in the .env folder (the account credentials that are automatically filled in when you click on the 'Fill credentials' button on the login screen).**
 
 8. **Visit updates screen**
 
