@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import { View, Platform, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTheme, Text, Switch, Button, Chip } from "react-native-paper";
@@ -25,6 +25,7 @@ import { NotificationType } from "@/constants/Notifications";
 import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
 import useBackgroundTask from "./hooks/useBackgroundTask";
 import { startBackgroundTask } from "@/domain/tasks/notificationTask";
+import { isPlatformMobile } from "@/utils/identifyPlatform";
 import { useIsFocused } from "@react-navigation/native";
 
 const HomeScreen = () => {
@@ -46,6 +47,7 @@ const HomeScreen = () => {
   const [isDetailedView, setIsDetailedView] = useState(false);
   const [filterList, setFilterList] = useState<string[]>([]);
   const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(hiveViewModel.hives);
+  
   // Register the background task on the startup of the app.
   useBackgroundTask({ startBackgroundTask });
 
@@ -91,7 +93,7 @@ const HomeScreen = () => {
   }, []);
 
   const handleOpenAddFiltersToHiveModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleAddFiltersToHiveModalSheetPressOpen();
     } else {
       setAddFiltersToHiveModalVisible(true);
@@ -99,13 +101,14 @@ const HomeScreen = () => {
   };
 
   const handleCloseAddFiltersToHiveModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleAddFilterToHiveModalSheetPressClose();
     } else {
       setAddFiltersToHiveModalVisible(false);
     }
   };
 
+  // Can these two functions be removed since they are not used? 
   const handleAddHiveModalSheetPressOpen = useCallback(() => {
     bottomSheetAddHiveModalRef.current?.present();
   }, []);
@@ -148,7 +151,7 @@ const HomeScreen = () => {
   }, []);
 
   const handleOpenAddFilterModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleAddFilterModalSheetPressOpen();
     } else {
       setAddFilterModalVisible(true);
@@ -156,7 +159,7 @@ const HomeScreen = () => {
   };
 
   const handleCloseAddFilterModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleAddFilterModalSheetPressClose();
     } else {
       setAddFilterModalVisible(false);
@@ -172,7 +175,7 @@ const HomeScreen = () => {
   }, []);
 
   const handleOpenRemoveFilterModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleRemoveFilterModalSheetPressOpen();
     } else {
       setRemoveFilterModalVisible(true);
@@ -180,7 +183,7 @@ const HomeScreen = () => {
   };
 
   const handleCloseRemoveFilterModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleRemoveFilterModalSheetPressClose();
     } else {
       setRemoveFilterModalVisible(false);
@@ -195,9 +198,7 @@ const HomeScreen = () => {
     }
   };
 
-  const handleClearFilterList = () => {
-    setFilterList([]);
-  };
+  const handleClearFilterList = () => setFilterList([]);
 
   // Refreshes the GUI to show only the hives that contain the current filter criterium.
   useEffect(() => {
