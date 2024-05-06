@@ -26,7 +26,6 @@ import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
 import useBackgroundTask from "./hooks/useBackgroundTask";
 import { startBackgroundTask } from "@/domain/tasks/notificationTask";
 import { isPlatformMobile } from "@/utils/identifyPlatform";
-import { useIsFocused } from "@react-navigation/native";
 
 const HomeScreen = () => {
   const theme = useTheme();
