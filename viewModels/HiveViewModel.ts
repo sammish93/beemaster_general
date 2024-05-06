@@ -590,6 +590,7 @@ class HiveViewModel {
         const fullNote = { ...newNote, id: docRef.id }
         this.selectedHive?.notes.push(fullNote)
         console.log("Note added with ID:", docRef.id)
+        this.sortNotes()
       })
       console.log("Note added successfully")
     } catch (error) {

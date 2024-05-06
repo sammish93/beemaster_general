@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import { View, Platform, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { observer, MobXProviderContext } from "mobx-react";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTheme, Text, Switch, Button, Chip } from "react-native-paper";
@@ -17,14 +17,15 @@ import HomeInfoModal from "@/components/modals/HomeInfoModal";
 import AddFilterModal from "@/components/modals/AddFilterModal";
 import { HiveModel } from "@/models/hiveModel";
 import RemoveFilterModal from "@/components/modals/RemoveFilterModal";
-import { startBackgroundTask } from "@/domain/tasks/notificationTask";
 import Toast from "react-native-toast-message";
 import { toastCrossPlatform } from "@/components/ToastCustom";
 import { useNetInfo } from "@react-native-community/netinfo";
 import LoadingScreen from "@/components/LoadingScreen";
 import { NotificationType } from "@/constants/Notifications";
 import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
-import { useIsFocused } from "@react-navigation/native";
+import useBackgroundTask from "../hooks/useBackgroundTask";
+import { startBackgroundTask } from "@/domain/tasks/notificationTask";
+import { isPlatformMobile } from "@/utils/identifyPlatform";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -32,11 +33,9 @@ const HomeScreen = () => {
   const { userViewModel } = useContext(MobXProviderContext);
   const isConnected = useNetInfo();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
-  const [addFiltersToHiveModalVisible, setAddFiltersToHiveModalVisible] =
-    useState(false);
+  const [addFiltersToHiveModalVisible, setAddFiltersToHiveModalVisible] = useState(false);
   const bottomSheetAddFiltersToHiveModalRef = useRef<BottomSheetModal>(null);
-  const [removeFilterModalVisible, setRemoveFilterModalVisible] =
-    useState(false);
+  const [removeFilterModalVisible, setRemoveFilterModalVisible] = useState(false);
   const bottomSheetRemoveFilterModalRef = useRef<BottomSheetModal>(null);
   const [addHiveModalVisible, setAddHiveModalVisible] = useState(false);
   const bottomSheetAddHiveModalRef = useRef<BottomSheetModal>(null);
@@ -46,21 +45,10 @@ const HomeScreen = () => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const [isDetailedView, setIsDetailedView] = useState(false);
   const [filterList, setFilterList] = useState<string[]>([]);
-  const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(
-    hiveViewModel.hives
-  );
-
+  const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(hiveViewModel.hives);
+  
   // Register the background task on the startup of the app.
-  // To start the actualt task depends on the OS running the task.
-  useEffect(() => {
-    startBackgroundTask()
-      .then(() => {
-        console.log("Background task registered in HomeScreen!");
-      })
-      .catch((error) => {
-        console.error(`Error registering background task: ${error}`);
-      });
-  }, []);
+  useBackgroundTask({ startBackgroundTask });
 
   const handleAddHive = (
     hiveName: string,
@@ -104,7 +92,7 @@ const HomeScreen = () => {
   }, []);
 
   const handleOpenAddFiltersToHiveModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleAddFiltersToHiveModalSheetPressOpen();
     } else {
       setAddFiltersToHiveModalVisible(true);
@@ -112,13 +100,14 @@ const HomeScreen = () => {
   };
 
   const handleCloseAddFiltersToHiveModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleAddFilterToHiveModalSheetPressClose();
     } else {
       setAddFiltersToHiveModalVisible(false);
     }
   };
 
+  // Can these two functions be removed since they are not used? 
   const handleAddHiveModalSheetPressOpen = useCallback(() => {
     bottomSheetAddHiveModalRef.current?.present();
   }, []);
@@ -127,13 +116,8 @@ const HomeScreen = () => {
     bottomSheetAddHiveModalRef.current?.dismiss();
   }, []);
 
-  const handleOpenAddHiveModal = () => {
-    setAddHiveModalVisible(true);
-  };
-
-  const handleCloseAddHiveModal = () => {
-    setAddHiveModalVisible(false);
-  };
+  const handleOpenAddHiveModal = () => setAddHiveModalVisible(true);
+  const handleCloseAddHiveModal = () => setAddHiveModalVisible(false);
 
   const handleAddFilter = (filterName: string) => {
     // TODO Add validation. Add toast behaviour.
@@ -161,7 +145,7 @@ const HomeScreen = () => {
   }, []);
 
   const handleOpenAddFilterModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleAddFilterModalSheetPressOpen();
     } else {
       setAddFilterModalVisible(true);
@@ -169,7 +153,7 @@ const HomeScreen = () => {
   };
 
   const handleCloseAddFilterModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleAddFilterModalSheetPressClose();
     } else {
       setAddFilterModalVisible(false);
@@ -185,7 +169,7 @@ const HomeScreen = () => {
   }, []);
 
   const handleOpenRemoveFilterModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleRemoveFilterModalSheetPressOpen();
     } else {
       setRemoveFilterModalVisible(true);
@@ -193,7 +177,7 @@ const HomeScreen = () => {
   };
 
   const handleCloseRemoveFilterModal = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
+    if (isPlatformMobile()) {
       handleRemoveFilterModalSheetPressClose();
     } else {
       setRemoveFilterModalVisible(false);
@@ -208,16 +192,14 @@ const HomeScreen = () => {
     }
   };
 
-  const handleClearFilterList = () => {
-    setFilterList([]);
-  };
+  const handleClearFilterList = () => setFilterList([]);
 
   // Refreshes the GUI to show only the hives that contain the current filter criterium.
   useEffect(() => {
     if (filterList.length === 0) {
       setFilteredHiveList(hiveViewModel.hives);
     } else {
-      const filtered = hiveViewModel.hives.filter((hive) =>
+      const filtered = hiveViewModel.hives.filter((hive: any) =>
         filterList.every((filter) => hive.filters.includes(filter))
       );
       setFilteredHiveList(filtered);
