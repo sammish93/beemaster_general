@@ -216,7 +216,7 @@ const LoginScreen = () => {
         )}
         <VerticalSpacer size={12} />
         <Button icon="key" mode="contained" onPress={fillCredentials}>
-          Fill Credentials
+          {userViewModel.i18n.t("fill credentials")}
         </Button>
         <VerticalSpacer size={8} />
         {isSignUp ? (
@@ -226,13 +226,13 @@ const LoginScreen = () => {
               mode="contained"
               onPress={() => handleAuthProcess("email")}
             >
-              Sign Up
+              {userViewModel.i18n.t("sign up")}
             </Button>
           </>
         ) : (
           <>
             <Button icon="email" mode="contained" onPress={handleEmailSignIn}>
-              Login with Email
+              {userViewModel.i18n.t("login with email")}
             </Button>
             <VerticalSpacer size={4} />
             <Text
@@ -241,7 +241,7 @@ const LoginScreen = () => {
                 textAlign: "center",
               }}
             >
-              OR
+              {userViewModel.i18n.t("or")}
             </Text>
             <VerticalSpacer size={4} />
             <Button
@@ -249,7 +249,7 @@ const LoginScreen = () => {
               mode="contained"
               onPress={() => handleAuthProcess("google")}
             >
-              Login with Google
+              {userViewModel.i18n.t("login with google")}
             </Button>
             <VerticalSpacer size={8} />
             <Button

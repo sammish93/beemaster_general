@@ -437,5 +437,9 @@
   "upgrade": "Upgrade",
   "login anonymously": "Login Anonymously",
   "already have an account? sign in": "Already have an account? Sign in",
-  "dont have an account? sign up": "Don't have an account? Sign up"
+  "dont have an account? sign up": "Don't have an account? Sign up",
+  "or": "OR",
+  "login with google": "Login with Google",
+  "login with email": "Login with Email",
+  "fill credentials": "Fill Credentials"
 }

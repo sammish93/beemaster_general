@@ -434,5 +434,9 @@
   "upgrade": "Gashnak",
   "login anonymously": "Gûluk thrakatûl",
   "already have an account? sign in": "Uglúk krato ash burzum-ishi",
-  "dont have an account? sign up": "Ish krimpatul krato"
+  "dont have an account? sign up": "Ish krimpatul krato",
+  "or": "Urz",
+  "login with google": "Gûluk lugdûsh Google",
+  "login with email": "Gûluk lugdûsh Gûr-log",
+  "fill credentials": "Tharkûn gûrûk"
 }

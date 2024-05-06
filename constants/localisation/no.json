@@ -437,5 +437,9 @@
   "upgrade": "Oppgrader",
   "login anonymously": "Logg inn anonymt",
   "already have an account? sign in": "Har du allerede en konto? Logg inn",
-  "dont have an account? sign up": "Har du ikke en konto? Registrer deg"
+  "dont have an account? sign up": "Har du ikke en konto? Registrer deg",
+  "or": "ELLER",
+  "login with google": "Logg inn med Google",
+  "login with email": "Logg inn med epost",
+  "fill credentials": "Fyll inn detaljer"
 }
