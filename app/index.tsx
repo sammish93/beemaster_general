@@ -116,13 +116,8 @@ const HomeScreen = () => {
     bottomSheetAddHiveModalRef.current?.dismiss();
   }, []);
 
-  const handleOpenAddHiveModal = () => {
-    setAddHiveModalVisible(true);
-  };
-
-  const handleCloseAddHiveModal = () => {
-    setAddHiveModalVisible(false);
-  };
+  const handleOpenAddHiveModal = () => setAddHiveModalVisible(true);
+  const handleCloseAddHiveModal = () => setAddHiveModalVisible(false);
 
   const handleAddFilter = (filterName: string) => {
     // TODO Add validation. Add toast behaviour.
