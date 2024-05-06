@@ -222,6 +222,8 @@ const HomeScreen = () => {
       );
       setFilteredHiveList(filtered);
     }
+
+    console.log(hiveViewModel.hives);
   }, [hiveViewModel.hives, filterList]);
 
   // In the case that a hive is deleted then the GUI is refreshed and all filters are cleared.

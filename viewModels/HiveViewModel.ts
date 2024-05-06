@@ -691,6 +691,18 @@ class HiveViewModel {
       console.error("Error fetching notification preferences:", error)
     }
   }
+
+  @action swapHive(hiveId: string) {
+    if (!this.selectedHive) return;
+
+    const index = this.hives.findIndex(hive => hive.id === hiveId);
+
+    if (index !== -1) {
+      const hiveToSwap = this.hives[index];
+      this.hives[index] = this.selectedHive;
+      this.selectedHive = hiveToSwap;
+    }
+  }
 }
 
 export const hiveViewModel = new HiveViewModel()

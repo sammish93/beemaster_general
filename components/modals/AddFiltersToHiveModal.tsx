@@ -59,6 +59,7 @@ const ModalContent = (props: ModalContentProps) => {
 
     hiveViewModel.updateHiveFilters(updatedHive);
     hiveViewModel.addSelectedHive(updatedHive);
+    hiveViewModel.swapHive(updatedHive.id);
 
     Toast.show(
       toastCrossPlatform({
