@@ -18,7 +18,7 @@ import {
   getWeatherConditions,
   getWeeklyTemperatureData,
 } from "../weather/weatherDataProcessor"
-import { createNotificationObject, logMessage, notificationMessages } from "./notificationHelpers"
+import { createObject, logMessage, notificationMessages } from "./notificationHelpers"
 import { WeatherData } from "@/models/weatherModel"
 import { getSevenLastWeightReadings } from "@/domain/db/operations";
 
@@ -52,7 +52,7 @@ export const notificationStrategies = {
         body: message,
       }).catch((error) => console.log(`Error sending notification: ${error}`));
  
-      const notification = createNotificationObject(hive.id, NotificationType.CheckHive, message);
+      const notification = createObject(hive.id, NotificationType.CheckHive, message);
       await notificationViewModel.addNotification(notification); 
     }
   },
@@ -69,11 +69,8 @@ export const notificationStrategies = {
             body: message
         }).catch(error => console.log(`Error sending notification: ${error}`));
 
-      const notificationToStoreInDB = createNotificationObject(
-        hive.id,
-        NotificationType.ConsiderExpanding,
-        message
-      )
+        const notification = createObject(hive.id, NotificationType.ConsiderExpanding, message);
+        await notificationViewModel.addNotification(notification);
     }
 
     const weeklyTemperatures = getWeeklyTemperatureData(weatherData.weeklyForecast);
