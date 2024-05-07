@@ -58,8 +58,6 @@ export const addWeightData = onRequest(async (request, response) => {
 
   // Timestamp in ISO 8601-format.
   const timeNow = admin.firestore.Timestamp.now();
-  const date = timeNow.toDate(); // Convert to javascript date object.
-  const timeStamp = date.toISOString();
 
   try {
     // Construct path for new weight reading document.

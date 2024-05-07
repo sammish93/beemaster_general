@@ -26,24 +26,24 @@ export const getWeeklyTemperatureData = (weeklyForecast: WeeklySimpleForecast) =
     ];
 }
 
-export const getWeatherConditions = (weeklyForecast: WeeklySimpleForecast) => {
+export const getWeatherConditions = (weeklyForecast: WeeklySimpleForecast, country: string) => {
     return [
-        weeklyForecast.currentForecast.weatherType,
-        weeklyForecast.dayTwoForecast.weatherType,
-        weeklyForecast.dayThreeForecast.weatherType,
-        weeklyForecast.dayFourForecast.weatherType,
-        weeklyForecast.dayFiveForecast.weatherType,
-        weeklyForecast.daySixForecast.weatherType,
-        weeklyForecast.daySevenForecast.weatherType,
+        {forecast: weeklyForecast.currentForecast.weatherType, country: country},
+        {forecast: weeklyForecast.dayTwoForecast.weatherType, country: country},
+        {forecast: weeklyForecast.dayThreeForecast.weatherType, country: country},
+        {forecast: weeklyForecast.dayFourForecast.weatherType, country: country},
+        {forecast: weeklyForecast.dayFiveForecast.weatherType, country: country},
+        {forecast: weeklyForecast.daySixForecast.weatherType, country: country},
+        {forecast: weeklyForecast.daySevenForecast.weatherType, country: country},
     ];
 }
 
-export const getDailyWeatherConditionsFromHourly = (dailyForecast: DailyForecast) => {
+export const getDailyWeatherConditionsFromHourly = (dailyForecast: DailyForecast, country: string) => {
     const hourlyForecasts = Object.values(dailyForecast.hourlyForecasts);
     const transformedForecasts = hourlyForecasts.map(forecastPeriod => ({
         temperature: forecastPeriod.temperature,
-        humidity: forecastPeriod.humidity,
         windSpeed: forecastPeriod.windSpeed,
+        country: country
     }));
 
     return transformedForecasts;
