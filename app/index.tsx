@@ -26,6 +26,7 @@ import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
 import useBackgroundTask from "../hooks/useBackgroundTask";
 import { startBackgroundTask } from "@/domain/tasks/notificationTask";
 import { isPlatformMobile } from "@/utils/identifyPlatform";
+import { autorun } from "mobx";
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -33,9 +34,11 @@ const HomeScreen = () => {
   const { userViewModel } = useContext(MobXProviderContext);
   const isConnected = useNetInfo();
   const [isLoadingScreen, setLoadingScreen] = useState(false);
-  const [addFiltersToHiveModalVisible, setAddFiltersToHiveModalVisible] = useState(false);
+  const [addFiltersToHiveModalVisible, setAddFiltersToHiveModalVisible] =
+    useState(false);
   const bottomSheetAddFiltersToHiveModalRef = useRef<BottomSheetModal>(null);
-  const [removeFilterModalVisible, setRemoveFilterModalVisible] = useState(false);
+  const [removeFilterModalVisible, setRemoveFilterModalVisible] =
+    useState(false);
   const bottomSheetRemoveFilterModalRef = useRef<BottomSheetModal>(null);
   const [addHiveModalVisible, setAddHiveModalVisible] = useState(false);
   const bottomSheetAddHiveModalRef = useRef<BottomSheetModal>(null);
@@ -45,8 +48,10 @@ const HomeScreen = () => {
   const { hiveViewModel } = useContext(MobXProviderContext);
   const [isDetailedView, setIsDetailedView] = useState(false);
   const [filterList, setFilterList] = useState<string[]>([]);
-  const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(hiveViewModel.hives);
-  
+  const [filteredHiveList, setFilteredHiveList] = useState<HiveModel[]>(
+    hiveViewModel.hives
+  );
+
   // Register the background task on the startup of the app.
   useBackgroundTask({ startBackgroundTask });
 
@@ -107,7 +112,7 @@ const HomeScreen = () => {
     }
   };
 
-  // Can these two functions be removed since they are not used? 
+  // Can these two functions be removed since they are not used?
   const handleAddHiveModalSheetPressOpen = useCallback(() => {
     bottomSheetAddHiveModalRef.current?.present();
   }, []);
@@ -196,17 +201,22 @@ const HomeScreen = () => {
 
   // Refreshes the GUI to show only the hives that contain the current filter criterium.
   useEffect(() => {
-    if (filterList.length === 0) {
-      setFilteredHiveList(hiveViewModel.hives);
-    } else {
-      const filtered = hiveViewModel.hives.filter((hive: any) =>
-        filterList.every((filter) => hive.filters.includes(filter))
-      );
-      setFilteredHiveList(filtered);
-    }
+    const disposer = autorun(() => {
+      const hives = hiveViewModel.hives;
+      console.log(hives);
 
-    console.log(hiveViewModel.hives);
-  }, [hiveViewModel.hives, filterList]);
+      if (filterList.length === 0) {
+        setFilteredHiveList(hives);
+      } else {
+        const filtered = hives.filter((hive) =>
+          filterList.every((filter) => hive.filters.includes(filter))
+        );
+        setFilteredHiveList(filtered);
+      }
+    });
+
+    return () => disposer();
+  }, [filterList]);
 
   // In the case that a hive is deleted then the GUI is refreshed and all filters are cleared.
   useEffect(() => {
