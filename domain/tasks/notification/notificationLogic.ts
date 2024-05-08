@@ -4,6 +4,7 @@ import { processWeatherDataForHive } from "../weather/weatherDataProcessor"
 import { notificationStrategies } from "./notificationStrategies"
 import { HiveModel } from "@/models/hiveModel"
 import { transformToCamelCase } from "@/utils/stringUtils"
+import { NotificationType } from "@/constants/Notifications"
 
 interface NotificationPreference {
   email: boolean
@@ -24,7 +25,7 @@ export const evaluateAndSendNotification = async (
   user: User,
   hives: HiveModel[]
 ) => {
-  
+
   for (const hive of hives) {
     try {
       // Get weather data for hive and process it.
@@ -37,19 +38,16 @@ export const evaluateAndSendNotification = async (
 
       // Iterate over the strategies.
       Object.keys(notificationStrategies).forEach((strategy) => {
-        const notificationType = strategy as keyof typeof hive.preferences
+        const notificationType: NotificationType = strategy as keyof typeof hive.preferences
         const userPref = userPreference[notificationType]
         const hivePref = hivePreference[notificationType]
 
         // Check the user and hive preferences.
         if (userPref && hivePref) {
           const params = { user, hive, weatherData: processedData }
-          const camelCased = transformToCamelCase(
-            notificationType
-          ) as keyof typeof notificationStrategies
 
           // Execute strategy.
-          notificationStrategies[camelCased](params)
+          notificationStrategies[notificationType](params)
         } else {
           console.log(
             `Notification ${notificationType} is turned off for both user and hive`
