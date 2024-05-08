@@ -3,7 +3,6 @@ import { fetchWeatherForHive } from "../weather/weatherDataFetch"
 import { processWeatherDataForHive } from "../weather/weatherDataProcessor"
 import { notificationStrategies } from "./notificationStrategies"
 import { HiveModel } from "@/models/hiveModel"
-import { transformToCamelCase } from "@/utils/stringUtils"
 import { NotificationType } from "@/constants/Notifications"
 
 interface NotificationPreference {

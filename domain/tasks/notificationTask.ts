@@ -15,7 +15,11 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
 
         for (const user of users) {
             const hives = await getUserHives(user.id) as HiveModel[];
-            await evaluateAndSendNotification(user, hives);
+
+            // Only do this if user and hives exists.
+            if (user && hives) {
+              await evaluateAndSendNotification(user, hives);
+            }
         }
 
     // Return a result to indicate completion.
