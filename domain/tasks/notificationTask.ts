@@ -13,14 +13,16 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
     console.log(`BackgroundTask: ${BG_TASK_NAME} is running!`);
     const users = (await getAllUsers()) as User[];
 
-        for (const user of users) {
-            const hives = await getUserHives(user.id) as HiveModel[];
+    if (users.length !== 0) {
+      for (const user of users) {
+        const hives = await getUserHives(user.id) as HiveModel[];
 
-            // Only do this if user and hives exists.
-            if (user && hives) {
-              await evaluateAndSendNotification(user, hives);
-            }
+        // Only do this if user and hives exists.
+        if (user && hives) {
+          await evaluateAndSendNotification(user, hives);
         }
+      }
+    } 
 
     // Return a result to indicate completion.
     return BackgroundFetch.BackgroundFetchResult.NewData;
