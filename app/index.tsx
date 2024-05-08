@@ -25,6 +25,7 @@ import { NotificationType } from "@/constants/Notifications";
 import AddFiltersToHiveModal from "@/components/modals/AddFiltersToHiveModal";
 import useBackgroundTask from "../hooks/useBackgroundTask";
 import { startBackgroundTask } from "@/domain/tasks/notificationTask";
+import useManualTask from "@/hooks/useManualTask";
 import { isPlatformMobile } from "@/utils/identifyPlatform";
 import { autorun } from "mobx";
 
@@ -53,7 +54,7 @@ const HomeScreen = () => {
   );
 
   // Register the background task on the startup of the app.
-  useBackgroundTask({ startBackgroundTask });
+  useBackgroundTask({startBackgroundTask});
 
   const handleAddHive = (
     hiveName: string,
