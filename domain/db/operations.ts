@@ -1,6 +1,7 @@
 import { db } from "@/firebaseConfig"
 import {
   collection,
+  doc, 
   getDocs,
   orderBy,
   query,
@@ -11,12 +12,17 @@ import {
 /**
  * Retrieves all users from 'users' collection in Firestore.
  *
- * @returns {Promise<Array<Object>>} A list of user objects.
+ * @returns {Promise<Object | null>} A list of user objects.
  */
-export const getAllUsers = async (): Promise<Array<object>> => {
-  const usersRef = collection(db, "users")
-  const users = await getDocs(usersRef)
-  return users.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+export const getUser = async (userId: string): Promise<object | null> => {
+  const userRef = doc(db, "users", userId);
+  const userDoc = await getDoc(userRef);
+  
+  if (userDoc.exists()) {
+    return { id: userDoc.id, ...userDoc.data() };
+  } else {
+    return null;
+  }
 }
 
 /**

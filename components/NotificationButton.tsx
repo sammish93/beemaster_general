@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Text, View, Platform } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import styles from "@/assets/styles";
 import { Subscription } from "expo-modules-core";
+import { MobXProviderContext } from "mobx-react";
+import useManualTask from "@/hooks/useManualTask";
 
 // TODO Adjust this component to also create a notification object (see HiveNotification model).
 // TODO Use this implementation to send an alert to whatever notification preferences are enabled for
@@ -69,29 +71,23 @@ const NotificationButton = () => {
     };
   }, []);
 
+  const { userViewModel } = useContext(MobXProviderContext);
+
+  // Can start the notification process manually.
+  const userId = userViewModel.userId;
+  const {startTask} = useManualTask({userId});
+
   return (
     <View
       style={{ flex: 1, alignItems: "center", justifyContent: "space-around" }}
     >
-      <Text>Your expo push token: {expoPushToken}</Text>
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <Text>
-          Title: {notification && notification.request.content.title}{" "}
-        </Text>
-        <Text>Body: {notification && notification.request.content.body}</Text>
-        <Text>
-          Data:{" "}
-          {notification && JSON.stringify(notification.request.content.data)}
-        </Text>
-      </View>
+      <Text>Manually start the notification process!</Text>
       <Button
         style={styles(theme).settingsButton}
         mode="contained"
-        onPress={async () => {
-          await getPushNotification();
-        }}
+        onPress={() => startTask()}
       >
-        Press to get a notification
+        Press to start notification process
       </Button>
     </View>
   );
