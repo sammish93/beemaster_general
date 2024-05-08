@@ -35,7 +35,7 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
 export const startBackgroundTask: () => Promise<void> = async () => {
   try {
     await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
-      minimumInterval: 60 * 60, // Runs every hour.
+      minimumInterval: 15,
       stopOnTerminate: false,
       startOnBoot: true,
     });
@@ -44,6 +44,8 @@ export const startBackgroundTask: () => Promise<void> = async () => {
     tasks.forEach((task) => {
       console.log(`Task name: ${task.taskName}, task type: ${task.taskType}`);
     });
+
+    await BackgroundFetch.setMinimumIntervalAsync(60);
   } catch (error) {
     console.log(`Error in registering background task: ${error}`);
   }

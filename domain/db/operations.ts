@@ -30,8 +30,9 @@ export const getUserHives = async (userId: string): Promise<Array<object>> => {
   const hives = await getDocs(hivesRef)
   return hives.docs.map((doc) => ({
     id: doc.id,
-    ...doc.data(),
+    name: doc.data().hiveName,
     preferences: doc.data().notificationTypePreference,
+    ...doc.data()
   }))
 }
 
@@ -55,7 +56,7 @@ export const getSevenLastWeightReadings = async (
   const weights = await getDocs(weightQuery)
 
   if (weights.empty) {
-    console.log(`No weight readings found.`)
+    console.log(`No weight readings found for hive: ${hiveId}`);
     return []
   }
 

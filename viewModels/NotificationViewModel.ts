@@ -90,7 +90,7 @@ class NotificationViewModel {
           timestamp: Timestamp.fromDate(new Date(notification.timestamp)),
         })
 
-        console.log("Notification added to Firestore successfully")
+        console.log("Notification added to Firestore successfully");
       } catch (error) {
         console.error("Error adding notification to Firestore:", error)
       }

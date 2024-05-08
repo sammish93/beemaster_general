@@ -27,7 +27,7 @@ export const notificationMessages = (
 }
 
 export const logMessage = (notificationType: string, user: User, hive: HiveModel) => {
-    console.log(`Sending '${notificationType}' notification to ${user.email} for hive ${hive.id}`);
+    console.log(`Sending '${notificationType}' notification to ${user.id} for hive ${hive.name}`);
 }
 
 export const createObject = (
