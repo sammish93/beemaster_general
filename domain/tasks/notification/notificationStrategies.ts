@@ -30,7 +30,7 @@ export const notificationStrategies = {
 
       const message = notificationMessages(hive.name, NotificationType.CheckHive);
       await sendNotification({
-        title: `Check Your Hive: ${hive.name}`,
+        title: `Check Hive: ${hive.name}`,
         body: message,
       }).catch((error) => console.log(`Error sending notification: ${error}`));
  
@@ -148,7 +148,7 @@ export const notificationStrategies = {
 
       const message = notificationMessages(hive.name, NotificationType.PossibleSwarm);
       await sendNotification({
-        title: `Possible swarm in hive: ${hive.name}`,
+        title: `Possible swarm ${hive.name}`,
         body: message
       }).catch((error) => console.log(`Error in sending notification: ${error}`));
 
