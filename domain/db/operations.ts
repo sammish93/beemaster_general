@@ -42,10 +42,6 @@ interface WeightData {
 
 /**
  * Retrieves the last seven weight readings from a specific hive.
- *
- * @param userId
- * @param hiveId
- * @returns
  */
 export const getSevenLastWeightReadings = async (
   userId: string,
