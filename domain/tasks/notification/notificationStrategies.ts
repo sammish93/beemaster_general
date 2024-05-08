@@ -205,6 +205,11 @@ export const notificationStrategies = {
       const notification = createObject(hive.id, NotificationType.Weather, message);
       await notificationViewModel.addNotification(notification);
     }
+  },
+
+  customReminder: async ({ user, hive, weatherData }: Props) => {
+    
+    // TODO: Implement logic for custom reminder.
   }
 }
 
