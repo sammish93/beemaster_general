@@ -5,14 +5,46 @@ import { customLightTheme, customFontConfig } from "@/assets/themes";
 import { PaperProvider, useTheme, configureFonts } from "react-native-paper";
 import { Provider } from "mobx-react";
 import en from "@/constants/localisation/en.json";
+import {
+  BeeCountMeasurement,
+  PrecipitationMeasurement,
+  TemperatureMeasurement,
+  WeightMeasurement,
+  WindSpeedMeasurement,
+} from "@/constants/Measurements";
 
 // Mocking a view model. The viewModel.i18n.t(<localisation key>) function is mocked in beforeEach below.
-const userViewModel = { i18n: { t: null } };
+const userViewModel = {
+  i18n: { t: null },
+  weightPreference: WeightMeasurement.Grams,
+  temperaturePreference: TemperatureMeasurement.Celsius,
+  windSpeedPreference: WindSpeedMeasurement.MetersPerSecond,
+  precipitationPreference: PrecipitationMeasurement.Millimeters,
+  beeCountPreference: BeeCountMeasurement.PerSecond,
+};
 
 // Mocking the hive to inject into the <HiveCard>
 const mockHiveItem = {
   id: "1",
   name: "Hive-test",
+  filters: [],
+  latLng: { lat: 59.9139, lng: 10.7522 },
+  temperature: 34.2,
+  weight: 57.6,
+  humidity: 54,
+  beeCount: 421,
+  notes: [],
+  preferences: {
+    considerFeeding: true,
+    considerExpanding: true,
+    honeyHarvest: true,
+    maintenance: true,
+    weather: true,
+    checkHive: true,
+    possibleSwarm: true,
+    customReminder: true,
+  },
+  queen: null,
 };
 
 // Mock implementation of theme - defaulted to light theme in this case.
@@ -174,6 +206,7 @@ describe("HiveCard", () => {
         item={mockHiveItem}
         isDetailedView={false}
         onPress={() => null}
+        onPressModal={() => null}
         maxWidth={200}
       />
     );
@@ -187,14 +220,15 @@ describe("HiveCard", () => {
         item={mockHiveItem}
         isDetailedView={true}
         onPress={() => null}
+        onPressModal={() => null}
         maxWidth={200}
       />
     );
 
-    expect(queryByText("57.6 kg")).not.toBeNull();
+    expect(queryByText("57.6 g")).not.toBeNull();
     expect(queryByText("34.2 °C")).not.toBeNull();
-    expect(queryByText("54%")).not.toBeNull();
-    expect(queryByText("421 p/h")).not.toBeNull();
+    expect(queryByText("54 %")).not.toBeNull();
+    expect(queryByText("421 p/s")).not.toBeNull();
   });
 
   it("should not render sensor data when isDetailedView is false", () => {
@@ -203,14 +237,15 @@ describe("HiveCard", () => {
         item={mockHiveItem}
         isDetailedView={false}
         onPress={() => null}
+        onPressModal={() => null}
         maxWidth={200}
       />
     );
 
-    expect(queryByText("57.6 kg")).toBeNull();
+    expect(queryByText("57.6 g")).toBeNull();
     expect(queryByText("34.2 °C")).toBeNull();
-    expect(queryByText("54%")).toBeNull();
-    expect(queryByText("421 p/h")).toBeNull();
+    expect(queryByText("54 %")).toBeNull();
+    expect(queryByText("421 p/s")).toBeNull();
   });
 
   it("renders only Temperature, Wind, and Rain when isDetailedView is false", () => {
@@ -219,13 +254,14 @@ describe("HiveCard", () => {
         item={mockHiveItem}
         isDetailedView={false}
         onPress={() => null}
+        onPressModal={() => null}
         maxWidth={200}
       />
     );
 
-    expect(queryByText("21 °C")).not.toBeNull();
-    expect(queryByText("4 km/h")).not.toBeNull();
-    expect(queryByText("0.0mm")).not.toBeNull();
-    expect(queryByText("57.6 kg")).toBeNull();
+    expect(queryByText("°C")).not.toBeNull();
+    expect(queryByText("m/s")).not.toBeNull();
+    expect(queryByText("mm")).not.toBeNull();
+    expect(queryByText("57.6 g")).toBeNull();
   });
 });
