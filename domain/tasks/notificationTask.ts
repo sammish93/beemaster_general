@@ -37,7 +37,7 @@ TaskManager.defineTask(BG_TASK_NAME, async () => {
 export const startBackgroundTask: () => Promise<void> = async () => {
   try {
     await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
-      minimumInterval: 15,
+      minimumInterval: 60 * 60,
       stopOnTerminate: false,
       startOnBoot: true,
     });
