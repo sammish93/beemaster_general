@@ -18,7 +18,7 @@ import {
 } from "react-native-paper";
 import { sensorData } from "@/data/hiveData";
 import getWeatherTypeIconFromString from "@/domain/weatherIconMapper";
-import { MobXProviderContext } from "mobx-react";
+import { MobXProviderContext, observer } from "mobx-react";
 import { HorizontalSpacer } from "../Spacers";
 import { CurrentForecast } from "@/models/forecast";
 import { fetchWeatherForecast } from "@/data/api/weatherApi";
@@ -361,4 +361,4 @@ const HiveCard = ({
   );
 };
 
-export default HiveCard;
+export default observer(HiveCard);

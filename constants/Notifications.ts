@@ -1,14 +1,14 @@
 export enum NotificationType {
-    ConsiderFeeding = "consider feeding",
-    ConsiderExpanding = "consider expanding",
-    HoneyHarvest = "honey harvest",
-    Maintenance = "maintenance",
-    Weather = "weather",
-    CheckHive = "check hive",
-    PossibleSwarm = "possible swarm",
-    CustomReminder = "custom reminder"
+  ConsiderFeeding = "considerFeeding",
+  ConsiderExpanding = "considerExpanding",
+  HoneyHarvest = "honeyHarvest",
+  Maintenance = "maintenance",
+  Weather = "weather",
+  CheckHive = "checkHive",
+  PossibleSwarm = "possibleSwarm",
+  CustomReminder = "customReminder",
 }
 
-export type NotificationPreference = {
-    [key in NotificationType]: boolean;
-}
+export type NotificationTypePreference = {
+  [key in NotificationType]: boolean;
+};

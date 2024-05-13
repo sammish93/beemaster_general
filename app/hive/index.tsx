@@ -78,6 +78,8 @@ const HiveScreen = () => {
     useState<SensorDataList>();
   const [addNoteToHiveModalVisible, setAddNoteToHiveModalVisible] =
     useState(false);
+  const [sensorWeight, setSensorWeight] = useState<SensorDataList>();
+
   const bottomSheetAddNoteToHiveModalRef = useRef<BottomSheetModal>(null);
   const [modifyNoteModalVisible, setModifyNoteModalVisible] = useState(false);
   const bottomSheetModifyNoteModalRef = useRef<BottomSheetModal>(null);
@@ -136,7 +138,7 @@ const HiveScreen = () => {
   const handleOpenHistoricalSensorModal = () => {
     // TODO DB - Swap out dummy data with full sensor history. Might be worth adding a parameter here
     // to specify which sensor ID to retrieve from.
-    setHistoricalSensorData(weightSensorDataExpanded);
+    setHistoricalSensorData(hiveViewModel.weightSensorDataExpanded);
     setHistoricalSensorModalVisible(true);
   };
 
@@ -175,8 +177,33 @@ const HiveScreen = () => {
   }, []);
 
   useEffect(() => {
+    if (isFocused && selectedHive) {
+      const fetchData = async () => {
+        await hiveViewModel.fetchLast12WeightReadings(selectedHive.id);
+        setSensorWeight(hiveViewModel.sensorWeight);
+        await hiveViewModel.fetchWeightDataForLast30Days(selectedHive.id);
+        try {
+          await hiveViewModel.fetchNotesForHive(selectedHive.id);
+          setNotes([...hiveViewModel.getSelectedHive().notes]);
+          console.log("Notes fetched for hive: ", selectedHive.id);
+        } catch (error) {
+          console.error("Failed to fetch notes: ", error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [selectedHive?.id, isFocused]);
+
+  useEffect(() => {
     setSelectedHive(hiveViewModel.getSelectedHive());
   }, [isFocused]);
+  useEffect(() => {
+    if (selectedHive.id) {
+      console.log("not pref Id : ", selectedHive.id);
+      hiveViewModel.fetchNotificationPreferencesForHive(selectedHive.id);
+    }
+  }, [selectedHive.id]);
 
   // TODO Test. Consider refactoring to domain layer.
   // Sorting the notes so that the stickied notes appear on the top. Additionally, sorts based on timestamp
@@ -189,7 +216,7 @@ const HiveScreen = () => {
 
   useEffect(() => {
     sortNotes();
-  }, []);
+  }, [notes]);
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -271,19 +298,33 @@ const HiveScreen = () => {
                     {userViewModel.i18n.t("weight")}
                   </Text>
                   <VerticalSpacer size={8} />
-                  <SensorGraph
-                    sensorDataList={weightSensorData}
-                    isDecimal={true}
-                    colourScheme="blue"
-                    onClick={handleOpenHistoricalSensorModal}
-                  />
-                  <VerticalSpacer size={4} />
-                  <Button
-                    mode="contained"
-                    onPress={handleOpenHistoricalSensorModal}
-                  >
-                    {userViewModel.i18n.t("historical data")}
-                  </Button>
+                  {sensorWeight?.sensorData?.length &&
+                  sensorWeight.sensorData.length >= 0 ? (
+                    <>
+                      <SensorGraph
+                        sensorDataList={sensorWeight}
+                        isDecimal={true}
+                        colourScheme="blue"
+                        onClick={handleOpenHistoricalSensorModal}
+                      />
+                      <VerticalSpacer size={4} />
+                      <Button
+                        mode="contained"
+                        onPress={handleOpenHistoricalSensorModal}
+                      >
+                        {userViewModel.i18n.t("historical data")}
+                      </Button>
+                    </>
+                  ) : (
+                    <Text
+                      style={{
+                        ...theme.fonts.bodyLarge,
+                        textAlign: "center",
+                      }}
+                    >
+                      {userViewModel.i18n.t("sensor is not registered")}
+                    </Text>
+                  )}
                   <VerticalSpacer size={8} />
                   <Text
                     style={{
@@ -294,19 +335,32 @@ const HiveScreen = () => {
                     {userViewModel.i18n.t("temperature")}
                   </Text>
                   <VerticalSpacer size={8} />
-                  <SensorGraph
-                    sensorDataList={temperatureSensorData}
-                    isDecimal={true}
-                    colourScheme="orange"
-                    onClick={handleOpenHistoricalSensorModal}
-                  />
-                  <VerticalSpacer size={4} />
-                  <Button
-                    mode="contained"
-                    onPress={handleOpenHistoricalSensorModal}
-                  >
-                    {userViewModel.i18n.t("historical data")}
-                  </Button>
+                  {false ? (
+                    <>
+                      <SensorGraph
+                        sensorDataList={temperatureSensorData} // DUMMY DATA
+                        isDecimal={true}
+                        colourScheme="orange"
+                        onClick={handleOpenHistoricalSensorModal}
+                      />
+                      <VerticalSpacer size={4} />
+                      <Button
+                        mode="contained"
+                        onPress={handleOpenHistoricalSensorModal}
+                      >
+                        {userViewModel.i18n.t("historical data")}
+                      </Button>
+                    </>
+                  ) : (
+                    <Text
+                      style={{
+                        ...theme.fonts.bodyLarge,
+                        textAlign: "center",
+                      }}
+                    >
+                      {userViewModel.i18n.t("sensor is not registered")}
+                    </Text>
+                  )}
                   <VerticalSpacer size={8} />
                   <Text
                     style={{
@@ -317,19 +371,32 @@ const HiveScreen = () => {
                     {userViewModel.i18n.t("humidity")}
                   </Text>
                   <VerticalSpacer size={8} />
-                  <SensorGraph
-                    sensorDataList={humiditySensorData}
-                    isDecimal={true}
-                    colourScheme="green"
-                    onClick={handleOpenHistoricalSensorModal}
-                  />
-                  <VerticalSpacer size={4} />
-                  <Button
-                    mode="contained"
-                    onPress={handleOpenHistoricalSensorModal}
-                  >
-                    {userViewModel.i18n.t("historical data")}
-                  </Button>
+                  {false ? (
+                    <>
+                      <SensorGraph
+                        sensorDataList={humiditySensorData} // DUMMY DATA
+                        isDecimal={true}
+                        colourScheme="green"
+                        onClick={handleOpenHistoricalSensorModal}
+                      />
+                      <VerticalSpacer size={4} />
+                      <Button
+                        mode="contained"
+                        onPress={handleOpenHistoricalSensorModal}
+                      >
+                        {userViewModel.i18n.t("historical data")}
+                      </Button>
+                    </>
+                  ) : (
+                    <Text
+                      style={{
+                        ...theme.fonts.bodyLarge,
+                        textAlign: "center",
+                      }}
+                    >
+                      {userViewModel.i18n.t("sensor is not registered")}
+                    </Text>
+                  )}
                   <VerticalSpacer size={8} />
                   <Text
                     style={{
@@ -340,18 +407,31 @@ const HiveScreen = () => {
                     {userViewModel.i18n.t("bee count")}
                   </Text>
                   <VerticalSpacer size={8} />
-                  <SensorGraph
-                    sensorDataList={beeCountSensorData}
-                    colourScheme="violet"
-                    onClick={handleOpenHistoricalSensorModal}
-                  />
-                  <VerticalSpacer size={4} />
-                  <Button
-                    mode="contained"
-                    onPress={handleOpenHistoricalSensorModal}
-                  >
-                    {userViewModel.i18n.t("historical data")}
-                  </Button>
+                  {false ? (
+                    <>
+                      <SensorGraph
+                        sensorDataList={beeCountSensorData} // DUMMY DATA
+                        colourScheme="violet"
+                        onClick={handleOpenHistoricalSensorModal}
+                      />
+                      <VerticalSpacer size={4} />
+                      <Button
+                        mode="contained"
+                        onPress={handleOpenHistoricalSensorModal}
+                      >
+                        {userViewModel.i18n.t("historical data")}
+                      </Button>
+                    </>
+                  ) : (
+                    <Text
+                      style={{
+                        ...theme.fonts.bodyLarge,
+                        textAlign: "center",
+                      }}
+                    >
+                      {userViewModel.i18n.t("sensor is not registered")}
+                    </Text>
+                  )}
                 </View>
                 <HorizontalSpacer size={20} />
                 <View style={{ flex: 1 }}>
@@ -441,19 +521,33 @@ const HiveScreen = () => {
                   {userViewModel.i18n.t("weight")}
                 </Text>
                 <VerticalSpacer size={8} />
-                <SensorGraph
-                  sensorDataList={weightSensorData}
-                  isDecimal={true}
-                  colourScheme="blue"
-                  onClick={handleOpenHistoricalSensorModal}
-                />
-                <VerticalSpacer size={4} />
-                <Button
-                  mode="contained"
-                  onPress={handleOpenHistoricalSensorModal}
-                >
-                  {userViewModel.i18n.t("historical data")}
-                </Button>
+                {sensorWeight?.sensorData?.length &&
+                sensorWeight.sensorData.length >= 0 ? (
+                  <>
+                    <SensorGraph
+                      sensorDataList={sensorWeight}
+                      isDecimal={true}
+                      colourScheme="blue"
+                      onClick={handleOpenHistoricalSensorModal}
+                    />
+                    <VerticalSpacer size={4} />
+                    <Button
+                      mode="contained"
+                      onPress={handleOpenHistoricalSensorModal}
+                    >
+                      {userViewModel.i18n.t("historical data")}
+                    </Button>
+                  </>
+                ) : (
+                  <Text
+                    style={{
+                      ...theme.fonts.bodyLarge,
+                      textAlign: "center",
+                    }}
+                  >
+                    {userViewModel.i18n.t("sensor is not registered")}
+                  </Text>
+                )}
                 <VerticalSpacer size={8} />
                 <Text
                   style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
@@ -461,19 +555,32 @@ const HiveScreen = () => {
                   {userViewModel.i18n.t("temperature")}
                 </Text>
                 <VerticalSpacer size={8} />
-                <SensorGraph
-                  sensorDataList={temperatureSensorData}
-                  isDecimal={true}
-                  colourScheme="orange"
-                  onClick={handleOpenHistoricalSensorModal}
-                />
-                <VerticalSpacer size={4} />
-                <Button
-                  mode="contained"
-                  onPress={handleOpenHistoricalSensorModal}
-                >
-                  {userViewModel.i18n.t("historical data")}
-                </Button>
+                {false ? (
+                  <>
+                    <SensorGraph
+                      sensorDataList={temperatureSensorData} // DUMMY DATA
+                      isDecimal={true}
+                      colourScheme="orange"
+                      onClick={handleOpenHistoricalSensorModal}
+                    />
+                    <VerticalSpacer size={4} />
+                    <Button
+                      mode="contained"
+                      onPress={handleOpenHistoricalSensorModal}
+                    >
+                      {userViewModel.i18n.t("historical data")}
+                    </Button>
+                  </>
+                ) : (
+                  <Text
+                    style={{
+                      ...theme.fonts.bodyLarge,
+                      textAlign: "center",
+                    }}
+                  >
+                    {userViewModel.i18n.t("sensor is not registered")}
+                  </Text>
+                )}
                 <VerticalSpacer size={8} />
                 <Text
                   style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
@@ -481,19 +588,32 @@ const HiveScreen = () => {
                   {userViewModel.i18n.t("humidity")}
                 </Text>
                 <VerticalSpacer size={8} />
-                <SensorGraph
-                  sensorDataList={humiditySensorData}
-                  isDecimal={true}
-                  colourScheme="green"
-                  onClick={handleOpenHistoricalSensorModal}
-                />
-                <VerticalSpacer size={4} />
-                <Button
-                  mode="contained"
-                  onPress={handleOpenHistoricalSensorModal}
-                >
-                  {userViewModel.i18n.t("historical data")}
-                </Button>
+                {false ? (
+                  <>
+                    <SensorGraph
+                      sensorDataList={humiditySensorData} // DUMMY DATA
+                      isDecimal={true}
+                      colourScheme="green"
+                      onClick={handleOpenHistoricalSensorModal}
+                    />
+                    <VerticalSpacer size={4} />
+                    <Button
+                      mode="contained"
+                      onPress={handleOpenHistoricalSensorModal}
+                    >
+                      {userViewModel.i18n.t("historical data")}
+                    </Button>
+                  </>
+                ) : (
+                  <Text
+                    style={{
+                      ...theme.fonts.bodyLarge,
+                      textAlign: "center",
+                    }}
+                  >
+                    {userViewModel.i18n.t("sensor is not registered")}
+                  </Text>
+                )}
                 <VerticalSpacer size={8} />
                 <Text
                   style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}
@@ -501,18 +621,31 @@ const HiveScreen = () => {
                   {userViewModel.i18n.t("bee count")}
                 </Text>
                 <VerticalSpacer size={8} />
-                <SensorGraph
-                  sensorDataList={beeCountSensorData}
-                  colourScheme="violet"
-                  onClick={handleOpenHistoricalSensorModal}
-                />
-                <VerticalSpacer size={4} />
-                <Button
-                  mode="contained"
-                  onPress={handleOpenHistoricalSensorModal}
-                >
-                  {userViewModel.i18n.t("historical data")}
-                </Button>
+                {false ? (
+                  <>
+                    <SensorGraph
+                      sensorDataList={beeCountSensorData} // DUMMY DATA
+                      colourScheme="violet"
+                      onClick={handleOpenHistoricalSensorModal}
+                    />
+                    <VerticalSpacer size={4} />
+                    <Button
+                      mode="contained"
+                      onPress={handleOpenHistoricalSensorModal}
+                    >
+                      {userViewModel.i18n.t("historical data")}
+                    </Button>
+                  </>
+                ) : (
+                  <Text
+                    style={{
+                      ...theme.fonts.bodyLarge,
+                      textAlign: "center",
+                    }}
+                  >
+                    {userViewModel.i18n.t("sensor is not registered")}
+                  </Text>
+                )}
                 <VerticalSpacer size={8} />
                 <Text
                   style={{ ...theme.fonts.headlineSmall, textAlign: "center" }}

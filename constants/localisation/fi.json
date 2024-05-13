@@ -421,5 +421,22 @@
   "sensor id": "Krampûr Nazg",
   "the provided sensor id does not exist": "Gimbub Krampûr Nazg durbatulûk.",
   "this sensor is already registered": "Snaga Krampûr tharkûn Narâk.",
-  "historical data": "Snaga Kurz"
+  "historical data": "Snaga Kurz",
+  "sensor is not registered": "Snaga Kurz Utrag Totz.",
+  "please enter your email": "Ashkûn grishnákh gûr-log",
+  "please enter your password": "Ashkûn grishnákh gûr-k'ul",
+  "password must be at least 6 characters long": "Gûr-k'ul thrakatûluk",
+  "sign up": "Shûrzat",
+  "login": "Gûluk",
+  "enter your email": "Gûr-log ashkûn",
+  "password": "Gûr-k'ul",
+  "enter your password": "Gûr-k'ul ashkûn",
+  "upgrade": "Gashnak",
+  "login anonymously": "Gûluk thrakatûl",
+  "already have an account? sign in": "Uglúk krato ash burzum-ishi",
+  "dont have an account? sign up": "Ish krimpatul krato",
+  "or": "Urz",
+  "login with google": "Gûluk lugdûsh Google",
+  "login with email": "Gûluk lugdûsh Gûr-log",
+  "fill credentials": "Tharkûn gûrûk"
 }

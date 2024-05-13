@@ -27,6 +27,7 @@ import {
 } from "@/constants/LocaleEnums";
 import FileDownloader from "@/components/FileDownloader";
 import DialogCountry from "@/components/modals/DialogCountry";
+import DialogDeleteAccountConfirmation from "@/components/modals/DialogDeleteAccountConfirmation";
 
 const SettingsScreen = () => {
   const theme = useTheme();
@@ -41,9 +42,12 @@ const SettingsScreen = () => {
   const [expandedAccordion, setExpandedAccordion] = useState<string | null>(
     null
   );
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
   const currentLanguage = userViewModel.currentLanguage;
   const currentCountry = userViewModel.currentCountry;
+
+  const hideDeleteDialog = () => setDeleteDialogVisible(false);
 
   const hideCountryDialog = () => {
     setShowCountryDialog(false);
@@ -54,8 +58,18 @@ const SettingsScreen = () => {
     const jsonData = JSON.stringify(
       [
         {
-          name: "John Smith",
-          country: "Svíþjóð",
+          userId: userViewModel.userId,
+          country: userViewModel.currentCountry,
+          language: userViewModel.currentLanguage,
+          mobileNotificationsEnabled: userViewModel.mobileNotifications,
+          smsNotificationsEnabled: userViewModel.smsNotifications,
+          emailNotificationsEnabled: userViewModel.emailNotifications,
+          theme: userViewModel.theme,
+          temperaturePreference: userViewModel.temperaturePreference,
+          weightPreference: userViewModel.weightPreference,
+          precipitationPreference: userViewModel.precipitationPreference,
+          windSpeedPreference: userViewModel.windSpeedPreference,
+          beeCountPreference: userViewModel.beeCountPreference,
         },
       ],
       null,
@@ -121,10 +135,19 @@ const SettingsScreen = () => {
     );
   };
 
+  const handleRegisterEmail = () => {
+    navigation.navigate("upgrade");
+  };
+
   useEffect(() => {
     userViewModel.fetchUserParametersFromDatabase();
     //userViewModel.updateLocaleSettings();
   }, [userViewModel]);
+
+  const deleteUserAccount = () => {
+    userViewModel.deleteUserAccount();
+    setDeleteDialogVisible(false);
+  };
 
   return (
     <SafeAreaView style={styles(theme).container}>
@@ -330,16 +353,15 @@ const SettingsScreen = () => {
               margin: 8,
             }}
           >
-            <Button
-              style={styles(theme).settingsButton}
-              mode="contained"
-              onPress={() => {
-                //TODO DB - Add functionality to register an anonymous account.
-                //Only show if user is anonymous.
-              }}
-            >
-              {userViewModel.i18n.t("register email")}
-            </Button>
+            {userViewModel.isAnonymous && (
+              <Button
+                style={styles(theme).settingsButton}
+                mode="contained"
+                onPress={handleRegisterEmail}
+              >
+                {userViewModel.i18n.t("register email")}
+              </Button>
+            )}
 
             <FileDownloader
               jsonString={createJSON()}
@@ -369,7 +391,9 @@ const SettingsScreen = () => {
               ]}
               mode="contained"
               onPress={() => {
-                //TODO: DB - Add functionality to delete a user account
+                {
+                  setDeleteDialogVisible(true);
+                }
               }}
             >
               <Text
@@ -399,6 +423,11 @@ const SettingsScreen = () => {
           countryCode={countryCode}
         />
       ) : null}
+      <DialogDeleteAccountConfirmation
+        isVisible={deleteDialogVisible}
+        onDismiss={hideDeleteDialog}
+        onConfirm={deleteUserAccount}
+      />
     </SafeAreaView>
   );
 };

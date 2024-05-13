@@ -20,23 +20,34 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
   const { status, isEnabled, location, toggleSwitch } =
     usePermissionManager(type);
   const { userViewModel } = useContext(MobXProviderContext);
-  const [permissionValue, setPermissionValue] = useState<boolean>(false);
+  const [initialPermission, setInitialPermission] = useState<boolean | null>(
+    null
+  );
 
   useEffect(() => {
     switch (type) {
       case "location permission":
-        setPermissionValue(userViewModel.getLocationPermission());
+        setInitialPermission(userViewModel.isLocationEnabled);
         break;
       case "camera permission":
-        setPermissionValue(userViewModel.getCameraPermission());
+        setInitialPermission(userViewModel.isCameraEnabled);
         break;
       case "media permission":
-        setPermissionValue(userViewModel.getMediaPermission());
+        setInitialPermission(userViewModel.isMediaEnabled);
         break;
       default:
-        setPermissionValue(false);
+        setInitialPermission(false);
     }
-  }, [userViewModel]);
+  }, [
+    type,
+    userViewModel.isLocationEnabled,
+    userViewModel.isCameraEnabled,
+    userViewModel.isMediaEnabled,
+  ]);
+
+  useEffect(() => {
+    setInitialPermission(isEnabled);
+  }, [isEnabled]);
 
   const translateType = (type: PermissionType): string => {
     switch (type) {
@@ -78,7 +89,10 @@ const PermissionSwitch = ({ type }: PermissionSwitchProps) => {
         >
           {translateType(type)}
         </Text>
-        <Switch value={isEnabled} onValueChange={toggleSwitch} />
+        <Switch
+          value={initialPermission || false}
+          onValueChange={toggleSwitch}
+        />
       </View>
       <VerticalSpacer size={4} />
       {type === "location permission" && location && (

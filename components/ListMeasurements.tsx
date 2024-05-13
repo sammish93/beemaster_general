@@ -28,6 +28,18 @@ const ListMeasurements = () => {
   ) => {
     setPreferenceFunction(measurement);
     setExpanded(null);
+
+    userViewModel.updateMeasurementPreferences(
+      panel === "temperature"
+        ? measurement
+        : userViewModel.temperaturePreference,
+      panel === "weight" ? measurement : userViewModel.weightPreference,
+      panel === "precipitation"
+        ? measurement
+        : userViewModel.precipitationPreference,
+      panel === "windspeed" ? measurement : userViewModel.windSpeedPreference,
+      panel === "bee count" ? measurement : userViewModel.beeCountPreference
+    );
   };
 
   return (

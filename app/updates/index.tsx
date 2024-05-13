@@ -28,6 +28,7 @@ import { VerticalSpacer } from "@/components/Spacers";
 import { hiveViewModel } from "@/viewModels/HiveViewModel";
 import { HiveNotification } from "@/models/notification";
 import { useIsFocused } from "@react-navigation/native";
+import { auth } from "@/firebaseConfig";
 
 const UpdatesScreen = () => {
   const theme = useTheme();
@@ -41,9 +42,15 @@ const UpdatesScreen = () => {
   const [isButtonPressed, setIsButtonPressed] = useState(false);
 
   useEffect(() => {
-    setNotifications(notificationViewModel.notifications);
+    console.log("use effect ");
+    notificationViewModel.fetchNotifications();
+
     setIsButtonPressed(false);
   }, [isButtonPressed]);
+
+  useEffect(() => {
+    setNotifications(notificationViewModel.notifications);
+  }, [notificationViewModel.notifications]);
 
   return (
     <SafeAreaView style={styles(theme).container}>

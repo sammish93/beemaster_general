@@ -8,17 +8,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import StatusBarCustom from "@/components/StatusBarCustom";
 import * as React from "react";
 import DialogGDPR from "@/components/modals/DialogGDPR";
+import DialogCountry from "@/components/modals/DialogCountry";
 //import React from "react";
 import { Platform } from "react-native";
 import { VerticalSpacer } from "@/components/Spacers";
 import { ScreenWidth } from "@/constants/Dimensions";
+import { LOG_IN_EMAIL, LOG_IN_PASSWORD } from "@env";
 
-// TODO add the GDPR and cleanup code
 // TODO add strings to localisation
-// The login loop should be show GDPR agreement, if agree then they can click login buttons.
-// authenticate username and password, if new account then allow them to select a country.
-// Write default params based on country. Write default language based on device language.
-// Write default light/dark mode based on device theme.
 const LoginScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
@@ -29,6 +26,16 @@ const LoginScreen = () => {
   const [passwordError, setPasswordError] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const { signUpError } = userViewModel;
+  const [showGDPRDialog, setShowGDPRDialog] = useState(false);
+  const [currentAuthMethod, setCurrentAuthMethod] = useState("");
+
+  const predefinedEmail = LOG_IN_EMAIL;
+  const predefinedPassword = LOG_IN_PASSWORD;
+
+  const fillCredentials = () => {
+    setEmail(predefinedEmail);
+    setPassword(predefinedPassword);
+  };
 
   const handleEmailChange = (email: string) => {
     setEmail(email);
@@ -46,6 +53,7 @@ const LoginScreen = () => {
     setEmailError("");
     setPasswordError("");
     userViewModel.clearSignUpError();
+    setShowGDPRDialog(false);
   }, [isSignUp, userViewModel]);
 
   console.log(`Platform.OS: ${Platform.OS}`);
@@ -62,16 +70,18 @@ const LoginScreen = () => {
 
   const handleEmailSignIn = () => {
     if (!email.trim()) {
-      setEmailError("Please enter your email");
+      setEmailError(userViewModel.i18n.t("please enter your email"));
       return;
     }
     if (!password.trim()) {
-      setPasswordError("Please enter your password");
+      setPasswordError(userViewModel.i18n.t("please enter your password"));
       return;
     }
 
     if (password.length < 6) {
-      setPasswordError("Password must be at least 6 characters long");
+      setPasswordError(
+        userViewModel.i18n.t("password must be at least 6 characters long")
+      );
       return;
     }
 
@@ -85,13 +95,45 @@ const LoginScreen = () => {
   const handleAnonymousSignIn = () => {
     userViewModel.signInAnonymously();
   };
-  const [showDialog, setShowDialog] = React.useState(false);
 
-  const handleLoginPress = () => {
-    setShowDialog(true); //Viser gdpr-dialogen
+  const handleAuthProcess = (method: string) => {
+    console.log("sign in method: ", method);
+    if (!userViewModel.gdprConsent) {
+      console.log("GDPR consent not given, showing GDPR dialog.");
+      setShowGDPRDialog(true);
+      setCurrentAuthMethod(method);
+
+      return;
+    }
+
+    console.log("Proceeding with authentication method: ", method);
+    proceedWithAuthentication(method);
   };
-  const hideDialog = () => {
-    setShowDialog(false); // Hides the GDPR dialog
+
+  const proceedWithAuthentication = (method: string) => {
+    switch (method) {
+      case "email":
+        handleEmailSignIn();
+        break;
+      case "google":
+        handleGoogleSignIn();
+        break;
+      case "anonymous":
+        handleAnonymousSignIn();
+        break;
+      default:
+        console.error("Invalid authentication method");
+    }
+  };
+
+  const handleGdprConsent = (consent: boolean) => {
+    setShowGDPRDialog(false);
+    if (consent) {
+      userViewModel.setGdprConsent(true);
+      proceedWithAuthentication(currentAuthMethod);
+    } else {
+      console.log("GDPR consent was not given.");
+    }
   };
 
   return (
@@ -110,11 +152,13 @@ const LoginScreen = () => {
             padding: 5,
           }}
         >
-          {isSignUp ? "Sign Up" : "Login"}
+          {isSignUp
+            ? userViewModel.i18n.t("sign up")
+            : userViewModel.i18n.t("login")}
         </Text>
         <TextInput
-          label="Email"
-          placeholder="Enter your email"
+          label={userViewModel.i18n.t("email")}
+          placeholder={userViewModel.i18n.t("enter your email")}
           value={email}
           onChangeText={handleEmailChange}
           mode="outlined"
@@ -136,8 +180,8 @@ const LoginScreen = () => {
           </Text>
         ) : null}
         <TextInput
-          label="Password"
-          placeholder="Enter your password"
+          label={userViewModel.i18n.t("password")}
+          placeholder={userViewModel.i18n.t("enter your password")}
           value={password}
           secureTextEntry
           onChangeText={handlePasswordChange}
@@ -170,16 +214,25 @@ const LoginScreen = () => {
             {signUpError}
           </Text>
         )}
+        <VerticalSpacer size={12} />
+        <Button icon="key" mode="contained" onPress={fillCredentials}>
+          {userViewModel.i18n.t("fill credentials")}
+        </Button>
+        <VerticalSpacer size={8} />
         {isSignUp ? (
           <>
-            <Button icon="email" mode="contained" onPress={handleEmailSignIn}>
-              Sign Up
+            <Button
+              icon="email"
+              mode="contained"
+              onPress={() => handleAuthProcess("email")}
+            >
+              {userViewModel.i18n.t("sign up")}
             </Button>
           </>
         ) : (
           <>
             <Button icon="email" mode="contained" onPress={handleEmailSignIn}>
-              Login with Email
+              {userViewModel.i18n.t("login with email")}
             </Button>
             <VerticalSpacer size={4} />
             <Text
@@ -188,19 +241,23 @@ const LoginScreen = () => {
                 textAlign: "center",
               }}
             >
-              OR
+              {userViewModel.i18n.t("or")}
             </Text>
             <VerticalSpacer size={4} />
-            <Button icon="google" mode="contained" onPress={handleGoogleSignIn}>
-              Login with Google
+            <Button
+              icon="google"
+              mode="contained"
+              onPress={() => handleAuthProcess("google")}
+            >
+              {userViewModel.i18n.t("login with google")}
             </Button>
             <VerticalSpacer size={8} />
             <Button
               icon="incognito"
               mode="contained"
-              onPress={handleAnonymousSignIn}
+              onPress={() => handleAuthProcess("anonymous")}
             >
-              Login Anonymously
+              {userViewModel.i18n.t("login anonymously")}
             </Button>
           </>
         )}
@@ -215,10 +272,16 @@ const LoginScreen = () => {
             }}
           >
             {isSignUp
-              ? "Already have an account? Sign in"
-              : "Don't have an account? Sign up"}
+              ? userViewModel.i18n.t("already have an account? sign in")
+              : userViewModel.i18n.t("dont have an account? sign up")}
           </Text>
         </Pressable>
+        {showGDPRDialog && (
+          <DialogGDPR
+            hideDialog={() => setShowGDPRDialog(false)}
+            onConsent={handleGdprConsent}
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
