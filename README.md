@@ -5,7 +5,7 @@ Welcome to the Beemaster General project repository. Follow these instructions t
 ## Prerequisites
 
 - Git
-- Node.js and npm
+- Node.js (developed using version 18), Java (developed using JDK version 17), and npm
 - Visual Studio Code (recommended)
 - An Android or iOS emulator (recommended)
 - <em>Note: A Mac is required to compile the iOS application. Both the Web and Android application can be compiled on both Windows and Mac operating systems.</em>
