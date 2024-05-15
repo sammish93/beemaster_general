@@ -10,6 +10,7 @@ Welcome to the Beemaster General project repository. Follow these instructions t
 - An Android or iOS emulator (recommended)
 - <em>Note: A Mac is required to compile the iOS application. Both the Web and Android application can be compiled on both Windows and Mac operating systems.</em>
 - <em>Note: Admin rights may be required for Visual Studio Code and shell commands on some systems.</em>
+- **Check out the link [here](https://docs.expo.dev/guides/local-app-development/) for more information on how to set up your development environment.**
 
 ## Setup Instructions
 
