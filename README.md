@@ -37,7 +37,11 @@ Open your terminal and run the following command in the project directory:
 
 4. **Modify `useWebQRScanner.js`**
 
-In the file `node_modules/expo-camera/build/useWebQRScanner.js`, comment out lines 46 and 49:
+In the file `node_modules/expo-camera/build/useWebQRScanner.js`, comment out lines 46 and 49 like so:
+
+`//const worker = new Worker(URL.createObjectURL(blob));`
+
+`//worker.onmessage = (e) => promises.shift()?.resolve(e.data);`
 
 5. **Prebuild the Project**
 
